@@ -26,10 +26,10 @@ version, tag and source archives stay immutable and are not republished here.
 ## What stays here only
 
 - `LICENSE` — the BSL-1.0 licence of the old wrapper contribution.
-- `README.md` — the old package README.
+- `README.md`, `README_zh.md` — the old package READMEs (English, 简体中文).
 - `CHANGELOG.md`, `CHANGELOG_zh.md` — the old changelog.
 - `release_notes/` — the old release notes, including the `1.91.x` and
-  `v1.92.0.0.0.x` series.
+  `v1.92.0.0.0.x` series; `release_notes/zh/` keeps their Chinese versions.
 
 These files keep their original text and links. They are history, not current
 documentation: current consumers read `/README.md`, `/docs/usage.md` and
