@@ -1,0 +1,24 @@
+{
+  "documents": [
+    {
+      "path": "upstream/boost/README.md",
+      "source": "https://github.com/boostorg/boost/blob/boost-1.92.0/README.md",
+      "sha256": "18c1931c1fde3c8cdc524730444a546fa22fbcdd89acfaa7f3ce0a9dbf51fe34"
+    },
+    {
+      "path": "upstream/boost/LICENSE_1_0.txt",
+      "source": "https://github.com/boostorg/boost/blob/boost-1.92.0/LICENSE_1_0.txt",
+      "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    {
+      "path": "upstream/boost-module/LICENSE",
+      "source": "https://github.com/ZheFeng7110/boost-module/blob/6393bd80/LICENSE",
+      "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    {
+      "path": "upstream/boost-module/README.md",
+      "source": "https://github.com/ZheFeng7110/boost-module/blob/6393bd80/README.md",
+      "sha256": "5b284252bb69103c023d3aaa6042e5f108bf5347586cd4f2dd1e93c627eaab2d"
+    }
+  ]
+}

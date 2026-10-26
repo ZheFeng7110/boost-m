@@ -1,0 +1,26 @@
+boost-m — Boost 1.92.0 C++23 named module wrapper
+Copyright (c) 2026-present mcpp-community
+
+This NOTICE covers the wrapper contribution only.
+
+The wrapper contribution — the module interfaces under `src/`, the wrapper
+translation units and headers under `port/`, the generators and generators'
+inputs under `tools/` and `generated/`, the templates, tests, examples and
+documentation of this repository — is licensed under the Apache License,
+Version 2.0 (see `/LICENSE`).
+
+It is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.
+
+Boost (the vendored tree under `upstream/boost/`) is Copyright the Boost
+developers and is distributed under the Boost Software License, Version 1.0
+(see `upstream/boost/LICENSE_1_0.txt`). It is not covered by this NOTICE.
+
+The pre-mwrap wrapper contribution retained under `upstream/boost-module/` is
+Copyright ZheFeng7110 and is distributed under the Boost Software License,
+Version 1.0 (see `upstream/boost-module/LICENSE`). It is not covered by this
+NOTICE either; `upstream/boost-module/SOURCE.md` records its provenance.
+
+Boost is a trademark of Beman Dawes, and the Boost logo is the property of the
+Boost project. This repository is not affiliated with or endorsed by the Boost
+project.

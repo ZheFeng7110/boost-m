@@ -1,0 +1,250 @@
+# Changelog
+
+> 中文版: [`CHANGELOG_zh.md`](CHANGELOG_zh.md)
+
+This file tracks the version history of boost-module. Version numbers follow the
+six-segment numeric `v<boost version>.<wrapper version>` format
+(e.g. `v1.91.0.0.1.0` = Boost v1.91.0 × modules wrapper v0.1.0). Entries published before
+2026-09-22 use the historical `b<boost version>w<wrapper version>` spelling and are kept
+verbatim.
+
+## 1.92.0.0.0.1 (2026-10-26, stable patch)
+
+Deprecation-only patch and the **final release of this repository** (git tag
+`v1.92.0.0.0.1`). Module/feature counts and the consumable surface are identical to
+`1.92.0.0.0.0`. The wrapper is no longer maintained: it has moved to
+[mcpplibs/boost-m](https://github.com/mcpplibs/boost-m) and the package name is now
+**`mcpplibs.mwrap.boost`**.
+
+### Changes Since v1.92.0.0.0.0
+
+- **Build-time advisory**: `build.mcpp` calls `mcpp::warning(...)` on every run that reaches
+  it, naming the successor repository and package. It is attributed to the package, does not
+  fail the build, and is replayed on a build-cache hit.
+- **Docs**: `README.md`, `README_zh.md`, `docs/usage.md` and `docs/zh/usage.md` lead with the
+  deprecation/migration notice.
+- **Version**: `[package].version` is now `1.92.0.0.0.1`; consumer examples and the release
+  runbook point at the new tag.
+- No module, feature, count, or API changes; supported library set unchanged.
+
+### Known Limitations
+
+Unchanged from `1.92.0.0.0.0`; disclosed there. See
+[`docs/release_notes/v1.92.0.0.0.1.md`](docs/release_notes/v1.92.0.0.0.1.md).
+
+## 1.92.0.0.0.0 (2026-10-10, stable)
+
+First stable release for Boost 1.92.0 (git tag `v1.92.0.0.0.0`). The vendored upstream is
+re-imported and the export surface regenerated; module/feature counts and the consumable set
+keep the same shape as `1.91.0.0.1.0` (116 modules / 118 features / 49-library default
+closure / 138 consumable). Release automation is now complete: the tag push also mirrors the
+release to GitCode and registers the version on the mcpp package index.
+
+### Contents
+
+- **116 module interfaces** (`src/*.cppm`): consumers `import boost.<lib>;` or the umbrella
+  `import boost;`.
+- **118 library features**: 116 module features + two module-less features, `log` and
+  `unit_test_framework`; plus **2 profile features** (`backend-log-ssse3` /
+  `backend-log-avx2`, x86_64 Boost.Log dump backends).
+- **Default 49-library closure** (`[features].default`); everything else is opt-in.
+- **138 libraries consumable in total** = 116 modules + 2 compiled libraries consumed
+  include-only (log, test) + 20 pure include-only.
+- **Testing**: 142/142 smoke tests; five CI legs (windows-llvm-msvc x86_64 / linux-gcc
+  x86_64 + arm64 / linux-llvm x86_64 / macos-llvm arm64) with full A/B gating.
+
+### Changes Since v1.91.0.0.1.0
+
+- **Upstream Boost 1.92.0 re-import**: `deps/boost/` bumped `1.91.0 → 1.92.0`
+  (`BOOST_VERSION 109200`, `BOOST_LIB_VERSION "1_92"`), all vendored patches replayed, and
+  `src/gen_exports/*.inc|*.deps`, `src/*.cppm`, `mcpp.toml [features]` plus
+  `scripts/features.lst` fully regenerated.
+- **Export surface**: `scripts/libs.json` rescanned for the 1.92 header set (curated additions
+  under asio/container/graph/lockfree; historical exclusions restored). Only asio / container /
+  graph / lockfree actually change. `decimal` 1.92 platform-only int128 entities are now guarded
+  by the upstream conditions so macOS arm64 / windows-msvc compile; the `stacktrace` feature adds
+  `src/dump.cpp`; the asio vendored patch shrinks from 6 files to 2.
+- **macOS exception handling**: use Apple's `/usr/bin/ld` via `[target.macos.build]` because
+  LLVM 22.1.8's `ld64.lld` can emit duplicate unwind entries that break exception dispatch
+  (upstream LLVM issue 216154). The `program_options` invalid-value regression is split into a
+  module-side check plus a dedicated include-only test (new `tests/program_options_invalid_value.cpp`).
+- **Release automation**: a GitCode `mirror` job force-syncs branches/tags and publishes a
+  matching Release (Chinese notes), and a `publish-index` job registers the version in
+  `pkgs/z/ZheFeng7110.boost.lua` and opens the upstream mcpp-index PR for stable tags; the
+  release title is now just the tag.
+- **CI**: mcpp pinned to `2026.10.8.1`; runner OS updated; Linux ARM64 (gcc) legs added; hosts
+  without mcpp release binaries dropped (macOS x86_64, Windows ARM64, Linux ARM64 LLVM).
+- **Docs/examples**: the mcpp package index is presented as the primary channel (git dependency
+  kept as the alternative, with the Mainland-China mirror noted); `examples/git_dep_usage`
+  points at the 1.92 upgrade revision.
+- No module, feature, count, or API-spelling change; supported library set unchanged.
+
+### Known Limitations
+
+Kept concise for the stable release; see the release notes
+(`docs/release_notes/v1.92.0.0.0.0.md`) and
+[architecture doc §4](docs/architecture.md#4-known-limitations-consumer-notes). The mcpp
+package-index item is no longer pending.
+
+## 1.91.0.0.1.0 (2026-09-22, stable minor)
+
+Wrapper minor release `1.91.0.0.1.0` (git tag `v1.91.0.0.1.0`). Module/feature counts and
+the consumable surface are identical to `1.91.0.0.0.1`; the changes are a package-identity
+migration, automated release packaging, and example refresh.
+
+### Changes Since v1.91.0.0.0.1
+
+- **Package namespace rename**: `[package].namespace` is now `ZheFeng7110`, so the mcpp
+  dependency identity is `ZheFeng7110.boost` instead of `boost.boost`; consumer-facing docs
+  and examples were synced. The C++ module names (`import boost.<lib>;` / `import boost;`)
+  and the exported `boost::` namespace are unchanged.
+  Consumers must rename the dependency key from `boost.boost` to `ZheFeng7110.boost`.
+- **Automated GitHub Release workflow**: `.github/workflows/release.yml` runs on tag push,
+  extracts `docs/release_notes/<tag>.md` (fails if missing), runs the new
+  `scripts/package-source.sh` to build source archives (zip / tar.gz / tar.xz / 7z + sha256),
+  and attaches them to a release titled `Release <tag>`; `-preview` tags are marked
+  prerelease. The release runbook documents the automated flow and the manual fallback.
+- **Example refresh**: `examples/git_dep_usage` points at the current revision and its stale
+  committed `mcpp.lock` was removed.
+- No module, feature, count, or API changes; supported library set unchanged.
+
+### Known Limitations
+
+Unchanged from `1.91.0.0.0.0`; disclosed in full there because the T3 package-index
+integration is still pending. See
+[`docs/release_notes/v1.91.0.0.1.0.md`](docs/release_notes/v1.91.0.0.1.0.md).
+
+## 1.91.0.0.0.1 (2026-09-22, stable patch)
+
+Wrapper patch release `1.91.0.0.0.1` (git tag `v1.91.0.0.0.1`). Module/feature counts and
+the consumable surface are identical to `1.91.0.0.0.0` (tag `b1.91.0w0.0.0`); the changes
+are a version/tag naming migration and a Windows build fix.
+
+### Changes Since b1.91.0w0.0.0
+
+- **Version/tag naming migration**: switched from `b<boost>w<wrapper>` to the
+  six-segment numeric `v<boost version>.<wrapper version>` scheme
+  (`[package].version = "1.91.0.0.0.1"`, tag `v1.91.0.0.0.1`) because mcpp's version
+  grammar requires a digit first and rejects letters in the numeric core. Consumers must
+  update `tag = ...` / `rev = ...` to `v1.91.0.0.0.1`.
+- **Windows build fix**: moved `BOOST_THREAD_BUILD_LIB` from `[features.thread].flags` to
+  the base `[build].flags` (per-glob over `deps/boost/libs/thread/src/**`), so `mcpp test`
+  no longer fails to link `tss_cleanup_implemented()` when `thread` is inactive;
+  `scripts/gen_features.py` was synced.
+- No module, feature, count, or API changes; supported library set unchanged.
+
+### Known Limitations
+
+Unchanged from `1.91.0.0.0.0`; disclosed in full there because the T3 package-index
+integration is still pending. See
+[`docs/release_notes/v1.91.0.0.0.1.md`](docs/release_notes/v1.91.0.0.0.1.md).
+
+## b1.91.0w0.0.0 (2026-09-21, stable)
+
+First stable release for Boost 1.91.0. Module/feature counts are unchanged from the preview;
+this cycle closed several export blind spots and added a supported channel for
+consumer-selected feature macros. mcpp package-index publication (T3) is intentionally
+scheduled after this tag, so the git dependency remains the supported channel.
+
+### Contents
+
+- **116 module interfaces** (`src/*.cppm`): consumers `import boost.<lib>;` or the umbrella
+  `import boost;` (dynamically re-exports the currently active libraries).
+- **118 library features**: 116 module features + two module-less features, `log` and
+  `unit_test_framework`; plus **2 profile features** (`backend-log-ssse3` /
+  `backend-log-avx2`, x86_64 Boost.Log dump backends).
+- **Default 49-library closure** (`[features].default`); everything else is opt-in
+  (`features = [...]` / `default-features = false`).
+- **138 libraries consumable in total** = 116 modules + 2 compiled libraries consumed
+  include-only (log, test) + 20 pure include-only (16 macro-driven + 4 downgraded).
+- **Testing**: 141/141 smoke tests pass on the default set; four CI legs
+  (windows-clang-msvc / linux-gcc / linux-llvm / macos-llvm-arm64) with full A/B gating.
+- **`boost.version` module**: `boost::BOOST_VERSION` / `boost::BOOST_LIB_VERSION`
+  constexpr constants, part of the default set, automatically available via `import boost;`.
+
+### Changes Since the Preview
+
+- **Feature-macro profiles (`backend-*`)**: consumer-selectable `BOOST_*` feature macros;
+  first entries `backend-log-ssse3` / `backend-log-avx2`; `build.mcpp` enforces per-axis
+  mutual exclusion and target architecture.
+- **Variable-template exports**: `boost::pfr::tuple_size_v`,
+  `boost::hana::int_c` / `integral_c`, and 363 variable templates across 21 modules;
+  generator classifies opaque `UNEXPOSED_DECL` variable templates and recovers cross-module
+  initializer dependencies.
+- **Internal-linkage object exports**: range adaptor pipe syntax, `boost::extents` /
+  `boost::indices`, accumulators `extract::*`, mqtt5 `prop::*` via vendored `inline` patches.
+- **Win32 ABI harmonization** for include-only consumers (`config` patches), fixing the
+  clang-msvc `boost_log_abi` mismatch.
+- **Export-generator hardening**: pinned MinGW sysroot bootstrap, unified `clang++` gate,
+  rebuilt `process.inc`; **build fix**: `boost.cppm` generated into `MCPP_OUT_DIR`.
+- **CI**: group A/B now parallel jobs with examples gated on both; toolchain/cache upgrades;
+  full English documentation added.
+
+### Not Supported (M13 deferred)
+
+11 external-dependency/asm libraries remain deferred: context / fiber / coroutine (asm),
+locale (ICU), mpi, python, parameter_python, graph_parallel, compute (OpenCL),
+mysql / redis (OpenSSL).
+
+### Known Limitations
+
+See the release notes (`docs/release_notes/b1.91.0w0.0.0.md`) and
+[architecture doc §4](docs/architecture.md#4-known-limitations-consumer-notes). Full
+disclosure is kept (not reduced for stable) because the T3 package-index integration is
+still pending.
+
+## b1.91.0w0.0.0-preview (2026-09-09, preview)
+
+First C++23 named modules wrapper preview for Boost 1.91.0. The release bar was applied as
+"all currently supported modules included + known limitations fully disclosed"
+(M13 external-dependency/asm libraries remain deferred).
+
+### Contents
+
+- **116 module interfaces** (`src/*.cppm`): consumers `import boost.<lib>;` or the umbrella
+  `import boost;` (dynamically re-exports the currently active libraries).
+- **118 features**: 116 module features + two module-less features, `log` and
+  `unit_test_framework`.
+- **Default 49-library closure** (`[features].default`); everything else is opt-in
+  (`features = [...]` / `default-features = false`).
+- **138 libraries consumable in total** = 116 modules + 2 compiled libraries consumed
+  include-only (log, test) + 20 pure include-only (16 macro-driven + 4 downgraded).
+- **Testing**: 141/141 smoke tests pass on the default set; four CI legs
+  (windows-clang-msvc / linux-gcc / linux-llvm / macos-llvm-arm64) with full A/B gating.
+- **`boost.version` module**: `boost::BOOST_VERSION` / `boost::BOOST_LIB_VERSION`
+  constexpr constants, part of the default set, automatically available via `import boost;`.
+
+### Milestone History at a Glance
+
+| Milestone | Scope | Key outcomes |
+|---|---|---|
+| M0 spike | 4 probes, dual-compiler validation of the `export namespace boost { using ...; }` pattern | Pattern viable; export rules established; consumers must provide their own std surface (by design); linkage model viable |
+| M1 vendoring | Official tarball import, `boost/boost/` aggregate include root | `deps/boost/` layout finalized |
+| M2 generator | gen_exports/gen_audit (libclang AST) + 27 libraries, 4009 entities | GMF root-only, friend subtrees, clang++ gate, enumerator/specialization detection |
+| M3 header-only 19 libs | Module finalization + macro re-homing + bypass headers (C5 retired) | Three generator fixes; scope de-cored (gcc ICE), algorithm de-regexed (gcc abi-tag); `.inc` platform guards introduced |
+| M4 compiled 8 libs | TUs into sources, macro consistency | defines completed; stacktrace LINK+basic; filesystem v3; reapply_hand_edits born |
+| M5 umbrella + examples | `import boost;` + examples | gcc B' fix (function-local static strong symbols → internal linkage + definitions moved out) |
+| M6 CI four legs | Three-platform adaptation | POSIX guards, pthread once umbrella header, arm64/x86 guards, mac typeinfo fallback; depfile discipline established |
+| M8 features infrastructure | build.mcpp dynamic umbrella + gen_features | base-glob pitfall validated; default closure starts at 18 |
+| M9 T1a 58 libs | Header-only batch onboarding | dep_graph transitive traversal, injected linkage validation |
+| M10 T3 boundary | Macro-surface statistics confirm macro-driven libraries are include-only | Macros are preprocessor-level API and never cross module boundaries |
+| M11 T2 18 libs | Compiled-library batch + exception downgrade | Per-library TU tables finalized; large batch of POSIX-leg guards |
+| M12 T1b 12 libs | Heavy template libraries (asio/beast/geometry…) | clang 2^31 source-location cap → CI A/B split; 5 families of vendored patches |
+| C1 | Five libraries downgraded + utf renamed | describe/openmethod/scope_exit/log/test → compiled libraries consumed include-only |
+| C2 | hof/units re-modularized | Vendored macro rework (`inline constexpr`) gives objects external linkage |
+| C4 (+C4.1) | bind/lambda/lambda2 re-modularized | T3 macro-surface misjudgment corrected; gcc 16 duplicate symbol fix (C4.1) |
+| C5 | `boost.version` module formalized | `macros.hpp` bypass header removed; default closure 48 → 49 |
+
+(Default closure evolution: 18 (M8) → 31 (M9/M10) → 34 (M11) → 36 (M12) → 48
+(dep_graph body-reference edge fix) → 49 (C5).)
+
+### Not Supported (M13 deferred)
+
+11 external-dependency/asm libraries remain deferred: context / fiber / coroutine (asm),
+locale (ICU), mpi, python, parameter_python, graph_parallel, compute (OpenCL),
+mysql / redis (OpenSSL).
+
+### Known Limitations
+
+See the release notes (`docs/release_notes/b1.91.0w0.0.0-preview.md`) and
+[architecture doc §4](docs/architecture.md#4-known-limitations-consumer-notes).
