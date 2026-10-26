@@ -83,7 +83,9 @@ fi
 (
     cd "$OUT_DIR"
     for f in "$NAME".tar.gz "$NAME".tar.xz "$NAME".zip "$NAME".7z; do
-        [[ -f "$f" ]] && sha256sum "$f" > "$f.sha256"
+        if [[ -f "$f" ]]; then
+            sha256sum "$f" > "$f.sha256"
+        fi
     done
 )
 

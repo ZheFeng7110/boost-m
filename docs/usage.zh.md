@@ -161,6 +161,9 @@ serialization numeric version macros`。
 - `BOOST_ALL_NO_LIB`、`_MT`、`WIN32_LEAN_AND_MEAN`、`SECURITY_WIN32`；
 - thread 的翻译单元额外获得 `BOOST_THREAD_BUILD_LIB`（按 glob 设置，绝不传播）；
 - C++23，异常与 RTTI 开启，根包的工具链 stdlib 与运行时。
+- 构建 profile 决定 `NDEBUG`：release 构建走 Boost.uBLAS 的快速尺寸检查路径，
+  因此只在检查构建中存在的 uBLAS 实体（`same_impl_ex`）也只在检查构建中导出——
+  模块跟随头文件条件，release 程序中使用它与直接包含原始头文件时一样不可用。
 
 消费者自行定义上述任一宏，不会改变 BMI 中已冻结的内容。此集合之外的配置必须采用仅头文件方式（`#include`）使用，而不能使用模块。
 

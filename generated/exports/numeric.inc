@@ -938,7 +938,9 @@ export namespace boost { namespace numeric { namespace ublas {
   using boost::numeric::ublas::row_major;
   using boost::numeric::ublas::row_major_tag;
   using boost::numeric::ublas::safe;
+#if !defined(NDEBUG) && !defined(BOOST_UBLAS_NDEBUG)
   using boost::numeric::ublas::same_impl_ex;
+#endif
   using boost::numeric::ublas::scalar_abs;
   using boost::numeric::ublas::scalar_assign;
   using boost::numeric::ublas::scalar_binary_assign_functor;
@@ -1374,7 +1376,9 @@ export namespace boost { namespace numeric { namespace ublas { namespace detail 
   using boost::numeric::ublas::detail::row_major;
   using boost::numeric::ublas::detail::row_major_tag;
   using boost::numeric::ublas::detail::safe;
+#if !defined(NDEBUG) && !defined(BOOST_UBLAS_NDEBUG)
   using boost::numeric::ublas::detail::same_impl_ex;
+#endif
   using boost::numeric::ublas::detail::scalar_abs;
   using boost::numeric::ublas::detail::scalar_assign;
   using boost::numeric::ublas::detail::scalar_binary_assign_functor;

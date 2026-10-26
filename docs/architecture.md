@@ -165,7 +165,12 @@ The module TUs, the library TUs and raw-header consumers share one configuration
 - `port/include` and `upstream/boost` public; log/atomic private include dirs are
   listed in `private_include_dirs`;
 - `-w` for vendored header noise; `-Wno-invalid-specialization` under clang
-  (poly_collection specializes `std::is_void`).
+  (poly_collection specializes `std::is_void`);
+- the profile's `NDEBUG` state reaches the headers, so release-only declaration
+  differences follow upstream: Boost.uBLAS's tensor `BOOST_UBLAS_INLINE` ordering
+  is corrected by `patches/numeric.patch` (it is ill-formed when the macro expands
+  to `inline`), and the checked-build-only `same_impl_ex` export is guarded in
+  `generated/exports/numeric.inc` by the replay tool.
 
 The same `upstream/boost` tree feeds the interfaces, the library TUs and raw
 header consumption. One Boost implementation per program: there is no

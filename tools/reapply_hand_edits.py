@@ -51,8 +51,8 @@ TOLERANT = {"json", "core", "io"}
 VENDORED_PATCHES = [
     "accumulators", "asio", "beast", "config_platform", "config_user", "hof",
     "io", "lambda", "mqtt5", "multi_array", "parameter", "range_adaptors",
-    "regex", "safe_numerics", "serialization", "system", "test", "ublas",
-    "units",
+    "numeric", "regex", "safe_numerics", "serialization", "system", "test",
+    "ublas", "units",
 ]
 
 SRC_PATCHES = [
@@ -349,6 +349,14 @@ def main():
         "critical_section",
         "critical_section_debug",
         "rtl_critical_section",
+    ])
+    # numeric: Boost.uBLAS declares same_impl_ex only when size checks are on.
+    # A release build (NDEBUG) takes upstream's BOOST_UBLAS_USE_FAST_SAME path
+    # and never declares it, so the export must follow the header condition
+    # instead of exporting a name the release module cannot see.
+    guard_entity_lines("generated/exports/numeric.inc",
+                       "!defined(NDEBUG) && !defined(BOOST_UBLAS_NDEBUG)", [
+        "same_impl_ex",
     ])
     guard_entity_lines("generated/exports/interprocess.inc", "defined(_WIN32)", [
         "basic_managed_windows_shared_memory",

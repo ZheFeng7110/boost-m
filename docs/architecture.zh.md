@@ -159,6 +159,11 @@ feature（两种 Boost.Test 形态绝不能链接在一起）。
 每个程序只有一份 Boost 实现：不存在 `compat.boost` 依赖，也不得再添加第二份
 副本。
 
+- profile 的 `NDEBUG` 状态会到达头文件，因此仅 release 生效的声明差异跟随上游条件：
+  Boost.uBLAS tensor 的 `BOOST_UBLAS_INLINE` 顺序由 `patches/numeric.patch` 修正
+  （宏展开为 `inline` 时该写法非法），仅在检查构建中存在的 `same_impl_ex` 导出也由
+  重放工具在 `generated/exports/numeric.inc` 中加上同样的条件。
+
 ## 8. 许可
 
 - 包装层自身的贡献（modules、port、tools、templates、tests、docs）：

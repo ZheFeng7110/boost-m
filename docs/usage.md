@@ -208,7 +208,11 @@ ABI-relevant configuration is fixed by the package, not by the consumer:
 - `BOOST_ALL_NO_LIB`, `_MT`, `WIN32_LEAN_AND_MEAN`, `SECURITY_WIN32`;
 - thread TUs additionally get `BOOST_THREAD_BUILD_LIB` (per-glob, never
   propagated);
-- C++23, exceptions and RTTI on, the root's toolchain stdlib and runtime.
+- C++23, exceptions and RTTI on, the root's toolchain stdlib and runtime;
+- the build profile decides `NDEBUG`: a release build takes Boost.uBLAS's fast
+  size-check path, so the uBLAS entity that only exists in checked builds
+  (`same_impl_ex`) is exported only there — the module follows the header, and a
+  consumer cannot use it in a release program any more than with raw headers.
 
 A consumer defining one of those macros does not change what is frozen in the
 BMI. Configurations outside this set must use header-only consumption

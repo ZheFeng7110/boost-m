@@ -10,6 +10,15 @@ idempotent in both directions (an applied patch is skipped by the reverse check)
 | `*.patch` listed in `SRC_PATCHES` | `src/**`, `generated/exports/**` | Module-side adaptations the generator cannot know: extra GMF includes, platform guards on exported entities, export-ownership moves, explanatory comments kept in the generated lists. |
 | `final/<path>` | the same paths | The hand-maintained final form of files whose content intentionally diverges from generator output. Stored as whole files, not diffs, so replay needs no Git history. |
 
+`numeric.patch` is the one functional adaptation with a release-mode edge: Boost.uBLAS
+tensor spells `BOOST_UBLAS_INLINE` before the `template<...>` head in a few member
+functions. `BOOST_UBLAS_INLINE` is empty in a checked build but `inline` under
+`NDEBUG`, and `inline template<...>` is ill-formed (gcc rejects it, clang misreads it
+as an explicit instantiation), so a release build of the numeric module needs the
+swap. The exported `same_impl_ex` follows the same header condition through an
+`.inc` guard in `tools/reapply_hand_edits.py`, so the release module neither exports
+a name the header hides nor fails on it.
+
 Every upstream patch is minimal and is reviewed against the 1.92.0 tag it was
 written for; `upstream/boost/SOURCE.md` records the archive and checksum the tree
 comes from. A patch whose anchor is missing fails the replay unless it is listed
