@@ -2,6 +2,7 @@
 
 import {{project.name}};
 
-TEST({{project.name}}Test, Greet) {
-    EXPECT_EQ({{project.name}}::greet("world"), "hello mcpplibs, world!");
+TEST({{project.name}}Test, ParsePositive) {
+    EXPECT_EQ({{project.name}}::parse_positive(7).value(), 7);
+    EXPECT_FALSE({{project.name}}::parse_positive(0).has_value());
 }

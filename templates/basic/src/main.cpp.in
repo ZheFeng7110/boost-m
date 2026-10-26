@@ -1,8 +1,16 @@
 // {{project.name}} — generated from {{self.name}}@{{self.version}}:basic
+//
+// Boost's API spelling is unchanged: the wrapper only changes how it is
+// reached (`import` instead of `#include`).
 import std;
-import mcpplibs.{{self.name}};
+import mcpplibs.mwrap.boost.optional;
 
 int main() {
-    std::println("{}", mcpplibs::{{self.name}}::hello_mcpplibs());
+    const boost::optional<int> answer = 42;
+    if (!answer) {
+        std::println("optional was empty");
+        return 1;
+    }
+    std::println("boost::optional holds {}", *answer);
     return 0;
 }

@@ -2,12 +2,16 @@
 export module {{project.name}};
 
 import std;
-import mcpplibs.{{self.name}};
+import mcpplibs.mwrap.boost.optional;
 
-namespace {{project.name}} {
+export namespace {{project.name}} {
 
-export [[nodiscard]] std::string greet(std::string_view who) {
-    return std::format("{}, {}!", mcpplibs::{{self.name}}::hello_mcpplibs(), who);
+// Boost entities keep their upstream spelling; this library only adds its own.
+[[nodiscard]] boost::optional<int> parse_positive(int value) {
+    if (value <= 0) {
+        return boost::none;
+    }
+    return value;
 }
 
 } // namespace {{project.name}}

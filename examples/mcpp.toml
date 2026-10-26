@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "basic",
+    "git-dep",
+    "profiles",
+]

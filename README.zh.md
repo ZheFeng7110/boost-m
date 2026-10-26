@@ -1,260 +1,91 @@
-# mcpplibs.mylib
+# boost
 
-> 一个最小 mcpp C++23 模块库脚手架 — `import mcpplibs.mylib;`
+> Boost 1.92.0 的 C++23 命名模块封装 —— 用 `import` 引入，继续写 `boost::`。
+
+**[English](README.md)** · [简体中文](README.zh.md) · [繁體中文](README.zh.hant.md) · [上游](https://github.com/boostorg/boost) · [发布](https://github.com/mcpplibs/boost-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [索引](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
-[![Module](https://img.shields.io/badge/module-ok-green.svg)](https://en.cppreference.com/w/cpp/language/modules)
-[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
+[![ci-linux](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml)
+[![ci-macos](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml)
+[![ci-windows](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml)
 
-| [English](README.md) - **简体中文** - [繁體中文](README.zh.hant.md) |
-|:---:|
-| [mcpp 构建工具](https://github.com/mcpp-community/mcpp) · [包索引](https://github.com/mcpplibs/mcpp-index) · [架构文档](docs/architecture.zh.md) · [Issues](https://github.com/mcpplibs/template/issues) |
-| [![ci-linux](https://github.com/mcpplibs/template/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-linux.yml) [![ci-macos](https://github.com/mcpplibs/template/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-macos.yml) [![ci-windows](https://github.com/mcpplibs/template/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-windows.yml) |
+116 个 Boost 库可以按命名模块使用：封装在模块的全局模块片段中 `#include` 上游头文件，
+再用 `export using` 重新导出上游实体，因此类型、重载、ADL 和拼写都仍是 Boost 的。
+纯头库、编译库与纯宏库各自保留既有消费方式；程序里只有 vendored Boost 这一份实现，
+不会重复链接第二份。
 
-一个基于 mcpp 构建工具的**现代 C++ 模块化库**模板仓库：一个库模块、一套 gtest 测试、
-一个使用方示例、可供他人脚手架的项目模板，以及 Linux / macOS / Windows 三平台 CI。
+## 模块
+
+- `import mcpplibs.mwrap.boost;`：当前启用的公共模块闭包（汇总模块）
+- `import mcpplibs.mwrap.boost.optional;`：Boost.Optional
+- `import mcpplibs.mwrap.boost.filesystem;`：Boost.Filesystem（编译库）
+- `import mcpplibs.mwrap.boost.json;`：Boost.JSON（编译库）
+- `import mcpplibs.mwrap.boost.type_traits;`：Boost.TypeTraits（feature `type-traits`）
+- `import mcpplibs.mwrap.boost.macros;`：可映射的宏常量（`BOOST_VERSION`、`BOOST_LIB_VERSION`）
+
+> 更多模块 API -> [使用与 API](docs/usage.zh.md)
 
 ## 快速开始
 
-1. 打开模板仓库：https://github.com/mcpplibs/template
-2. 点击 [**Use this template**](https://github.com/new?template_name=template&template_owner=mcpplibs) 创建自己的库仓库。
-3. 克隆新仓库到本地：
-
-```bash
-git clone https://github.com/<your-org>/<your-lib>.git
-cd <your-lib>
-```
-
-4. 先运行默认模板，确认环境可用：
-
-<details>
-<summary>点击查看 xlings 安装命令</summary>
-
-**Linux / macOS**
-```bash
-curl -fsSL https://d2learn.org/xlings-install.sh | bash
-```
-
-**Windows — PowerShell**
-```powershell
-irm https://d2learn.org/xlings-install.ps1.txt | iex
-```
-
-> xlings 详情 → [xlings.d2learn.org](https://xlings.d2learn.org)
-
-</details>
-
-```bash
-xlings install
-mcpp build
-mcpp test
-```
-
-> [!NOTE]
-> 默认 `xlings install` 是把 mcpp 安装到**项目环境**，版本由 [`.xlings.json`](.xlings.json) 固定，
-> 这样所有协作者和 CI 用的是同一个 mcpp 版本。
-> 如果要把 mcpp 安装到**全局**，执行 `xlings install mcpp -g`。
-
-5. 再把 `mylib` 替换成你的库名，重点修改：
-
-- `mcpp.toml`：包名、描述和仓库地址
-- `src/mylib.cppm`：模块名和 API
-- `tests/mylib_test.cpp`：测试用例
-- `examples/basic/`：依赖和 import
-- `templates/`：你的库对外提供的项目模板（见下文）
-- `README*.md` 与 `docs/architecture*.md`：文字说明
-
-## 仓库结构
-
-```text
-.
-├── .xlings.json              # 项目工具环境（固定 mcpp 版本）
-├── mcpp.toml                 # 包信息、依赖、测试依赖
-├── src/mylib.cppm            # 库模块接口
-├── tests/mylib_test.cpp      # gtest 单元测试，由 `mcpp test` 运行
-├── examples/basic/           # 独立使用方示例（path 依赖）
-├── templates/                # 随库分发的项目模板
-│   ├── basic/                #   mcpp new myapp --template mylib
-│   └── lib/                  #   mcpp new mylib2 --template mylib:lib
-├── tools/template_smoke.sh   # 用当前仓库编译校验所有模板
-├── docs/architecture.zh.md   # 项目结构、mcpp 约定、依赖管理
-└── .github/workflows/        # ci-linux.yml · ci-macos.yml · ci-windows.yml
-```
-
-## 库示例
-
-当前库导出一个简单 API：
-
-```cpp
-import std;
-import mcpplibs.mylib;
-
-int main() {
-    std::println("{}", mcpplibs::mylib::hello_mcpplibs());
-}
-```
-
-输出：
-
-```text
-hello mcpplibs
-```
-
-相关文件：
-
-- `src/mylib.cppm`：模块接口
-- `tests/mylib_test.cpp`：单元测试
-- `examples/basic/`：使用方示例
-
-运行使用方示例：
-
-```bash
-cd examples/basic
+```sh
+mcpp new boost-app --template mcpplibs.mwrap.boost@1.92.0
+cd boost-app
 mcpp run
 ```
 
-需要添加依赖时，在 `mcpp.toml` 中声明：
-
-```toml
-[dependencies.mcpplibs]
-cmdline = "0.0.2"
-```
-
-然后在需要的位置直接 `import mcpplibs.cmdline;`。不要默认在主模块里 `export import` 第三方依赖，
-除非公开 API 确实要暴露依赖包的类型。
-
-## 项目模板
-
-一个库可以在 `templates/` 下**随库分发项目模板**。使用方用 `mcpp new` 直接脚手架，
-模板版本会自动跟随库版本：
-
-```bash
-mcpp new --list-templates mylib      # 列出这个库提供的模板
-mcpp new myapp --template mylib      # 使用默认模板（basic）
-mcpp new mylib2 --template mylib:lib # 显式指定模板
-```
-
-本仓库提供两个模板：
-
-| 模板 | 内容 |
-|---|---|
-| `basic`（默认） | 最小控制台程序，import 这个库 |
-| `lib` | 基于这个库的下游 C++23 模块库，带 gtest 测试 |
-
-模板的目录结构 —— 模板是纯数据，只做渲染和拷贝，没有钩子也不执行脚本：
-
-```text
-templates/<name>/
-├── template.toml      # 元数据：description、default = true、post_message
-├── mcpp.toml.in       # `.in` 文件会被渲染，然后去掉后缀
-└── src/main.cpp.in    # 其他文件原样拷贝
-```
-
-占位符词汇表由 mcpp 拥有，刻意保持很小：
-
-| 占位符 | 展开为 |
-|---|---|
-| `{{project.name}}` | 用户传给 `mcpp new` 的项目名 |
-| `{{self.name}}` | 本库的包名（`mylib`） |
-| `{{self.version}}` | 本库解析出的版本号 |
-
-`template.toml` 里最多只能有一个模板声明 `default = true`，它就是 `--template mylib`
-不带 `:<template>` 时选中的那个。库还没发布到索引时，可以先本地校验模板：
-
-```bash
-bash tools/template_smoke.sh
-```
-
-它会按 `mcpp new` 的方式渲染每个模板，把依赖改指向当前仓库，然后编译。CI 在三个平台上都会跑。
-
-## 其他项目如何使用编写的库
-
-开发期或同项目内可以直接用本地路径：
+在已有项目中：
 
 ```toml
 [dependencies]
-mylib = { path = "../mylib" }
+"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["optional"] }
 ```
-
-还没有进入包索引时，可以引用 Git 仓库：
-
-```toml
-[dependencies]
-mylib = { git = "https://github.com/mcpplibs/mylib.git", tag = "v0.1.0" }
-```
-
-发布到 mcpp 包索引后，可以只按名字和版本引用：
-
-```toml
-[dependencies]
-mylib = "0.1.0"
-```
-
-无论哪种方式，代码里的导入写法都一样：
 
 ```cpp
-import mcpplibs.mylib;
+import std;
+import mcpplibs.mwrap.boost.optional;
+
+int main() {
+    boost::optional<int> answer = 42;
+    std::println("{}", *answer);
+}
 ```
 
-### 发布到 mcpp 包索引
+## features
 
-[mcpp-index](https://github.com/mcpplibs/mcpp-index) 是默认包索引，每个包对应一个
-`pkgs/<首字母>/<名字>.lua` 描述符。mcpp 可以直接从 `mcpp.toml` 生成：
+feature 名一律小写 kebab-case；模块后缀保留 Boost 自己的分组拼写
+（`type-traits` 启用 `mcpplibs.mwrap.boost.type_traits`）。
 
-```bash
-mcpp publish --dry-run        # 打包 tarball、算 sha256、打印描述符，不上传
-mcpp emit xpkg -o mylib.lua   # 只生成描述符，不打包
-```
+| Feature | 作用 |
+|---|---|
+| `default` | 50 库基线闭包（纯头核心 + filesystem/regex/thread/chrono/json/serialization） |
+| `all-modules` | 全部模块接口（117 个）；`log`、`unit-test-framework` 仍需显式启用 |
+| `macros` | 宏常量映射模块；`version` 会重新导出它 |
+| `log`、`unit-test-framework` | 无模块的编译库：直接 include 上游头文件 |
+| `backend-log-avx2`、`backend-log-ssse3` | 构建期 Boost.Log dump 实现（仅 x86_64，同轴互斥） |
 
-`--dry-run` 还会把后续步骤连同你项目的真实 URL 一起打印出来：打 tag 并推送、把
-`target/dist/<name>-<version>.tar.gz` 挂到 GitHub Release、再向 mcpp-index 提 PR 添加
-`pkgs/<首字母>/<名字>.lua`。相关链接：
+feature 在多条依赖边上做加法并集：某条边写 `default-features = false` 只关闭这条边请求的默认集，
+不会撤销另一条边启用的集合。
 
-- 仓库：https://github.com/mcpplibs/mcpp-index —— 在线浏览所有包：https://mcpplibs.github.io/mcpp-index/
-- 贡献文档：[docs/README.md](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/README.md) · [包类型](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/package-types.md) · [仓库与 schema](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/repository-and-schema.md) · [CN 镜像](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/cn-mirror.md)
-- 端到端流程（人或 Agent 都可用）：[`add-mcpp-index-package`](https://github.com/mcpplibs/mcpp-index/blob/main/.agents/skills/add-mcpp-index-package/SKILL.md) skill
+## 测试与平台
 
-像本模板这样的库属于 **Form A** 包：仓库自身已经带 `mcpp.toml`，所以描述符只需要声明元数据和
-下载地址。PR 合并后，所有人都能用 `mcpp add mylib` 解析到它。
+CI 在 Linux x86_64（GCC 16.1 与 LLVM）、Linux arm64（GCC）、macOS arm64（LLVM）和
+Windows x86_64（clang-msvc）上构建并运行。请求不可用的 backend 会显式失败，不会被静默跳过。
 
-## CI
+两个汇总限制有明确诊断，不隐藏：GCC 下根模块不重新导出 `mcpplibs.mwrap.boost.sort`
+（汇总模块重导出它会触发 BMI ICE，可直接单独 import），clang 构建整份 `all-modules`
+闭包可能触达 source-location 上限 —— 请按分组 import。纯 include-only 库（宏 API 与
+受编译器缺陷影响的库）列在[使用文档](docs/usage.zh.md)中。
 
-CI 按平台拆开，这样 macOS 或 Windows 的问题不会被 Linux 的绿灯掩盖。每个 workflow 都走
-新用户会走的同一条路径：
+## 示例与文档
 
-| Workflow | Runner | 步骤 |
-|---|---|---|
-| [`ci-linux.yml`](.github/workflows/ci-linux.yml) | `ubuntu-latest` | 安装 → **构建** → **测试** → 示例 → 模板 |
-| [`ci-macos.yml`](.github/workflows/ci-macos.yml) | `macos-latest`（arm64） | 同上 |
-| [`ci-windows.yml`](.github/workflows/ci-windows.yml) | `windows-latest` | 同上 |
+- [示例](examples) —— 汇总模块、显式 feature、profile 三种消费者
+- [使用与 API](docs/usage.zh.md) —— 消费方式、宏拆分、feature 与平台约定
+- [架构](docs/architecture.zh.md) —— 模块布局、生成链、ABI 与实现归属
 
-对应到本地就是：
+## 许可
 
-```bash
-xlings install -y
-mcpp build
-mcpp test
-cd examples/basic && mcpp run
-bash tools/template_smoke.sh
-```
-
-## 参考项目
-
-设计自己的库之前，值得先读一读这两个真实的 mcpp 模块库：
-
-- [mcpplibs/llmapi](https://github.com/mcpplibs/llmapi) —— C++23 LLM 客户端（OpenAI 兼容）。
-  可以参考：分发多个 `templates/`、多语言 README、库拆成多个 `.cppm`、以及依赖另一个 mcpplibs 包。
-- [mcpplibs/cmdline](https://github.com/mcpplibs/cmdline) —— 一个小巧的命令行解析库。
-  可以参考：单模块库带测试和示例的最小形态 —— 最接近本模板成长后的样子。
-
-## 更多资料
-
-- mcpp 构建工具：https://github.com/mcpp-community/mcpp
-- mcpp 文档：https://github.com/mcpp-community/mcpp/tree/main/docs
-- 快速开始：https://github.com/mcpp-community/mcpp/blob/main/docs/zh/00-getting-started.md
-- `mcpp.toml` 指南：https://github.com/mcpp-community/mcpp/blob/main/docs/zh/05-mcpp-toml.md
-- mcpp 包索引：https://github.com/mcpplibs/mcpp-index · https://mcpplibs.github.io/mcpp-index/
-- mcpplibs 组织：https://github.com/mcpplibs
-- 模板仓库：https://github.com/mcpplibs/template
-- C++23 模块风格参考：https://github.com/mcpp-community/mcpp-style-ref
-- xlings 工具环境：https://github.com/openxlings/xlings
+封装贡献使用 [Apache-2.0](LICENSE)，归属见 [NOTICE](NOTICE)。vendored Boost 保留其原始
+BSL-1.0 [README 与许可证](upstream/boost/)；保留在 [upstream/boost-module](upstream/boost-module/SOURCE.md)
+的旧封装贡献继续适用其自身的 BSL-1.0 声明。根许可证不会重新授权任何一个上游部分。

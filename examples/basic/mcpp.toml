@@ -1,8 +1,16 @@
+# Example consumer of the Boost module wrapper.
+#
+#   mcpp run          build + run against the vendored Boost in ../..
+#   mcpp build        just build
+#
+# The dependency is a local path dep: examples/basic/ is not a workspace member,
+# it consumes the repo root package `mcpplibs.mwrap.boost` exactly like an
+# external project, with the default feature set (filesystem + json + regex).
 [package]
-name        = "mylib-basic"
+name        = "boost-example"
 version     = "0.1.0"
-description = "Basic consumer for the mcpplibs.mylib module"
+description = "Example consumer: import mcpplibs.mwrap.boost; (filesystem + json + regex)"
 license     = "Apache-2.0"
 
-[dependencies.mcpplibs]
-mylib = { path = "../.." }
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../.." }

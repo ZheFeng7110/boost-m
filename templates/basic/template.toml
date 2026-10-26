@@ -1,4 +1,4 @@
 [template]
-description  = "Minimal console app that imports the library"
+description  = "Console app that imports Boost.Optional through the module wrapper"
 default      = true
 post_message = "Next: cd into the project, then `mcpp run` (or `mcpp build`)."

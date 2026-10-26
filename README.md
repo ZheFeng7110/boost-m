@@ -1,269 +1,98 @@
-# mcpplibs.mylib
+# boost
 
-> A minimal mcpp C++23 module library scaffold — `import mcpplibs.mylib;`
+> Boost 1.92.0 as C++23 named modules — import the library, keep writing `boost::`.
+
+**English** · [简体中文](README.zh.md) · [繁體中文](README.zh.hant.md) · [Upstream](https://github.com/boostorg/boost) · [Releases](https://github.com/mcpplibs/boost-m/releases) · [mcpp](https://github.com/mcpp-community/mcpp) · [Index](https://github.com/mcpplibs/mcpp-index)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
-[![Module](https://img.shields.io/badge/module-ok-green.svg)](https://en.cppreference.com/w/cpp/language/modules)
-[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
+[![ci-linux](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml)
+[![ci-macos](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml)
+[![ci-windows](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml)
 
-| **English** - [简体中文](README.zh.md) - [繁體中文](README.zh.hant.md) |
-|:---:|
-| [mcpp build tool](https://github.com/mcpp-community/mcpp) · [package index](https://github.com/mcpplibs/mcpp-index) · [architecture](docs/architecture.md) · [Issues](https://github.com/mcpplibs/template/issues) |
-| [![ci-linux](https://github.com/mcpplibs/template/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-linux.yml) [![ci-macos](https://github.com/mcpplibs/template/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-macos.yml) [![ci-windows](https://github.com/mcpplibs/template/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/template/actions/workflows/ci-windows.yml) |
+116 Boost libraries are reachable as named modules: the wrapper runs
+`#include` inside a module's global module fragment and re-exports the upstream
+entities with `export using`, so types, overloads, ADL and spelling stay
+Boost's. The header-only, compiled and macro-only libraries keep their own
+consumption rules, and the vendored Boost tree is the program's only Boost
+implementation — no second copy is linked.
 
-A template repository for building **modern C++ modular libraries** with the mcpp build tool:
-one library module, one gtest suite, one consumer example, project templates other people can
-scaffold from, and CI on Linux / macOS / Windows.
+## Modules
 
-## Quick Start
+- `import mcpplibs.mwrap.boost;`: the enabled public module closure (umbrella)
+- `import mcpplibs.mwrap.boost.optional;`: Boost.Optional
+- `import mcpplibs.mwrap.boost.filesystem;`: Boost.Filesystem (compiled)
+- `import mcpplibs.mwrap.boost.json;`: Boost.JSON (compiled)
+- `import mcpplibs.mwrap.boost.type_traits;`: Boost.TypeTraits (feature `type-traits`)
+- `import mcpplibs.mwrap.boost.macros;`: mapped macro constants (`BOOST_VERSION`, `BOOST_LIB_VERSION`)
 
-1. Open the template repository: https://github.com/mcpplibs/template
-2. Click [**Use this template**](https://github.com/new?template_name=template&template_owner=mcpplibs) to create your own library repository.
-3. Clone it locally:
+> More Modules API -> [Usage and API](docs/usage.md)
 
-```bash
-git clone https://github.com/<your-org>/<your-lib>.git
-cd <your-lib>
-```
+## Getting started
 
-4. Run the scaffold as-is first, to confirm the environment works:
-
-<details>
-<summary>Click for the xlings install command</summary>
-
-**Linux / macOS**
-```bash
-curl -fsSL https://d2learn.org/xlings-install.sh | bash
-```
-
-**Windows — PowerShell**
-```powershell
-irm https://d2learn.org/xlings-install.ps1.txt | iex
-```
-
-> More about xlings → [xlings.d2learn.org](https://xlings.d2learn.org)
-
-</details>
-
-```bash
-xlings install
-mcpp build
-mcpp test
-```
-
-> [!NOTE]
-> `xlings install` installs mcpp into the **project environment**, at the version pinned by
-> [`.xlings.json`](.xlings.json) — so every contributor and CI build uses the same mcpp.
-> To install mcpp **globally** instead, run `xlings install mcpp -g`.
-
-5. Then rename `mylib` to your own library name. The places that matter:
-
-- `mcpp.toml` — package name, description, repository URL
-- `src/mylib.cppm` — module name and API
-- `tests/mylib_test.cpp` — test cases
-- `examples/basic/` — dependency and `import`
-- `templates/` — the project templates your library ships (see below)
-- `README*.md` and `docs/architecture.md` — the prose
-
-## Repository Layout
-
-```text
-.
-├── .xlings.json              # project tool environment (pins the mcpp version)
-├── mcpp.toml                 # package metadata, dependencies, dev-dependencies
-├── src/mylib.cppm            # the library module interface
-├── tests/mylib_test.cpp      # gtest unit tests, run by `mcpp test`
-├── examples/basic/           # standalone consumer package (path dependency)
-├── templates/                # project templates shipped WITH the library
-│   ├── basic/                #   mcpp new myapp --template mylib
-│   └── lib/                  #   mcpp new mylib2 --template mylib:lib
-├── tools/template_smoke.sh   # compiles every template against this checkout
-├── docs/architecture.md      # structure, mcpp conventions, dependency management
-└── .github/workflows/        # ci-linux.yml · ci-macos.yml · ci-windows.yml
-```
-
-## Library Example
-
-The library exports one simple API:
-
-```cpp
-import std;
-import mcpplibs.mylib;
-
-int main() {
-    std::println("{}", mcpplibs::mylib::hello_mcpplibs());
-}
-```
-
-Output:
-
-```text
-hello mcpplibs
-```
-
-Relevant files:
-
-- `src/mylib.cppm`: module interface
-- `tests/mylib_test.cpp`: unit tests
-- `examples/basic/`: consumer example
-
-Run the consumer example:
-
-```bash
-cd examples/basic
+```sh
+mcpp new boost-app --template mcpplibs.mwrap.boost@1.92.0
+cd boost-app
 mcpp run
 ```
 
-To add a dependency, declare it in `mcpp.toml`:
-
-```toml
-[dependencies.mcpplibs]
-cmdline = "0.0.2"
-```
-
-then `import mcpplibs.cmdline;` where you need it. Do not `export import` a third-party
-dependency from your root module by default — only do so when your public API genuinely
-exposes that dependency's types.
-
-## Project Templates
-
-A library can ship **project templates** in `templates/`. Users scaffold from them with
-`mcpp new`, and the template version tracks the library version automatically:
-
-```bash
-mcpp new --list-templates mylib      # list what this library provides
-mcpp new myapp --template mylib      # the default template (basic)
-mcpp new mylib2 --template mylib:lib # pick one explicitly
-```
-
-This repository ships two:
-
-| Template | Contents |
-|---|---|
-| `basic` (default) | Minimal console app that imports the library |
-| `lib` | A downstream C++23 module library built on this one, with gtest tests |
-
-Layout of a template — templates are pure data, rendered and copied, with no hooks and no
-script execution:
-
-```text
-templates/<name>/
-├── template.toml      # metadata: description, default = true, post_message
-├── mcpp.toml.in       # `.in` files are rendered, then the suffix is stripped
-└── src/main.cpp.in    # everything else is copied verbatim
-```
-
-The placeholder vocabulary is owned by mcpp and deliberately small:
-
-| Placeholder | Expands to |
-|---|---|
-| `{{project.name}}` | the name the user passed to `mcpp new` |
-| `{{self.name}}` | this library's package name (`mylib`) |
-| `{{self.version}}` | this library's resolved version |
-
-Exactly one template may declare `default = true` in its `template.toml`; that is the one
-`--template mylib` picks when no `:<template>` is given. Verify templates before a release
-exists in the index with:
-
-```bash
-bash tools/template_smoke.sh
-```
-
-It renders each template the way `mcpp new` does, repoints the dependency at this checkout,
-and builds it. CI runs it on all three platforms.
-
-## Using the Library from Another Project
-
-During development, or inside the same repository, use a local path:
+In an existing project:
 
 ```toml
 [dependencies]
-mylib = { path = "../mylib" }
+"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["optional"] }
 ```
-
-Before the library reaches a package index, a Git repository works too:
-
-```toml
-[dependencies]
-mylib = { git = "https://github.com/mcpplibs/mylib.git", tag = "v0.1.0" }
-```
-
-Once published to the mcpp package index, name and version are enough:
-
-```toml
-[dependencies]
-mylib = "0.1.0"
-```
-
-Either way, the import stays the same:
 
 ```cpp
-import mcpplibs.mylib;
+import std;
+import mcpplibs.mwrap.boost.optional;
+
+int main() {
+    boost::optional<int> answer = 42;
+    std::println("{}", *answer);
+}
 ```
 
-### Publishing to the mcpp Package Index
+## Features
 
-[mcpp-index](https://github.com/mcpplibs/mcpp-index) is the default package index — every
-package there is one `pkgs/<initial>/<name>.lua` descriptor. mcpp generates yours from
-`mcpp.toml`:
+Feature names are lowercase kebab-case; the module suffix keeps Boost's own
+grouping spelling (`type-traits` enables `mcpplibs.mwrap.boost.type_traits`).
 
-```bash
-mcpp publish --dry-run   # package a tarball, hash it, print the descriptor — upload nothing
-mcpp emit xpkg -o mylib.lua   # just the descriptor, no packaging
-```
+| Feature | Purpose |
+|---|---|
+| `default` | The 50-library baseline closure (header-only core + filesystem/regex/thread/chrono/json/serialization) |
+| `all-modules` | Every module interface (117 entries); `log` and `unit-test-framework` stay explicit |
+| `macros` | The mapped macro constants module; `version` re-exports it |
+| `log`, `unit-test-framework` | Compiled libraries with no module: include the upstream headers |
+| `backend-log-avx2`, `backend-log-ssse3` | Build-time Boost.Log dump implementation (x86_64 only, mutually exclusive) |
 
-`--dry-run` also prints the remaining steps with your project's real URLs filled in: tag and
-push, attach `target/dist/<name>-<version>.tar.gz` to the GitHub Release, then open a PR
-adding `pkgs/<initial>/<name>.lua` to mcpp-index. Useful links along the way:
+Features are additive across dependency edges: `default-features = false` on one
+edge does not cancel a set another edge requested.
 
-- Repository: https://github.com/mcpplibs/mcpp-index — browse the packages online at https://mcpplibs.github.io/mcpp-index/
-- Contributor docs: [docs/README.md](https://github.com/mcpplibs/mcpp-index/blob/main/docs/README.md) · [package types](https://github.com/mcpplibs/mcpp-index/blob/main/docs/package-types.md) · [repository & schema](https://github.com/mcpplibs/mcpp-index/blob/main/docs/repository-and-schema.md) · [CN mirror](https://github.com/mcpplibs/mcpp-index/blob/main/docs/cn-mirror.md)
-- End-to-end procedure (human or agent): the [`add-mcpp-index-package`](https://github.com/mcpplibs/mcpp-index/blob/main/.agents/skills/add-mcpp-index-package/SKILL.md) skill
+## Tests and platforms
 
-A library like this one is a **Form A** package: your repository already carries `mcpp.toml`,
-so the descriptor only declares metadata and a download address. After the PR is merged,
-`mcpp add mylib` resolves for everybody.
+CI builds and runs on Linux x86_64 (GCC 16.1 and LLVM), Linux arm64 (GCC),
+macOS arm64 (LLVM) and Windows x86_64 (clang-msvc). Requesting an unsupported
+backend fails explicitly instead of being skipped.
 
-## CI
+Two aggregate limits are documented and diagnosed rather than hidden: on GCC the
+root module leaves out `mcpplibs.mwrap.boost.sort` (BMI ICE when an aggregate
+re-exports it; import it directly), and a clang build of the whole
+`all-modules` closure can hit the source-location limit — import library groups
+instead. Pure include-only libraries (macro APIs, plus libraries with compiler
+defects) are listed in [Usage](docs/usage.md).
 
-CI is split per platform, so a macOS or Windows problem can never hide behind a green Linux
-run. Each workflow walks the same path a new user walks:
+## Examples and documentation
 
-| Workflow | Runner | Steps |
-|---|---|---|
-| [`ci-linux.yml`](.github/workflows/ci-linux.yml) | `ubuntu-latest` | install → **build** → **test** → example → templates |
-| [`ci-macos.yml`](.github/workflows/ci-macos.yml) | `macos-latest` (arm64) | same |
-| [`ci-windows.yml`](.github/workflows/ci-windows.yml) | `windows-latest` | same |
+- [Examples](examples) — umbrella-module, explicit-feature and profile consumers
+- [Usage and API](docs/usage.md) — consumption modes, macro split, features, platforms
+- [Architecture](docs/architecture.md) — module layout, generation, ABI and ownership
 
-Locally that is:
+## License
 
-```bash
-xlings install -y
-mcpp build
-mcpp test
-cd examples/basic && mcpp run
-bash tools/template_smoke.sh
-```
-
-## Reference Projects
-
-Real mcpp module libraries worth reading before you design your own:
-
-- [mcpplibs/llmapi](https://github.com/mcpplibs/llmapi) — a C++23 LLM client (OpenAI-compatible).
-  Read it for: shipping several `templates/`, multilingual READMEs, a library split across many
-  `.cppm` files, and depending on another mcpplibs package.
-- [mcpplibs/cmdline](https://github.com/mcpplibs/cmdline) — a small command-line parsing library.
-  Read it for: the minimal shape of a single-module library with tests and examples — the closest
-  thing to what this template grows into.
-
-## More Information
-
-- mcpp build tool: https://github.com/mcpp-community/mcpp
-- mcpp docs: https://github.com/mcpp-community/mcpp/tree/main/docs
-- Getting started: https://github.com/mcpp-community/mcpp/blob/main/docs/00-getting-started.md
-- `mcpp.toml` guide: https://github.com/mcpp-community/mcpp/blob/main/docs/05-mcpp-toml.md
-- mcpp package index: https://github.com/mcpplibs/mcpp-index · https://mcpplibs.github.io/mcpp-index/
-- mcpplibs organization: https://github.com/mcpplibs
-- This template: https://github.com/mcpplibs/template
-- C++23 module style reference: https://github.com/mcpp-community/mcpp-style-ref
-- xlings tool environment: https://github.com/openxlings/xlings
+The wrapper contribution is [Apache-2.0](LICENSE) with the attribution in
+[NOTICE](NOTICE). The vendored Boost tree keeps its original BSL-1.0
+[README and license](upstream/boost/); the pre-mwrap wrapper contribution kept
+under [upstream/boost-module](upstream/boost-module/SOURCE.md) retains its own
+BSL-1.0 notice. Neither upstream component is relicensed by the root licence.

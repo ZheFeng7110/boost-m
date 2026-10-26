@@ -1,8 +1,9 @@
 name: ci-macos
 
 # macOS CI (Apple Silicon) — same flow as ci-linux.yml, on the LLVM toolchain
-# mcpp resolves by default on macOS. Runner must be arm64: the mcpp package
-# index ships macOS artifacts for aarch64 only.
+# mcpp resolves by default on macOS. The runner must be arm64: the mcpp package
+# index ships macOS artifacts for aarch64 only. Apple's linker is selected by
+# [target.macos.build] (lld-macho drops a zero-unwind entry, see the manifest).
 
 on:
   push:
@@ -21,12 +22,13 @@ concurrency:
 env:
   XLINGS_VERSION: v2026.7.28.4
   XLINGS_NON_INTERACTIVE: '1'
+  MCPP_JOBS: '4'
 
 jobs:
   build-test:
-    name: build + test (macos arm64)
+    name: build + test (macos arm64 llvm)
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 240
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,16 +45,16 @@ jobs:
           xlings install -y
           mcpp --version
 
-      - name: Build library
+      - name: Build library (default feature closure)
         run: mcpp build
 
       - name: Run tests
         run: mcpp test
 
-      - name: Run example
+      - name: Run example (umbrella module)
         run: |
           cd examples/basic
           mcpp run
 
-      - name: Smoke-test templates/
-        run: bash tools/template_smoke.sh
+      - name: Render, build and run the default template
+        run: python3 tools/test_template.py

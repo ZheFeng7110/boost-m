@@ -1,8 +1,10 @@
 [package]
 name        = "{{project.name}}"
 version     = "0.1.0"
-description = "A modular C++23 app built on mcpplibs.{{self.name}}"
+description = "A console app that imports Boost through C++23 named modules"
 license     = "Apache-2.0"
 
-[dependencies.mcpplibs]
-{{self.name}} = "{{self.version}}"
+# The dependency key is the complete package selector, and the version stays
+# tied to the package that shipped this template.
+[dependencies]
+"{{self.name}}" = { version = "{{self.version}}", default-features = false, features = ["optional"] }

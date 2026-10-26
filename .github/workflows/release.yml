@@ -1,0 +1,63 @@
+name: Release
+
+# One immutable source asset per `mwrap-<version>` tag. The tag series is
+# independent of the package version: it never moves, and a wrapper fix publishes
+# the next version instead of replacing assets.
+on:
+  push:
+    tags: ["mwrap-*"]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check tag, upstream version, licence split and entry pages
+        run: python3 tools/check_mwrap_release.py --tag "$GITHUB_REF_NAME"
+
+      - name: Require successful source CI at this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for workflow in ci-linux ci-macos ci-windows verify-scripts; do
+            result=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow.yml" \
+              --commit "$GITHUB_SHA" --limit 1 \
+              --json status,conclusion \
+              --jq '.[0] | .status == "completed" and .conclusion == "success"')
+            test "$result" = true || { echo "No successful $workflow run at the tag commit"; exit 1; }
+          done
+
+      - name: Build immutable source asset and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#mwrap-}"
+          asset="boost-m-${version}.tar.gz"
+          git archive --format=tar.gz --prefix="boost-m-${version}/" "$GITHUB_SHA" > "$RUNNER_TEMP/$asset"
+          (cd "$RUNNER_TEMP" && sha256sum "$asset" > "$asset.sha256")
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to change immutable assets'
+            exit 1
+          fi
+          gh release create "$GITHUB_REF_NAME" "$RUNNER_TEMP/$asset" "$RUNNER_TEMP/$asset.sha256" \
+            --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "boost-m ${version}" \
+            --notes "C++23 named module wrapper for upstream Boost ${version}. The archive contains the vendored Boost tree, the wrapper sources, the generated exports, the tests and the shipped templates; see README.md for the tested platform scope."

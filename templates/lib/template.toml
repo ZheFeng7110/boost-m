@@ -1,3 +1,3 @@
 [template]
-description  = "Downstream C++23 module library built on top of this one (with gtest tests)"
-post_message = "Next: cd into the project, then `mcpp build` and `mcpp test`."
+description  = "Downstream C++23 module library built on top of this one (with a gtest suite)"
+post_message = "Next: cd into the project, then `mcpp build`; `mcpp test` after `mcpp index update`."
