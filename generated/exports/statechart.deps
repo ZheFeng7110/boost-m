@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.thread
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_traits

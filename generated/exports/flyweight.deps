@@ -1,0 +1,10 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.interprocess
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.multi_index
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.unordered

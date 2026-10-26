@@ -1,0 +1,6 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.container
+mcpplibs.mwrap.boost.intrusive
+mcpplibs.mwrap.boost.move
+mcpplibs.mwrap.boost.winapi

@@ -1,0 +1,4 @@
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.tuple
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility

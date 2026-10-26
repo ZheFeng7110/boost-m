@@ -1,0 +1,9 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.function
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.variant

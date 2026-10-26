@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.container
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.endian
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.variant2

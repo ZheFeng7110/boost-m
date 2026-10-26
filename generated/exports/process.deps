@@ -1,0 +1,10 @@
+mcpplibs.mwrap.boost.asio
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.filesystem
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility
+mcpplibs.mwrap.boost.winapi

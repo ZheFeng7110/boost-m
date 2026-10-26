@@ -1,0 +1,4 @@
+# SPECIAL module: hand-written, no gen_exports bundle TU. `version` is the thin
+# entry that re-exports the macro mapping module, so its only import edge is
+# `.macros`; the constants themselves live there (one export owner).
+mcpplibs.mwrap.boost.macros

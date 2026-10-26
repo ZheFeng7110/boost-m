@@ -1,0 +1,4 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.intrusive
+mcpplibs.mwrap.boost.move

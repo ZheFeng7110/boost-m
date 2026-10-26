@@ -1,0 +1,16 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.concept_check
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.filesystem
+mcpplibs.mwrap.boost.format
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.multi_index
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.pool
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.thread
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility
+mcpplibs.mwrap.boost.version

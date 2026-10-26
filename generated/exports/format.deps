@@ -1,0 +1,5 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.utility

@@ -1,0 +1,8 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.dynamic_bitset
+mcpplibs.mwrap.boost.integer
+mcpplibs.mwrap.boost.io
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.type_traits

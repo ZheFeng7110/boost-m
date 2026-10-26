@@ -1,0 +1,26 @@
+diff --git a/upstream/boost/boost/asio/detail/call_stack.hpp b/upstream/boost/boost/asio/detail/call_stack.hpp
+index 12afdfcf..4c21c88b 100644
+--- a/upstream/boost/boost/asio/detail/call_stack.hpp
++++ b/upstream/boost/boost/asio/detail/call_stack.hpp
+@@ -116,7 +116,7 @@ private:
+ };
+ 
+ template <typename Key, typename Value>
+-tss_ptr<typename call_stack<Key, Value>::context>
++inline tss_ptr<typename call_stack<Key, Value>::context>
+ call_stack<Key, Value>::top_;
+ 
+ } // namespace detail
+diff --git a/upstream/boost/boost/asio/detail/keyword_tss_ptr.hpp b/upstream/boost/boost/asio/detail/keyword_tss_ptr.hpp
+index 908c6f6d..4a53a8b8 100644
+--- a/upstream/boost/boost/asio/detail/keyword_tss_ptr.hpp
++++ b/upstream/boost/boost/asio/detail/keyword_tss_ptr.hpp
+@@ -60,7 +60,7 @@ private:
+ };
+ 
+ template <typename T>
+-BOOST_ASIO_THREAD_KEYWORD T* keyword_tss_ptr<T>::value_;
++inline BOOST_ASIO_THREAD_KEYWORD T* keyword_tss_ptr<T>::value_;
+ 
+ } // namespace detail
+ BOOST_ASIO_INLINE_NAMESPACE_END

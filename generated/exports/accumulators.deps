@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.circular_buffer
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.numeric
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility

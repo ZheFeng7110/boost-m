@@ -1,0 +1,6 @@
+mcpplibs.mwrap.boost.any
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.function
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.lexical_cast
+mcpplibs.mwrap.boost.smart_ptr

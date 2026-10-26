@@ -1,0 +1,8 @@
+mcpplibs.mwrap.boost.align
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.function
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility

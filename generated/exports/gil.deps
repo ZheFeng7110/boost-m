@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.integer
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.variant2

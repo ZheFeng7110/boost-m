@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.type_erasure
+mcpplibs.mwrap.boost.type_traits

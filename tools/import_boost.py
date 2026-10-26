@@ -1,0 +1,259 @@
+#!/usr/bin/env python3
+"""import_boost.py — import the pinned official Boost release into upstream/boost/.
+
+Fetches boost_1_92_0.tar.gz (verified against a pinned SHA-256), then extracts
+into deps/boost/ only the content needed for a module packaging build:
+the aggregated include root boost/, the library sources libs/ (pruned of
+docs/examples/Jamfiles/CI files), tools/cmake, CMakeLists.txt, LICENSE and
+README. Everything else in the tarball is dropped.
+
+Run it again to refresh: the old deps/boost/ is removed first and the import
+is fully deterministic, so any change can always be reverted by re-running.
+
+Usage:
+    python script/import_boost.py                  # default: pinned URL + target/vendor-import
+    python script/import_boost.py --tarball X.tgz  # use an existing archive elsewhere
+    python script/import_boost.py --url https://... # mirror override
+"""
+
+import argparse
+import hashlib
+import os
+import sys
+import tarfile
+import urllib.request
+from pathlib import Path
+
+VERSION = "1.92.0"
+TARBALL_NAME = "boost_{}.tar.gz".format(VERSION.replace(".", "_"))
+DEFAULT_URL = "https://archives.boost.io/release/{}/source/{}".format(VERSION, TARBALL_NAME)
+PIN_SHA256 = "c4a3b310ddd2472416e091067166b0713be97c63f38c212c484ada022fd296ce"
+
+ROOT = Path(__file__).resolve().parent.parent
+DST = ROOT / "upstream" / "boost"
+WORK = ROOT / "target" / "vendor-import"
+DEFAULT_TARBALL = WORK / TARBALL_NAME
+
+# Top-level tarball entries that are imported at all (anything else is dropped).
+KEEP_ROOT = {"boost", "libs", "tools", "CMakeLists.txt", "LICENSE_1_0.txt", "README.md"}
+
+# Directory names deleted at any depth (same semantics as the retired
+# clean-boost.ps1): docs, examples, website assets and CI config.
+PRUNED_DIRS = {
+    "doc", "docs", "example", "examples", "more", "status",
+    ".github", ".travis", ".circleci", ".ci", ".appveyor", ".azure-pipelines",
+}
+
+# File names deleted at any depth: standalone docs, Jamfile/build files and CI config.
+PRUNED_FILES = {
+    "index.html", "index.htm", "INSTALL", "bootstrap.bat", "bootstrap.sh",
+    "Jamroot", "boost-build.jam", "boostcpp.jam", "bootstrap.jam",
+    "Jamfile.v2", "build.jam",
+    "appveyor.yml", ".travis.yml", ".appveyor.yml", ".cirrus.yml", "azure-pipelines.yml",
+}
+
+# Image/style files deleted only at the boost root (test data images inside
+# library test/ directories are left untouched).
+ROOT_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".css"}
+
+# Doc-only web files deleted at any depth.
+ANYWHERE_EXTENSIONS = {".htm", ".html"}
+
+# These upstream text files use CRLF in the release tarball, while the
+# vendored tree is committed with LF. Normalize only these known files after
+# extraction; other members are copied byte-for-byte so binary/test data is
+# never modified accidentally.
+NORMALIZE_LF_PATHS = {
+    "libs/fiber/README.md",
+    "libs/mysql/tools/seed_corpus/field_table.csv",
+    "libs/mysql/tools/seed_corpus/protocol_messages.csv",
+}
+
+
+def sha256_of(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def download(url: str, dest: Path) -> None:
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_suffix(dest.suffix + ".part")
+
+    def report(count, block_size, total_size):
+        done = count * block_size
+        if total_size > 0:
+            print("  {:.1f} / {:.1f} MB".format(done / 1e6, total_size / 1e6), end="\r")
+        else:
+            print("  {:.1f} MB".format(done / 1e6), end="\r")
+
+    print("downloading {}".format(url))
+    urllib.request.urlretrieve(url, tmp, reporthook=report)
+    print()
+    os.replace(tmp, dest)
+
+
+def keep_rel_path(parts: tuple, is_dir: bool = False) -> bool:
+    """Decide whether a tarball member (path components below the top dir) is imported."""
+    if not parts:
+        return False
+    if parts[0] not in KEEP_ROOT:
+        return False
+    # tools/ is cleared except tools/cmake (referenced by CMakeLists.txt).
+    if parts[0] == "tools":
+        return len(parts) >= 2 and parts[1] == "cmake"
+    # A directory member is dropped by its own name too (tar dir members carry
+    # a trailing slash that pathlib strips, so its name is the last part).
+    if any(part in PRUNED_DIRS for part in (parts if is_dir else parts[:-1])):
+        return False
+    name = parts[-1]
+    if name in PRUNED_FILES:
+        return False
+    if Path(name).suffix.lower() in ANYWHERE_EXTENSIONS:
+        return False
+    if len(parts) == 1 and Path(name).suffix.lower() in ROOT_EXTENSIONS:
+        return False
+    return True
+
+
+def extract_selected(tf: tarfile.TarFile) -> tuple:
+    """Extract the pruned tree into DST. Returns (imported, pruned, bytes)."""
+    imported = pruned = 0
+    total_bytes = 0
+    for member in tf.getmembers():
+        parts = Path(member.name).parts
+        if len(parts) < 2 or parts[0].startswith("boost_"):
+            parts = parts[1:] if len(parts) >= 2 else ()
+        else:
+            print("warning: unexpected tarball layout: {}".format(member.name))
+            parts = ()
+        if not keep_rel_path(parts, member.isdir()):
+            pruned += 1
+            continue
+        if member.isdir():
+            (DST / Path(*parts)).mkdir(parents=True, exist_ok=True)
+            continue
+        if not member.isreg():
+            print("warning: skipping non-regular member: {}".format(member.name))
+            pruned += 1
+            continue
+        src = tf.extractfile(member)
+        if src is None:
+            print("warning: cannot read member: {}".format(member.name))
+            pruned += 1
+            continue
+        dst = DST / Path(*parts)
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        normalize_lf = Path(*parts).as_posix() in NORMALIZE_LF_PATHS
+        with open(dst, "wb") as out:
+            if normalize_lf:
+                data = src.read()
+                data = data.replace(b"\r\n", b"\n")
+                out.write(data)
+                total_bytes += len(data)
+            else:
+                while True:
+                    chunk = src.read(1 << 20)
+                    if not chunk:
+                        break
+                    out.write(chunk)
+                    total_bytes += len(chunk)
+        imported += 1
+    return imported, pruned, total_bytes
+
+
+def write_source_md(actual_sha256: str, url: str) -> None:
+    """Record the pin next to the bytes it describes.
+
+    upstream/boost/SOURCE.md is the provenance of the vendored tree: where the
+    tarball came from, which bytes were verified, what was pruned and which files
+    were line-normalized. The upstream README.md / LICENSE_1_0.txt beside it stay
+    byte-identical to the release; this file never replaces them.
+    """
+    def block(title, items):
+        return "## {}\n\n{}\n".format(title, "\n".join("- `{}`".format(i) for i in sorted(items)))
+
+    text = """# Vendored Boost source
+
+This directory is the pinned official Boost release, pruned for a wrapper
+repository. It contains upstream code only: wrapper interfaces live in `src/`,
+wrapper TUs and headers in `port/`, adaptations in `patches/`.
+
+| Field | Value |
+| --- | --- |
+| Upstream project | Boost |
+| Upstream version | {version} (BOOST_VERSION 109200) |
+| Source URL | {url} |
+| Archive | `{tarball}` |
+| Archive SHA-256 | `{sha}` |
+| Imported by | `tools/import_boost.py` |
+
+The upstream `README.md` and `LICENSE_1_0.txt` are kept byte-for-byte from the
+release archive; the Boost licence (BSL-1.0) applies to this tree. The wrapper
+contribution is Apache-2.0 — see `/LICENSE`, `/NOTICE` and
+`docs/architecture.md` §Licensing.
+
+{keep}
+
+{pruned_dirs}
+
+{pruned_files}
+
+{normalized}
+
+Reported layout: every member below the archive's wrapping directory that is not
+listed as pruned is copied byte-for-byte, except the normalized files above.
+""".format(
+        version=VERSION,
+        url=url,
+        tarball=TARBALL_NAME,
+        sha=actual_sha256,
+        keep=block("Kept top-level entries", KEEP_ROOT),
+        pruned_dirs=block("Pruned directories (any depth)", PRUNED_DIRS),
+        pruned_files=block("Pruned files (any depth)", PRUNED_FILES),
+        normalized=block("CRLF -> LF normalized files", NORMALIZE_LF_PATHS),
+    )
+    (DST / "SOURCE.md").write_text(text, encoding="utf-8", newline="\n")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--tarball", type=Path, default=DEFAULT_TARBALL,
+                    help="path to the boost tarball (default: {})".format(DEFAULT_TARBALL))
+    ap.add_argument("--url", default=DEFAULT_URL, help="download URL for the tarball")
+    args = ap.parse_args()
+
+    tarball: Path = args.tarball
+    if not tarball.exists():
+        download(args.url, tarball)
+
+    print("verifying sha256 of {}".format(tarball))
+    actual = sha256_of(tarball)
+    if actual != PIN_SHA256:
+        print("error: sha256 mismatch\n  expected: {}\n  actual:   {}".format(PIN_SHA256, actual),
+              file=sys.stderr)
+        return 1
+    print("sha256 OK: {}".format(actual))
+
+    if DST.exists():
+        print("removing old {}".format(DST))
+        import shutil
+        shutil.rmtree(DST)
+    DST.mkdir(parents=True)
+
+    with tarfile.open(tarball, "r:gz") as tf:
+        imported, pruned, total_bytes = extract_selected(tf)
+
+    write_source_md(actual, args.url)
+
+    libs = sum(1 for p in (DST / "libs").iterdir() if p.is_dir())
+    print("imported {} files ({:.1f} MB) into {}, skipped {} members, {} libraries"
+          .format(imported, total_bytes / 1e6, DST, pruned, libs))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

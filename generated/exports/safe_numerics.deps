@@ -1,0 +1,6 @@
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.integer
+mcpplibs.mwrap.boost.logic
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.type_traits

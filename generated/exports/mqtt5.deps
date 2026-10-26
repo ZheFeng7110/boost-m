@@ -1,0 +1,9 @@
+mcpplibs.mwrap.boost.asio
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.beast
+mcpplibs.mwrap.boost.container
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.random
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.static_string
+mcpplibs.mwrap.boost.system

@@ -42,3 +42,9 @@ compile_commands.json
 # Debug information files
 *.dwo
 *.d
+
+# Generator caches and the pinned cross sysroot payload
+target/gen/
+tools/_deps/
+tools/.venv/
+**/__pycache__/

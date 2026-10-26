@@ -1,0 +1,14 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.atomic
+mcpplibs.mwrap.boost.chrono
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.date_time
+mcpplibs.mwrap.boost.io
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility
+mcpplibs.mwrap.boost.winapi

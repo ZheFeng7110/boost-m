@@ -1,0 +1,9 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.concept_check
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.functional
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.lambda
+mcpplibs.mwrap.boost.multi_index
+mcpplibs.mwrap.boost.type_traits

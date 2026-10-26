@@ -1,0 +1,6 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.variant2

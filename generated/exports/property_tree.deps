@@ -1,0 +1,7 @@
+mcpplibs.mwrap.boost.any
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.bind
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.range
+mcpplibs.mwrap.boost.serialization
+mcpplibs.mwrap.boost.type_traits

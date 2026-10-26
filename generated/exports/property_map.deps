@@ -1,0 +1,12 @@
+mcpplibs.mwrap.boost.any
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.function
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.lexical_cast
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_index
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.utility

@@ -1,0 +1,12 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.lexical_cast
+mcpplibs.mwrap.boost.math
+mcpplibs.mwrap.boost.multi_array
+mcpplibs.mwrap.boost.range
+mcpplibs.mwrap.boost.serialization
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.units
+mcpplibs.mwrap.boost.utility

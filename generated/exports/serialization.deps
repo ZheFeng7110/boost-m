@@ -1,0 +1,12 @@
+mcpplibs.mwrap.boost.array
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.integer
+mcpplibs.mwrap.boost.io
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.move
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_traits

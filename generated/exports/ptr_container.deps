@@ -1,0 +1,10 @@
+mcpplibs.mwrap.boost.array
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.circular_buffer
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.range
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.type_traits
+mcpplibs.mwrap.boost.unordered

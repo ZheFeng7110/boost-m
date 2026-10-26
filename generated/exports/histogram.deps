@@ -1,0 +1,5 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.math
+mcpplibs.mwrap.boost.mp11
+mcpplibs.mwrap.boost.serialization

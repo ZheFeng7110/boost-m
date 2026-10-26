@@ -1,0 +1,11 @@
+[project]
+name = "boost-m-tools"
+version = "0.1.0"
+description = "Tooling for generating and auditing the Boost mwrap package sources"
+requires-python = ">=3.9"
+dependencies = [
+    "libclang",
+]
+
+[tool.uv]
+package = false

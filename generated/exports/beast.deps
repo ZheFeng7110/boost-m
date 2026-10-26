@@ -1,0 +1,13 @@
+mcpplibs.mwrap.boost.asio
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.core
+mcpplibs.mwrap.boost.endian
+mcpplibs.mwrap.boost.logic
+mcpplibs.mwrap.boost.optional
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.static_string
+mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.throw_exception
+mcpplibs.mwrap.boost.type_index
+mcpplibs.mwrap.boost.winapi
