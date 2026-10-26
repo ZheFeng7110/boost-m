@@ -213,7 +213,6 @@ mcpp emit xpkg -o mylib.lua   # 只生成描述符，不打包
 - 仓库：https://github.com/mcpplibs/mcpp-index —— 在线浏览所有包：https://mcpplibs.github.io/mcpp-index/
 - 贡献文档：[docs/README.md](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/README.md) · [包类型](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/package-types.md) · [仓库与 schema](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/repository-and-schema.md) · [CN 镜像](https://github.com/mcpplibs/mcpp-index/blob/main/docs/zh/cn-mirror.md)
 - 端到端流程（人或 Agent 都可用）：[`add-mcpp-index-package`](https://github.com/mcpplibs/mcpp-index/blob/main/.agents/skills/add-mcpp-index-package/SKILL.md) skill
-- 本仓库内：[`.agents/skills/mcpp-index/SKILL.md`](.agents/skills/mcpp-index/SKILL.md)
 
 像本模板这样的库属于 **Form A** 包：仓库自身已经带 `mcpp.toml`，所以描述符只需要声明元数据和
 下载地址。PR 合并后，所有人都能用 `mcpp add mylib` 解析到它。
@@ -237,33 +236,6 @@ mcpp build
 mcpp test
 cd examples/basic && mcpp run
 bash tools/template_smoke.sh
-```
-
-## AI Agent 辅助了解和开发
-
-本仓库在 [`.agents/skills/`](.agents/skills/README.md) 下提供了 Agent 技能：
-
-| 技能 | 用途 |
-|---|---|
-| [`mcpp`](.agents/skills/mcpp/SKILL.md) | mcpp 构建工具：命令、`mcpp.toml`、约定、模板 |
-| [`mcpp-index`](.agents/skills/mcpp-index/SKILL.md) | 包索引：查找、添加和发布包 |
-| [`mcpp-style-ref`](.agents/skills/mcpp-style-ref/SKILL.md) | Modern/Module C++23 命名与结构规范 |
-| [`more-details`](.agents/skills/more-details/SKILL.md) | 本仓库与上游资料的查找入口 |
-
-可以先用下面这段提示词让 Agent 进入状态：
-
-```text
-仓库地址：https://github.com/mcpplibs/template
-
-先阅读 .agents/skills/more-details/SKILL.md、.agents/skills/mcpp/SKILL.md、
-.agents/skills/mcpp-style-ref/SKILL.md 和 docs/architecture.zh.md。
-
-先只了解这个模板的 mcpp 项目结构、模块组织、测试方式和依赖管理方式，不要直接修改文件。
-
-需要更多资料时，从 more-details 里的 mcpp docs、mcpp-index、mcpplibs/cmdline、
-mcpplibs/llmapi 等链接继续查。
-保持 mcpp-only；测试遵循 mcpp test 规范；默认不要重新导出第三方依赖。
-README 只做入口引导，细节放到 docs/architecture.zh.md。
 ```
 
 ## 参考项目

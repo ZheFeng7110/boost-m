@@ -219,7 +219,6 @@ adding `pkgs/<initial>/<name>.lua` to mcpp-index. Useful links along the way:
 - Repository: https://github.com/mcpplibs/mcpp-index — browse the packages online at https://mcpplibs.github.io/mcpp-index/
 - Contributor docs: [docs/README.md](https://github.com/mcpplibs/mcpp-index/blob/main/docs/README.md) · [package types](https://github.com/mcpplibs/mcpp-index/blob/main/docs/package-types.md) · [repository & schema](https://github.com/mcpplibs/mcpp-index/blob/main/docs/repository-and-schema.md) · [CN mirror](https://github.com/mcpplibs/mcpp-index/blob/main/docs/cn-mirror.md)
 - End-to-end procedure (human or agent): the [`add-mcpp-index-package`](https://github.com/mcpplibs/mcpp-index/blob/main/.agents/skills/add-mcpp-index-package/SKILL.md) skill
-- In this repository: [`.agents/skills/mcpp-index/SKILL.md`](.agents/skills/mcpp-index/SKILL.md)
 
 A library like this one is a **Form A** package: your repository already carries `mcpp.toml`,
 so the descriptor only declares metadata and a download address. After the PR is merged,
@@ -244,34 +243,6 @@ mcpp build
 mcpp test
 cd examples/basic && mcpp run
 bash tools/template_smoke.sh
-```
-
-## Developing with an AI Agent
-
-This repository ships agent skills under [`.agents/skills/`](.agents/skills/README.md):
-
-| Skill | Purpose |
-|---|---|
-| [`mcpp`](.agents/skills/mcpp/SKILL.md) | The mcpp build tool: commands, `mcpp.toml`, conventions, templates |
-| [`mcpp-index`](.agents/skills/mcpp-index/SKILL.md) | The package index: finding, adding and publishing packages |
-| [`mcpp-style-ref`](.agents/skills/mcpp-style-ref/SKILL.md) | Modern/Module C++23 naming and structure rules |
-| [`more-details`](.agents/skills/more-details/SKILL.md) | Where to look things up, in this repo and upstream |
-
-A prompt to get an agent oriented:
-
-```text
-Repository: https://github.com/mcpplibs/template
-
-Read .agents/skills/more-details/SKILL.md, .agents/skills/mcpp/SKILL.md,
-.agents/skills/mcpp-style-ref/SKILL.md and docs/architecture.md first.
-
-For now, only understand this template's mcpp project structure, module organization,
-testing approach and dependency management — do not modify files yet.
-
-When you need more, follow the links in more-details (mcpp docs, mcpp-index,
-mcpplibs/cmdline, mcpplibs/llmapi).
-Stay mcpp-only; follow the `mcpp test` conventions; do not re-export third-party
-dependencies by default. Keep README as the entry point and details in docs/architecture.md.
 ```
 
 ## Reference Projects
