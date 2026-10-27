@@ -276,7 +276,7 @@ GEN_DEFINES = _ENV_GEN_DEFINES.split() if _ENV_GEN_DEFINES.strip() \
 # the AST (mp11's mp_at_c/mp_iota_c were lost this way in M2).
 CLANG_ARGS = [
     "-std=c++23",
-    "-Ideps/boost",
+    "-I" + str(DEPS),
     *TARGET_ARGS,
     "-DBOOST_ALL_NO_LIB",
     *["-D" + d for d in GEN_DEFINES],
@@ -582,7 +582,7 @@ def scan_libs_json():
 
 def standalone_compile_filter(headers):
     """Return (kept, dropped) — root headers whose standalone parse produces a
-    severe diagnostic located under deps/boost/ are dropped (they cannot be
+    severe diagnostic located under upstream/boost/ are dropped (they cannot be
     part of any compilable module GMF). System-header noise (e.g. the missing
     mm_malloc.h inside mingw's malloc.h) is ignored. NB: libclang reports
     paths relative to the CWD, so locations are resolved before comparison."""

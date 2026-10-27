@@ -1568,10 +1568,11 @@ def main() -> int:
             gfm_headers = gfm_memo[lib] = bc.gfm_headers_of(lib)
         print("parsing {} ({} headers, {} in GFM)...".format(
             lib, len(headers), len(gfm_headers)), flush=True)
-        tu, gfm_final = _parse_bundle(lib, gfm_headers, use_cache)
-        if tu is None:
+        parsed = _parse_bundle(lib, gfm_headers, use_cache)
+        if parsed is None:
             print("error: parse failed for {}".format(lib), file=sys.stderr)
             return 1
+        tu, gfm_final = parsed
         usr_index = build_usr_index(tu)
         cands = collect_candidates(lib, tu, _FILE_TO_LIB, usr_index)
         injects = collect_injections(tu, lib, _FILE_TO_LIB, claimed_inject,

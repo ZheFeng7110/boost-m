@@ -2,18 +2,18 @@
 """import_boost.py — import the pinned official Boost release into upstream/boost/.
 
 Fetches boost_1_92_0.tar.gz (verified against a pinned SHA-256), then extracts
-into deps/boost/ only the content needed for a module packaging build:
+into upstream/boost/ only the content needed for a module packaging build:
 the aggregated include root boost/, the library sources libs/ (pruned of
 docs/examples/Jamfiles/CI files), tools/cmake, CMakeLists.txt, LICENSE and
 README. Everything else in the tarball is dropped.
 
-Run it again to refresh: the old deps/boost/ is removed first and the import
+Run it again to refresh: the old upstream/boost/ is removed first and the import
 is fully deterministic, so any change can always be reverted by re-running.
 
 Usage:
-    python script/import_boost.py                  # default: pinned URL + target/vendor-import
-    python script/import_boost.py --tarball X.tgz  # use an existing archive elsewhere
-    python script/import_boost.py --url https://... # mirror override
+    python tools/import_boost.py                  # default: pinned URL + target/vendor-import
+    python tools/import_boost.py --tarball X.tgz  # use an existing archive elsewhere
+    python tools/import_boost.py --url https://... # mirror override
 """
 
 import argparse
