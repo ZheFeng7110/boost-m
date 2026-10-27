@@ -7,9 +7,7 @@
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
-[![ci-linux](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml)
-[![ci-macos](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml)
-[![ci-windows](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml)
+[![tests](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml)
 
 116 个 Boost 库可以按命名模块使用：封装在模块的全局模块片段中 `#include` 上游头文件，
 再用 `export using` 重新导出上游实体，因此类型、重载、ADL 和拼写都仍是 Boost 的。

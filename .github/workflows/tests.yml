@@ -1,0 +1,330 @@
+# Boost 1.92.0 as C++23 named modules (mcpplibs.mwrap.boost) — build/test matrix.
+#
+# Ported from the pre-mwrap wrapper's CI (boost-module b1.92.0wdev tests.yml).
+# The five host configurations and their pinned toolchains are the ones that
+# wrapper validated; keep the set if a leg is added or dropped:
+#
+#   windows-latest    x86_64  llvm@22.1.8   (clang-cl / clang-msvc)
+#   ubuntu-24.04      x86_64  gcc@16.1.0
+#   ubuntu-24.04-arm  arm64   gcc@16.1.0
+#   ubuntu-24.04      x86_64  llvm@22.1.8
+#   macos-latest      arm64   llvm@22.1.8
+#
+# Every host is built twice, once per feature group, because a single clang
+# aggregate closure of the whole package can exhaust the source-location space:
+#
+#   A — the 105 library features of the original group A: 103 module-bearing
+#       libraries plus the two compiled include-only features (`log`,
+#       `unit-test-framework`);
+#   B — the twelve heavy libraries (asio, beast, geometry, ...) plus the two
+#       wrapper-only modules the mwrap migration added (`version`, `macros`),
+#       so group A's aggregate closure stays at the module count whose limit was
+#       validated.
+#
+# `mcpp build` compiles only the sources of the active features; `mcpp test`
+# compiles the base `[build].sources` union, so each leg runs every test program
+# and both groups together still re-export every library through the umbrella
+# module exactly once. `tools/gen_features.py` regenerates `mcpp.toml`; the
+# "Validate feature-group coverage" step refuses a run whose two groups do not
+# partition every library feature, so a new library cannot silently go untested.
+#
+# The examples, the template smoke test and the release-page check run in the
+# `examples` job, which `needs: [test]`: they start only after both groups have
+# passed on all five hosts.
+#
+# mcpp comes from the repository's own pin: xlings installs `mcpp 2026.10.26.1`
+# from `.xlings.json`, and the job asserts that CI's MCPP_VERSION and the
+# manifest pin are the same build. Toolchains are then installed by mcpp into its
+# sandbox (`~/.mcpp`), which actions/cache keeps warm per host and toolchain.
+
+name: Build and Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Latest xlings release; the installer reads this for both the sh and ps1
+  # quick-install scripts, and xlings then installs the mcpp pin below.
+  XLINGS_VERSION: v2026.10.26.1
+  XLINGS_NON_INTERACTIVE: '1'
+  # Must match [workspace].mcpp in .xlings.json — checked on every leg.
+  MCPP_VERSION: "2026.10.26.1"
+  # Leave the runners room: the vendored tree is large and every leg compiles
+  # Boost from the same checkout.
+  MCPP_JOBS: '4'
+  # M12 grouping: group A is the original wrapper's 105-feature set; group B is
+  # its twelve heavy libraries plus the two wrapper-only modules added by the
+  # mwrap migration. Both are kebab-case features declared in mcpp.toml.
+  BOOST_GROUP_A: "optional,variant,variant2,any,core,container-hash,mp11,static-string,scope,type-traits,algorithm,iterator,range,io,rational,endian,tuple,system,filesystem,regex,thread,chrono,program-options,stacktrace,json,url,align,array,assert,assign,bimap,bind,bloom,callable-traits,circular-buffer,compat,concept-check,config,convert,crc,decimal,dll,dynamic-bitset,flyweight,format,function,functional,hash2,heap,histogram,hof,icl,integer,intrusive,lambda,lambda2,leaf,lexical-cast,lockfree,logic,move,multi-array,multi-index,outcome,parser,pfr,poly-collection,pool,property-map,property-tree,ptr-container,ratio,safe-numerics,signals2,smart-ptr,sort,statechart,stl-interfaces,throw-exception,tokenizer,type-index,units,unordered,utility,uuid,winapi,yap,atomic,charconv,cobalt,container,contract,date-time,graph,iostreams,log,math,nowide,process,random,serialization,unit-test-framework,timer,type-erasure,wave"
+  BOOST_GROUP_B: "accumulators,asio,beast,geometry,gil,hana,interprocess,mqtt5,multiprecision,numeric,polygon,qvm,version,macros"
+
+jobs:
+  # One matrix entry per host; `group` doubles each host into the two aggregate
+  # closures. Tests run in both groups, so the compile surface is identical and
+  # only the umbrella's re-export set differs.
+  test:
+    name: ${{ matrix.target.name }}-${{ matrix.target.arch }} (group ${{ matrix.group }})
+    runs-on: ${{ matrix.target.os }}
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - { name: windows-llvm-msvc, os: windows-latest,   arch: x86_64, toolchain: "llvm@22.1.8", install: "llvm 22.1.8" }
+          - { name: linux-gcc,         os: ubuntu-24.04,      arch: x86_64, toolchain: "gcc@16.1.0",  install: "gcc 16.1.0" }
+          - { name: linux-gcc,         os: ubuntu-24.04-arm,  arch: arm64,  toolchain: "gcc@16.1.0",  install: "gcc 16.1.0" }
+          - { name: linux-llvm,        os: ubuntu-24.04,      arch: x86_64, toolchain: "llvm@22.1.8", install: "llvm 22.1.8" }
+          - { name: macos-llvm,        os: macos-latest,      arch: arm64,  toolchain: "llvm@22.1.8", install: "llvm 22.1.8" }
+        group: [A, B]
+    steps:
+      - uses: actions/checkout@v7
+
+      # Warm the mcpp sandbox (engine, registry, toolchain payloads and the
+      # global BMI cache). Keyed per toolchain so the gcc and llvm legs on one
+      # OS cannot restore each other's default (config.toml); A and B share the
+      # key and only race on the initial save.
+      - name: Cache mcpp sandbox
+        uses: actions/cache@v6
+        with:
+          path: ~/.mcpp
+          key: mcpp-${{ matrix.target.os }}-${{ matrix.target.name }}-${{ matrix.target.arch }}-${{ matrix.target.toolchain }}-v${{ env.MCPP_VERSION }}
+          restore-keys: |
+            mcpp-${{ matrix.target.os }}-${{ matrix.target.name }}-${{ matrix.target.arch }}-${{ matrix.target.toolchain }}-
+
+      - name: Install xlings
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --retry-all-errors \
+            https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.sh \
+            | bash -s "$XLINGS_VERSION"
+          echo "$HOME/.xlings/subos/current/bin" >> "$GITHUB_PATH"
+
+      # The installer's parameter defaults to $env:XLINGS_VERSION, which is set
+      # by the job environment; `iex` therefore installs the pinned release.
+      - name: Install xlings
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          irm https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.ps1 | iex
+          "$env:USERPROFILE\.xlings\subos\current\bin" |
+            Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+      - name: Install project tools (.xlings.json → mcpp)
+        shell: bash
+        run: |
+          set -euo pipefail
+          xlings update
+          xlings install -y
+          mcpp --version
+          # The CI pin and the repository pin must name the same tool build.
+          grep -Fq "\"mcpp\": \"$MCPP_VERSION\"" .xlings.json
+          mcpp --version | grep -Fq "$MCPP_VERSION"
+
+      - name: Install toolchain (${{ matrix.target.toolchain }})
+        shell: bash
+        run: |
+          set -euo pipefail
+          mcpp toolchain install ${{ matrix.target.install }}
+          mcpp toolchain default ${{ matrix.target.toolchain }}
+          mcpp toolchain list
+
+      # Guard the grouping invariant: every library feature in mcpp.toml is in
+      # exactly one group, and the backend profiles (not libraries) are in
+      # neither. A new library regenerated into the manifest fails here until it
+      # is assigned to a group.
+      - name: Validate feature-group coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY="$(command -v python3 || command -v python)"
+          "$PY" - <<'PY'
+          import os
+          import tomllib
+
+          manifest = tomllib.load(open("mcpp.toml", "rb"))
+          features = manifest["features"]
+          # Aggregates and the CPU-gated log backend profiles are not libraries:
+          # `default`/`all-modules` are selections, and the profiles are only
+          # valid on x86_64 and are exercised by examples/profiles.
+          aggregates = {"default", "all-modules"}
+          profiles = {name for name in features if name.startswith("backend-")}
+          libraries = set(features) - aggregates - profiles
+
+          group_a = set(os.environ["BOOST_GROUP_A"].split(","))
+          group_b = set(os.environ["BOOST_GROUP_B"].split(","))
+          if group_a & group_b:
+              raise SystemExit("group A and B overlap: " + ", ".join(sorted(group_a & group_b)))
+          missing = libraries - group_a - group_b
+          unknown = (group_a | group_b) - set(features)
+          if missing or unknown:
+              raise SystemExit(
+                  "feature groups are stale; missing: {}; unknown: {}".format(
+                      ", ".join(sorted(missing)) or "-",
+                      ", ".join(sorted(unknown)) or "-"))
+          print("feature groups cover {} libraries (A: {}, B: {})".format(
+              len(libraries), len(group_a), len(group_b)))
+          PY
+
+      - name: Build libraries (group ${{ matrix.group }})
+        shell: bash
+        run: |
+          mcpp build --toolchain "${{ matrix.target.toolchain }}" \
+            --features "${{ (matrix.group == 'A' && env.BOOST_GROUP_A) || env.BOOST_GROUP_B }}"
+
+      - name: Test libraries (group ${{ matrix.group }})
+        shell: bash
+        run: |
+          mcpp test --toolchain "${{ matrix.target.toolchain }}" \
+            --features "${{ (matrix.group == 'A' && env.BOOST_GROUP_A) || env.BOOST_GROUP_B }}"
+
+  # Runs only after every A/B leg passed. The examples consume the wrapper the
+  # way a user does (umbrella import, explicit features, profile backend), then
+  # the template is rendered through a real `mcpp new` and built and run, and
+  # the release coordinate and bilingual entry pages are checked once.
+  examples:
+    name: ${{ matrix.name }}-${{ matrix.arch }} (examples + template)
+    needs: [test]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-llvm-msvc
+            os: windows-latest
+            arch: x86_64
+            toolchain: llvm@22.1.8
+            install: "llvm 22.1.8"
+          - name: linux-gcc
+            os: ubuntu-24.04
+            arch: x86_64
+            toolchain: gcc@16.1.0
+            install: "gcc 16.1.0"
+          - name: linux-gcc
+            os: ubuntu-24.04-arm
+            arch: arm64
+            toolchain: gcc@16.1.0
+            install: "gcc 16.1.0"
+          - name: linux-llvm
+            os: ubuntu-24.04
+            arch: x86_64
+            toolchain: llvm@22.1.8
+            install: "llvm 22.1.8"
+          - name: macos-llvm
+            os: macos-latest
+            arch: arm64
+            toolchain: llvm@22.1.8
+            install: "llvm 22.1.8"
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Cache mcpp sandbox
+        uses: actions/cache@v6
+        with:
+          path: ~/.mcpp
+          key: mcpp-${{ matrix.os }}-${{ matrix.name }}-${{ matrix.arch }}-${{ matrix.toolchain }}-v${{ env.MCPP_VERSION }}
+          restore-keys: |
+            mcpp-${{ matrix.os }}-${{ matrix.name }}-${{ matrix.arch }}-${{ matrix.toolchain }}-
+
+      - name: Install xlings
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --retry-all-errors \
+            https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.sh \
+            | bash -s "$XLINGS_VERSION"
+          echo "$HOME/.xlings/subos/current/bin" >> "$GITHUB_PATH"
+
+      - name: Install xlings
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          irm https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.ps1 | iex
+          "$env:USERPROFILE\.xlings\subos\current\bin" |
+            Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+      - name: Install project tools (.xlings.json → mcpp)
+        shell: bash
+        run: |
+          set -euo pipefail
+          xlings update
+          xlings install -y
+          mcpp --version
+          grep -Fq "\"mcpp\": \"$MCPP_VERSION\"" .xlings.json
+          mcpp --version | grep -Fq "$MCPP_VERSION"
+
+      - name: Install toolchain (${{ matrix.toolchain }})
+        shell: bash
+        run: |
+          set -euo pipefail
+          mcpp toolchain install ${{ matrix.install }}
+          mcpp toolchain default ${{ matrix.toolchain }}
+          mcpp toolchain list
+
+      # examples/basic consumes the root package as a path dependency with the
+      # default feature closure (umbrella import plus compiled libraries).
+      - name: Build & run example (basic)
+        shell: bash
+        working-directory: examples
+        run: mcpp run -p basic --toolchain "${{ matrix.toolchain }}"
+
+      # examples/profiles selects backend-log-avx2, whose TUs carry -mavx2:
+      # x86_64 only, refused by build.mcpp on arm64.
+      - name: Build & run example (profiles, x86_64 only)
+        if: matrix.arch == 'x86_64'
+        shell: bash
+        working-directory: examples
+        run: mcpp run -p profiles --toolchain "${{ matrix.toolchain }}"
+
+      # examples/git-dep consumes the published `mwrap-<version>` tag, which
+      # exists only after the first release. Until then the step reports a skip
+      # instead of failing every run; once the tag is published it is exercised
+      # with no workflow change.
+      - name: Build & run example (git-dep, when the release tag exists)
+        shell: bash
+        working-directory: examples
+        run: |
+          set -euo pipefail
+          tag="$(sed -n 's/.*tag = "\([^"]*\)".*/\1/p' git-dep/mcpp.toml | head -n1)"
+          test -n "$tag"
+          set +e
+          git ls-remote --exit-code --tags \
+            https://github.com/mcpplibs/boost-m.git "refs/tags/$tag" >/dev/null 2>&1
+          status=$?
+          set -e
+          case "$status" in
+            0) mcpp run -p git-dep --toolchain "${{ matrix.toolchain }}" ;;
+            2) echo "::notice title=git-dep example skipped::tag $tag is not published yet" ;;
+            *) echo "::error::cannot resolve tag $tag (git ls-remote exit $status)"; exit "$status" ;;
+          esac
+
+      # A real `mcpp new` render, then build and run: the template is only
+      # evidence once mcpp itself produced the project and it compiled.
+      - name: Render, build and run the template
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY="$(command -v python3 || command -v python)"
+          "$PY" tools/test_template.py --toolchain "${{ matrix.toolchain }}"
+
+      - name: Check release coordinate and bilingual entry pages
+        if: matrix.name == 'linux-gcc' && matrix.arch == 'x86_64'
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY="$(command -v python3 || command -v python)"
+          "$PY" tools/check_mwrap_release.py

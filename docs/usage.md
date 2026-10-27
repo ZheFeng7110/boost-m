@@ -247,7 +247,7 @@ immutable; this is a new identity, not a rename.
 
 ## 8. Toolchain pin and tests
 
-The tested build tool is pinned in `.xlings.json` (`mcpp 2026.10.24.1`); CI runs
+The tested build tool is pinned in `.xlings.json` (`mcpp 2026.10.26.1`); CI runs
 the same pin on every leg. Generation (regenerating export lists or auditing
 headers) additionally needs LLVM 23.1.3 with matching libclang and the pinned
 MinGW sysroot under `tools/`; ordinary consumers only use the committed

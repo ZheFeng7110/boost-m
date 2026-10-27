@@ -7,9 +7,7 @@
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
-[![ci-linux](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-linux.yml)
-[![ci-macos](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-macos.yml)
-[![ci-windows](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/ci-windows.yml)
+[![tests](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml)
 
 116 個 Boost 庫可以按具名模組使用：封裝在模組的全域模組片段中 `#include` 上游標頭檔，
 再用 `export using` 重新匯出上游實體，因此型別、多載、ADL 與拼寫都仍是 Boost 的。

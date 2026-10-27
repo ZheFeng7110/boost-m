@@ -188,7 +188,7 @@ serialization numeric version macros`。
 
 ## 8. 工具链固定与测试
 
-受测的构建工具固定在 `.xlings.json` 中（`mcpp 2026.10.24.1`）；CI 在每条组合上运行同一固定版本。生成（重新生成导出列表或审计头文件）还需要 LLVM 23.1.3 及匹配的 libclang，以及 `tools/` 下固定的 MinGW sysroot；普通消费者只使用已提交的生成文件。
+受测的构建工具固定在 `.xlings.json` 中（`mcpp 2026.10.26.1`）；CI 在每条组合上运行同一固定版本。生成（重新生成导出列表或审计头文件）还需要 LLVM 23.1.3 及匹配的 libclang，以及 `tools/` 下固定的 MinGW sysroot；普通消费者只使用已提交的生成文件。
 
 ```sh
 mcpp build                      # default feature closure
