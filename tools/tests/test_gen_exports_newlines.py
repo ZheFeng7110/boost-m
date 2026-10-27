@@ -49,7 +49,7 @@ class ExportNewlineTests(unittest.TestCase):
         (self.root / "src").mkdir()
         gen_exports.emit_cppm("example", self.root, gfm_headers=[])
         self.assertIn(
-            ("export module {}.example\n"
+            ("export module {}.example;\n"
              .format(gen_exports.bc.MODULE_PREFIX)).encode(),
             self.assert_lf("src/example.cppm"))
 

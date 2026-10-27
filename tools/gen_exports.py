@@ -39,6 +39,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from collections import deque
@@ -1097,7 +1098,7 @@ def emit_cppm(lib, out_dir, gfm_headers=None):
               for h in headers]
     lines += [
         "",
-        "export module {}.{}".format(bc.MODULE_PREFIX, lib),
+        "export module {}.{};".format(bc.MODULE_PREFIX, lib),
         "",
     ]
     if imports:
@@ -1744,7 +1745,11 @@ def _parse_bundle(lib, headers, use_cache=True):
                 break
             offenders = set()
             for line in r.stderr.splitlines():
-                head = line.split(":")[0].strip().replace("\\", "/")
+                # Split at the diagnostic's line/column suffix, not the drive
+                # letter in Windows paths. Include-stack entries identify the
+                # GMF root when the actual failure is in a transitive header.
+                head = re.split(r":\d+(?::\d+)?:", line, maxsplit=1)[0]
+                head = head.strip().replace("\\", "/")
                 if not head.endswith(".hpp"):
                     continue
                 for h in gfm:
