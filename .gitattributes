@@ -6,6 +6,12 @@
 *.mpp linguist-detectable=true
 *.mpp linguist-documentation=false
 
+# Patch replay and stored final forms must match the generator's LF bytes even
+# when the checkout uses core.autocrlf=true (the Windows runners' default).
+*.cppm text eol=lf
+patches/** text eol=lf
+generated/** text eol=lf
+
 # Vendored upstream bytes are fixed: no end-of-line or encoding conversion, so a
 # Linux and a Windows checkout hash identically (upstream/documents.json and the
 # release archive depend on it).
