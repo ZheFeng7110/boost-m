@@ -5,6 +5,12 @@
 # describe the sources. LLVM is pinned because the AST snapshot must come from
 # the same parser family the committed files were generated with; the MinGW
 # sysroot under tools/_deps is provisioned by fetch_mingw_sysroot.py.
+#
+# LLVM itself is installed from the pinned upstream archive on every run: caching
+# the ~1 GiB dist tree was measured to save no meaningful time. The generator
+# cache under target/gen/exports-cache (bundle TUs, clang++ gate verdicts and
+# incremental-skip keys) is worth caching because it removes the libclang parse
+# and the gate loop entirely on a hit.
 name: Verify Generation Scripts
 
 env:
@@ -90,33 +96,16 @@ jobs:
       # pip's older libclang corrupts the AST even though clang++ passes, so the
       # full upstream release is installed and the driver, C API and builtin
       # headers all come from the pinned LLVM version.
-      - name: Restore extracted LLVM
-        id: llvm-dist
-        uses: actions/cache/restore@v6
-        with:
-          path: ~/llvm/dist
-          key: llvm-dist-v1-${{ runner.os }}-${{ runner.arch }}-${{ env.LLVM_VERSION }}-${{ matrix.llvm_sha256 }}
-
-      - name: Restore LLVM archive
-        id: llvm-archive
-        if: steps.llvm-dist.outputs.cache-hit != 'true'
-        uses: actions/cache/restore@v6
-        with:
-          path: ~/llvm/archive
-          key: llvm-archive-v1-${{ runner.os }}-${{ runner.arch }}-${{ env.LLVM_VERSION }}-${{ matrix.llvm_sha256 }}
-
-      - name: Download LLVM ${{ env.LLVM_VERSION }} archive
-        id: llvm-download
-        if: steps.llvm-dist.outputs.cache-hit != 'true' && steps.llvm-archive.outputs.cache-hit != 'true'
+      - name: Install LLVM ${{ env.LLVM_VERSION }}
         shell: bash
         env:
           LLVM_ARCHIVE: ${{ matrix.llvm_archive }}
           LLVM_SHA256: ${{ matrix.llvm_sha256 }}
         run: |
           set -euo pipefail
-          LLVM_ARCHIVES="$HOME/llvm/archive"
-          ARCHIVE="$LLVM_ARCHIVES/$LLVM_ARCHIVE"
-          mkdir -p "$LLVM_ARCHIVES"
+          LLVM_PREFIX="$HOME/llvm/dist"
+          ARCHIVE="$RUNNER_TEMP/$LLVM_ARCHIVE"
+          mkdir -p "$LLVM_PREFIX" "$RUNNER_TEMP"
 
           curl --fail --location --retry 3 \
             "https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/$LLVM_ARCHIVE" \
@@ -139,28 +128,10 @@ jobs:
           PY
 
           mv "$ARCHIVE.part" "$ARCHIVE"
-
-      - name: Save LLVM archive
-        if: steps.llvm-download.outcome == 'success'
-        uses: actions/cache/save@v6
-        with:
-          path: ~/llvm/archive
-          key: ${{ steps.llvm-archive.outputs.cache-primary-key }}
-
-      - name: Extract LLVM ${{ env.LLVM_VERSION }}
-        if: steps.llvm-dist.outputs.cache-hit != 'true'
-        shell: bash
-        env:
-          LLVM_ARCHIVE: ${{ matrix.llvm_archive }}
-        run: |
-          set -euo pipefail
-          LLVM_PREFIX="$HOME/llvm/dist"
-          ARCHIVE="$HOME/llvm/archive/$LLVM_ARCHIVE"
-          test -f "$ARCHIVE"
-          mkdir -p "$LLVM_PREFIX"
           # Read the archive through stdin: GNU tar on the Windows runner treats
           # a drive letter in `-f D:/...` as a remote host.
           tar -xJf - -C "$LLVM_PREFIX" --strip-components=1 < "$ARCHIVE"
+          rm -f "$ARCHIVE"
 
       - name: Configure LLVM generator environment (Unix)
         if: runner.os != 'Windows'
@@ -194,13 +165,6 @@ jobs:
           "CLANG_RESOURCE_DIR=$resource" >> $env:GITHUB_ENV
           "CLANG_NO_DEFAULT_CONFIG=1" >> $env:GITHUB_ENV
 
-      - name: Save extracted LLVM
-        if: steps.llvm-dist.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
-        with:
-          path: ~/llvm/dist
-          key: ${{ steps.llvm-dist.outputs.cache-primary-key }}
-
       - name: Cache MinGW sysroot archive
         uses: actions/cache@v6
         with:
@@ -208,6 +172,21 @@ jobs:
           key: mingw-sysroot-archive-${{ runner.os }}-${{ hashFiles('tools/fetch_mingw_sysroot.py') }}
           restore-keys: |
             mingw-sysroot-archive-${{ runner.os }}-
+
+      # gen_exports.py caches bundle TUs, clang++ gate verdicts and
+      # incremental-skip keys under target/gen/exports-cache. Every entry is
+      # self-validating (keyed on the content hash of the closure it describes
+      # plus the generator/libclang/clang versions), so restoring an older
+      # commit's cache yields misses rather than wrong output. The salt in the
+      # key only bounds rollover: a generator or sysroot-pin change drops the
+      # restore prefix instead of mixing verdicts across engine changes.
+      - name: Cache generator export intermediates
+        uses: actions/cache@v6
+        with:
+          path: target/gen/exports-cache
+          key: exports-cache-v1-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/boost_common.py', 'tools/curated/**', 'tools/fetch_mingw_sysroot.py', 'tools/uv.lock') }}-${{ github.sha }}
+          restore-keys: |
+            exports-cache-v1-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/boost_common.py', 'tools/curated/**', 'tools/fetch_mingw_sysroot.py', 'tools/uv.lock') }}-
 
       - name: Install tool dependencies
         run: uv sync --project tools --locked
