@@ -43,23 +43,26 @@ class ExportNewlineTests(unittest.TestCase):
         self.assertIn(b"  using boost::example;\n",
                       self.assert_lf("generated/exports/example.inc"))
         self.assertEqual(self.assert_lf("generated/exports/example.deps"),
-                         b"boost.core\n")
+                         (gen_exports.bc.MODULE_PREFIX + ".core\n").encode())
 
     def test_cppm_file(self):
         (self.root / "src").mkdir()
         gen_exports.emit_cppm("example", self.root, gfm_headers=[])
-        self.assertIn(b"export module boost.example;\n",
-                      self.assert_lf("src/example.cppm"))
+        self.assertIn(
+            ("export module {}.example\n"
+             .format(gen_exports.bc.MODULE_PREFIX)).encode(),
+            self.assert_lf("src/example.cppm"))
 
     def test_body_dependency_merge(self):
-        deps = self.root / "src/gen_exports"
+        deps = self.root / "generated" / "exports"
         deps.mkdir(parents=True)
-        (deps / "example.deps").write_bytes(b"boost.core\n")
+        prefix = gen_exports.bc.MODULE_PREFIX
+        (deps / "example.deps").write_bytes((prefix + ".core\n").encode())
         added = gen_exports.merge_body_edges(
             self.root, ["example"], {"example": {"system": ["reference"]}})
         self.assertEqual(added, {"example": {"system": 1}})
         self.assertEqual(self.assert_lf("generated/exports/example.deps"),
-                         b"boost.core\nboost.system\n")
+                         (prefix + ".core\n" + prefix + ".system\n").encode())
 
     def test_scanned_metadata(self):
         output = self.root / "libs.json"

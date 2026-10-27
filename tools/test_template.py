@@ -160,7 +160,15 @@ def main():
     namespace, name, version = package_identity()
     identity = namespace + "." + name
 
-    temporary = Path(tempfile.mkdtemp(prefix=name + "-template-"))
+    # The `mcpp` on PATH is the xlings shim: it resolves the executable from
+    # the project it finds by walking up from the working directory. A scratch
+    # directory under /tmp has no project, so the shim falls back to the
+    # `default` subos, where CI (which installs mcpp from `.xlings.json` into
+    # the project subos only) has no mcpp. Keep the scratch tree inside the
+    # workspace so `mcpp new`, `build` and `run` resolve the pinned tool.
+    scratch = ROOT / ".tmp"
+    scratch.mkdir(parents=True, exist_ok=True)
+    temporary = Path(tempfile.mkdtemp(prefix=name + "-template-", dir=scratch))
     home = temporary / "home"
     package_dir = install_fixture(home, namespace, name, version)
     env = dict(os.environ, MCPP_HOME=str(home))

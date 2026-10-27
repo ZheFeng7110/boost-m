@@ -43,6 +43,10 @@ compile_commands.json
 *.dwo
 *.d
 
+# Local test scratch (tools/test_template.py keeps its workspace here so the
+# mcpp shim can resolve the project-pinned toolchain)
+.tmp/
+
 # Generator caches and the pinned cross sysroot payload
 target/gen/
 tools/_deps/
