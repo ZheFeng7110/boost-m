@@ -42,9 +42,32 @@ name: Build and Tests
 on:
   push:
     branches: [main]
+    paths:
+      - ".github/workflows/tests.yml"
+      - "examples"
+      - "generated"
+      - "port"
+      - "src"
+      - "templates"
+      - "tests"
+      - "upstream/boost"
+      - ".xlings.json"
+      - "build.mcpp"
+      - "mcpp.toml"
   pull_request:
     branches: [main]
-  workflow_dispatch:
+    paths:
+      - ".github/workflows/tests.yml"
+      - "examples"
+      - "generated"
+      - "port"
+      - "src"
+      - "templates"
+      - "tests"
+      - "upstream/boost"
+      - ".xlings.json"
+      - "build.mcpp"
+      - "mcpp.toml"
 
 permissions:
   contents: read
