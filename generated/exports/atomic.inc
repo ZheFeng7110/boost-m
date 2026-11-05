@@ -171,23 +171,23 @@ export namespace boost { namespace atomics { namespace detail {
   using boost::atomics::detail::classify_pointer;
   using boost::atomics::detail::clear_tail_padding_bits;
 #if defined(__GNUC__)
-  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw flavor).
+  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw
+  // flavor).
   using boost::atomics::detail::convert_memory_order_to_gcc;
 #endif
   using boost::atomics::detail::core_arch_operations;
 #if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
-  // M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86 only.
+  // M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86
+  // only.
   using boost::atomics::detail::core_arch_operations_gcc_x86;
-#endif
-#if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
-  // M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86 only.
   using boost::atomics::detail::core_arch_operations_gcc_x86_base;
 #endif
   using boost::atomics::detail::core_operations;
   using boost::atomics::detail::core_operations_emulated;
   using boost::atomics::detail::core_operations_emulated_base;
 #if defined(__GNUC__)
-  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw flavor).
+  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw
+  // flavor).
   using boost::atomics::detail::core_operations_gcc_atomic;
 #endif
   using boost::atomics::detail::deduce_failure_order;
@@ -200,12 +200,14 @@ export namespace boost { namespace atomics { namespace detail {
   using boost::atomics::detail::extra_operations_generic;
   using boost::atomics::detail::fence_arch_operations;
 #if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
-  // M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86 only.
+  // M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86
+  // only.
   using boost::atomics::detail::fence_arch_operations_gcc_x86;
 #endif
   using boost::atomics::detail::fence_operations;
 #if defined(__GNUC__)
-  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw flavor).
+  // M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw
+  // flavor).
   using boost::atomics::detail::fence_operations_gcc_atomic;
 #endif
   using boost::atomics::detail::fp_operations;

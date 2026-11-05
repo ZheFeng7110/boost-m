@@ -1,11 +1,10 @@
-"""The syntax gate must prune the same headers on every host platform."""
-import subprocess
+"""The compile gate must prune the same headers on every host platform."""
 import tempfile
-import types
 import unittest
 from pathlib import Path
 from unittest import mock
 
+import ast_json
 import gen_exports
 
 
@@ -17,19 +16,15 @@ class ExportGateTests(unittest.TestCase):
         self.deps = self.root / "upstream" / "boost"
         self.icu = self.deps / "boost/regex/icu.hpp"
         self.regex = self.deps / "boost/regex.hpp"
-        self.tu = types.SimpleNamespace(diagnostics=[])
-        self.index = mock.Mock()
-        self.index.parse.return_value = self.tu
-        self.ci = mock.Mock()
-        self.ci.Index.create.return_value = self.index
+        self.tu = ast_json.TU()
+        self.policy = gen_exports.Policy({})
         for patcher in (
             mock.patch.object(gen_exports.bc, "ROOT", self.root),
             mock.patch.object(gen_exports.bc, "DEPS", self.deps),
             mock.patch.object(gen_exports.bc, "CACHE_DIR", self.root / "cache"),
             mock.patch.object(gen_exports.bc, "CLANG_ARGS", []),
-            mock.patch.object(gen_exports.bc, "get_ci", return_value=self.ci),
             mock.patch.object(gen_exports, "_closure_hash", return_value="closure"),
-            mock.patch.object(gen_exports, "_clang_version", return_value="clang 23"),
+            mock.patch.object(gen_exports.aj, "clang_version", return_value="clang 23"),
         ):
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -45,25 +40,32 @@ class ExportGateTests(unittest.TestCase):
                     "{0}/boost/regex/v5/icu.hpp:23:10: fatal error: "
                     "'unicode/utypes.h' file not found\n"
                 ).format(prefix)
-                with mock.patch("subprocess.run", side_effect=[
-                    subprocess.CompletedProcess([], 1, "", stderr),
-                    subprocess.CompletedProcess([], 0, "", ""),
-                ]) as gate:
-                    result = gen_exports._parse_bundle(
-                        "regex", [self.icu, self.regex], use_cache=False)
+                with mock.patch.object(gen_exports.aj, "dump", side_effect=[
+                    ast_json.DumpError(1, stderr), self.tu,
+                ]) as dump:
+                    result = gen_exports.parse_bundle(
+                        "regex", [self.icu, self.regex], self.policy,
+                        use_cache=False)
                 self.assertEqual(result, (self.tu, [self.regex]))
-                self.assertEqual(gate.call_count, 2)
+                self.assertEqual(dump.call_count, 2)
                 bundle = self.root / "cache/bundles/regex.cpp"
                 self.assertEqual(bundle.read_text(), "#include <boost/regex.hpp>\n")
 
     def test_unrelated_error_still_fails(self):
         stderr = "D:/sdk/missing.hpp:12:3: fatal error: 'missing.h' file not found\n"
-        with mock.patch("subprocess.run", return_value=
-                        subprocess.CompletedProcess([], 1, "", stderr)) as gate:
-            self.assertIsNone(gen_exports._parse_bundle(
-                "regex", [self.icu, self.regex], use_cache=False))
-        gate.assert_called_once()
-        self.index.parse.assert_not_called()
+        with mock.patch.object(gen_exports.aj, "dump", side_effect=
+                               ast_json.DumpError(1, stderr)) as dump:
+            self.assertIsNone(gen_exports.parse_bundle(
+                "regex", [self.icu, self.regex], self.policy, use_cache=False))
+        dump.assert_called_once()
+
+    def test_policy_defines_reach_the_compile(self):
+        policy = gen_exports.Policy({"regex": {"defines": ["X_ONLY"]}})
+        with mock.patch.object(gen_exports.aj, "dump",
+                               return_value=self.tu) as dump:
+            gen_exports.parse_bundle("regex", [self.regex], policy,
+                                     use_cache=False)
+        self.assertIn("-DX_ONLY", dump.call_args.args[1])
 
 
 if __name__ == "__main__":

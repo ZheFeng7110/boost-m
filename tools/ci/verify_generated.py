@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Verify that the repository's generation steps are idempotent.
+"""Verify that the committed generated files are exactly the generators' output.
 
-The repository commits the outputs of the generation scripts.  CI therefore
-runs each step from a clean checkout and uses ``git diff`` as the oracle: a
-step is allowed to create ignored caches, but it must not modify tracked
-files (or leave non-ignored untracked files behind).
+The repository commits the outputs of the generation scripts.  Each generator
+has a ``--check`` mode that regenerates into a scratch location and compares
+byte for byte without touching the tree (``gen_exports.py --check``,
+``gen_features.py --check``); this driver runs them from a clean checkout and
+finally asserts that no step modified tracked files or left untracked ones.
 
 ``import_boost.py`` is different from the other steps.  Re-vendoring restores
 the upstream files under ``upstream/boost/`` and intentionally removes the
-project's vendored patches; ``reapply_hand_edits.py`` must be run afterwards.
+project's vendored patches; ``apply_patches.py`` must be run afterwards.
 The workflow runs this optional pair only once, on the Linux leg, when
-``tools/import_boost.py`` changed relative to the CI base revision.  The tool
-caches and the LLVM/libclang payload the AST steps need are prepared from
-``tools/uv.lock`` and are not committed.
+``tools/import_boost.py`` changed relative to the CI base revision.  The AST
+steps need only ``clang++`` (no libclang) and the pinned MinGW sysroot.
 
 Usage:
     python3 tools/ci/verify_generated.py
@@ -138,24 +138,19 @@ def main():
 
     if args.import_boost_if_changed and import_boost_changed():
         # import_boost intentionally removes the vendored patches, so its
-        # intermediate diff is expected.  The following reapply step is the
+        # intermediate diff is expected.  The following apply_patches step is the
         # idempotent boundary checked by CI and restores the committed state.
         run_step("import_boost.py", check_diff=False)
-        run_step("reapply_hand_edits.py")
+        run_step("apply_patches.py")
     elif args.import_boost_if_changed:
         print("skip tools/import_boost.py (unchanged)")
 
-    # Keep this order aligned with docs/architecture.md and the documented
-    # regeneration flow: provision the pinned target headers, replay the
-    # vendored adaptations, generate the export surface, replay the
-    # module-side hand edits, then regenerate the derived metadata.
+    # Keep this order aligned with docs/architecture.md: provision the pinned
+    # target headers, confirm the vendored adaptations are in place, then
+    # prove every generated file is current.
     run_step("fetch_mingw_sysroot.py")
-    # gen_exports emits drafts before the required hand-edit replay.  Its
-    # intermediate diff is therefore expected; the replay below is the
-    # idempotent boundary for this generation pair.
-    run_step("gen_exports.py", "--emit-cppm", check_diff=False)
-    run_step("reapply_hand_edits.py")
-    run_step("gen_features.py")
+    run_step("apply_patches.py")
+    run_step("gen_exports.py", "--check")
     run_step("gen_features.py", "--check")
     run_step("gen_audit.py")
     run_step("gen_audit.py", "--macros")

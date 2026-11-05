@@ -1,5 +1,6 @@
 mcpplibs.mwrap.boost.assert
 mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.io
 mcpplibs.mwrap.boost.lambda
 mcpplibs.mwrap.boost.math
 mcpplibs.mwrap.boost.type_traits

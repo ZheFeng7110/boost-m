@@ -161,7 +161,8 @@ export namespace boost { namespace core { namespace detail {
   using boost::core::detail::byteswap_impl;
   using boost::core::detail::class_template_name;
 #if defined(__GNUC__)
-  // M3 hand-guard: boost/core/cmath.hpp defines copysign_impl only on gcc-like compilers.
+  // M3 hand-guard: boost/core/cmath.hpp defines copysign_impl only on gcc-like
+  // compilers.
   using boost::core::detail::copysign_impl;
 #endif
   using boost::core::detail::countl_impl;
@@ -178,8 +179,9 @@ export namespace boost { namespace core { namespace detail {
   using boost::core::detail::sequence_template_name;
   using boost::core::detail::set_template_name;
 #if defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)
-  // M6 platform guard: sp_thread_sleep/yield live in boost::core::detail only on Windows;
-  // on POSIX (nanosleep/sched_yield branch of the header) they are declared in boost::core.
+  // M6 platform guard: sp_thread_sleep/yield live in boost::core::detail only on
+  // Windows; on POSIX (nanosleep/sched_yield branch of the header) they are
+  // declared in boost::core.
   using boost::core::detail::sp_thread_sleep;
   using boost::core::detail::sp_thread_yield;
 #else

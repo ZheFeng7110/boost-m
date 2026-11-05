@@ -1,1424 +1,948 @@
 #!/usr/bin/env python3
-"""gen_exports.py — generate export using-lists for the Boost module layer.
+"""gen_exports.py — generate the export using-lists of the Boost module layer.
 
-For each target library, parses one "bundle" TU that includes all of the
-library's public headers (the future .cppm GMF include set), collects every
-namespace-scope boost:: entity with external linkage declared in those headers,
-computes a dependency closure over the entity signatures (cross-library: e.g.
-filesystem pulls boost::system::error_code), and emits generated/exports/<lib>.inc
-containing M0-verified `export namespace boost { using ...; }` blocks.
+Principle (see docs/architecture.md §5): the compiler computes the public
+surface, the generator only lists it. For each target library one bundle
+translation unit includes the library's public headers (the module's GMF
+include set) and is compiled once with
 
-Cross-module dedup: libraries are processed dependencies-first (include-based
-topological order); the first library to claim an entity's USR owns it, later
-libraries omit it and record `export import mcpplibs.mwrap.boost.<home>;` hints in <lib>.deps.
+    clang++ -fsyntax-only -Xclang -ast-dump=json -Xclang -ast-dump-filter=boost
 
-Two-pass .deps completion (2026-09-08, fixes the C4 §4.2 structural defect):
-pass 1 (above) is left untouched — first-wins ownership is frozen, so .inc
-output is bit-identical to the pre-fix generator. Pass 2 then walks the
-BODIES of every exported entity (signatures alone under-approximate: view
-iterators reach boost.iterator entities only through bodies/base specs, and
-the include-graph extra_deps walk stops at target-owned roots — together
-these lost bimap's boost.iterator edge when lambda became a target lib, C4
-§4.1). Each boost:: entity referenced from an exported body contributes a
-candidate edge to its home lib; edges that are already transitive or would
-close a cycle are dropped, the rest are unioned into <lib>.deps. Pass 2 also
-re-tokenizes variable-template declarations (libclang hides their initializer
-behind an opaque UNEXPOSED_DECL) and resolves the qualified name chains in the
-initializer — `boost::...` as-is (A1) and relative names against the variable
-template's enclosing namespaces (A2); macro-expanded / aliased references
-remain uncovered.
+(tools/ast_json.py). From that AST the generator collects every namespace-
+scope `boost::` entity with external linkage the library owns, closes the set
+over the entity signatures, and writes
+
+    generated/exports/<lib>.inc     export namespace boost { using ...; }
+    generated/exports/<lib>.deps    export-import edges (complete module names)
+    generated/meta/api-surface.json generator identity + per-library summary
+    generated/meta/skipped.txt      every name the policy guards or drops
+
+Nothing else edits these files. What the AST cannot decide — platform-only
+declarations of the fixed MinGW snapshot, names that must not be exported,
+GMF overrides, verbatim lines — is declared in tools/export_policy.toml with a
+written reason and applied here, so the committed output is exactly what the
+generator writes and `--check` can prove it byte for byte.
+
+The `src/<lib>.cppm` interfaces are hand-maintained facades: GMF includes,
+`export import` edges and `#include` of the generated list. The generator never
+rewrites them; `--check` verifies that each facade's GMF include set equals the
+bundle's (gate-pruned) include set the export list was computed from.
+
+Ownership and dedup: libraries are processed dependencies-first (include-based
+topological order); the first library to claim an entity owns it, later
+libraries omit it and record `export import mcpplibs.mwrap.boost.<home>;` in
+<lib>.deps. Pass 2 walks the bodies of every exported entity and adds the
+edges a consumer of that module needs (cycles and transitive edges skipped).
 
 Usage:
+    python tools/gen_exports.py                   # all target libraries
+    python tools/gen_exports.py --libs optional system
+    python tools/gen_exports.py --check           # byte-compare, write nothing
+    python tools/gen_exports.py --emit-cppm       # draft facades that are missing
     python tools/gen_exports.py --scan            # regenerate generated/meta/libs.json
-    python tools/gen_exports.py                   # all 27 target libs
-    python tools/gen_exports.py --libs optional system --full-closure
-    python tools/gen_exports.py --emit-cppm       # also draft src/<lib>.cppm
 """
 
 import argparse
+import difflib
 import hashlib
 import json
-import os
 import re
+import shutil
 import sys
+import tempfile
 import time
+import tomllib
 from collections import deque
 from pathlib import Path
 
+import ast_json as aj
 import boost_common as bc
 
-ci = None
+POLICY_FILE = bc.TOOLS / "export_policy.toml"
+SURFACE_JSON = bc.ROOT / "generated" / "meta" / "api-surface.json"
+SKIPPED_TXT = bc.ROOT / "generated" / "meta" / "skipped.txt"
 
 
 # ---------------------------------------------------------------------------
-# caching (incremental skip + clang++ gate verdicts)
+# policy (tools/export_policy.toml)
 # ---------------------------------------------------------------------------
 
-_CODE_HASH = None
+class Policy:
+    """Per-library decisions the AST cannot make, each with a reason.
 
+    [<lib>]
+      gmf               exact GMF/bundle include set (relative to upstream/boost)
+      defines           extra -D macros for the bundle (match the .cppm GMF)
+      inline-namespaces export these inline namespaces' members through the
+                        enclosing namespace (macro-selected inline namespace)
+      add               qualified names to export even though no collector
+                        reaches them (body-only references, ADL-only friends)
+      facade-includes   headers the src/<lib>.cppm GMF includes beyond the
+                        bundle (not part of the export computation)
+    [[<lib>.guard]]     if / reason / names / else — wrap the matching exports
+                        in `#if <if>`; `else` lines go to the `#else` branch
+    [[<lib>.drop]]      reason / names / namespaces — never export the
+                        matching names (or anything inside the namespaces)
+    [[<lib>.extra]]     namespace / reason / lines — verbatim declarations
+    [<lib>.deps]        add / remove / reason — module edge corrections
 
-def _code_hash():
-    """Hash of the generator sources — any logic change invalidates caches."""
-    global _CODE_HASH
-    if _CODE_HASH is None:
-        h = hashlib.sha256()
-        for p in (Path(__file__).resolve(),
-                  (bc.TOOLS / "boost_common.py").resolve()):
-            h.update(p.name.encode("utf-8"))
-            h.update(p.read_bytes())
-        _CODE_HASH = h.hexdigest()
-    return _CODE_HASH
-
-
-_CLANG_VERSION = None
-
-
-def _clang_command(*args):
-    """Build the clang++ command used by the syntax gate.
-
-    xlings' host LLVM package installs a default config file for native builds.
-    The generator is a cross-target MinGW parse, so CI can request that clang
-    ignore the host config while retaining the explicit target/sysroot flags.
+    A `names` entry containing `::` matches a qualified name exactly; a bare
+    identifier matches any `::` segment of the exported name.
     """
-    command = [os.environ.get("CXX") or "clang++"]
-    if os.environ.get("CLANG_NO_DEFAULT_CONFIG"):
-        command.append("--no-default-config")
-    return command + list(args)
+
+    def __init__(self, data):
+        self.data = data
+
+    @classmethod
+    def load(cls, path=POLICY_FILE):
+        if not path.is_file():
+            return cls({})
+        with open(path, "rb") as f:
+            return cls(tomllib.load(f))
+
+    def lib(self, lib):
+        return self.data.get(lib, {})
+
+    def gmf(self, lib):
+        return self.lib(lib).get("gmf")
+
+    def defines(self, lib):
+        return list(self.lib(lib).get("defines", ()))
+
+    def inline_namespaces(self, lib):
+        return list(self.lib(lib).get("inline-namespaces", ()))
+
+    def add(self, lib):
+        return list(self.lib(lib).get("add", ()))
+
+    def guards(self, lib):
+        return list(self.lib(lib).get("guard", ()))
+
+    def drops(self, lib):
+        return list(self.lib(lib).get("drop", ()))
+
+    def extras(self, lib):
+        return list(self.lib(lib).get("extra", ()))
+
+    def deps(self, lib):
+        return self.lib(lib).get("deps", {})
+
+    def facade_includes(self, lib):
+        return list(self.lib(lib).get("facade-includes", ()))
+
+    def digest(self, lib):
+        return hashlib.sha256(json.dumps(
+            self.lib(lib), sort_keys=True).encode()).hexdigest()
 
 
-def _clang_version():
-    global _CLANG_VERSION
-    if _CLANG_VERSION is None:
-        import subprocess
-        r = subprocess.run(_clang_command("--version"), capture_output=True,
-                           text=True)
-        _CLANG_VERSION = (r.stdout or r.stderr).splitlines()[0] \
-            if (r.stdout or r.stderr) else "unknown"
-    return _CLANG_VERSION
+def _matches(qname, names):
+    segments = qname.lstrip(":").split("::")
+    for n in names:
+        if "::" in n:
+            if qname.lstrip(":") == n.lstrip(":"):
+                return True
+        elif n in segments:
+            return True
+    return False
 
 
-def _initial_gfm(lib, gfm_headers):
-    """Include set _parse_bundle starts from (GMF override applied)."""
-    if lib in GMF_OVERRIDE:
-        return [bc.DEPS / h for h in GMF_OVERRIDE[lib]]
-    return list(gfm_headers)
+# ---------------------------------------------------------------------------
+# semantic model over the AST declaration table
+# ---------------------------------------------------------------------------
+
+EXPORT_KINDS = frozenset((
+    "CXXRecordDecl", "RecordDecl", "EnumDecl", "EnumConstantDecl",
+    "FunctionDecl", "FunctionTemplateDecl", "VarDecl", "VarTemplateDecl",
+    "TypedefDecl", "TypeAliasDecl", "TypeAliasTemplateDecl",
+    "ClassTemplateDecl", "ClassTemplatePartialSpecializationDecl",
+    "ConceptDecl",
+))
+SPECIALIZATION_KINDS = frozenset((
+    "ClassTemplateSpecializationDecl", "ClassTemplatePartialSpecializationDecl",
+    "VarTemplateSpecializationDecl", "VarTemplatePartialSpecializationDecl",
+))
+CLASS_KINDS = frozenset(("CXXRecordDecl", "RecordDecl", "ClassTemplateDecl",
+                         "ClassTemplateSpecializationDecl"))
+TYPE_ENTITY_KINDS = frozenset((
+    "CXXRecordDecl", "RecordDecl", "EnumDecl", "ClassTemplateDecl",
+    "ClassTemplatePartialSpecializationDecl",
+    "ClassTemplateSpecializationDecl",
+))
+ALIAS_KINDS = frozenset(("TypedefDecl", "TypeAliasDecl",
+                         "TypeAliasTemplateDecl"))
+METHOD_KINDS = frozenset(("CXXMethodDecl", "CXXConstructorDecl",
+                          "CXXDestructorDecl", "CXXConversionDecl"))
+VAR_TEMPLATE_KIND = "VarTemplateDecl"
+
+# Identifiers that can appear in a printed type but never name an entity.
+_TYPE_WORDS = frozenset("""
+    const volatile typename struct class union enum unsigned signed short long
+    int char bool void float double auto decltype sizeof alignof noexcept
+    wchar_t char8_t char16_t char32_t nullptr_t restrict template operator
+    __int128 _Bool __restrict true false requires
+""".split())
+_ID_CHAIN = re.compile(r"(?<![\w:>])((?:::)?[A-Za-z_]\w*(?:::[A-Za-z_]\w*)*)")
+_UNNAMED = re.compile(r"\((?:unnamed|anonymous|lambda)[^()]*\)")
 
 
-def _bundle_text(gfm):
-    return "\n".join("#include <{}>".format(
-        h.relative_to(bc.DEPS).as_posix()) for h in gfm) + "\n"
+def names_in_type(text):
+    """Qualified-id chains spelled in a printed type (`boost::a::b<T, c::d>`
+    yields boost::a::b, T, c::d). Members of dependent types (`X<T>::type`)
+    are not chains of their own."""
+    if not text:
+        return
+    text = _UNNAMED.sub("", text)
+    for m in _ID_CHAIN.finditer(text):
+        name = m.group(1)
+        if name in _TYPE_WORDS:
+            continue
+        yield name
 
 
-_FILE_HASH = {}
-_INC_CACHE = {}
-_HDR_INFO = {}
+_UNKNOWN = aj.Decl("", "<unknown context>")
 
 
-def _file_hash(path):
-    h = _FILE_HASH.get(path)
+class Model:
+    """Semantic queries over one bundle TU (ast_json.TU)."""
+
+    def __init__(self, tu):
+        self.tu = tu
+        self.by_id = tu.by_id
+        self.decls = sorted(tu.decls, key=lambda d: d.seq)
+        self._canon = {}
+        self._group = {}
+        self._qn = {}
+        self._qindex = None
+        self._export_qindex = None
+        for d in self.decls:
+            self._group.setdefault(self.canon(d), []).append(d)
+        # `typedef enum { a, b } name;` — the typedef gives the unnamed enum
+        # its name for linkage purposes; the enumerators are spelled
+        # `ns::name::a` and have external linkage.
+        unnamed = {d.id: d for d in self.decls
+                   if d.kind == "EnumDecl" and not d.name}
+        if unnamed:
+            for d in self.decls:
+                if d.kind == "TypedefDecl" and d.refs:
+                    for rid in d.refs:
+                        e = unnamed.get(rid)
+                        if e is not None and e.parent is d.parent:
+                            e.name = d.name
+                            del unnamed[rid]
+                            break
+
+    # -- structure ---------------------------------------------------------
+
+    def canon(self, d):
+        """First declaration of `d`'s redeclaration chain."""
+        c = self._canon.get(d.id)
+        if c is not None:
+            return c
+        cur, seen = d, set()
+        while True:
+            prev = cur.attrs.get("previousDecl")
+            p = self.by_id.get(prev) if prev else None
+            if p is None or p.id in seen:
+                break
+            seen.add(cur.id)
+            cur = p
+        self._canon[d.id] = cur
+        return cur
+
+    def redecls(self, d):
+        return self._group.get(self.canon(d), [d])
+
+    @staticmethod
+    def is_pattern(d):
+        p = d.parent
+        return p is not None and p.kind in aj.TEMPLATE_KINDS and p.pattern is d
+
+    def entity(self, d):
+        """The declaration that stands for `d` as an exportable entity: the
+        template for a template pattern, `d` itself otherwise."""
+        if self.is_pattern(d):
+            return d.parent
+        return d
+
+    def sem_parent(self, d):
+        """Semantic parent: `parentDeclContextId` when clang prints one (an
+        out-of-line definition), else the lexical parent. A context that was
+        dropped as an instantiation resolves to its template; an unknown one
+        yields the `_UNKNOWN` placeholder, never the lexical namespace."""
+        pid = d.attrs.get("parentDeclContextId")
+        if pid:
+            p = self.tu.resolve(pid)
+            return p if p is not None else _UNKNOWN
+        return d.parent
+
+    def qualified_name(self, d):
+        """boost::a::b for namespace members and class members (class name
+        included); '' inside anonymous namespaces, functions or linkage
+        specifications, mirroring the scopes a using-declaration can name."""
+        q = self._qn.get(d.id)
+        if q is not None:
+            return q
+        names = []
+        cur = d
+        result = ""
+        while True:
+            p = self.sem_parent(cur)
+            if p is not None and p.kind in aj.TEMPLATE_KINDS and \
+                    p.pattern is cur:
+                cur = p                     # template wrapper: same entity
+                continue
+            if p is None:
+                if cur.name:
+                    result = "::".join([cur.name] + names[::-1])
+                break
+            pk = p.kind
+            if pk == "NamespaceDecl":
+                if not p.name:
+                    break                   # anonymous namespace
+            elif pk == "EnumDecl":
+                if not p.name:
+                    if cur.name:            # unnamed enum is transparent
+                        names.append(cur.name)
+                    cur = p
+                    continue
+            elif pk not in CLASS_KINDS and pk not in ALIAS_KINDS:
+                break
+            if not cur.name:
+                break
+            names.append(cur.name)
+            cur = p
+        self._qn[d.id] = result
+        return result
+
+    def namespace_chain(self, d):
+        """['boost', 'mp11'] for a namespace-scope declaration; [] for class
+        members, locals, anonymous-namespace and linkage-spec contents."""
+        chain = []
+        cur = self.entity(d)
+        while True:
+            p = self.sem_parent(cur)
+            if p is None:
+                return chain[::-1]
+            if p.kind != "NamespaceDecl" or not p.name:
+                return []
+            chain.append(p.name)
+            cur = p
+
+    def scope_names(self, d):
+        """Qualified scope prefixes for unqualified lookup from inside `d`,
+        innermost first (class scopes included)."""
+        qn = self.qualified_name(self.entity(d))
+        parts = qn.split("::") if qn else []
+        return ["::".join(parts[:k]) for k in range(len(parts), 0, -1)]
+
+    def in_anonymous_namespace(self, d):
+        cur = d
+        while cur is not None:
+            p = self.sem_parent(cur)
+            if p is not None and p.kind == "NamespaceDecl" and not p.name:
+                return True
+            cur = p
+        return False
+
+    # -- definitions, files, linkage --------------------------------------
+
+    @staticmethod
+    def is_definition(d):
+        k = d.kind
+        if k in aj.TEMPLATE_KINDS:
+            return d.pattern is not None and Model.is_definition(d.pattern)
+        if k in aj.RECORD_KINDS:
+            return bool(d.attrs.get("completeDefinition"))
+        if k in aj.FUNCTION_KINDS:
+            return d.has_body or bool(d.attrs.get("explicitlyDefaulted")) or \
+                bool(d.attrs.get("explicitlyDeleted"))
+        if k == "VarDecl":
+            return d.attrs.get("storageClass") != "extern" or "init" in d.attrs
+        if k == "EnumDecl":
+            return bool(d.children) or "fixedUnderlyingType" in d.attrs
+        return True
+
+    def definition(self, d):
+        for r in self.redecls(d):
+            if self.is_definition(r):
+                return r
+        return None
+
+    def linkage_ok(self, d):
+        """External linkage (what a using-declaration may export). Typedef
+        names have no linkage but are exportable namespace members."""
+        k = d.kind
+        if k in ("TypedefDecl", "TypeAliasDecl"):
+            return True
+        if self.in_anonymous_namespace(d):
+            return False
+        if k == "EnumConstantDecl":
+            enum = self.sem_parent(d)
+            return enum is not None and bool(enum.name) and \
+                self.linkage_ok(enum)
+        if k in TYPE_ENTITY_KINDS or k in ("TypeAliasTemplateDecl",
+                                           "ConceptDecl"):
+            return bool(d.name)
+        target = d.pattern if k in aj.TEMPLATE_KINDS else d
+        if target is None:
+            return True
+        for r in self.redecls(d):
+            t = r.pattern if r.kind in aj.TEMPLATE_KINDS else r
+            if t is not None and t.attrs.get("storageClass") == "static":
+                return False
+        if target.kind == "VarDecl" and k == "VarDecl":
+            mangled = target.attrs.get("mangledName", "")
+            if mangled:
+                return not _internal_mangling(mangled)
+            return not (_top_const(target.type) and
+                        not target.attrs.get("inline") and
+                        target.attrs.get("storageClass") != "extern")
+        if target.kind in aj.FUNCTION_KINDS:
+            mangled = target.attrs.get("mangledName", "")
+            if mangled and _internal_mangling(mangled):
+                return False
+        return True
+
+    def is_specialization(self, d):
+        if d.kind in SPECIALIZATION_KINDS:
+            return True
+        return d.kind in aj.FUNCTION_KINDS and d.targs
+
+    # -- indexes ------------------------------------------------------------
+
+    def indexed(self):
+        """Pre-order declarations the module layer can see (not compiler-
+        implicit, not friend-only declarations)."""
+        for d in self.decls:
+            if d.attrs.get("isImplicit") or d.friend:
+                continue
+            if self.is_pattern(d):
+                continue
+            yield d
+
+    def qindex(self):
+        """{qualified name: [decl, ...]} over every visible declaration."""
+        if self._qindex is None:
+            idx = {}
+            for d in self.indexed():
+                qn = self.qualified_name(d)
+                if qn:
+                    idx.setdefault(qn, []).append(d)
+            self._qindex = idx
+        return self._qindex
+
+    def export_qindex(self):
+        """{qualified name: [decl, ...]} over exportable kinds only."""
+        if self._export_qindex is None:
+            idx = {}
+            for qn, ds in self.qindex().items():
+                es = [d for d in ds if d.kind in EXPORT_KINDS]
+                if es:
+                    idx[qn] = es
+            self._export_qindex = idx
+        return self._export_qindex
+
+    def lookup(self, chain, scopes):
+        """Declarations a written name chain denotes: relative names are
+        looked up from the innermost enclosing scope outwards, then globally;
+        `::x` is global only."""
+        idx = self.qindex()
+        if chain.startswith("::"):
+            cands = [chain[2:]]
+        else:
+            cands = [s + "::" + chain for s in scopes] + [chain]
+        for c in cands:
+            ds = idx.get(c)
+            if ds:
+                return ds
+        return ()
+
+    def promote(self, d):
+        """Climb from a class member to the namespace-scope entity; an
+        explicit specialization stands for its primary template."""
+        cur = self.primary(self.entity(d))
+        while True:
+            p = self.sem_parent(cur)
+            if p is None:
+                return cur
+            if p.kind in CLASS_KINDS:
+                cur = self.primary(self.entity(p))
+                continue
+            return cur
+
+    def primary(self, d):
+        """Primary template of a specialization (itself otherwise)."""
+        if d.kind in SPECIALIZATION_KINDS or (
+                d.kind in aj.FUNCTION_KINDS and d.targs):
+            want = {"ClassTemplateSpecializationDecl": "ClassTemplateDecl",
+                    "ClassTemplatePartialSpecializationDecl":
+                        "ClassTemplateDecl",
+                    "VarTemplateSpecializationDecl": "VarTemplateDecl",
+                    "VarTemplatePartialSpecializationDecl":
+                        "VarTemplateDecl"}.get(d.kind, "FunctionTemplateDecl")
+            for t in self.qindex().get(self.qualified_name(d), ()):
+                if t.kind == want:
+                    return t
+        return d
+
+    def namespaces(self):
+        """Qualified names of every named namespace in the TU."""
+        return {self.qualified_name(d) for d in self.decls
+                if d.kind == "NamespaceDecl" and d.name} - {""}
+
+    def type_targets(self, text, scopes, depth=0, seen=None):
+        """Entities a printed type refers to, with typedefs and alias
+        templates looked through (the canonical-type view of a signature)."""
+        if seen is None:
+            seen = set()
+        for name in names_in_type(text):
+            for t in self.lookup(name, scopes):
+                if t.id in seen:
+                    continue
+                seen.add(t.id)
+                k = t.kind
+                if k in ALIAS_KINDS:
+                    if depth >= 8:
+                        continue
+                    a = t.pattern if k == "TypeAliasTemplateDecl" else t
+                    if a is None:
+                        continue
+                    yield from self.type_targets(
+                        a.dtype or a.type, self.scope_names(t), depth + 1,
+                        seen)
+                elif k in TYPE_ENTITY_KINDS:
+                    yield t
+
+    def stable_key(self, d):
+        """Cross-TU identity of an entity (the role libclang's USR played):
+        the Itanium mangling where clang prints one, else kind + qualified
+        name (+ signature for function templates)."""
+        d = self.canon(d)       # every redeclaration maps to one key
+        k = d.kind
+        qn = self.qualified_name(d)
+        if k in aj.FUNCTION_KINDS or k == "VarDecl":
+            m = d.attrs.get("mangledName")
+            if m:
+                return "m:" + m
+            return "{}:{}|{}".format(k, qn, d.dtype or d.type)
+        if k == "FunctionTemplateDecl":
+            p = d.pattern
+            return "ft:{}|{}".format(qn, p.type if p is not None else "")
+        if k in ("CXXRecordDecl", "RecordDecl", "ClassTemplateDecl"):
+            return "c:" + qn
+        if k in SPECIALIZATION_KINDS:
+            return "s:{}|{}".format(qn, d.id)
+        return "{}:{}".format(k, qn)
+
+
+def _internal_mangling(m):
+    """Itanium marks internal-linkage names with `L` before the source name:
+    `_ZL3foo`, `_ZN5boost6detailL3fooE`."""
+    if m.startswith("_ZL"):
+        return True
+    if not m.startswith("_ZN"):
+        return False
+    i = 3
+    while i < len(m) and m[i] in "rVK":
+        i += 1
+    while i < len(m):
+        c = m[i]
+        if c == "L":
+            return True
+        if c.isdigit():
+            j = i
+            while j < len(m) and m[j].isdigit():
+                j += 1
+            i = j + int(m[i:j])
+        elif m.startswith("St", i):
+            i += 2
+        else:
+            return False
+    return False
+
+
+def _top_const(qt):
+    """Top-level const of a printed object type: `const T`, `T *const`."""
+    t = re.sub(r"<[^<>]*>", "", qt or "")
+    while "<" in t:
+        n = re.sub(r"<[^<>]*>", "", t)
+        if n == t:
+            break
+        t = n
+    t = t.strip()
+    if "(" in t:
+        return False
+    ptr = max(t.rfind("*"), t.rfind("&"))
+    if ptr >= 0:
+        return bool(re.search(r"\bconst\b", t[ptr + 1:]))
+    return bool(re.search(r"\bconst\b", t))
+
+
+# ---------------------------------------------------------------------------
+# collectors
+# ---------------------------------------------------------------------------
+
+_FILE_TO_LIB = {}
+_HOME_MEMO = {}
+
+
+def home_of_file(path):
+    h = _HOME_MEMO.get(path)
     if h is None:
-        try:
-            h = hashlib.sha256(path.read_bytes()).hexdigest()
-        except OSError:
-            h = "missing"
-        _FILE_HASH[path] = h
+        h = _HOME_MEMO[path] = bc.home_lib_of_file(Path(path), _FILE_TO_LIB) \
+            if path else "shared"
     return h
 
 
-def _boost_includes(path):
-    incs = _INC_CACHE.get(path)
-    if incs is None:
-        try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            text = ""
-        incs = _INC_CACHE[path] = [m.group(1)
-                                   for m in bc._INC_RE.finditer(text)]
-    return incs
-
-
-def _norm(path):
-    """Memoized normcase/abspath — Path.resolve() is a filesystem syscall on
-    Windows and is prohibitively slow at closure-walk volume."""
-    key = str(path)
-    v = _HDR_INFO.get("n:" + key)
-    if v is None:
-        try:
-            v = str(path.resolve()).lower()
-        except OSError:
-            v = key.lower()
-        _HDR_INFO["n:" + key] = v
-    return v
-
-
-def _hdr_info(path):
-    """(abspath, rel, content-hash, [include target Paths]) per header, all
-    memoized — the closure walk below is then a pure graph traversal."""
-    key = _norm(path)
-    info = _HDR_INFO.get(key)
-    if info is None:
-        p = Path(key)
-        try:
-            rel = p.relative_to(bc.DEPS).as_posix()
-        except ValueError:
-            rel = p.as_posix()
-        h = _file_hash(p)
-        incs = []
-        for r in _boost_includes(p):
-            ip = bc.BOOST_ROOT.parent / r
-            ikey = str(ip)
-            ex = _HDR_INFO.get("e:" + ikey)
-            if ex is None:
-                ex = _HDR_INFO["e:" + ikey] = ip.is_file()
-            if ex:
-                incs.append(ip)
-        info = _HDR_INFO[key] = (rel, h, incs)
-    return (key,) + info
-
-
-def _closure_hash(lib, gfm):
-    """Content hash over every boost header transitively reachable from the
-    bundle's include set — header edits anywhere in the closure invalidate
-    the caches. All per-file work is memoized (see _hdr_info)."""
-    h = hashlib.sha256()
-    h.update("lib:{}\n".format(lib).encode())
-    seen = set()
-    stack = [list(gfm)]
-    while stack:
-        for f in stack.pop():
-            key, rel, digest, incs = _hdr_info(f)
-            if key in seen:
-                continue
-            seen.add(key)
-            h.update("{} {}\n".format(rel, digest).encode())
-            if incs:
-                stack.append(incs)
-    return h.hexdigest()
-
-
-def _skip_key(lib, gfm_headers, upstream_keys, libs, full_closure,
-              no_body_deps):
-    """Incremental-skip cache key: everything the .inc/.deps output for `lib`
-    deterministically depends on, plus the keys of its upstream libs (so any
-    upstream regeneration invalidates downstream)."""
-    h = hashlib.sha256()
-    h.update(b"code:" + _code_hash().encode())
-    h.update(b"bundle:" + _bundle_text(
-        _initial_gfm(lib, gfm_headers)).encode())
-    h.update(b"closure:" + _closure_hash(lib, gfm_headers).encode())
-    h.update(b"extra:" + ",".join(EXTRA_DEFINES.get(lib, ())).encode())
-    h.update(b"clang_args:" + " ".join(bc.CLANG_ARGS).encode())
-    h.update(b"libclang:" + bc.libclang_version().encode())
-    curated = bc.CURATED_DIR / (lib + ".txt")
-    if curated.exists():
-        h.update(b"curated:" + curated.read_bytes())
-    h.update(b"full_closure:" + str(full_closure).encode())
-    h.update(b"no_body_deps:" + str(no_body_deps).encode())
-    # The libs subset shapes first-wins claiming, so it is part of the key.
-    h.update(b"libs:" + ",".join(sorted(libs)).encode())
-    for u in sorted(upstream_keys):
-        h.update("up:{}:{}\n".format(u, upstream_keys[u]).encode())
-    return h.hexdigest()
-
-
-def _load_json(path):
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return None
-
-
-def _artifacts_ok(out_dir, lib, sk):
-    """A cache hit is only usable when the cached outputs still exist."""
-    gen = out_dir / "generated" / "exports"
-    if not (gen / (lib + ".inc")).exists():
-        return False
-    return (gen / (lib + ".deps")).exists() == bool(sk.get("deps_present"))
-
-
-# ---------------------------------------------------------------------------
-# entity collection (one bundle TU per library)
-# ---------------------------------------------------------------------------
-
-# Cursor kinds that can be exported as namespace-scope entities.
-# Per-library extra preprocessor defines applied to the bundle TU (libclang
-# parse AND the clang++ gate), so the .inc snapshot matches the module TU's
-# macro state — e.g. stacktrace.cppm GMF defines BOOST_STACKTRACE_LINK
-# (M4: link mode, impl in libs/stacktrace/src/basic.cpp), so the exported
-# surface must be generated under the same macro.
-EXTRA_DEFINES = {
-    "stacktrace": ["BOOST_STACKTRACE_LINK"],
-}
-
-# Per-library GMF override (exact include set, relative to upstream/boost/): the
-# module TU's real GMF when it deliberately diverges from the libs.json root
-# set. json: M4 moves the compiled definitions into libs/json/src/src.cpp, so
-# the module GMF (and thus the .inc snapshot) must not include src.hpp (which
-# pulls the .ipp implementation declarations).
-GMF_OVERRIDE = {
-    "json": ["boost/json/debug_printers.hpp", "boost/json.hpp"],
-    # outcome: the experimental/status-code subtree (system_code2 etc., marked
-    # EXPERIMENTAL upstream) redeclares Win32 APIs (FormatMessageW, ...) in
-    # extern "C" and conflicts with the mingw SDK once the whole outcome header
-    # set lands in one TU. Keep the module GMF to the supported (non-
-    # experimental) surface; the experimental headers remain include-only.
-    "outcome": ["boost/outcome.hpp"] + [
-        "boost/outcome/{}.hpp".format(h) for h in (
-            "bad_access", "basic_outcome", "basic_result", "boost_outcome",
-            "boost_result", "config", "convert", "coroutine_support",
-            "iostream_support", "iostream_support_result", "outcome",
-            "result", "std_outcome", "std_result", "success_failure",
-            "trait", "try", "utils")
-    ],
-}
-
-EXPORT_KINDS = (
-    "CLASS_DECL", "STRUCT_DECL", "UNION_DECL", "ENUM_DECL",
-    "ENUM_CONSTANT_DECL",
-    "FUNCTION_DECL", "FUNCTION_TEMPLATE", "VAR_DECL",
-    "TYPEDEF_DECL", "TYPE_ALIAS_DECL", "TYPE_ALIAS_TEMPLATE_DECL",
-    "CLASS_TEMPLATE", "CLASS_TEMPLATE_PARTIAL_SPECIALIZATION",
-    "CONCEPT_DECL",
-)
-
-MEMBER_KINDS = (
-    "CXX_METHOD", "CONSTRUCTOR", "DESTRUCTOR", "CONVERSION_FUNCTION",
-    "FIELD_DECL",
-)
-
-# Lexical parents that can host a namespace-scope entity: anything else
-# (function bodies, compound statements, templates of expressions) is local.
-_LEXICAL_OK = (
-    "NAMESPACE", "CLASS_DECL", "STRUCT_DECL", "UNION_DECL", "ENUM_DECL",
-    "CLASS_TEMPLATE", "CLASS_TEMPLATE_PARTIAL_SPECIALIZATION",
-    "TRANSLATION_UNIT", "LINKAGE_SPEC",
-)
-
-
-def _kind_name(cursor):
-    try:
-        return str(cursor.kind).replace("CursorKind.", "")
-    except Exception:
-        return "UNKNOWN"
-
-
-# libclang has no cursor kind for variable templates: `VarTemplateDecl` (and
-# its partial/explicit specializations) surfaces as UNEXPOSED_DECL, with a
-# valid USR and EXTERNAL linkage, and without a visible child VarDecl. The
-# primary template is recognized from its token stream and exported under this
-# synthetic kind; partial/explicit specializations are not exported separately
-# (a using-declaration of the primary name makes them all reachable).
-#
-# NB: under libclang error recovery a function template can also be reported as
-# UNEXPOSED_DECL with a truncated extent (no parameter list), so it can be
-# misread as a variable template. The resulting using-declaration is redundant
-# (emit_inc dedups by qualified name) and harmless; internal-linkage targets
-# are still rejected by bc.linkage_ok.
-VAR_TEMPLATE_KIND = "VAR_TEMPLATE_DECL"
-
-_VT_CLASS = {}          # usr -> "primary" | "partial" | "explicit" | None
-
-
-def _classify_var_template(cursor, tu):
-    """'primary' | 'partial' | 'explicit' | None for an UNEXPOSED_DECL token
-    stream. Explicit specializations are `template <> ...`; partial ones carry
-    a `<...>` argument list right after the declared name."""
-    toks = [t.spelling for t in bc.tokens_of(tu, cursor)]
-    if len(toks) < 2 or toks[0] != "template" or toks[1] != "<":
-        return None
-    if len(toks) >= 3 and toks[2] in (">", ">>"):
-        return "explicit"
-    depth, i = 0, 1
-    while i < len(toks):
-        if toks[i] == "<":
-            depth += 1
-        elif toks[i] in (">", ">>"):
-            depth -= 1
-        if depth == 0:
-            break
-        i += 1
-    j = i + 1
-    while j < len(toks) and toks[j] != cursor.spelling:
-        j += 1
-    if j + 1 < len(toks) and toks[j + 1] == "<":
-        return "partial"
-    return "primary"
-
-
-def _var_template_class(cursor, tu):
-    """Memoized classification of an UNEXPOSED_DECL as a variable template."""
-    if _kind_name(cursor) != "UNEXPOSED_DECL" or not cursor.spelling:
-        return None
-    usr = bc.usr_of(cursor)
-    if usr and usr in _VT_CLASS:
-        return _VT_CLASS[usr]
-    result = _classify_var_template(cursor, tu)
-    if usr:
-        _VT_CLASS[usr] = result
-    return result
-
-
-def _is_boost_var_template(cursor, tu):
-    """Cheap pre-filter (boost namespace) before token classification — the
-    std headers are full of variable templates (is_void_v, conjunction_v, ...)
-    that must not be indexed or tokenized."""
-    if _kind_name(cursor) != "UNEXPOSED_DECL" or not cursor.spelling:
-        return False
-    chain = bc.namespace_chain(cursor)
-    if not chain or chain[0] != "boost":
-        return False
-    return _var_template_class(cursor, tu) == "primary"
-
-
-def is_export_kind(cursor, tu=None):
-    if _kind_name(cursor) in EXPORT_KINDS:
-        return True
-    return tu is not None and _var_template_class(cursor, tu) == "primary"
-
-
-def entity_record(cursor, home):
-    """Stable dict describing one exportable entity."""
-    kind = _kind_name(cursor)
-    # Enumerators are injected into the enum's enclosing namespace (upstream
-    # spelling: boost::red), so they group under the enum's namespace chain.
-    ns = (bc.namespace_chain(cursor.semantic_parent)
-          if kind == "ENUM_CONSTANT_DECL" else bc.namespace_chain(cursor))
+def entity_record(m, d, home):
+    kind = d.kind
+    ns = (m.namespace_chain(m.sem_parent(d)) if kind == "EnumConstantDecl"
+          else m.namespace_chain(d))
     return {
-        "name": cursor.spelling,
-        "qname": bc.qualified_name(cursor),
-        "usr": bc.usr_of(cursor),
+        "name": d.name,
+        "qname": m.qualified_name(d),
+        "usr": m.stable_key(d),
         "ns": ns,
-        "file": str(bc.cursor_file(cursor)) if bc.cursor_file(cursor) else "",
+        "file": d.file,
         "home": home,
         "kind": kind,
     }
 
 
-def _is_scoped_enum(cursor, tu):
-    """Scoped enums (enum class/struct, incl. macro-generated ones like
-    boost::thread's BOOST_SCOPED_ENUM_*) do not inject their enumerators into
-    the enclosing scope. Uses clang_EnumDecl_isScoped (macro-generated enums
-    have no tokens over their extent, so token sniffing fails for them)."""
-    try:
-        ci = bc.get_ci()
-        r = ci.conf.lib.clang_EnumDecl_isScoped(cursor)
-        return bool(r)
-    except Exception:
-        pass
-    try:
-        for tok in bc.tokens_of(tu, cursor):
-            if tok.spelling == "enum":
-                continue
-            if tok.spelling in ("class", "struct"):
-                return True
-            return False
-    except Exception:
-        return False
-    return False
+def _owner_file(m, d):
+    """Ownership follows the definition, not the first declaration: a forward
+    declaration in another library's header must not let that library claim
+    the entity (boost::rational forward-declared by boost.integer)."""
+    dd = m.definition(d)
+    return (dd or d).file
 
 
-DECL_KINDS = set(EXPORT_KINDS) | set(MEMBER_KINDS) | {
-    "PARM_DECL", "CXX_BASE_SPECIFIER", "ENUM_DECL", "NAMESPACE",
-    # using-declarations / directives: namespace-scope `using boost::X;` /
-    # `using namespace boost::X;` re-exports that give entities their public
-    # spelling (ADL-barrier pattern — see collect_injections).
-    "USING_DECLARATION", "USING_DIRECTIVE",
-}
-
-
-def _index_key(cursor):
-    """usr_index key — real USRs for entities; a location-based fallback for
-    using-directives (clang gives them no USR at all)."""
-    usr = bc.usr_of(cursor)
-    if usr:
-        return usr
-    if _kind_name(cursor) == "USING_DIRECTIVE":
-        f = bc.cursor_file(cursor)
-        if f is not None:
-            # line+column: two directives on the same source line must not
-            # share a key (first index entry wins and would swallow the rest).
-            return "dir:{}:{}:{}".format(f, cursor.location.line,
-                                         cursor.location.column)
-    return None
-
-
-def build_usr_index(tu):
-    """One pass over the whole TU building {usr: cursor} for every decl.
-
-    Closure lookups then become O(1) instead of re-walking the AST per entity
-    (which made json/url generation quadratic). FRIEND_DECL subtrees are
-    skipped: friend functions are re-exported through their class by ADL and
-    cannot be using-exported."""
-    _VT_CLASS.clear()          # per-TU memo (error recovery is TU-specific)
-    idx = {}
-
-    def rec(cursor):
-        if _kind_name(cursor) in DECL_KINDS or _is_boost_var_template(cursor, tu):
-            key = _index_key(cursor)
-            if key and key not in idx:
-                idx[key] = cursor
-        for child in cursor.get_children():
-            if bc.kind_of(child) == ci.CursorKind.FRIEND_DECL:
-                continue
-            rec(child)
-
-    rec(tu.cursor)
-    return idx
-
-
-def _is_explicit_specialization(cursor, tu):
-    """Explicit specializations (`template<> ...`) of templates are not
-    exportable via using-declarations. clang_getSpecializedCursorTemplate
-    returns null for them (unlike explicit instantiations), so detect the
-    empty template-parameter list via the token stream of the decl extent."""
-    try:
-        toks = bc.tokens_of(tu, cursor)
-    except Exception:
-        return False
-    if len(toks) < 3:
-        return False
-    return toks[0].spelling == "template" and toks[1].spelling == "<" and \
-        toks[2].spelling in (">", ">>")
-
-
-def collect_candidates(lib, tu, file_to_lib, usr_index):
+def collect_candidates(lib, m):
     """External-linkage namespace-scope boost:: entities reachable through the
-    library's bundle TU, owned by this library or by no target library
-    ('shared'). Entities owned by other target libraries are pulled in by the
-    closure instead (they are exported by their own module, reached via the
-    export-import chain recorded in <lib>.deps). Returns {usr: record}."""
+    bundle TU, owned by this library or by no target library ('shared')."""
     found = {}
-
-    def visit(cursor):
-        if not is_export_kind(cursor, tu):
-            return
-        f = bc.cursor_file(cursor)
-        if f is None:
-            return
-        # Ownership follows the DEFINITION, not the first declaration: a
-        # forward declaration in another lib's header (e.g. class rational
-        # forward-declared in boost/integer/common_factor_rt.hpp) must not let
-        # that lib claim the entity's USR (M9: integer claimed boost::rational
-        # this way and rational lost it). Resolve to the definition when one
-        # exists elsewhere.
-        try:
-            if not cursor.is_definition():
-                d = cursor.get_definition()
-                if d is not None and d != cursor:
-                    df = bc.cursor_file(d)
-                    if df is not None:
-                        f = df
-        except Exception:
-            pass
-        home = bc.home_lib_of_file(f, file_to_lib)
+    for d in m.indexed():
+        if d.kind not in EXPORT_KINDS:
+            continue
+        home = home_of_file(_owner_file(m, d))
         if home not in (lib, "shared"):
-            return
-        if not bc.linkage_ok(cursor):
-            return
-        if bc.is_specialization(cursor):
-            return
-        if _is_explicit_specialization(cursor, tu):
-            return
-        if cursor.spelling.startswith("<"):
-            return          # C++17 deduction guides (spelled "<deduction guide for X>")
-        # Declarations whose lexical context is inside a function body are
-        # body-local (e.g. clang's vexing-parse artifact: a local
-        # `std::string cat_name(...)` reported as a namespace-scope function
-        # with external linkage in cpp_regex_traits.hpp:966).
-        if _kind_name(cursor.lexical_parent) not in _LEXICAL_OK:
-            return
-        # friend-in-class declarations (operators etc.): lexical parent is the
-        # class while the semantic parent is a namespace; they are re-exported
-        # through the class by ADL (M0 §1) and cannot be using-exported.
-        pk = bc.kind_of(cursor.lexical_parent)
-        if pk in (ci.CursorKind.CLASS_DECL, ci.CursorKind.STRUCT_DECL,
-                  ci.CursorKind.UNION_DECL, ci.CursorKind.CLASS_TEMPLATE):
-            return
-        qn = bc.qualified_name(cursor)
+            continue
+        if m.is_specialization(d):
+            continue
+        if not d.name or not (d.name[0].isalpha() or d.name[0] == "_"):
+            continue                # deduction guides, anonymous entities
+        lex = d.parent
+        if lex is not None and lex.kind not in (
+                "NamespaceDecl", "LinkageSpecDecl", "EnumDecl", "ExportDecl"):
+            continue                # class member / friend-in-class
+        qn = m.qualified_name(d)
         if not qn.startswith("boost::"):
-            return
-        if _kind_name(cursor) == "ENUM_CONSTANT_DECL":
-            # Enumerators of enums nested in classes are class members
-            # (exported with their class, e.g. isref::value_type::value);
-            # only namespace-scope enums inject their enumerators into the
-            # enclosing namespace. Scoped (enum class) enumerators come with
-            # the enum itself.
-            enum = cursor.semantic_parent
-            if not bc.namespace_chain(enum):
-                return
-            if _is_scoped_enum(enum, tu):
-                return
-        elif not bc.namespace_chain(cursor):
-            return          # class member: exported with its class
-        usr = bc.usr_of(cursor)
-        if not usr or usr in found:
-            return
-        # Prefer the first (definition) declaration seen per entity.
-        rec = entity_record(cursor, home)
-        if _kind_name(cursor) == "UNEXPOSED_DECL":
-            rec["kind"] = VAR_TEMPLATE_KIND
-        found[usr] = rec
-
-    for usr, cursor in usr_index.items():
-        visit(cursor)
+            continue
+        if d.kind == "EnumConstantDecl":
+            enum = m.sem_parent(d)
+            if not m.namespace_chain(enum):
+                continue
+            if enum.attrs.get("scopedEnumTag"):
+                continue            # enum class: enumerators come with it
+        elif not m.namespace_chain(d):
+            continue
+        if not m.linkage_ok(d):
+            continue
+        if any(r.parent is not None and r.parent.kind == "LinkageSpecDecl"
+               for r in m.redecls(d)):
+            continue                # C language linkage: not namespace API
+        key = m.stable_key(d)
+        if key in found:
+            continue
+        found[key] = entity_record(m, d, home)
     return found
 
 
-# ---------------------------------------------------------------------------
-# using-injection collection (M3 round-3 generator fix)
-# ---------------------------------------------------------------------------
-
-def _enclosing_ns(cursor):
-    """Namespace chain of a using-* declaration's lexical parent, e.g.
-    ['boost','tuples'] — the scope the injected name lands in."""
+def _enclosing_ns(m, d):
+    """Namespace chain of a using-* declaration's lexical scope ([] inside an
+    anonymous namespace)."""
     parts = []
-    cur = cursor.lexical_parent
-    while cur is not None:
-        if bc.kind_of(cur) != ci.CursorKind.NAMESPACE:
-            break
-        try:
-            if cur.is_anonymous():
-                return []
-        except Exception:
+    cur = d.parent
+    while cur is not None and cur.kind == "NamespaceDecl":
+        if not cur.name:
             return []
-        parts.append(cur.spelling)
-        cur = cur.semantic_parent
+        parts.append(cur.name)
+        cur = cur.parent
     return parts[::-1]
 
 
-def _using_target_name(cursor, tu):
-    """Injected name of a namespace-scope using-declaration, derived from its
-    token stream. Boost writes two shapes:
-
-      `using boost::iterators::counting_iterator;`   (fully qualified)
-      `using range::count;`  inside `namespace boost` (relative — injects
-      boost::range::count into boost::count)
-
-    libclang's USING_DECLARATION carries no usable referenced target, its
-    spelling holds only the last name segment, and the token extent starts at
-    'using' and often omits the trailing ';' — so the tokens are joined and
-    the missing prefix is reconstructed from the lexical parent chain.
-
-    Returns (injected_qname, target_qname) — the name re-exported into the
-    enclosing scope, and the qualified name the using refers to ('' each when
-    the shape is not usable). For the fully-qualified shape the two coincide
-    (the name is re-exported at its own qualified location); for the relative
-    shape the injected name is the last segment prefixed with the enclosing
-    namespace chain (e.g. boost::count for `using range::count;` inside
-    namespace boost) while the target keeps the intermediate namespaces
-    (boost::range::count)."""
-    try:
-        toks = bc.tokens_of(tu, cursor)
-    except Exception:
-        return "", ""
-    toks = [t.spelling for t in toks]
-    if not toks or toks[0] != "using" or (len(toks) > 1 and toks[1] == "namespace"):
-        return "", ""
-    # The token extent can include the terminating ';' and — on a
-    # multi-statement line — everything after it. Cut at the first ';' so
-    # trailing content cannot corrupt the reconstructed qualified name.
-    if ";" in toks:
-        toks = toks[:toks.index(";")]
-    rel = "".join(toks[1:]).rstrip(";")
-    # `using ::boost::bimaps::bimap;` / `using ::GetCurrentProcessId;` —
-    # global-scope qualification: the using injects only the LAST segment into
-    # the enclosing namespace (boost::bimap / boost::winapi::GetCurrentProcessId)
-    # while the target keeps the intermediate namespaces (or is global — M9).
-    if rel.startswith("::"):
-        rel = rel[2:]
-        parts = _enclosing_ns(cursor)
-        if not parts or parts[0] != "boost":
-            return "", ""
-        prefix = "::".join(parts)
-        return prefix + "::" + rel.rsplit("::", 1)[-1], rel
+def _using_target_name(m, d):
+    """(injected qname, target qname) of a namespace-scope using-declaration
+    from the name clang prints as written (`range::count`,
+    `boost::iterators::counting_iterator`, `::boost::bimaps::bimap`,
+    `std::ratio`, `::GetCurrentProcessId`)."""
+    rel = d.name or ""
     if not rel:
         return "", ""
-    if rel.startswith("std::"):
-        # boost-namespace alias of a std entity (`using std::ratio;` inside
-        # namespace boost — Boost.Ratio 1.92 is a std::ratio facade). The
-        # injected name is boost::<last>; the module must re-export the
-        # std:: target itself (`using std::ratio;`), because a using-decl of a
-        # using-decl is not exportable (M9).
-        parts = _enclosing_ns(cursor)
+    parts = _enclosing_ns(m, d)
+    if rel.startswith("::"):
+        rel = rel[2:]
         if not parts or parts[0] != "boost":
             return "", ""
-        prefix = "::".join(parts)
-        return prefix + "::" + rel.rsplit("::", 1)[-1], rel
+        return "::".join(parts) + "::" + rel.rsplit("::", 1)[-1], rel
+    if rel.startswith("std::"):
+        if not parts or parts[0] != "boost":
+            return "", ""
+        return "::".join(parts) + "::" + rel.rsplit("::", 1)[-1], rel
     if rel.startswith("boost::"):
         return rel, rel
-    # Relative: prefix with the enclosing namespace chain.
-    parts = _enclosing_ns(cursor)
     if not parts or parts[0] != "boost":
         return "", ""
     prefix = "::".join(parts)
     return prefix + "::" + rel.split("::")[-1], prefix + "::" + rel
 
 
-def _using_namespace_target(cursor, tu):
-    """Target namespace of a namespace-scope `using namespace X;` directive
-    (boost's ADL-barrier variant: `using namespace range_adl_barrier;` inside
-    namespace boost). Returns the target's qualified name (''
-    when unusable)."""
-    try:
-        toks = bc.tokens_of(tu, cursor)
-    except Exception:
-        return ""
-    toks = [t.spelling for t in toks]
-    if len(toks) < 3 or toks[0] != "using" or toks[1] != "namespace":
-        return ""
-    rel = "".join(toks[2:]).rstrip(";")
-    if not rel or rel.startswith("::") or rel.startswith("std::"):
-        return ""
-    if rel.startswith("boost::"):
-        return rel
-    parts = _enclosing_ns(cursor)
-    if not parts or parts[0] != "boost":
-        return ""
-    return "::".join(parts) + "::" + rel
-
-
-def collect_injections(tu, lib, file_to_lib, claimed, usr_index):
-    """Namespace-scope `using boost::X;` declarations that re-export entities
-    under their public spelling. Boost uses this pervasively to hide
-    implementation namespaces while keeping the API at a fixed qualified name:
-      - boost::range_adl_barrier::{count,find,...}  → boost::count
-      - boost::iterators::{counting_iterator,...}   → boost::counting_iterator
-      - boost::system::detail::*, boost::optional_detail::* → boost::*
-
-    Such names never appear as declaration entities (the generator would only
-    see boost::range_adl_barrier::count), so consumers would lose the public
-    spelling. The public name is collected as its own record: the module
-    purview can `export using boost::count;` because the GMF (which includes
-    exactly the bundle headers) makes the name visible — using-declarations
-    are reachable exactly when their file is in the GFM include-DAG, so a
-    record produced here always compiles.
-
-    M9: injected names must denote an EXTERNAL-linkage entity — a using-
-    declaration of an internal-linkage name (e.g. boost::hof's placeholder
-    objects, `static constexpr auto& _1 = ...`) cannot be exported. The
-    injection's target is resolved through the qname→cursors map and the
-    entity's linkage checked (all cursors of the qname must be external; a
-    single internal overload poisons the using-declaration).
-
-    claimed: {public_qname: lib} — cross-module dedup for injected names
-    (first wins, like USR claiming). Returns {qname: record}."""
+def collect_injections(lib, m, claimed):
+    """Namespace-scope `using boost::X;` / `using namespace X;` that give
+    entities their public spelling (ADL barriers, detail re-exports). The
+    injected name must denote external-linkage entities only."""
     out = {}
-    directives = []          # (target_chain, inject_prefix) pairs
-    qname_cursors = {}
-    for usr, cursor in usr_index.items():
-        if not is_export_kind(cursor, tu):
+    qmap = m.export_qindex()
+    directives = []
+    for d in m.indexed():
+        if d.kind not in ("UsingDecl", "UsingDirectiveDecl"):
             continue
-        qn = bc.qualified_name(cursor)
-        if qn:
-            qname_cursors.setdefault(qn, []).append(cursor)
-    for usr, cursor in usr_index.items():
-        kind = _kind_name(cursor)
-        if kind not in ("USING_DECLARATION", "USING_DIRECTIVE"):
+        if d.parent is None or d.parent.kind != "NamespaceDecl":
             continue
-        if _kind_name(cursor.lexical_parent) != "NAMESPACE":
+        if home_of_file(d.file) not in (lib, "shared"):
             continue
-        f = bc.cursor_file(cursor)
-        if f is None:
-            continue
-        if bc.home_lib_of_file(f, file_to_lib) not in (lib, "shared"):
-            continue
-        if kind == "USING_DECLARATION":
-            q, target = _using_target_name(cursor, tu)
-            if not q:
+        if d.kind == "UsingDecl":
+            q, target = _using_target_name(m, d)
+            if not q or q in claimed:
                 continue
-            if q in claimed:
-                continue
-            # M9: the injected name must denote an EXTERNAL-linkage entity —
-            # resolve the using's target declaration (the relative shape
-            # re-exports the last segment but the entity lives in the full
-            # target namespace) and require external linkage; an
-            # internal-linkage target (e.g. boost::hof's placeholder objects,
-            # `static constexpr auto& _1 = ...`) cannot be exported.
-            # std:: targets (boost-namespace aliases of std entities, e.g.
-            # boost::ratio = std::ratio) and global targets (e.g.
-            # `using ::GetCurrentProcessId;` inside boost::winapi — the
-            # declaration lives at global scope, never in the boost qname map)
-            # skip the check — both always have external linkage.
             if target.startswith("std::") or not target.startswith("boost::"):
-                # `using std::ratio;` / `using ::AreFileApisANSI;` — global
-                # targets must stay qualified in the emitted line (an
-                # unqualified `using X;` would look inside the enclosing
-                # namespace block).
-                emit_q = target if target.startswith("std::") else "::" + target
+                emit_q = target if target.startswith("std::") \
+                    else "::" + target
             else:
                 emit_q = q
-                cur_list = qname_cursors.get(target) or qname_cursors.get(q)
-                if not cur_list:
-                    continue        # not declared in this TU: nothing to inject
-                if any(not bc.linkage_ok(c) for c in cur_list):
-                    continue        # internal linkage: not exportable (M9)
+                cur = qmap.get(target) or qmap.get(q)
+                if not cur:
+                    continue
+                if any(not m.linkage_ok(c) for c in cur):
+                    continue
             claimed[q] = lib
             out[q] = {
-                "name": emit_q.rsplit("::", 1)[-1],
-                "qname": emit_q,
-                "usr": "inject:" + q,      # not a real USR — excluded from closure
-                "ns": q.split("::")[:-1],
-                "file": str(f),
-                "home": lib,
-                "kind": "USING_INJECT",
+                "name": emit_q.rsplit("::", 1)[-1], "qname": emit_q,
+                "usr": "inject:" + q, "ns": q.split("::")[:-1],
+                "file": d.file, "home": lib, "kind": "USING_INJECT",
             }
         else:
-            tgt = _using_namespace_target(cursor, tu)
-            if not tgt:
+            ns = m.by_id.get(d.target)
+            if ns is None:
                 continue
-            parts = _enclosing_ns(cursor)
+            tgt = m.qualified_name(ns)
+            if not tgt.startswith("boost::"):
+                continue
+            parts = _enclosing_ns(m, d)
             if not parts:
                 continue
-            directives.append((tgt.split("::"), "::".join(parts), f))
+            prefix = "::".join(parts)
+            if not tgt.startswith(prefix + "::"):
+                # Only the ADL-barrier shape re-publishes names: a namespace
+                # nested in the directive's own scope (`namespace boost {
+                # namespace range_adl_barrier {...} using namespace
+                # range_adl_barrier; }`). A directive that pulls a sibling
+                # detail namespace in (`using namespace detail;` inside
+                # poly_collection::common_impl) is an implementation
+                # convenience, not a public spelling.
+                continue
+            directives.append((tgt.split("::"), prefix, d.file))
     for tgt_chain, prefix, df in directives:
-        for usr, cursor in usr_index.items():
-            if not is_export_kind(cursor, tu):
+        for d in m.indexed():
+            if d.kind not in EXPORT_KINDS:
                 continue
-            try:
-                chain = bc.namespace_chain(cursor)
-            except Exception:
+            if m.namespace_chain(d) != tgt_chain:
                 continue
-            if chain != tgt_chain:
+            if not m.linkage_ok(d):
                 continue
-            if not bc.linkage_ok(cursor):
-                continue            # internal linkage: not exportable (M9)
-            q = prefix + "::" + cursor.spelling
+            q = prefix + "::" + d.name
             if not q.startswith("boost::") or q in claimed:
                 continue
             claimed[q] = lib
             out[q] = {
-                "name": cursor.spelling,
-                "qname": q,
-                "usr": "inject:" + q,
-                "ns": q.split("::")[:-1],
-                "file": str(df),
-                "home": lib,
+                "name": d.name, "qname": q, "usr": "inject:" + q,
+                "ns": q.split("::")[:-1], "file": df, "home": lib,
                 "kind": "USING_INJECT",
             }
     return out
 
 
-def collect_curated(lib, claimed, usr_index=None, tu=None):
-    """tools/curated/<lib>.txt — hand-written blind-spot overrides (M2 §2.3,
-    read-out implemented in M3). One qualified name per line; lines starting
-    with '#' are comments. Records are emitted exactly like using-injections
-    (`export using boost::xxx;`), so every listed name must be visible in the
-    module's GMF (it is, when the header chain that declares it is included).
-
-    M9: like injections, curated names must denote external-linkage entities
-    in the TU; when usr_index is given, names that resolve to no declaration
-    or to an internal-linkage declaration are dropped with a warning.
-
-    Use cases:
-      - entities reachable only through template bodies (closure walks
-        declarations, not bodies — e.g. boost::typeindex::* behind
-        any_cast's body in boost/any.hpp);
-      - boost-namespace aliases of std entities that the canonicalization in
-        the closure resolves away (type_info → std::type_info).
-      - cross-module re-export overrides: an entity already claimed by an
-        earlier-processed module (first-wins) can be force-listed here when
-        the module's exported template BODIES require it — e.g.
-        boost::any's any_cast body compares typeinfo, so the typeindex
-        operator set must be reachable from consumers importing only
-        boost.any even though the 27-lib run claims it for boost.variant.
-        Re-exporting the same entity from two modules is legal (they denote
-        the same declaration); M3 did exactly that before cross-module
-        dedup existed."""
-    f = bc.CURATED_DIR / (lib + ".txt")
-    if not f.exists():
-        return {}
+def collect_added(lib, m, policy, claimed):
+    """Policy `add` names: exported like using-injections when the TU
+    declares them (a name the GMF cannot see would not compile)."""
     out = {}
-    for line in f.read_text(encoding="utf-8").splitlines():
-        q = line.strip()
-        if not q or q.startswith("#"):
-            continue
+    qmap = m.export_qindex()
+    for q in policy.add(lib):
         if not q.startswith("boost::"):
             continue
-        if usr_index is not None:
-            found = any(
-                is_export_kind(c, tu) and bc.qualified_name(c) == q
-                for usr, c in usr_index.items())
-            if not found:
-                print("    curated skip (not in TU): {}".format(q))
-                continue
+        if q not in qmap:
+            print("    policy add skipped (not in TU): {}".format(q))
+            continue
         claimed.setdefault(q, lib)
         out[q] = {
-            "name": q.rsplit("::", 1)[-1],
-            "qname": q,
-            "usr": "inject:" + q,
-            "ns": q.split("::")[:-1],
-            "file": str(f),
-            "home": lib,
-            "kind": "CURATED",
+            "name": q.rsplit("::", 1)[-1], "qname": q, "usr": "inject:" + q,
+            "ns": q.split("::")[:-1], "file": str(POLICY_FILE), "home": lib,
+            "kind": "POLICY_ADD",
         }
     return out
 
 
 # ---------------------------------------------------------------------------
-# dependency closure
+# signature closure (pass 1)
 # ---------------------------------------------------------------------------
 
-def referenced_types(cursor):
-    """Yield the types referenced by a namespace-scope entity's declaration:
-    function params/return, base classes, typedef/variable types."""
-    kinds = set()
-    try:
-        kind = cursor.kind
-    except Exception:
-        kind = None
-
-    if kind == ci.CursorKind.FUNCTION_DECL:
-        kinds = {"FUNCTION_DECL"}
-    elif kind == ci.CursorKind.FUNCTION_TEMPLATE:
-        kinds = {"FUNCTION_TEMPLATE"}
-    elif kind in (ci.CursorKind.CLASS_DECL, ci.CursorKind.STRUCT_DECL,
-                  ci.CursorKind.UNION_DECL,
-                  ci.CursorKind.CLASS_TEMPLATE,
-                  ci.CursorKind.CLASS_TEMPLATE_PARTIAL_SPECIALIZATION):
-        kinds = {"CLASS"}
-    elif kind in (ci.CursorKind.TYPEDEF_DECL, ci.CursorKind.TYPE_ALIAS_DECL,
-                  ci.CursorKind.TYPE_ALIAS_TEMPLATE_DECL, ci.CursorKind.VAR_DECL):
-        kinds = {"TYPE"}
-    elif kind == ci.CursorKind.CONCEPT_DECL:
-        return
-
-    for child in cursor.get_children():
-        ck = bc.kind_of(child)
-        if ck == ci.CursorKind.PARM_DECL:
-            yield child.type
-        elif ck == ci.CursorKind.CXX_BASE_SPECIFIER:
-            yield child.type
-        elif ck == ci.CursorKind.FIELD_DECL and "CLASS" in kinds:
-            yield child.type
-        elif _kind_name(child) in ("CXX_METHOD", "CONSTRUCTOR", "DESTRUCTOR",
-                                   "CONVERSION_FUNCTION", "STATIC_DATA_MEMBER"):
-            yield child.type
-
-    # Return type of functions / underlying type of typedefs/vars.
-    try:
-        t = cursor.type
-        if t is not None and t.kind != ci.TypeKind.INVALID:
-            if kind == ci.CursorKind.FUNCTION_DECL or \
-               _kind_name(cursor) == "CXX_METHOD" or \
-               _kind_name(cursor) == "CONVERSION_FUNCTION":
-                try:
-                    yield t.get_result()
-                except Exception:
-                    pass
-            elif "TYPE" in kinds:
-                yield t
-    except Exception:
-        pass
+def signature_types(m, d):
+    """(type text, lookup scopes) pairs of an entity's declaration: function
+    parameters and result, base classes, fields, member results, static data
+    members, typedef/variable types."""
+    k = d.kind
+    scopes = m.scope_names(d)
+    if k == "FunctionDecl":
+        for t in d.params:
+            yield t, scopes
+        yield _result_type(d.type), scopes
+    elif k == "FunctionTemplateDecl":
+        if d.pattern is not None:
+            for t in d.pattern.params:
+                yield t, scopes
+    elif k in ("CXXRecordDecl", "RecordDecl", "ClassTemplateDecl",
+               "ClassTemplatePartialSpecializationDecl"):
+        rec = d.pattern if k == "ClassTemplateDecl" else d
+        if rec is None:
+            return
+        inner = m.scope_names(rec) if k != "ClassTemplateDecl" else scopes
+        for b in rec.bases:
+            yield b, inner
+        for ch in rec.children:
+            ck = ch.kind
+            if ck == "FieldDecl" or ck == "VarDecl":
+                yield ch.type, inner
+            elif ck in METHOD_KINDS:
+                yield _result_type(ch.type), inner
+    elif k in ("TypedefDecl", "TypeAliasDecl", "VarDecl"):
+        yield d.dtype or d.type, scopes
 
 
-def iter_type_types(t):
-    """Walk a clang Type recursively, yielding the leaf (canonicalized) types
-    reachable through pointers, references, functions and template args."""
-    try:
-        t = t.get_canonical()
-    except Exception:
-        return
-    kind = t.kind
-    if kind == ci.TypeKind.INVALID:
-        return
-    if kind in (ci.TypeKind.POINTER, ci.TypeKind.LVALUEREFERENCE,
-                ci.TypeKind.RVALUEREFERENCE, ci.TypeKind.MEMBERPOINTER):
-        try:
-            yield from iter_type_types(t.get_pointee())
-        except Exception:
-            pass
-        return
-    if kind == ci.TypeKind.FUNCTIONPROTO:
-        try:
-            yield from iter_type_types(t.get_result())
-        except Exception:
-            pass
-        return
-    if kind in (ci.TypeKind.CONSTANTARRAY, ci.TypeKind.INCOMPLETEARRAY,
-                ci.TypeKind.VARIABLEARRAY, ci.TypeKind.DEPENDENTSIZEDARRAY):
-        try:
-            yield from iter_type_types(t.get_pointee())
-        except Exception:
-            pass
-        return
-    try:
-        n = t.get_num_template_arguments()
-        if n >= 0:
-            for i in range(n):
-                yield from iter_type_types(t.get_template_argument_type(i))
-            # Template types: the template itself is not a leaf we need; the
-            # instantiation decl carries the args above.
-    except Exception:
-        pass
-    yield t
+def _result_type(ftype):
+    """Result part of a printed function type `R (params)`; the trailing
+    form `auto (params) -> R` yields R."""
+    if not ftype:
+        return ""
+    depth = 0
+    for i, c in enumerate(ftype):
+        if c in "<[":
+            depth += 1
+        elif c in ">]":
+            depth -= 1
+        elif c == "(" and depth == 0:
+            head = ftype[:i].strip()
+            if head == "auto":
+                tail = ftype.rsplit("->", 1)
+                return tail[1].strip() if len(tail) == 2 else ""
+            return head
+    return ""
 
 
-def closure_from(cands, tu, usr_index):
-    """BFS over candidate entity signatures; returns {usr: record} for every
-    boost:: entity reachable through their declarations (exported entities and
-    closure pulls alike)."""
+def closure_from(m, cands):
+    """BFS over candidate signatures; {key: record} for every boost:: entity
+    reachable through the declarations (exports and closure pulls)."""
     records = dict(cands)
-    queue = deque(cands.values())
-    seen = set(cands)
-
+    queue = deque(r for r in cands.values()
+                  if not r["usr"].startswith("inject:"))
+    by_key = {}
+    for d in m.indexed():
+        if d.kind in EXPORT_KINDS:
+            by_key.setdefault(m.stable_key(d), d)
+    seen = set(records)
     while queue:
         rec = queue.popleft()
-        cursor = usr_index.get(rec["usr"])
-        if cursor is None:
+        d = by_key.get(rec["usr"])
+        if d is None:
             continue
-        for t in referenced_types(cursor):
-            for leaf in iter_type_types(t):
-                try:
-                    decl = leaf.get_declaration()
-                    if decl is None or not decl.spelling and not decl.location.file:
-                        continue
-                except Exception:
-                    continue
-                qn = bc.qualified_name(decl)
+        for text, scopes in signature_types(m, d):
+            for t in m.type_targets(text, scopes):
+                target = m.promote(t)
+                qn = m.qualified_name(target)
                 if not qn.startswith("boost::"):
                     continue
-                # Promote members to their containing class, friends to their
-                # namespace-level home.
-                target = _promote(decl)
-                usr = bc.usr_of(target)
-                if not usr or usr in seen:
+                key = m.stable_key(target)
+                if key in seen:
                     continue
-                qnt = bc.qualified_name(target)
-                if not qnt.startswith("boost::"):
-                    continue
-                f = bc.cursor_file(target)
-                home = bc.home_lib_of_file(f, _FILE_TO_LIB) if f else "shared"
-                seen.add(usr)
-                records[usr] = entity_record(target, home)
-                queue.append(records[usr])
+                seen.add(key)
+                by_key.setdefault(key, target)
+                home = home_of_file(_owner_file(m, target))
+                records[key] = entity_record(m, target, home)
+                queue.append(records[key])
     return records
 
 
-def _promote(cursor):
-    """Climb from a member cursor to the namespace-scope entity containing it."""
-    cur = cursor
-    while True:
-        parent = cur.semantic_parent
-        if parent is None or parent == cur:
-            return cursor
-        pk = bc.kind_of(parent)
-        if pk in (ci.CursorKind.CLASS_DECL,
-                  ci.CursorKind.STRUCT_DECL,
-                  ci.CursorKind.UNION_DECL,
-                  ci.CursorKind.CLASS_TEMPLATE):
-            cur = parent
-            continue
-        return cur
-
-
-_FILE_TO_LIB = {}
-
-
 # ---------------------------------------------------------------------------
-# output
+# pass 2: body-reference edge completion
 # ---------------------------------------------------------------------------
 
-def emit_inc(lib, records, out_dir, full_closure, claimed, extra_deps=()):
-    """Write generated/exports/<lib>.inc with M0-verified export block spelling.
+def collect_body_edges(lib, m, records, claimed):
+    """{home: set(key)} — other target libraries whose entities the BODIES of
+    this library's exported entities refer to (references clang resolved, and
+    the types they spell). The signature closure under-approximates what a
+    consumer instantiating those bodies needs (bimap -> boost.iterator)."""
+    edges = {}
+    seen_pairs = set()
 
-    Cross-module dedup (first wins): entities already claimed by an earlier
-    module are dropped from the export list and recorded in <lib>.deps as
-    `export import mcpplibs.mwrap.boost.<home>;` hints. Within one library, duplicate
-    qualified names collapse into a single using-declaration (which imports
-    every overload of the name — M0 rule for free operators).
-
-    extra_deps: target libraries whose headers the bundle TU pulls in but
-    whose entities may not appear in any signature (e.g. boost::swap) — the
-    M3 .cppm must export-import those modules for a complete surface.
-
-    Returns (exported_count, deps_hints).
-    """
-    own = [r for r in records.values() if r["home"] == lib]
-    pulled = [r for r in records.values()
-              if r["home"] != lib and r["usr"] not in claimed]
-    deps = sorted({r["home"] for r in records.values()
-                   if r["home"] != lib and r["home"] != "shared"
-                   and r["usr"] in claimed} | (set(extra_deps) if not full_closure else set()))
-
-    # qname dedup (one using per qualified name; overloads come along).
-    exports, seen = [], set()
-    for rec in sorted(own + pulled, key=lambda r: r["qname"]):
-        if rec["qname"] in seen:
-            continue
-        seen.add(rec["qname"])
-        exports.append(rec)
-
-    groups = {}
-    for rec in exports:
-        groups.setdefault(tuple(rec["ns"]), []).append(rec)
-
-    lines = [
-        "// GENERATED by tools/gen_exports.py - DO NOT EDIT",
-        "// lib={} boost=1.92.0 target={} entities={}".format(
-            lib, bc.GEN_TARGET, len(exports)),
-        "",
-    ]
-    for key in sorted(groups):
-        depth = len(key)
-        opens = " ".join("namespace {} {{".format(n) for n in key)
-        lines.append("export " + opens)
-        for rec in sorted(groups[key], key=lambda r: r["qname"]):
-            lines.append("  using {};".format(rec["qname"]))
-        lines.append("}" * depth)
-        lines.append("")
-
-    # Match the committed LF snapshots on every host. Git attributes govern
-    # checkout, not Python's default Windows text-mode newline translation.
-    (out_dir / "generated" / "exports").mkdir(parents=True, exist_ok=True)
-    (out_dir / "generated" / "exports" / (lib + ".inc")).write_text(
-        "\n".join(lines), encoding="utf-8", newline="\n")
-
-    if deps:
-        (out_dir / "generated" / "exports" / (lib + ".deps")).write_text(
-            "\n".join(bc.MODULE_PREFIX + "." + d for d in deps) + "\n", encoding="utf-8", newline="\n")
-    return len(exports), deps
-
-
-def emit_cppm(lib, out_dir, gfm_headers=None):
-    """Draft src/<lib>.cppm: GMF include of the aggregate (DAG-source, gate-
-    pruned) headers + export blocks from the .inc. M3 owns the final form
-    (macro consistency, export import wiring for the .deps)."""
-    headers = gfm_headers if gfm_headers is not None else bc.gfm_headers_of(lib)
-    deps = out_dir / "generated" / "exports" / (lib + ".deps")
-    imports = ""
-    if deps.exists():
-        imports = "\n".join(
-            "export import {};".format(line.strip())
-            for line in deps.read_text(encoding="utf-8").splitlines() if line.strip())
-    lines = [
-        "// GENERATED by tools/gen_exports.py - DO NOT EDIT (draft; M3 owns final form)",
-        "module;",
-    ]
-    lines += ["#include <{}>".format(h.relative_to(bc.DEPS).as_posix())
-              for h in headers]
-    lines += [
-        "",
-        "export module {}.{};".format(bc.MODULE_PREFIX, lib),
-        "",
-    ]
-    if imports:
-        lines += [imports, ""]
-    lines += [
-        '#include "../generated/exports/{}.inc"'.format(lib),
-        "",
-        # NB: no `module :private;` — private module fragments are not yet
-        # implemented by gcc, and nothing here needs hiding.
-        "",
-    ]
-    (out_dir / "src" / (lib + ".cppm")).write_text(
-        "\n".join(lines), encoding="utf-8", newline="\n")
-
-
-# ---------------------------------------------------------------------------
-# pass 2: body-reference edge completion (C4 §4.2 structural-defect fix)
-# ---------------------------------------------------------------------------
-
-# Cursor kinds that carry a reference to a declaration. Referenced decls are
-# resolved through clang_getCursorReferenced (null when the reference stays
-# unresolved — e.g. dependent names in uninstantiated templates resolve only
-# partially; those are best-effort).
-_REF_KIND_NAMES = (
-    "DECL_REF_EXPR", "MEMBER_REF_EXPR", "MEMBER_REF", "TYPE_REF",
-    "TEMPLATE_REF", "NAMESPACE_REF", "UNRESOLVED_LOOKUP_EXPR",
-    "UNRESOLVED_MEMBER", "OVERLOADED_DECL_REF",
-)
-
-
-def _template_of_instantiation(cursor):
-    """The class/function template behind an implicit instantiation (None
-    otherwise). An instantiation cursor's location can be the instantiation
-    point, so its file is useless for home resolution — the template's own
-    definition file is the entity's true home."""
-    try:
-        ci = bc.get_ci()
-        r = ci.conf.lib.clang_getSpecializedCursorTemplate(cursor)
-        if r is not None and r.kind != ci.CursorKind.INVALID:
-            return r
-    except Exception:
-        pass
-    return None
-
-
-def _identifier(tok):
-    return bool(tok) and tok.isidentifier()
-
-
-def _qname_cursor_index(usr_index):
-    """{boost::qualified_name: [cursor, ...]} over a TU's decl index — used to
-    resolve textually recovered qualified names (variable-template
-    initializers, which libclang does not expose as an AST subtree)."""
-    idx = {}
-    for cur in usr_index.values():
-        qn = bc.qualified_name(cur)
-        if qn.startswith("boost::"):
-            idx.setdefault(qn, []).append(cur)
-    return idx
-
-
-def _var_template_initializer_names(tu, cursor, max_lines=100):
-    """Yield qualified name chains (`a::b::c`) from a variable template's
-    initializer (A1 + A2).
-
-    libclang hides the initializer: the `VarTemplateDecl` surfaces as an
-    UNEXPOSED_DECL with no children, an INVALID type, and an extent that stops
-    right after the declared name (LLVM 22/23). Re-tokenize the
-    declaration from `cursor.extent.start` up to its top-level `;`, take the
-    tokens after the `=` that follows the declared name, and read off
-    `ident (:: ident)+` chains — both `boost::...` (A1, resolved as-is) and
-    relative names like `mp11::mp_size` (A2, resolved against the variable
-    template's enclosing namespaces). Bare single identifiers are skipped:
-    only qualified chains are unambiguous enough to resolve textually.
-    Macro-expanded / aliased names are still missed by design.
-    """
-    cf = cursor.location.file           # cindex File (for SourceLocation)
-    if cf is None:
-        return
-    # Tokenize from the declaration start (NOT extent.end): whether libclang
-    # truncates the extent after the name (LLVM 22) or not, we must see the
-    # whole declaration up to its top-level ';'.
-    beg = cursor.extent.start
-    toks, line, col, budget = [], beg.line, beg.column, max_lines
-    while budget > 0:
-        chunk = min(25, budget)
-        try:
-            start = ci.SourceLocation.from_position(tu, cf, line, col)
-            stop = ci.SourceLocation.from_position(tu, cf, line + chunk, 1)
-            toks.extend(t.spelling for t in tu.get_tokens(
-                extent=ci.SourceRange.from_locations(start, stop)))
-        except Exception:
+    def add_edge(r):
+        r = m.promote(r)
+        if not m.qualified_name(r).startswith("boost::"):
             return
-        depth, cut = 0, None
-        for i, s in enumerate(toks):
-            if s in ("(", "[", "{"):
-                depth += 1
-            elif s in (")", "]", "}"):
-                depth = depth - 1 if depth else 0
-            elif s == ";" and depth == 0:
-                cut = i
-                break
-        if cut is not None:
-            toks = toks[:cut]
-            break
-        line, col = line + chunk, 1
-        budget -= chunk
-    else:
-        return                  # no statement terminator within the window
-
-    # Keep only the initializer: tokens after the '=' that follows the declared
-    # name (default template arguments sit before the name and are ignored).
-    try:
-        name_i = toks.index(cursor.spelling)
-    except ValueError:
-        return
-    eq_i = None
-    for i in range(name_i + 1, len(toks)):
-        if toks[i] == "=":
-            eq_i = i
-            break
-    if eq_i is None:
-        return
-    toks = toks[eq_i + 1:]
-
-    n = len(toks)
-    i = 0
-    while i < n:
-        if _identifier(toks[i]) and i + 1 < n and toks[i + 1] == "::":
-            parts, k = [toks[i]], i + 1
-            while k + 1 < n and toks[k] == "::" and _identifier(toks[k + 1]):
-                parts.append(toks[k + 1])
-                k += 2
-            yield "::".join(parts)
-            i = k
-        else:
-            i += 1
-
-
-def _namespace_matches_home(qn, home):
-    """Heuristic guard for namespace-level fallback matches: a namespace like
-    `boost::mp11` / `boost::typeindex` corresponds to its home library, while a
-    generic shared namespace (`boost::detail`, ...) may be attributed to any
-    library by its first declaration and must not produce an edge."""
-    parts = qn.split("::")
-    if len(parts) < 2:
-        return False
-    seg = parts[1].replace("_", "").lower()
-    h = home.replace("_", "").lower()
-    return seg == h or seg.startswith(h) or h.startswith(seg)
-
-
-def _initializer_lookup_qnames(chain, ns_chain):
-    """Candidate qualified names for an initializer name chain, most specific
-    first, each with its successive namespace prefixes appended (the textual
-    stand-in for C++ name lookup + the longest-prefix fallback A1 already used
-    for entities libclang does not index, e.g. alias templates).
-
-    `boost::...` chains are looked up as-is. Relative chains are looked up in
-    the variable template's enclosing namespaces, innermost first, then under
-    `boost::` and finally at global scope."""
-    if chain.startswith("boost::"):
-        bases = [chain]
-    else:
-        bases = []
-        for k in range(len(ns_chain), -1, -1):
-            pref = "::".join(ns_chain[:k])
-            bases.append(pref + "::" + chain if pref else chain)
-    for base in bases:
-        qn = base
-        while qn:
-            yield qn
-            if "::" not in qn:
-                break
-            qn = qn.rsplit("::", 1)[0]
-
-
-def collect_body_edges(lib, records, claimed, usr_index, tu=None):
-    """Pass-2 collection: {home: set(usr)} — other target libraries whose
-    entities are referenced from the BODIES of this library's exported
-    entities (own + first-wins pulls, exactly the emit_inc export set).
-
-    closure_from walks declarations only, so entities reachable solely
-    through bodies / base-specifier instantiations never enter the records
-    and their homes produce no dep edge (the C4 bimap → boost.iterator loss).
-    The include-graph extra_deps walk cannot recover them either: dep_graph()
-    stops at target-owned roots, so the edge is invisible whenever the
-    reference is reached through another target lib's headers (C4 §4.1).
-
-    Emitted `export import mcpplibs.mwrap.boost.<home>;` edges are also *sufficient*: the
-    home module always exports its own entities (emit_inc `own` has no
-    claimed filter), so pointing at the definition's home is sound even when
-    the entity was first-claimed elsewhere.
-
-    Entities already pulled (unclaimed, hence exported here) are walked too:
-    their bodies' cross-home references are needed by consumers importing
-    only this module — except references resolving to an entity that is
-    itself on this module's face (own or pulled): those ride along with the
-    export and must not produce a redundant edge (keeps restored final-form
-    .cppm files, which hand-sync their import block, free of stray edges).
-    """
-    edges = {}               # home -> set(usr)
-    _seen_pairs = set()
-
-    def add_edge(r, namespace_match=False):
-        """Record an edge to `r`'s home library; True when one was added.
-
-        `namespace_match` is set by the textual var-template lookup: it may
-        fall back from `boost::mp11::mp_at_c` to the `boost::mp11` namespace
-        (alias templates et al. are not indexed), and the same fallback on a
-        shared namespace such as `boost::detail` would attribute an arbitrary
-        home lib. Namespace-REF body edges are unaffected (a referenced
-        namespace is a real reference)."""
-        t = _template_of_instantiation(r)
-        if t is not None:
-            r = t
-        r = _promote(r)
-        if not bc.qualified_name(r).startswith("boost::"):
-            return False
-        usr = bc.usr_of(r)
-        if not usr:
-            return False
-        # The entity may already ride on this module's own face: entities
-        # first-claimed HERE (own + unclaimed pulls) are exported by this
-        # module, so consumers reach them without an import edge. Only
-        # entities claimed elsewhere (or seen solely through bodies) need
-        # the edge.
-        rec = records.get(usr)
-        if rec is not None and (rec["home"] == lib or usr not in claimed):
-            return False
-        f = bc.cursor_file(r)
-        home = bc.home_lib_of_file(f, _FILE_TO_LIB) if f else "shared"
+        key = m.stable_key(r)
+        rec = records.get(key)
+        if rec is not None and (rec["home"] == lib or key not in claimed):
+            return              # rides on this module's own face
+        home = home_of_file(_owner_file(m, r))
         if home == lib or home == "shared" or home not in bc.TARGET_LIBS:
-            return False
-        if namespace_match and bc.kind_of(r) == ci.CursorKind.NAMESPACE and \
-                not _namespace_matches_home(bc.qualified_name(r), home):
-            return False
-        if (usr, home) in _seen_pairs:
-            return False
-        _seen_pairs.add((usr, home))
-        edges.setdefault(home, set()).add(usr)
-        return True
-
-    def resolve(ref):
-        try:
-            r = ref.referenced
-        except Exception:
             return
-        if r is None:
+        if (key, home) in seen_pairs:
             return
-        add_edge(r)
+        seen_pairs.add((key, home))
+        edges.setdefault(home, set()).add(key)
 
-    def walk(cursor):
-        stack = [cursor]
-        while stack:
-            cur = stack.pop()
-            if _kind_name(cur) in _REF_KIND_NAMES:
-                resolve(cur)
-            try:
-                stack.extend(cur.get_children())
-            except Exception:
-                pass
-
+    by_key = {}
+    for d in m.indexed():
+        if d.kind in EXPORT_KINDS:
+            by_key.setdefault(m.stable_key(d), d)
     for rec in records.values():
         if rec["home"] != lib and rec["usr"] in claimed:
-            continue                      # claimed elsewhere: not exported here
-        if rec["usr"].startswith("inject:"):
-            continue                      # using-injections carry no body
-        cur = usr_index.get(rec["usr"])
-        if cur is None:
+            continue            # claimed elsewhere: not exported here
+        d = by_key.get(rec["usr"])
+        if d is None:
             continue
-        walk(cur)
-        try:
-            d = cur.get_definition()
-        except Exception:
-            d = None
-        if d is not None and d != cur:    # out-of-line bodies, class defs
-            walk(d)
-
-    # Variable templates: libclang exposes VarTemplateDecl as an opaque
-    # UNEXPOSED_DECL (no children, INVALID type, extent truncated after the
-    # name), so walk(cur) above sees nothing. Re-tokenize the declaration from
-    # its start, read off the qualified name chains in the initializer and
-    # resolve them textually: `boost::...` as-is (A1), relative names against
-    # the variable template's enclosing namespaces (A2). Same export set and
-    # filters as the body walk; add_edge reports success so the first useful
-    # lookup wins and enclosing-namespace false matches are skipped.
-    if tu is not None:
-        qname_cursors = None
-        for rec in records.values():
-            if rec.get("kind") != VAR_TEMPLATE_KIND:
-                continue
-            if rec["home"] != lib and rec["usr"] in claimed:
-                continue                  # claimed elsewhere: not exported here
-            cur = usr_index.get(rec["usr"])
-            if cur is None:
-                continue
-            ns_chain = bc.namespace_chain(cur)
-            for chain in _var_template_initializer_names(tu, cur):
-                if qname_cursors is None:
-                    qname_cursors = _qname_cursor_index(usr_index)
-                for qn in _initializer_lookup_qnames(chain, ns_chain):
-                    cur_list = qname_cursors.get(qn)
-                    if cur_list and add_edge(cur_list[0], namespace_match=True):
-                        break
+        walked = [d]
+        dd = m.definition(d)
+        if dd is not None and dd is not d:
+            walked.append(dd)
+        for w in walked:
+            if w.refs:
+                for rid in w.refs:
+                    r = m.tu.resolve(rid)
+                    if r is not None:
+                        add_edge(r)
+            if w.written:
+                scopes = m.scope_names(w)
+                for text in w.written:
+                    for name in names_in_type(text):
+                        for r in m.lookup(name, scopes):
+                            if r.kind in EXPORT_KINDS:
+                                add_edge(r)
     return edges
 
 
-def merge_body_edges(out_dir, order, body_edges):
-    """Union pass-2 candidate edges into generated/exports/<lib>.deps.
-
-    Filters, in processing (topological) order:
-      - already a direct edge → skip;
-      - already transitive (home reachable through the current dep graph) →
-        skip (keeps the edge set minimal and avoids topo churn);
-      - would close a cycle → skip with a warning (mcpp rejects import
-        cycles; a genuinely cyclic consumer need cannot be fixed by edges).
-
-    Returns {lib: {home: ref_count}} for the edges actually added.
-    """
+def merge_body_edges(out_dir, order, body_edges, policy):
+    """Union pass-2 candidate edges into generated/exports/<lib>.deps, in
+    topological order: direct, transitive and cycle-closing edges are
+    skipped (mcpp rejects import cycles)."""
     deps_dir = out_dir / "generated" / "exports"
     graph = {}
     for p in sorted(deps_dir.glob("*.deps")):
@@ -1446,6 +970,8 @@ def merge_body_edges(out_dir, order, body_edges):
         for home in sorted(body_edges.get(lib, ())):
             if home == lib or home in graph.get(lib, ()):
                 continue
+            if home in policy.deps(lib).get("remove", ()):
+                continue
             if reachable(lib, home):
                 continue
             if reachable(home, lib):
@@ -1465,337 +991,679 @@ def merge_body_edges(out_dir, order, body_edges):
     return added
 
 
+# ---------------------------------------------------------------------------
+# output
+# ---------------------------------------------------------------------------
+
+def _spell(qname, ns, namespaces):
+    """Qualified name as written inside `export namespace <ns>`: a leading
+    `::` is required when a namespace visible from the block shadows the first
+    segment (inside boost::hana::ext::std, `boost::x` finds
+    boost::hana::ext::boost)."""
+    if qname.startswith("::"):
+        return qname
+    first = qname.split("::", 1)[0]
+    for j in range(1, len(ns) + 1):
+        if "::".join(ns[:j]) + "::" + first in namespaces:
+            return "::" + qname
+    return qname
+
+
+def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
+             namespaces=frozenset()):
+    """Write generated/exports/<lib>.inc (+ <lib>.deps).
+
+    Cross-module dedup (first wins): entities claimed by an earlier module are
+    left out and their homes become `.deps` edges. One using-declaration per
+    qualified name (it brings every overload). Policy guards, drops, inline-
+    namespace collapses and verbatim lines are applied here, and every name
+    they touch is returned for generated/meta/skipped.txt.
+
+    Returns (exported_count, deps, skipped_entries)."""
+    own = [r for r in records.values() if r["home"] == lib]
+    pulled = [r for r in records.values()
+              if r["home"] != lib and r["usr"] not in claimed]
+    deps = {r["home"] for r in records.values()
+            if r["home"] != lib and r["home"] != "shared"
+            and r["usr"] in claimed} | set(extra_deps)
+    dpol = policy.deps(lib)
+    deps |= set(dpol.get("add", ()))
+    deps -= set(dpol.get("remove", ()))
+    deps = sorted(deps)
+
+    collapse = policy.inline_namespaces(lib)
+    drops = policy.drops(lib)
+    guards = policy.guards(lib)
+    skipped = []
+
+    exports, seen = [], set()
+    for rec in sorted(own + pulled, key=lambda r: r["qname"]):
+        q, ns = rec["qname"], list(rec["ns"])
+        for inl in collapse:
+            if q.startswith(inl + "::"):
+                q = inl.rsplit("::", 1)[0] + q[len(inl):]
+                ns = inl.split("::")[:-1] + ns[len(inl.split("::")):]
+        if q in seen:
+            continue
+        seen.add(q)
+        rule = next((r for r in drops if _matches(q, r.get("names", ()))
+                     or any(q.startswith(n + "::")
+                            for n in r.get("namespaces", ()))), None)
+        if rule is not None:
+            skipped.append((lib, "drop", q, "", rule["reason"]))
+            continue
+        guard = next((g for g in guards if _matches(q, g["names"])), None)
+        if guard is not None:
+            skipped.append((lib, "guard", q, guard["if"], guard["reason"]))
+        exports.append((tuple(ns), q, guard))
+
+    groups = {}
+    for ns, q, guard in exports:
+        groups.setdefault(ns, []).append((q, guard))
+    extras = {}
+    for x in policy.extras(lib):
+        extras.setdefault(tuple(x["namespace"].split("::")), []).append(x)
+        skipped.append((lib, "extra", x["namespace"], "", x["reason"]))
+
+    lines = [
+        "// GENERATED by tools/gen_exports.py - DO NOT EDIT",
+        "// lib={} boost={} target={} entities={}".format(
+            lib, bc.BOOST_VERSION, bc.GEN_TARGET, len(exports)),
+        "",
+    ]
+    for key in sorted(set(groups) | set(extras)):
+        lines.append("export " + " ".join(
+            "namespace {} {{".format(n) for n in key))
+        for x in extras.get(key, ()):
+            lines += _comment(x["reason"])
+            lines += ["  " + ln for ln in x["lines"]]
+        open_guard = None
+        for q, guard in sorted(groups.get(key, ()), key=lambda e: e[0]):
+            if guard is not open_guard:
+                if open_guard is not None:
+                    lines += _close_guard(open_guard)
+                if guard is not None:
+                    lines.append("#if " + guard["if"])
+                    lines += _comment(guard["reason"])
+                open_guard = guard
+            lines.append("  using {};".format(_spell(q, key, namespaces)))
+        if open_guard is not None:
+            lines += _close_guard(open_guard)
+        lines.append("}" * len(key))
+        lines.append("")
+
+    gen = out_dir / "generated" / "exports"
+    gen.mkdir(parents=True, exist_ok=True)
+    (gen / (lib + ".inc")).write_text("\n".join(lines), encoding="utf-8",
+                                       newline="\n")
+    dfile = gen / (lib + ".deps")
+    if deps:
+        dfile.write_text("\n".join(bc.MODULE_PREFIX + "." + d for d in deps)
+                         + "\n", encoding="utf-8", newline="\n")
+    elif dfile.exists():
+        dfile.unlink()
+    return len(exports), deps, skipped
+
+
+def _comment(reason):
+    out = []
+    for para in reason.strip().splitlines():
+        out.append("  // " + para.strip() if para.strip() else "  //")
+    return out
+
+
+def _close_guard(guard):
+    out = []
+    if guard.get("else"):
+        out.append("#else")
+        out += ["  " + ln for ln in guard["else"]]
+    out.append("#endif")
+    return out
+
+
+def emit_cppm(lib, out_dir, gfm_headers):
+    """Draft a facade for a library that has none yet (never overwrites)."""
+    path = out_dir / "src" / (lib + ".cppm")
+    if path.exists():
+        return False
+    deps = out_dir / "generated" / "exports" / (lib + ".deps")
+    imports = [l.strip() for l in deps.read_text(encoding="utf-8").splitlines()
+               if l.strip()] if deps.exists() else []
+    lines = ["// {}.{} — module facade".format(bc.MODULE_PREFIX, lib),
+             "module;"]
+    lines += ["#include <{}>".format(h.relative_to(bc.DEPS).as_posix())
+              for h in gfm_headers]
+    lines += ["", "export module {}.{};".format(bc.MODULE_PREFIX, lib), ""]
+    if imports:
+        lines += ["export import {};".format(i) for i in imports] + [""]
+    lines += ['#include "../generated/exports/{}.inc"'.format(lib), ""]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+    return True
+
+
+_GMF_INCLUDE = re.compile(r'^\s*#\s*include\s*<(boost/[^>]+)>', re.MULTILINE)
+
+
+def check_facade(lib, gfm_headers, extra_includes=()):
+    """Problems of src/<lib>.cppm against the generated data: its GMF must
+    include exactly the bundle's header set (the export list was computed
+    from it), plus the `facade-includes` the policy declares. The facade's
+    `export import` block is its own (hand-finalized facades import less
+    than .deps where gcc cannot take an edge, e.g. range -> regex); the build
+    and the tests validate it."""
+    path = bc.ROOT / "src" / (lib + ".cppm")
+    if not path.is_file():
+        return ["src/{}.cppm is missing (run --emit-cppm)".format(lib)]
+    text = path.read_text(encoding="utf-8")
+    head, sep, _ = text.partition("export module ")
+    if not sep:
+        return ["src/{}.cppm has no module declaration".format(lib)]
+    have = set(_GMF_INCLUDE.findall(head))
+    want = {h.relative_to(bc.DEPS).as_posix() for h in gfm_headers}
+    problems = []
+    for h in sorted(want - have):
+        problems.append("src/{}.cppm GMF lacks #include <{}>".format(lib, h))
+    for h in sorted(have - want - set(extra_includes)):
+        problems.append("src/{}.cppm GMF includes <{}>, which the export "
+                        "list was not generated from".format(lib, h))
+    return problems
+
+
+def write_meta(out_dir, summary, skipped):
+    """generated/meta/api-surface.json + skipped.txt (sorted, no paths, no
+    timestamps — byte-stable for --check)."""
+    meta = out_dir / "generated" / "meta"
+    meta.mkdir(parents=True, exist_ok=True)
+    surface = {
+        "boost": bc.BOOST_VERSION,
+        "generator": {
+            "tool": "tools/gen_exports.py",
+            "ast": "clang++ -ast-dump=json",
+            "clang": aj.clang_release(),
+            "target": bc.GEN_TARGET,
+            "defines": bc.GEN_DEFINES,
+        },
+        "libraries": {lib: summary[lib] for lib in sorted(summary)},
+    }
+    (meta / "api-surface.json").write_text(
+        json.dumps(surface, indent=1, sort_keys=True) + "\n",
+        encoding="utf-8", newline="\n")
+    lines = [
+        "# Names the export policy (tools/export_policy.toml) guards, drops or",
+        "# adds verbatim. GENERATED by tools/gen_exports.py - DO NOT EDIT",
+        "# <lib> <action> <name> [if <condition>] -- <reason>",
+        "",
+    ]
+    for lib, action, name, cond, reason in sorted(set(skipped)):
+        cond = " ".join(cond.split())
+        lines.append("{} {} {}{} -- {}".format(
+            lib, action, name, " if " + cond if cond else "",
+            " ".join(reason.split())))
+    (meta / "skipped.txt").write_text("\n".join(lines) + "\n",
+                                      encoding="utf-8", newline="\n")
+
+
+# ---------------------------------------------------------------------------
+# bundle TU: compile, prune, cache
+# ---------------------------------------------------------------------------
+
+def _bundle_text(gfm):
+    return "".join("#include <{}>\n".format(h.relative_to(bc.DEPS).as_posix())
+                   for h in gfm)
+
+
+def _code_hash():
+    h = hashlib.sha256()
+    for name in ("gen_exports.py", "boost_common.py", "ast_json.py"):
+        h.update((bc.TOOLS / name).read_bytes())
+    return h.hexdigest()
+
+
+_FILE_HASH = {}
+
+
+def _file_hash(path):
+    h = _FILE_HASH.get(path)
+    if h is None:
+        try:
+            h = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError:
+            h = "missing"
+        _FILE_HASH[path] = h
+    return h
+
+
+def _closure_hash(gfm):
+    """Content hash over every boost header transitively reachable from the
+    include set (any header edit invalidates the caches)."""
+    h = hashlib.sha256()
+    seen = set()
+    stack = list(gfm)
+    while stack:
+        f = stack.pop()
+        key = str(f)
+        if key in seen:
+            continue
+        seen.add(key)
+        try:
+            rel = f.relative_to(bc.DEPS).as_posix()
+        except ValueError:
+            rel = f.as_posix()
+        h.update("{} {}\n".format(rel, _file_hash(f)).encode())
+        try:
+            text = f.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        for mt in bc._INC_RE.finditer(text):
+            p = bc.DEPS / mt.group(1)
+            if str(p) not in seen and p.is_file():
+                stack.append(p)
+    return h.hexdigest()
+
+
+def _load_json(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
+def parse_bundle(lib, headers, policy, use_cache=True):
+    """Compile the bundle TU once per attempt; the compile is the gate.
+
+    A failing compile names the GMF headers that cannot be included directly
+    on this platform (both boost/thread/pthread and win32 define heap_new;
+    the aggregate selects one): those are pruned and the bundle recompiled,
+    up to six rounds. The pruned include set is cached by bundle content,
+    header-closure hash, flags and compiler version. Returns (TU, gfm) or
+    None when the include set cannot be made to compile."""
+    bundle = (bc.CACHE_DIR / "bundles" / (lib + ".cpp")).resolve()
+    bundle.parent.mkdir(parents=True, exist_ok=True)
+    gfm = list(headers)
+    extra = ["-D" + d for d in policy.defines(lib)]
+    args = [*bc.CLANG_ARGS, *extra]
+
+    gh = hashlib.sha256()
+    gh.update(_bundle_text(gfm).encode())
+    gh.update(_closure_hash(gfm).encode())
+    gh.update(" ".join(aj.clang_command(*args)).encode())
+    gh.update(aj.clang_version().encode())
+    gkey = gh.hexdigest()
+    gate_cache = bc.CACHE_DIR / (lib + ".gate.json")
+    cached = _load_json(gate_cache) if use_cache else None
+    if cached is not None and cached.get("key") == gkey:
+        gfm = [bc.DEPS / rel for rel in cached["gfm"]]
+
+    for attempt in range(7):
+        bundle.write_text(_bundle_text(gfm), encoding="utf-8", newline="\n")
+        try:
+            tu = aj.dump(bundle, args, cwd=str(bc.ROOT))
+            break
+        except aj.DumpError as e:
+            stderr = e.stderr
+        offenders = set()
+        for line in stderr.splitlines():
+            head = re.split(r":\d+(?::\d+)?:", line, maxsplit=1)[0]
+            head = head.strip().replace("\\", "/")
+            if not head.endswith(".hpp"):
+                continue
+            for h in gfm:
+                if head.endswith(h.relative_to(bc.DEPS).as_posix()):
+                    offenders.add(h)
+        if not offenders or attempt == 6:
+            print("    clang++ FAILED for {}:".format(lib))
+            for line in stderr.splitlines()[:8]:
+                print("      {}".format(line.strip()))
+            return None
+        for h in sorted(offenders, key=lambda p: p.as_posix()):
+            print("    gate pruned from GMF: {}".format(
+                h.relative_to(bc.DEPS).as_posix()))
+            gfm.remove(h)
+    if use_cache:
+        bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        gate_cache.write_text(json.dumps(
+            {"key": gkey,
+             "gfm": [h.relative_to(bc.DEPS).as_posix() for h in gfm]}),
+            encoding="utf-8")
+    return tu, gfm
+
+
+# ---------------------------------------------------------------------------
+# driver
+# ---------------------------------------------------------------------------
+
+GENERATED = ("generated/exports", "generated/meta/api-surface.json",
+             "generated/meta/skipped.txt")
+
+
+def _skip_key(lib, gfm, upstream_keys, no_body_deps, policy):
+    h = hashlib.sha256()
+    h.update(b"code:" + _code_hash().encode())
+    h.update(b"bundle:" + _bundle_text(gfm).encode())
+    h.update(b"closure:" + _closure_hash(gfm).encode())
+    h.update(b"clang_args:" + " ".join(bc.CLANG_ARGS).encode())
+    h.update(b"clang:" + aj.clang_version().encode())
+    h.update(b"policy:" + policy.digest(lib).encode())
+    h.update(b"no_body_deps:" + str(no_body_deps).encode())
+    for u in sorted(upstream_keys):
+        h.update("up:{}:{}\n".format(u, upstream_keys[u]).encode())
+    return h.hexdigest()
+
+
+def generate(args, out):
+    """Run the generation into `out` (a repo root). Returns (rc, facade
+    problems)."""
+    global _FILE_TO_LIB
+    policy = Policy.load()
+    print("AST: {} (target {})".format(aj.clang_version(), bc.GEN_TARGET),
+          flush=True)
+    _FILE_TO_LIB = bc.build_file_to_lib()
+
+    libs = list(args.libs) if args.libs else list(bc.TARGET_LIBS)
+    for lib in libs:
+        if lib not in bc.TARGET_LIBS:
+            print("error: unknown library '{}'".format(lib), file=sys.stderr)
+            return 1, []
+    use_cache = not args.no_cache
+    graph = bc.dep_graph()
+    order = bc.topo_order(graph)
+    print("processing order: {}".format(" -> ".join(order)))
+
+    gfm_memo, lib_keys = {}, {}
+    for lib in order:
+        if lib in bc.LIBS_SPECIAL:
+            continue
+        uk = {}
+        for u in sorted(graph.get(lib, ())):
+            if u in bc.LIBS_SPECIAL:
+                continue
+            ku = lib_keys.get(u)
+            if ku is None:
+                uk = None
+                break
+            uk[u] = ku
+        g = policy.gmf(lib)
+        gfm_memo[lib] = [bc.DEPS / h for h in g] if g else bc.gfm_headers_of(lib)
+        lib_keys[lib] = None if uk is None else _skip_key(
+            lib, gfm_memo[lib], uk, args.no_body_deps, policy)
+
+    old_surface = _load_json(out / "generated" / "meta" / "api-surface.json")
+    old_libs = (old_surface or {}).get("libraries", {})
+    old_skipped = _read_skipped(out / "generated" / "meta" / "skipped.txt")
+
+    claimed, claimed_inject = {}, {}
+    summary, skipped, body_all, gfm_by_lib, deps_by_lib = {}, [], {}, {}, {}
+    cache_payloads = {}
+    for lib in order:
+        if lib in bc.LIBS_SPECIAL:
+            continue
+        key = lib_keys[lib]
+        sk = _load_json(bc.CACHE_DIR / (lib + ".skip.json")) \
+            if use_cache and key else None
+        hit = sk is not None and sk.get("key") == key
+        if lib not in libs:
+            # Not regenerated: its committed output stays, but its claims
+            # shape first-wins ownership downstream, so replay them.
+            if lib in old_libs:
+                summary[lib] = old_libs[lib]
+            skipped += [e for e in old_skipped if e[0] == lib]
+            if hit:
+                for usr, owner in sk["claims"]:
+                    claimed.setdefault(usr, owner)
+                for q, owner in sk["inject_claims"]:
+                    claimed_inject.setdefault(q, owner)
+            else:
+                print("warning: no current cache for {}; a --libs run "
+                      "may claim differently from a full run".format(lib))
+            continue
+        if hit and (out / "generated" / "exports" / (lib + ".inc")).exists():
+            for usr, owner in sk["claims"]:
+                claimed.setdefault(usr, owner)
+            for q, owner in sk["inject_claims"]:
+                claimed_inject.setdefault(q, owner)
+            gfm_by_lib[lib] = [bc.DEPS / rel for rel in sk["gfm"]]
+            summary[lib] = sk["summary"]
+            deps_by_lib[lib] = sk["summary"]["deps"]
+            skipped += [tuple(e) for e in sk["skipped"]]
+            gen = out / "generated" / "exports"
+            (gen / (lib + ".inc")).write_text(sk["inc"], encoding="utf-8",
+                                              newline="\n")
+            dfile = gen / (lib + ".deps")
+            if sk["deps_text"]:
+                dfile.write_text(sk["deps_text"], encoding="utf-8",
+                                 newline="\n")
+            elif dfile.exists():
+                dfile.unlink()
+            if sk["body"]:
+                body_all[lib] = {h: set(v) for h, v in sk["body"].items()}
+            print("skipped {} (cache hit, exported={})".format(
+                lib, sk["summary"]["exported"]), flush=True)
+            continue
+        t0 = time.time()
+        print("parsing {} ({} headers in GMF)...".format(
+            lib, len(gfm_memo[lib])), flush=True)
+        parsed = parse_bundle(lib, gfm_memo[lib], policy, use_cache)
+        if parsed is None:
+            print("error: parse failed for {}".format(lib), file=sys.stderr)
+            return 1, []
+        tu, gfm_final = parsed
+        m = Model(tu)
+        cands = collect_candidates(lib, m)
+        injects = collect_injections(lib, m, claimed_inject)
+        added = collect_added(lib, m, policy, claimed_inject)
+        records = closure_from(m, dict(cands, **injects, **added))
+        exports, deps, sk_entries = emit_inc(
+            lib, records, out, claimed, policy,
+            extra_deps=bc.lib_deps(lib, gfm_final),
+            namespaces=m.namespaces())
+        body = {} if args.no_body_deps else \
+            collect_body_edges(lib, m, records, claimed)
+        if body:
+            body_all[lib] = body
+        gfm_by_lib[lib] = gfm_final
+        deps_by_lib[lib] = deps
+        for rec in records.values():
+            claimed.setdefault(rec["usr"], lib)
+        summary[lib] = {
+            "gmf": [h.relative_to(bc.DEPS).as_posix() for h in gfm_final],
+            "exported": exports,
+            "deps": deps,
+        }
+        skipped += sk_entries
+        print("  candidates={} closure={} exported={} deps={} body-deps={} "
+              "({:.1f}s)".format(len(cands), len(records), exports,
+                                 deps or "-", ", ".join(sorted(body)) or "-",
+                                 time.time() - t0), flush=True)
+        if use_cache and key:
+            gen = out / "generated" / "exports"
+            dfile = gen / (lib + ".deps")
+            cache_payloads[lib] = {
+                "key": key,
+                "gfm": summary[lib]["gmf"],
+                "summary": dict(summary[lib]),
+                "skipped": sk_entries,
+                "inc": (gen / (lib + ".inc")).read_text(encoding="utf-8"),
+                "deps_text": dfile.read_text(encoding="utf-8")
+                if dfile.exists() else "",
+                "body": {h: sorted(v) for h, v in body.items()},
+                "claims": [[r["usr"], lib] for r in records.values()],
+                "inject_claims": [[q, o] for q, o in claimed_inject.items()
+                                  if o == lib],
+            }
+        del m, tu
+
+    added = {}
+    if not args.no_body_deps:
+        print("pass 2: body-reference .deps completion...")
+        added = merge_body_edges(out, order, body_all, policy)
+        if not added:
+            print("  no edges to add")
+        for lib, homes in added.items():
+            if lib in summary:
+                summary[lib]["deps"] = sorted(set(summary[lib]["deps"]) |
+                                              set(homes))
+                deps_by_lib[lib] = summary[lib]["deps"]
+
+    # The cache holds each library's pass-1 output and its pass-2 candidate
+    # edges; pass 2 is re-run from them on every run, so its additions never
+    # invalidate an entry.
+    if use_cache and cache_payloads:
+        bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        for lib, payload in cache_payloads.items():
+            (bc.CACHE_DIR / (lib + ".skip.json")).write_text(
+                json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+
+    # Hand-written modules (version, macros) have no bundle; their import
+    # edges are declared in the policy so generated/ holds generated files only.
+    for lib in bc.LIBS_SPECIAL:
+        if args.libs and lib not in args.libs:
+            continue
+        add = sorted(policy.deps(lib).get("add", ()))
+        dfile = out / "generated" / "exports" / (lib + ".deps")
+        if add:
+            dfile.parent.mkdir(parents=True, exist_ok=True)
+            dfile.write_text("".join(bc.MODULE_PREFIX + "." + d + "\n"
+                                     for d in add), encoding="utf-8",
+                             newline="\n")
+        elif dfile.exists():
+            dfile.unlink()
+
+    write_meta(out, summary, skipped)
+
+    if args.emit_cppm:
+        for lib in order:
+            if lib in gfm_by_lib and emit_cppm(lib, out, gfm_by_lib[lib]):
+                print("drafted src/{}.cppm".format(lib))
+
+    problems = []
+    for lib in order:
+        if lib in gfm_by_lib:
+            problems += check_facade(lib, gfm_by_lib[lib],
+                                     policy.facade_includes(lib))
+    report = bc.ROOT / "target" / "gen" / "gen_report.json"
+    report.parent.mkdir(parents=True, exist_ok=True)
+    report.write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n",
+                      encoding="utf-8")
+    return 0, problems
+
+
+def _read_skipped(path):
+    """Committed skipped.txt entries (kept for libraries not regenerated)."""
+    out = []
+    if not path.is_file():
+        return out
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith("#"):
+            continue
+        head, _, reason = line.partition(" -- ")
+        parts = head.split(" ", 3)
+        if len(parts) < 3:
+            continue
+        lib, action, name = parts[:3]
+        cond = ""
+        if len(parts) == 4 and parts[3].startswith("if "):
+            cond = parts[3][3:]
+        out.append((lib, action, name, cond, reason))
+    return out
+
+
+def _snapshot(root):
+    """{relative path: bytes} of every generated file below `root`."""
+    files = {}
+    for rel in GENERATED:
+        p = root / rel
+        if p.is_dir():
+            for f in sorted(p.iterdir()):
+                if f.is_file():
+                    files[f.relative_to(root).as_posix()] = f.read_bytes()
+        elif p.is_file():
+            files[rel] = p.read_bytes()
+    return files
+
+
+def check(args):
+    """Regenerate into a scratch copy and compare byte for byte; the
+    repository is never written."""
+    with tempfile.TemporaryDirectory(prefix="gen-exports-check-") as tmp:
+        tmp = Path(tmp)
+        for rel in GENERATED:
+            src = bc.ROOT / rel
+            if src.is_dir():
+                shutil.copytree(src, tmp / rel)
+            elif src.is_file():
+                (tmp / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src, tmp / rel)
+        rc, problems = generate(args, tmp)
+        if rc:
+            return rc
+        want = _snapshot(tmp)
+        have = _snapshot(bc.ROOT)
+    stale = sorted(p for p in set(want) | set(have)
+                   if want.get(p) != have.get(p))
+    for p in stale:
+        if p not in want:
+            print("stale: {} (the generator no longer writes it)".format(p))
+            continue
+        if p not in have:
+            print("missing: {}".format(p))
+            continue
+        diff = difflib.unified_diff(
+            have[p].decode("utf-8", "replace").splitlines(),
+            want[p].decode("utf-8", "replace").splitlines(),
+            "a/" + p, "b/" + p, lineterm="", n=1)
+        out = list(diff)
+        print("\n".join(out[:40]))
+        if len(out) > 40:
+            print("... ({} more diff lines)".format(len(out) - 40))
+    for line in problems:
+        print("facade: " + line)
+    if stale or problems:
+        print("\ngen_exports --check: {} generated file(s) differ, {} facade "
+              "problem(s); run tools/gen_exports.py and review the diff"
+              .format(len(stale), len(problems)), file=sys.stderr)
+        return 1
+    print("gen_exports --check: generated exports are up to date")
+    return 0
+
+
 def main() -> int:
-    global ci, _FILE_TO_LIB
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--scan", action="store_true",
-                    help="regenerate generated/meta/libs.json from the heuristic and exit")
+                    help="regenerate generated/meta/libs.json and exit")
     ap.add_argument("--libs", nargs="*", default=None,
-                    help="subset of target libraries (default: all 27)")
-    ap.add_argument("--out", type=Path, default=bc.ROOT,
-                    help="repo root (generated/exports written below it)")
-    ap.add_argument("--full-closure", action="store_true",
-                    help="emit the complete closure per module (no cross-module dedup)")
+                    help="subset of target libraries (default: all)")
+    ap.add_argument("--check", action="store_true",
+                    help="compare the committed output byte for byte with a "
+                         "fresh generation; write nothing")
     ap.add_argument("--emit-cppm", action="store_true",
-                    help="also draft src/<lib>.cppm (M3 owns final form)")
+                    help="draft src/<lib>.cppm for libraries without a facade")
     ap.add_argument("--no-body-deps", action="store_true",
                     help="disable the pass-2 body-reference .deps completion")
     ap.add_argument("--no-cache", action="store_true",
-                    help="disable the incremental-skip and gate caches "
-                         "(full regeneration)")
+                    help="ignore and do not write the generator caches")
     args = ap.parse_args()
 
     if args.scan:
         db = bc.scan_libs_json()
         bc.LIBS_JSON.write_text(json.dumps(db, indent=1, sort_keys=True) + "\n",
                                 encoding="utf-8", newline="\n")
-        total = sum(len(v) for v in db.values())
-        print("wrote {} with {} headers across {} libraries"
-              .format(bc.LIBS_JSON, total, len(db)))
+        print("wrote {} ({} headers, {} libraries)".format(
+            bc.LIBS_JSON, sum(len(v) for v in db.values()), len(db)))
         return 0
-
-    ci = bc.get_ci()
-    print("AST parser: {} ({})".format(
-        bc.libclang_version(), ci.conf.get_filename()), flush=True)
-    _FILE_TO_LIB = bc.build_file_to_lib()
-
-    libs = args.libs or bc.TARGET_LIBS
-    for lib in libs:
-        if lib not in bc.TARGET_LIBS:
-            print("error: unknown library '{}'".format(lib), file=sys.stderr)
-            return 1
-
-    use_cache = not args.no_cache
-    graph = bc.dep_graph()
-    order = bc.topo_order(graph)
-    print("processing order: {}".format(" -> ".join(order)))
-
-    # Incremental-skip keys, computed dependencies-first (topo order) so each
-    # lib's key can fold in its upstream keys. A lib in an include cycle
-    # (unkeyable upstream) is never cacheable — conservative.
-    libs = list(args.libs) if args.libs else list(bc.TARGET_LIBS)
-    gfm_memo = {}
-    lib_keys = {}
-    for lib in order:
-        uk = {}
-        for u in sorted(graph.get(lib, ())):
-            ku = lib_keys.get(u)
-            if ku is None:
-                uk = None
-                break
-            uk[u] = ku
-        if uk is None:
-            lib_keys[lib] = None
-            continue
-        gfm_memo[lib] = bc.gfm_headers_of(lib)
-        lib_keys[lib] = _skip_key(lib, gfm_memo[lib], uk, libs,
-                                  args.full_closure, args.no_body_deps)
-
-    claimed = {}
-    claimed_inject = {}
-    summary = {}
-    body_all = {}            # lib -> {home: set(usr)} pass-2 candidates
-    gfm_by_lib = {}          # lib -> gate-pruned GFM (for post-merge emit_cppm)
-    cache_payloads = {}      # lib -> skip.json payload (written after pass 2)
-    for lib in order:
-        if lib not in libs:
-            continue
-        if lib in bc.LIBS_SPECIAL:
-            # hand-maintained module (boost.version): no bundle, no .inc, no
-            # .cppm draft — regenerating would clobber src/version.cppm and
-            # emit an unused exports/version.inc.
-            continue
-        key = lib_keys[lib]
-        sk = _load_json(bc.CACHE_DIR / (lib + ".skip.json")) \
-            if use_cache and key else None
-        if sk is not None and sk.get("key") == key and \
-                _artifacts_ok(args.out, lib, sk):
-            # Cache hit: replay this lib's claims so downstream misses see the
-            # same first-wins state a full run would produce.
-            for usr, owner in sk.get("claims", []):
-                claimed.setdefault(usr, owner)
-            for q, owner in sk.get("inject_claims", []):
-                claimed_inject.setdefault(q, owner)
-            gfm_by_lib[lib] = [bc.DEPS / rel for rel in sk["gfm"]]
-            summary[lib] = sk["summary"]
-            print("skipped {} (cache hit, exported={})".format(
-                lib, sk["summary"].get("exported")), flush=True)
-            continue
-        t0 = time.time()
-        headers = bc.headers_of(lib)
-        gfm_headers = gfm_memo.get(lib)
-        if gfm_headers is None:
-            gfm_headers = gfm_memo[lib] = bc.gfm_headers_of(lib)
-        print("parsing {} ({} headers, {} in GFM)...".format(
-            lib, len(headers), len(gfm_headers)), flush=True)
-        parsed = _parse_bundle(lib, gfm_headers, use_cache)
-        if parsed is None:
-            print("error: parse failed for {}".format(lib), file=sys.stderr)
-            return 1
-        tu, gfm_final = parsed
-        usr_index = build_usr_index(tu)
-        cands = collect_candidates(lib, tu, _FILE_TO_LIB, usr_index)
-        injects = collect_injections(tu, lib, _FILE_TO_LIB, claimed_inject,
-                                     usr_index)
-        curated = collect_curated(lib, claimed_inject, usr_index, tu)
-        records = closure_from(dict(cands, **injects, **curated), tu, usr_index)
-        if args.full_closure:
-            claimed.clear()
-            claimed_inject.clear()
-        exports, deps = emit_inc(lib, records, args.out, args.full_closure,
-                                 claimed, extra_deps=bc.dep_graph(
-                                     {lib: gfm_final})[lib])
-        # Pass 2 collection: bodies of exactly the emit_inc export set
-        # (own + unclaimed pulls) — must run while `claimed` still holds the
-        # pre-emit state emit_inc saw.
-        body_deps = {} if (args.full_closure or args.no_body_deps) else \
-            collect_body_edges(lib, records, claimed, usr_index, tu)
-        if body_deps:
-            body_all[lib] = body_deps
-        gfm_by_lib[lib] = gfm_final
-        for rec in records.values():
-            claimed.setdefault(rec["usr"], lib)
-        summary[lib] = {"candidates": len(cands),
-                        "closure": len(records),
-                        "exported": exports,
-                        "deps": sorted(deps),
-                        "var_templates": sorted(
-                            r["qname"] for r in records.values()
-                            if r.get("kind") == VAR_TEMPLATE_KIND)}
-        if body_deps:
-            summary[lib]["body_deps"] = {h: sorted(v)
-                                         for h, v in body_deps.items()}
-        print("  candidates={} closure={} exported={} deps={} body-deps={} "
-              "({:.1f}s)".format(
-                  len(cands), len(records), exports, sorted(deps) or "-",
-                  ", ".join(sorted(body_deps)) or "-", time.time() - t0),
-              flush=True)
-        if use_cache and key:
-            cache_payloads[lib] = {
-                "key": key,
-                "gfm": [h.relative_to(bc.DEPS).as_posix()
-                        for h in gfm_final],
-                "summary": summary[lib],
-                # First-wins claims contributed by this lib (replayed with
-                # setdefault in topo order on a cache hit).
-                "claims": [[rec["usr"], lib] for rec in records.values()],
-                "inject_claims": [[q, owner]
-                                  for q, owner in claimed_inject.items()
-                                  if owner == lib],
-            }
-
-    if not (args.full_closure or args.no_body_deps):
-        print("pass 2: body-reference .deps completion...")
-        added = merge_body_edges(args.out, order, body_all)
-        if not added:
-            print("  no edges to add")
-    else:
-        added = {}
-
-    if use_cache and cache_payloads:
-        bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        if added:
-            # pass-2 rewrote .deps files — every cached key is stale; drop the
-            # skip cache so the next run regenerates (gate cache stays valid).
-            n = 0
-            for p in bc.CACHE_DIR.glob("*.skip.json"):
-                p.unlink()
-                n += 1
-            if n:
-                print("  pass-2 added edges: cleared {} skip-cache entries"
-                      .format(n))
-        else:
-            for lib, payload in cache_payloads.items():
-                payload["deps_present"] = (args.out / "generated" / "exports" /
-                                           (lib + ".deps")).exists()
-                (bc.CACHE_DIR / (lib + ".skip.json")).write_text(
-                    json.dumps(payload, sort_keys=True) + "\n",
-                    encoding="utf-8")
-
-    # .cppm drafts are emitted after the pass-2 merge so their export-import
-    # block reflects the completed .deps (emit_cppm reads the .deps file).
-    if args.emit_cppm:
-        for lib in order:
-            if lib in gfm_by_lib:
-                emit_cppm(lib, args.out, gfm_by_lib[lib])
-
-    out = args.out / "target" / "gen" / "gen_report.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n",
-                   encoding="utf-8")
-    print("report -> {} ({} pass-2 edges added across {} libs)".format(
-        out, sum(len(v) for v in added.values()), len(added)))
-    return 0
-
-
-def _parse_bundle(lib, headers, use_cache=True):
-    """One TU including the GFM headers (like the future .cppm GMF), gated by
-    the real clang++ driver.
-
-    The bundle TU lives in target/gen/exports-cache/bundles/ (gitignored).
-
-    The clang++ gate is cached: its verdict is keyed on the initial bundle
-    content + gate command line + clang version, so an unchanged bundle skips
-    the (up to 6-round) syntax-check loop entirely and replays the pruned GFM
-    set. The libclang parse itself always runs (the AST is not cached).
-
-    libclang's missing-include reporting is unreliable once an include chain
-    gets long (verified: a fatal 'file not found' surfaced for a bare header
-    but not when the same header was reached after many others), so the bundle
-    is additionally syntax-checked with clang++ — the same engine the module
-    build uses. Gate failures identify source headers that must not be
-    included directly on this platform (e.g. both boost/thread/pthread and
-    win32/thread_heap_alloc.hpp define heap_new; the aggregate selects one via
-    a computed include): those files are pruned from the GFM set and the
-    bundle re-checked. Returns None when the include set cannot be made to
-    compile, else the TU for the final (pruned) include set.
-    """
-    import subprocess
-    _ci = bc.get_ci()
-    idx = _ci.Index.create()
-    bundle = (bc.CACHE_DIR / "bundles" / (lib + ".cpp")).resolve()
-    bundle.parent.mkdir(parents=True, exist_ok=True)
-    gfm = list(headers)
-    if lib in GMF_OVERRIDE:
-        gfm = [bc.DEPS / h for h in GMF_OVERRIDE[lib]]
-
-    def write_bundle():
-        bundle.write_text(_bundle_text(gfm), encoding="utf-8")
-
-    extra = ["-D" + d for d in EXTRA_DEFINES.get(lib, ())]
-    # The gate must use the same macro set as the libclang parse below
-    # (bc.CLANG_ARGS + extra): a divergence makes the gate's prune verdict
-    # disagree with the AST snapshot. In particular, dropping
-    # _WIN32_WINNT/WIN32_LEAN_AND_MEAN used to make the gate mis-prune
-    # boost/atomic.hpp under the pinned MinGW sysroot.
-    gate_args = ["-fsyntax-only", *bc.CLANG_ARGS, *extra]
-
-    def gate():
-        r = subprocess.run(_clang_command(*gate_args, str(bundle)),
-                           capture_output=True, text=True, cwd=str(bc.ROOT))
-        return r
-
-    # Gate cache: verdict keyed on the INITIAL bundle text (the pruning
-    # outcome is deterministic), the gate command line and the clang version.
-    gh = hashlib.sha256()
-    gh.update(b"bundle:" + _bundle_text(gfm).encode())
-    gh.update(b"closure:" + _closure_hash(lib, gfm).encode())
-    gh.update(b"extra:" + ",".join(extra).encode())
-    gh.update(("gate:clang++ " + " ".join(gate_args)).encode())
-    gh.update(b"clang-command:" + " ".join(_clang_command()).encode())
-    gh.update(b"clang:" + _clang_version().encode())
-    gkey = gh.hexdigest()
-    gate_cache = bc.CACHE_DIR / (lib + ".gate.json")
-    cached_gate = _load_json(gate_cache) if use_cache else None
-    if cached_gate is not None and cached_gate.get("key") == gkey:
-        if not cached_gate.get("ok"):
-            print("    clang++ gate FAILED for {} (cached):".format(lib))
-            for line in cached_gate.get("stderr", [])[:8]:
-                print("      {}".format(line.strip()))
-            return None
-        gfm = [bc.DEPS / rel for rel in cached_gate["gfm"]]
-        write_bundle()
-    else:
-        cached_gate = None
-        for attempt in range(6):
-            write_bundle()
-            r = gate()
-            if r.returncode == 0:
-                break
-            offenders = set()
-            for line in r.stderr.splitlines():
-                # Split at the diagnostic's line/column suffix, not the drive
-                # letter in Windows paths. Include-stack entries identify the
-                # GMF root when the actual failure is in a transitive header.
-                head = re.split(r":\d+(?::\d+)?:", line, maxsplit=1)[0]
-                head = head.strip().replace("\\", "/")
-                if not head.endswith(".hpp"):
-                    continue
-                for h in gfm:
-                    if h.relative_to(bc.DEPS).as_posix() in head:
-                        offenders.add(h)
-            if not offenders:
-                print("    clang++ gate FAILED for {}:".format(lib))
-                for line in r.stderr.splitlines()[:8]:
-                    print("      {}".format(line.strip()))
-                if use_cache:
-                    bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
-                    gate_cache.write_text(json.dumps(
-                        {"key": gkey, "ok": False,
-                         "stderr": r.stderr.splitlines()[:8]}),
-                        encoding="utf-8")
-                return None
-            for h in sorted(offenders, key=lambda p: p.as_posix()):
-                print("    gate pruned from GFM: {}".format(
-                    h.relative_to(bc.DEPS).as_posix()))
-                gfm.remove(h)
-        else:
-            print("    clang++ gate FAILED for {} (still failing after pruning):".format(lib))
-            for line in r.stderr.splitlines()[:8]:
-                print("      {}".format(line.strip()))
-            if use_cache:
-                bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
-                gate_cache.write_text(json.dumps(
-                    {"key": gkey, "ok": False,
-                     "stderr": r.stderr.splitlines()[:8]}),
-                    encoding="utf-8")
-            return None
-        if use_cache:
-            bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            gate_cache.write_text(json.dumps(
-                {"key": gkey, "ok": True,
-                 "gfm": [h.relative_to(bc.DEPS).as_posix() for h in gfm]}),
-                encoding="utf-8")
-
-    tu = idx.parse(str(bundle), args=bc.CLANG_ARGS + extra,
-                   options=_ci.TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD)
-    errs = [d for d in tu.diagnostics if d.severity >= _ci.Diagnostic.Error]
-    if errs:
-        print("    libclang: {} errors (non-fatal)".format(len(errs)))
-        for d in errs[:6]:
-            print("      {}: {}".format(d.location, d.spelling))
-    return tu, gfm
+    if args.check:
+        if args.emit_cppm:
+            ap.error("--check writes nothing; drop --emit-cppm")
+        return check(args)
+    rc, problems = generate(args, bc.ROOT)
+    for line in problems:
+        print("facade: " + line)
+    if problems:
+        print("error: {} facade problem(s)".format(len(problems)),
+              file=sys.stderr)
+        return 1
+    return rc
 
 
 if __name__ == "__main__":

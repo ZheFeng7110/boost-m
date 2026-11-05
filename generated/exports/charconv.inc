@@ -31,8 +31,8 @@ export namespace boost { namespace charconv { namespace detail {
   using boost::charconv::detail::ieee754_binary32;
   using boost::charconv::detail::ieee754_binary64;
 #if LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384
-  // M11 platform guard: bit_layouts.hpp defines ieee754_binary80 only for
-  // 80-bit long double (x86-64 gcc/mingw); MSVC long double is 53-bit.
+  // M11 platform guard: bit_layouts.hpp defines ieee754_binary80 only for 80-bit
+  // long double (x86-64 gcc/mingw); MSVC long double is 53-bit.
   using boost::charconv::detail::ieee754_binary80;
 #endif
   using boost::charconv::detail::is_int128;

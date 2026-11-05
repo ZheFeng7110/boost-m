@@ -1,5 +1,6 @@
 mcpplibs.mwrap.boost.assert
 mcpplibs.mwrap.boost.core
 mcpplibs.mwrap.boost.filesystem
+mcpplibs.mwrap.boost.io
 mcpplibs.mwrap.boost.type_index
 mcpplibs.mwrap.boost.winapi

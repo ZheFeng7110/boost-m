@@ -2008,8 +2008,8 @@ export namespace boost { namespace qvm { namespace qvm_detail {
   using boost::qvm::qvm_detail::vec_register_read;
   using boost::qvm::qvm_detail::vec_register_write;
 #if defined(__GNUC__) && defined(__SSE2__)
-  // M12 platform guard: vec_traits_gnuc.hpp declares vec_traits_gnuc_impl
-  // only under __GNUC__ && __SSE2__ (gcc vector_size ext_vector_traits).
+  // M12 platform guard: vec_traits_gnuc.hpp declares vec_traits_gnuc_impl only
+  // under __GNUC__ && __SSE2__ (gcc vector_size ext_vector_traits).
   using boost::qvm::qvm_detail::vec_traits_gnuc_impl;
 #endif
   using boost::qvm::qvm_detail::vector_scalar_cast_;

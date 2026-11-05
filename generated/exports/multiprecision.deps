@@ -1,3 +1,4 @@
 mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.io
 mcpplibs.mwrap.boost.math
 mcpplibs.mwrap.boost.random

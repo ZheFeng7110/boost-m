@@ -6,11 +6,13 @@
 *.mpp linguist-detectable=true
 *.mpp linguist-documentation=false
 
-# Patch replay and stored final forms must match the generator's LF bytes even
-# when the checkout uses core.autocrlf=true (the Windows runners' default).
+# Generated files, their inputs and the vendored patches keep LF bytes even
+# when the checkout uses core.autocrlf=true (the Windows runners' default), so
+# gen_exports.py --check and the patch replay agree on every host.
 *.cppm text eol=lf
 patches/** text eol=lf
 generated/** text eol=lf
+tools/export_policy.toml text eol=lf
 
 # Vendored upstream bytes are fixed: no end-of-line or encoding conversion, so a
 # Linux and a Windows checkout hash identically (upstream/documents.json and the

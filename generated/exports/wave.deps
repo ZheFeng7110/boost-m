@@ -4,7 +4,9 @@ mcpplibs.mwrap.boost.config
 mcpplibs.mwrap.boost.core
 mcpplibs.mwrap.boost.filesystem
 mcpplibs.mwrap.boost.format
+mcpplibs.mwrap.boost.io
 mcpplibs.mwrap.boost.iterator
+mcpplibs.mwrap.boost.mp11
 mcpplibs.mwrap.boost.multi_index
 mcpplibs.mwrap.boost.optional
 mcpplibs.mwrap.boost.pool

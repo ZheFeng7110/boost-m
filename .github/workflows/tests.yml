@@ -32,7 +32,7 @@
 # `examples` job, which `needs: [test]`: they start only after both groups have
 # passed on all five hosts.
 #
-# mcpp comes from the repository's own pin: xlings installs `mcpp 2026.10.26.1`
+# mcpp comes from the repository's own pin: xlings installs `mcpp 2026.11.5.1`
 # from `.xlings.json`, and the job asserts that CI's MCPP_VERSION and the
 # manifest pin are the same build. Toolchains are then installed by mcpp into its
 # sandbox (`~/.mcpp`), which actions/cache keeps warm per host and toolchain.
@@ -84,7 +84,7 @@ env:
   XLINGS_VERSION: v2026.10.26.1
   XLINGS_NON_INTERACTIVE: '1'
   # Must match [workspace].mcpp in .xlings.json — checked on every leg.
-  MCPP_VERSION: "2026.10.26.1"
+  MCPP_VERSION: "2026.11.5.1"
   # Leave the runners room: the vendored tree is large and every leg compiles
   # Boost from the same checkout.
   MCPP_JOBS: '4'

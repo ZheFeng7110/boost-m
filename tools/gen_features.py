@@ -57,7 +57,7 @@ PROFILES_LST = ROOT / "generated" / "meta" / "profiles.lst"
 MODULES_LST = ROOT / "generated" / "meta" / "modules.lst"
 
 # The full module-library list — derived from boost_common.TARGET_LIBS (which
-# knows the tier tables). boost_common has no hard dependency on libclang at
+# knows the tier tables). boost_common needs no compiler at
 # import time, so plain `uv run tools/gen_features.py` works. The compiled
 # include-only libs (log, test — C1) are re-inserted at their former T2 slots
 # so the generated feature block stays diff-stable.

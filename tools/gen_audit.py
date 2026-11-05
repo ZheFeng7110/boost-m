@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """gen_audit.py — audit target libraries for entities that cannot be exported.
 
-Default mode (linkage audit), per library:
+Default mode (linkage audit), per library, from clang's AST of the bundle TU
+(tools/ast_json.py — the same compile gen_exports.py runs):
   - namespace-scope `static` / internal-linkage functions (the static-inline
     manual-replacement list — M0: 27 target libs should be ~0)
   - anonymous-namespace entities
@@ -34,8 +35,6 @@ from collections import Counter
 from pathlib import Path
 
 import boost_common as bc
-
-ci = None
 
 # ---------------------------------------------------------------------------
 # --macros mode (M10): macro-surface statistics
@@ -161,8 +160,8 @@ def macros_audit(libs, out):
     t3 = set(bc.LIBS_T3 + bc.LIBS_INCLUDE_ONLY_M9)
     out.mkdir(parents=True, exist_ok=True)
     with open(out / "macro_surface.txt", "w", encoding="utf-8") as fh:
-        fh.write("# boost-module macro-surface audit (boost 1.92.0) - M10 T3 "
-                 "boundary check\n")
+        fh.write("# boost-module macro-surface audit (boost {}) - M10 T3 "
+                 "boundary check\n".format(bc.BOOST_VERSION))
         fh.write("# macros = unique names #defined in the library's own "
                  "public header set (libs.json for module libs,\n")
         fh.write("#   boost/<lib>/**.hpp non-detail heuristic otherwise), "
@@ -184,84 +183,45 @@ def macros_audit(libs, out):
     return 0
 
 
-def _is_explicit_specialization(cursor, tu):
-    """`template<>` explicit specializations (see gen_exports for rationale)."""
-    try:
-        toks = bc.tokens_of(tu, cursor)
-    except Exception:
-        return False
-    if len(toks) < 3:
-        return False
-    return toks[0].spelling == "template" and toks[1].spelling == "<" and \
-        toks[2].spelling in (">", ">>")
-
-
-def audit_lib(lib, headers, out_dir):
-    idx = ci.Index.create()
-    # gen_exports.py writes bundle TUs into its (gitignored) cache dir;
-    # fall back to the historical location when only old bundles exist.
-    bundle = bc.CACHE_DIR / "bundles" / (lib + ".cpp")
-    if not bundle.exists():
-        bundle = Path(bc.ROOT / "target" / "gen" / "bundles" / (lib + ".cpp"))
-    tu = idx.parse(str(bundle), args=bc.CLANG_ARGS,
-                   options=ci.TranslationUnit.PARSE_SKIP_FUNCTION_BODIES |
-                           ci.TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD)
-    file_to_lib = bc.build_file_to_lib()
+def audit_lib(lib, out_dir, policy):
+    """Linkage audit of one library from the compiler's AST of its bundle TU
+    (the same compile gen_exports.py runs; its pruned-GMF cache is reused)."""
+    import gen_exports as ge
+    g = policy.gmf(lib)
+    gfm = [bc.DEPS / h for h in g] if g else bc.gfm_headers_of(lib)
+    parsed = ge.parse_bundle(lib, gfm, policy)
+    if parsed is None:
+        raise SystemExit("error: {} does not compile".format(lib))
+    m = ge.Model(parsed[0])
 
     static_fns, anon, specs, friends = [], [], [], []
-
-    def rec(cursor, in_anon_ns):
-        try:
-            kind = str(cursor.kind).replace("CursorKind.", "")
-        except Exception:
-            kind = "UNKNOWN"
-        if kind not in ("NAMESPACE", "FUNCTION_DECL", "FUNCTION_TEMPLATE",
-                        "CLASS_DECL", "STRUCT_DECL", "UNION_DECL", "ENUM_DECL",
-                        "VAR_DECL", "TYPEDEF_DECL", "TYPE_ALIAS_DECL",
-                        "FRIEND_DECL"):
-            # expressions/statements: recurse without per-node file lookups
-            for child in cursor.get_children():
-                rec(child, in_anon_ns)
-            return
-        f = bc.cursor_file(cursor)
-        in_lib = f is not None and bc.home_lib_of_file(f, file_to_lib) == lib
-
-        if kind == "NAMESPACE" and cursor.is_anonymous():
-            for child in cursor.get_children():
-                rec(child, True)
-            return
-        if in_lib:
-            loc = "{}:{}".format(f.name, cursor.location.line)
-            if in_anon_ns and bc.qualified_name(cursor).startswith("boost::"):
-                anon.append("{} {}".format(loc, bc.qualified_name(cursor)))
-            if kind in ("FUNCTION_DECL", "FUNCTION_TEMPLATE"):
-                if bc.namespace_chain(cursor) and not bc.linkage_ok(cursor):
-                    static_fns.append("{} {} (linkage={})"
-                                      .format(loc, bc.qualified_name(cursor),
-                                              cursor.linkage.name))
-            if kind in ("FUNCTION_DECL", "FUNCTION_TEMPLATE", "CLASS_DECL",
-                        "STRUCT_DECL", "UNION_DECL", "CLASS_TEMPLATE",
-                        "CLASS_TEMPLATE_PARTIAL_SPECIALIZATION"):
-                if (bc.is_specialization(cursor) or
-                        _is_explicit_specialization(cursor, tu)) and \
-                        bc.qualified_name(cursor).startswith("boost::"):
-                    specs.append("{} {}".format(loc, bc.qualified_name(cursor)))
-        for child in cursor.get_children():
-            try:
-                is_friend = child.kind == ci.CursorKind.FRIEND_DECL
-            except ValueError:
-                is_friend = False
-            if is_friend and in_lib:
-                friends.append("{}:{}".format(f.name, child.location.line))
-                continue
-            rec(child, in_anon_ns)
-
-    rec(tu.cursor, False)
+    for d in m.decls:
+        if ge.home_of_file(d.file) != lib:
+            continue
+        loc = "{}:{}".format(Path(d.file).name, d.line)
+        if d.kind == "FriendDecl":
+            friends.append(loc)
+            continue
+        if d.attrs.get("isImplicit") or d.friend or m.is_pattern(d):
+            continue
+        parent = d.parent
+        if parent is not None and parent.kind == "NamespaceDecl" and \
+                not parent.name and d.kind in ge.EXPORT_KINDS:
+            anon.append("{} {}".format(loc, d.name or "<unnamed>"))
+            continue
+        qn = m.qualified_name(d)
+        if not qn.startswith("boost::"):
+            continue
+        if d.kind in ("FunctionDecl", "FunctionTemplateDecl") and \
+                m.namespace_chain(d) and not m.linkage_ok(d):
+            static_fns.append("{} {} (internal linkage)".format(loc, qn))
+        if m.is_specialization(d) and m.namespace_chain(m.primary(d)):
+            specs.append("{} {}".format(loc, qn))
 
     out = out_dir / (lib + ".txt")
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
-        fh.write("# audit {} (boost 1.92.0)\n".format(lib))
+        fh.write("# audit {} (boost {})\n".format(lib, bc.BOOST_VERSION))
         fh.write("# {} static/internal free functions\n".format(len(static_fns)))
         fh.write("\n".join(sorted(static_fns)) + "\n\n")
         fh.write("# {} anonymous-namespace entities\n".format(len(anon)))
@@ -274,7 +234,6 @@ def audit_lib(lib, headers, out_dir):
 
 
 def main() -> int:
-    global ci
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--libs", nargs="*", default=None,
                     help="subset of libraries (default: all target libs, "
@@ -290,7 +249,9 @@ def main() -> int:
             bc.TARGET_LIBS + bc.LIBS_T3 + bc.LIBS_INCLUDE_ONLY_M9
         return macros_audit(libs, args.out)
 
-    ci = bc.get_ci()
+    import gen_exports as ge
+    ge._FILE_TO_LIB.update(bc.build_file_to_lib())
+    policy = ge.Policy.load()
     libs = args.libs or bc.TARGET_LIBS
     total = [0, 0, 0, 0]
     for lib in libs:
@@ -299,8 +260,7 @@ def main() -> int:
         if lib in bc.LIBS_SPECIAL:
             print("skip {} (hand-written module, no generated bundle)".format(lib))
             continue
-        headers = bc.headers_of(lib)
-        n = audit_lib(lib, headers, args.out)
+        n = audit_lib(lib, args.out, policy)
         total = [t + x for t, x in zip(total, n)]
         print("{}: static={} anon={} specs={} friends={}".format(lib, *n))
     print("TOTAL: static={} anon={} specs={} friends={}".format(*total))

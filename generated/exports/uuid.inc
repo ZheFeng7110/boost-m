@@ -50,9 +50,9 @@ export namespace boost { namespace uuids { namespace detail {
   using boost::uuids::detail::byteswap;
   using boost::uuids::detail::chacha20_12;
 #if defined(BOOST_UUID_USE_SSE2)
+  // The SIMD to_chars/from_chars helpers are declared only under
+  // BOOST_UUID_USE_SSE2 (x86); arm64 takes the scalar path.
   using boost::uuids::detail::compare;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::countr_zero_nz;
 #endif
   using boost::uuids::detail::fc_error_to_string;
@@ -63,18 +63,12 @@ export namespace boost { namespace uuids { namespace detail {
   using boost::uuids::detail::from_chars_is_dash;
   using boost::uuids::detail::from_chars_is_opening_brace;
 #if defined(BOOST_UUID_USE_SSE2)
+  // The SIMD to_chars/from_chars helpers are declared only under
+  // BOOST_UUID_USE_SSE2 (x86); arm64 takes the scalar path.
   using boost::uuids::detail::from_chars_simd;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::from_chars_simd_char_constants;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::from_chars_simd_constants;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::from_chars_simd_core;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::from_chars_simd_load_traits;
 #endif
   using boost::uuids::detail::hash_mix_fmx;
@@ -106,15 +100,11 @@ export namespace boost { namespace uuids { namespace detail {
   using boost::uuids::detail::random_provider;
   using boost::uuids::detail::sha1;
 #if defined(BOOST_UUID_USE_SSE2)
+  // The SIMD to_chars/from_chars helpers are declared only under
+  // BOOST_UUID_USE_SSE2 (x86); arm64 takes the scalar path.
   using boost::uuids::detail::simd_vector;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::simd_vector128;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::simd_vector256;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::simd_vector512;
 #endif
   using boost::uuids::detail::store_big_u128;
@@ -135,15 +125,11 @@ export namespace boost { namespace uuids { namespace detail {
   using boost::uuids::detail::to_chars_digits;
   using boost::uuids::detail::to_chars_generic;
 #if defined(BOOST_UUID_USE_SSE2)
+  // The SIMD to_chars/from_chars helpers are declared only under
+  // BOOST_UUID_USE_SSE2 (x86); arm64 takes the scalar path.
   using boost::uuids::detail::to_chars_simd;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::to_chars_simd_char_constants;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::to_chars_simd_constants;
-#endif
-#if defined(BOOST_UUID_USE_SSE2)
   using boost::uuids::detail::to_chars_simd_core;
 #endif
   using boost::uuids::detail::uuid_from_string;
