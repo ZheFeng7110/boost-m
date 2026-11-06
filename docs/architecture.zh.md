@@ -258,7 +258,7 @@ feature（两种 Boost.Test 形态绝不能链接在一起）。
   必须干净；在同一配置上再做一次构建，记录增量 TU 数量和 mtime。
 - `tools/check_mwrap_release.py`：校验标识、版本方案、tag、许可证拆分以及保留
   文档的字节。
-- `tools/test_template.py`：安装隔离的 `MCPP_HOME` 测试环境，执行真实的
+- `tools/ci/test_template.py`：安装隔离的 `MCPP_HOME` 测试环境，执行真实的
   `mcpp new`，解析渲染出的清单（完整选择器、版本、features），然后构建并运行
   该项目——不使用 sed 渲染。
 - `tools/package-source.sh`：从受版本控制的代码树生成

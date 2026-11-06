@@ -348,7 +348,7 @@ jobs:
         run: |
           set -euo pipefail
           PY="$(command -v python3 || command -v python)"
-          "$PY" tools/test_template.py --toolchain "${{ matrix.toolchain }}"
+          "$PY" tools/ci/test_template.py --toolchain "${{ matrix.toolchain }}"
 
       - name: Check release coordinate and bilingual entry pages
         if: matrix.name == 'linux-gcc' && matrix.arch == 'x86_64'

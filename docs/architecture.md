@@ -290,7 +290,7 @@ keeps byte-identical notices.
   configuration records the incremental TU count and mtimes.
 - `tools/check_mwrap_release.py`: identity, version scheme, tag, licence split and
   retained-document bytes.
-- `tools/test_template.py`: installs an isolated `MCPP_HOME` fixture, runs a real
+- `tools/ci/test_template.py`: installs an isolated `MCPP_HOME` fixture, runs a real
   `mcpp new`, parses the rendered manifest (complete selector, version, features),
   then builds and runs the project — no sed rendering.
 - `tools/package-source.sh`: `boost-m-<version>.tar.gz` from the tracked tree,

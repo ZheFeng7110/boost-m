@@ -13,9 +13,9 @@ package's version, and the template's features. The check happens before the
 dependency is redirected to the fixture with the same parser, features kept.
 
 Usage:
-    python3 tools/test_template.py                # default template
-    python3 tools/test_template.py --template lib # a named template
-    python3 tools/test_template.py --keep         # leave the fixture on disk
+    python3 tools/ci/test_template.py                # default template
+    python3 tools/ci/test_template.py --template lib # a named template
+    python3 tools/ci/test_template.py --keep         # leave the fixture on disk
 """
 import argparse
 import json
@@ -27,7 +27,7 @@ import sys
 import tempfile
 import tomllib
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def package_identity():
