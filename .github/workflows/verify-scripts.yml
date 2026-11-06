@@ -9,12 +9,13 @@
 # fetch_mingw_sysroot.py. No libclang, no LLVM release archive.
 #
 # The generator cache under target/gen/exports-cache (bundle TUs, pruned-GMF
-# verdicts and incremental-skip keys) is worth caching because a hit skips the
-# AST dump of an unchanged library entirely.
+# verdicts, incremental-skip keys and gen_audit.py's linkage reports) is worth
+# caching because a hit skips the AST dump of an unchanged library entirely.
 #
 # Nightly (and on demand), the cache-drift job proves that cache sound: it
-# regenerates once with the restored CI cache and once from an empty cache and
-# compares both with the committed files (tools/ci/check_cache_drift.py). On
+# regenerates and audits once with the restored CI cache and once from an
+# empty cache, and compares both with each other and the generated files with
+# the committed ones (tools/ci/check_cache_drift.py). On
 # drift the job fails, uploads the evidence, saves the cold cache over the
 # stale one, and the report job opens or updates the `cache-drift` issue.
 name: Verify Generation Scripts
@@ -93,10 +94,11 @@ jobs:
         uses: ./.github/actions/setup-generator
 
       # gen_exports.py caches bundle TUs, pruned-GMF verdicts and
-      # incremental-skip keys under target/gen/exports-cache. Every entry is
-      # self-validating (keyed on the generator, clang and flags, and valid
-      # only while every file clang read for it and the first-wins ownership
-      # it was computed under still hold), so restoring an older commit's
+      # incremental-skip keys under target/gen/exports-cache, gen_audit.py
+      # its linkage reports. Every entry is self-validating (keyed on the
+      # generator, clang and flags, and valid only while every file clang
+      # read for it and the first-wins ownership it was computed under still
+      # hold), so restoring an older commit's
       # cache yields misses rather than wrong output; the nightly cache-drift
       # job checks exactly that. The salt in the key only bounds rollover: a
       # generator or sysroot-pin change drops the restore prefix instead of

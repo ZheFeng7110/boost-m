@@ -11,10 +11,16 @@ pass on stale output. This driver produces three versions of ``generated/``:
 
 A != B means a cache key misses an input: a generator bug. B != C means the
 committed output is wrong (most likely merged on the strength of a stale
-cache) and needs a regeneration and review. Either fails the run. The
-evidence (diffs, both versions of the affected cache entries, generator logs)
-is written to --out for upload, and the cold run leaves a clean cache in
-target/gen/exports-cache for the workflow to save over the stale one.
+cache) and needs a regeneration and review. Either fails the run.
+
+``gen_audit.py`` caches its linkage reports in the same directory. They are
+not committed, so a stale replay has nothing to be caught against on pull
+requests: each pass also runs the audit, and its reports must match between
+A and B as well.
+
+The evidence (diffs, both versions of the affected cache entries, generator
+logs) is written to --out for upload, and the cold run leaves a clean cache
+in target/gen/exports-cache for the workflow to save over the stale one.
 
 ``--summarize DIR`` turns the per-platform results under DIR into the body
 of the tracking issue.
@@ -76,6 +82,29 @@ def generate(label, out):
     return files, rc
 
 
+def audit(label, out):
+    """Run the linkage audit into a scratch directory; {file name: bytes}
+    of its reports."""
+    dest = out / "work" / ("audit-" + label)
+    shutil.rmtree(dest, ignore_errors=True)
+    log = out / "logs" / (label + "-audit.log")
+    command = [sys.executable, str(TOOLS / "gen_audit.py"), "--out", str(dest)]
+    print("\n==> [{}] {}".format(label, " ".join(command)), flush=True)
+    with open(log, "w", encoding="utf-8") as f:
+        proc = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT, text=True,
+                                encoding="utf-8", errors="replace")
+        for line in proc.stdout:
+            sys.stdout.write(line)
+            f.write(line)
+        rc = proc.wait()
+    if rc != 0:
+        raise SystemExit("[{}] gen_audit.py failed with exit code {}"
+                         .format(label, rc))
+    return {"target/gen/audit/" + p.name: p.read_bytes()
+            for p in sorted(dest.glob("*.txt"))}
+
+
 def diff_files(old, new):
     return sorted(p for p in set(old) | set(new) if old.get(p) != new.get(p))
 
@@ -97,7 +126,7 @@ def affected_libs(paths, old, new):
     libs = set()
     for p in paths:
         name = p.rsplit("/", 1)[-1]
-        if p.startswith("generated/exports/"):
+        if p.startswith(("generated/exports/", "target/gen/audit/")):
             libs.add(name.rsplit(".", 1)[0])
         elif name == "api-surface.json":
             o = json.loads(old.get(p) or b"{}").get("libraries", {})
@@ -114,7 +143,8 @@ def write_diff(path, paths, old, new, a, b):
 
 def copy_entries(src, dst, libs):
     for lib in libs:
-        for name in (lib + ".skip.json", lib + ".gate.json"):
+        for name in (lib + ".skip.json", lib + ".gate.json",
+                     lib + ".audit.json"):
             if (src / name).is_file():
                 dst.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src / name, dst / name)
@@ -142,10 +172,13 @@ def check(out):
 
     committed = gen_exports._snapshot(ROOT)
     cached, rc_a = generate("A-cached", out)
+    audit_cached = audit("A-cached", out)
     shutil.rmtree(cache, ignore_errors=True)
     cold, rc_b = generate("B-cold", out)
+    audit_cold = audit("B-cold", out)
 
     cache_paths = diff_files(cold, cached)
+    audit_paths = diff_files(audit_cold, audit_cached)
     commit_paths = diff_files(committed, cold)
     status = {
         "os": "{} ({})".format(os.environ.get("RUNNER_OS") or
@@ -155,6 +188,9 @@ def check(out):
         "restored_entries": len(entries),
         "cache_drift": cache_paths,
         "cache_drift_libs": affected_libs(cache_paths, cold, cached),
+        "audit_drift": audit_paths,
+        "audit_drift_libs": affected_libs(audit_paths, audit_cold,
+                                          audit_cached),
         "committed_drift": commit_paths,
         "committed_drift_libs": affected_libs(commit_paths, committed, cold),
         "exit_codes": {"A-cached": rc_a, "B-cold": rc_b},
@@ -171,6 +207,18 @@ def check(out):
                    "Libraries: " + (", ".join(libs) or "-"), "", "```diff"]
         for p in cache_paths:
             report += unified(p, cold, cached, "cold", "cached", DIFF_LINES)
+        report += ["```", ""]
+    if audit_paths:
+        write_diff(out / "audit-cache-vs-cold.diff", audit_paths, audit_cold,
+                   audit_cached, "cold", "cached")
+        libs = status["audit_drift_libs"]
+        copy_entries(restored, out / "evidence" / "restored", libs)
+        copy_entries(cache, out / "evidence" / "cold", libs)
+        report += ["## Audit cache drift (A != B)", "",
+                   "Libraries: " + (", ".join(libs) or "-"), "", "```diff"]
+        for p in audit_paths:
+            report += unified(p, audit_cold, audit_cached, "cold", "cached",
+                              DIFF_LINES)
         report += ["```", ""]
     if commit_paths:
         write_diff(out / "committed-vs-cold.diff", commit_paths, committed,
@@ -193,14 +241,16 @@ def check(out):
     if gh_out:
         with open(gh_out, "a", encoding="utf-8") as f:
             f.write("cache_drift={}\n".format(
-                "true" if cache_paths else "false"))
+                "true" if cache_paths or audit_paths else "false"))
             f.write("committed_drift={}\n".format(
                 "true" if commit_paths else "false"))
 
     print("\ncache vs cold run: {} file(s) differ".format(len(cache_paths)))
+    print("audit cache vs cold run: {} report(s) differ".format(
+        len(audit_paths)))
     print("committed vs cold run: {} file(s) differ".format(
         len(commit_paths)))
-    if cache_paths or commit_paths:
+    if cache_paths or audit_paths or commit_paths:
         print("drift detected; evidence in {}".format(out), file=sys.stderr)
         return 1
     print("no drift: the cache replays exactly what a cold run computes")
@@ -212,18 +262,21 @@ def summarize(src, run_url):
     legs = []
     for f in sorted(Path(src).glob("*/status.json")):
         status = json.loads(f.read_text(encoding="utf-8"))
-        if status["cache_drift"] or status["committed_drift"]:
+        if status["cache_drift"] or status["audit_drift"] \
+                or status["committed_drift"]:
             legs.append((f.parent, status))
     if not legs:
         return ""
     body = [MARKER, "## Generator cache drift", "",
             "Run: {}".format(run_url), "",
             "| Platform | Cache vs cold run (A != B) | "
+            "Audit cache vs cold run (A != B) | "
             "Committed vs cold run (B != C) | Restored entries |",
-            "|---|---|---|---|"]
+            "|---|---|---|---|---|"]
     for _, s in legs:
-        body.append("| {} | {} | {} | {} |".format(
+        body.append("| {} | {} | {} | {} | {} |".format(
             s["os"], ", ".join(s["cache_drift_libs"]) or "-",
+            ", ".join(s["audit_drift_libs"]) or "-",
             ", ".join(s["committed_drift_libs"]) or "-",
             s["restored_entries"]))
     body += [
@@ -232,6 +285,9 @@ def summarize(src, run_url):
         "stale output, so `gen_exports.py --check` could pass on it. Fix the "
         "generator; the run has already saved a cold cache over the stale "
         "one.",
+        "- **Audit A != B**: `gen_audit.py`'s cache key misses an input; the "
+        "linkage reports replayed from the CI cache are stale. Fix the audit "
+        "key; the cold cache saved by the run replaces the stale entries.",
         "- **B != C**: the committed `generated/` is not what the generator "
         "computes. Regenerate and review the diff, including the facades "
         "that import the affected modules.",
