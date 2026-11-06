@@ -221,6 +221,7 @@ class Model:
         self._qn = {}
         self._qindex = None
         self._export_qindex = None
+        self._export_keys = None
         for d in self.decls:
             self._group.setdefault(self.canon(d), []).append(d)
         # `typedef enum { a, b } name;` — the typedef gives the unnamed enum
@@ -459,6 +460,16 @@ class Model:
                     idx[qn] = es
             self._export_qindex = idx
         return self._export_qindex
+
+    def export_index(self):
+        """{stable key: decl} over exportable kinds, first declaration wins."""
+        if self._export_keys is None:
+            idx = {}
+            for d in self.indexed():
+                if d.kind in EXPORT_KINDS:
+                    idx.setdefault(self.stable_key(d), d)
+            self._export_keys = idx
+        return self._export_keys
 
     def lookup(self, chain, scopes):
         """Declarations a written name chain denotes: relative names are
@@ -877,14 +888,12 @@ def closure_from(m, cands):
     records = dict(cands)
     queue = deque(r for r in cands.values()
                   if not r["usr"].startswith("inject:"))
-    by_key = {}
-    for d in m.indexed():
-        if d.kind in EXPORT_KINDS:
-            by_key.setdefault(m.stable_key(d), d)
+    by_key = m.export_index()
+    pulled = {}             # closure targets by_key lacks; it is shared
     seen = set(records)
     while queue:
         rec = queue.popleft()
-        d = by_key.get(rec["usr"])
+        d = by_key.get(rec["usr"]) or pulled.get(rec["usr"])
         if d is None:
             continue
         for text, scopes in signature_types(m, d):
@@ -897,7 +906,8 @@ def closure_from(m, cands):
                 if key in seen:
                     continue
                 seen.add(key)
-                by_key.setdefault(key, target)
+                if key not in by_key:
+                    pulled.setdefault(key, target)
                 home = home_of_file(_owner_file(m, target))
                 records[key] = entity_record(m, target, home)
                 queue.append(records[key])
@@ -932,10 +942,7 @@ def collect_body_edges(lib, m, records, claimed):
         seen_pairs.add((key, home))
         edges.setdefault(home, set()).add(key)
 
-    by_key = {}
-    for d in m.indexed():
-        if d.kind in EXPORT_KINDS:
-            by_key.setdefault(m.stable_key(d), d)
+    by_key = m.export_index()
     for rec in records.values():
         if rec["home"] != lib and rec["usr"] in claimed:
             continue            # claimed elsewhere: not exported here
@@ -1461,7 +1468,10 @@ def _skip_key(lib, gfm, upstream_keys, no_body_deps, policy):
     h.update(b"code:" + _code_hash().encode())
     h.update(b"bundle:" + _bundle_text(gfm).encode())
     h.update(b"closure:" + _closure_hash(gfm).encode())
-    h.update(b"clang_args:" + " ".join(bc.CLANG_ARGS).encode())
+    # The driver line, as the gate key hashes it: CXX and
+    # CLANG_NO_DEFAULT_CONFIG change what clang parses.
+    h.update(b"clang_args:" +
+             " ".join(aj.clang_command(*bc.CLANG_ARGS)).encode())
     h.update(b"clang:" + aj.clang_version().encode())
     h.update(b"policy:" + policy.digest(lib).encode())
     h.update(b"no_body_deps:" + str(no_body_deps).encode())
