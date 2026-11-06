@@ -93,22 +93,63 @@ def dump(source, args, cwd=None):
     The AST stream is consumed while clang writes it; stderr goes to a
     temporary file so a chatty failure cannot block the pipe."""
     import tempfile
-    cmd = clang_command("-fsyntax-only", *args,
+    fd, depfile = tempfile.mkstemp(suffix=".d")
+    os.close(fd)
+    cmd = clang_command("-fsyntax-only", *args, "-MD", "-MF", depfile,
                         "-Xclang", "-ast-dump=json",
                         "-Xclang", "-ast-dump-filter=boost", str(source))
-    with tempfile.TemporaryFile() as err:
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=err,
-                                cwd=cwd, bufsize=1 << 20)
-        try:
-            tu = TU.from_stream(proc.stdout)
-        finally:
-            proc.stdout.close()
-            rc = proc.wait()
-        err.seek(0)
-        stderr = err.read().decode("utf-8", errors="replace")
-    if rc != 0:
-        raise DumpError(rc, stderr)
+    try:
+        with tempfile.TemporaryFile() as err:
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=err,
+                                    cwd=cwd, bufsize=1 << 20)
+            try:
+                tu = TU.from_stream(proc.stdout)
+            finally:
+                proc.stdout.close()
+                rc = proc.wait()
+            err.seek(0)
+            stderr = err.read().decode("utf-8", errors="replace")
+        if rc != 0:
+            raise DumpError(rc, stderr)
+        with open(depfile, encoding="utf-8", errors="surrogateescape") as f:
+            tu.inputs = parse_depfile(f.read())
+    finally:
+        # clang removes the dependency file itself when the compile fails
+        if os.path.exists(depfile):
+            os.unlink(depfile)
     return tu
+
+
+def parse_depfile(text):
+    """Prerequisites of a Make-style dependency file (`clang -MD`): the
+    files after the first `target: `, with backslash-newline continuations
+    and the `\\ ` / `\\#` / `$$` escapes undone. Other backslashes are
+    path separators (Windows) and stay."""
+    text = re.sub(r"\\\r?\n", " ", text)
+    head, sep, rest = text.partition(": ")
+    if not sep:
+        return []
+    out, cur, i, n = [], [], 0, len(rest)
+    while i < n:
+        c = rest[i]
+        if c == "\\" and i + 1 < n and rest[i + 1] in " #":
+            cur.append(rest[i + 1])
+            i += 2
+            continue
+        if c == "$" and i + 1 < n and rest[i + 1] == "$":
+            cur.append("$")
+            i += 2
+            continue
+        if c.isspace():
+            if cur:
+                out.append("".join(cur))
+                cur = []
+        else:
+            cur.append(c)
+        i += 1
+    if cur:
+        out.append("".join(cur))
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -204,6 +245,9 @@ class TU:
         # the template whose instantiation it belongs to (references to
         # `foo<int>` and its members resolve to the template `foo`).
         self.alias = {}
+        # every file clang read for this TU (its -MD dependency list), as
+        # printed: absolute, or relative to the compile's working directory
+        self.inputs = []
 
     def resolve(self, nid):
         """Decl for a referenced id, following instantiation aliases."""
@@ -255,6 +299,7 @@ class _Reader:
         alias = tu.alias
         alias_to = None         # template id while skipping an instantiation
         after_open = False
+        skip_arrays = []        # (indent, key) of arrays open in the skip
 
         for raw in stream:
             s = raw.lstrip(b" ")
@@ -271,12 +316,23 @@ class _Reader:
                 ignore_file = True
             if skip >= 0:
                 if alias_to is not None:
+                    # Only nodes of the instantiation (elements of "inner")
+                    # alias to the template; elements of other arrays
+                    # (lookups, ...) name declarations it merely refers to.
                     if after_open and s.startswith(b'"id": "'):
                         alias[_unquote(s[6:])] = alias_to
-                    after_open = s[:1] == b"{"
+                    c = s[:1]
+                    if c == b'"' and s.rstrip().endswith(b"["):
+                        skip_arrays.append((ind, s[1:s.index(b'"', 1)]))
+                    elif c == b"]" and skip_arrays \
+                            and skip_arrays[-1][0] == ind:
+                        skip_arrays.pop()
+                    after_open = c == b"{" and bool(skip_arrays) \
+                        and skip_arrays[-1][1] == b"inner"
                 if ind == skip and s[:1] in (b"}", b"]"):
                     skip = -1
                     alias_to = None
+                    skip_arrays.clear()
                     if loc_owner is not None:
                         f = intern.get(cur_file)
                         if f is None:

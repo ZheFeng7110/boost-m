@@ -74,8 +74,13 @@ ADDED_FILES = {
 
 
 def _run(*cmd):
-    return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+    """Run cmd in ROOT; a missing executable is a failed run (exit 127), so
+    the patch -p1 fallback is reachable on hosts without Git."""
+    try:
+        return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
+    except FileNotFoundError as e:
+        return subprocess.CompletedProcess(cmd, 127, "", str(e))
 
 
 def apply_patch_file(name):
@@ -88,16 +93,20 @@ def apply_patch_file(name):
     if _run("git", "apply", "--check", "--reverse", rel).returncode == 0:
         print("  skip   {} (already applied)".format(rel))
         return
-    if _run("patch", "-p1", "--dry-run", "--forward", "-i", rel).returncode == 0:
-        subprocess.run(["patch", "-p1", "--forward", "-i", rel], cwd=ROOT,
-                       capture_output=True, check=True)
-        print("  patched {} (patch -p1)".format(rel))
-        return
-    if _run("patch", "-p1", "--dry-run", "--reverse", "-i", rel).returncode == 0:
+    p = _run("patch", "-p1", "--dry-run", "--forward", "-i", rel)
+    if p.returncode == 0:
+        p = _run("patch", "-p1", "--forward", "-i", rel)
+        if p.returncode == 0:
+            print("  patched {} (patch -p1)".format(rel))
+            return
+    elif _run("patch", "-p1", "--dry-run", "--reverse",
+              "-i", rel).returncode == 0:
         print("  skip   {} (already applied)".format(rel))
         return
-    raise SystemExit("{}: failed to apply\n  stdout: {}\n  stderr: {}".format(
-        rel, r.stdout[:300], r.stderr[:300]))
+    raise SystemExit(
+        "{}: failed to apply\n  git: {}\n  patch: {}".format(
+            rel, (r.stderr or r.stdout)[:300].strip(),
+            (p.stderr or p.stdout)[:300].strip()))
 
 
 def ensure_file(rel, content):

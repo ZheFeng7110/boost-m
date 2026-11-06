@@ -45,6 +45,41 @@ class VendoredPatchTests(unittest.TestCase):
                                 for call in run.call_args_list))
 
 
+    def test_missing_git_falls_back_to_patch(self):
+        real = subprocess.run
+
+        def no_git(cmd, *a, **kw):
+            if cmd[0] == "git":
+                raise FileNotFoundError(2, "No such file", "git")
+            return real(cmd, *a, **kw)
+
+        calls = []
+        ok = subprocess.CompletedProcess([], 0, "", "")
+
+        def fake(cmd, *a, **kw):
+            calls.append(list(cmd))
+            if cmd[0] == "git":
+                return no_git(cmd, *a, **kw)
+            return ok
+
+        with mock.patch("subprocess.run", side_effect=fake):
+            apply_patches.apply_patch_file("io")
+        self.assertEqual([c[0] for c in calls],
+                         ["git", "git", "patch", "patch"])
+        self.assertNotIn("--dry-run", calls[-1])
+
+    def test_failure_reports_both_tools(self):
+        def fail(cmd, *a, **kw):
+            if cmd[0] == "git":
+                raise FileNotFoundError(2, "No such file", "git")
+            return subprocess.CompletedProcess(cmd, 1, "", "hunk FAILED")
+
+        with mock.patch("subprocess.run", side_effect=fail), \
+                self.assertRaises(SystemExit) as cm:
+            apply_patches.apply_patch_file("io")
+        self.assertIn("No such file", str(cm.exception))
+        self.assertIn("hunk FAILED", str(cm.exception))
+
 class CheckoutTests(unittest.TestCase):
     def test_windows_checkout_preserves_generation_bytes(self):
         # Exercise Git's actual Windows-style checkout conversion on every OS.

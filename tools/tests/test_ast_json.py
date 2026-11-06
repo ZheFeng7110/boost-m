@@ -100,6 +100,37 @@ class ReaderTests(unittest.TestCase):
         # and the reader followed it
         self.assertEqual(use.file, "/b/elsewhere.hpp")
 
+    def test_lookups_inside_an_instantiation_are_not_aliased(self):
+        # An UnresolvedLookupExpr in the instantiated body lists the
+        # declarations it may call (std::swap); those are not part of the
+        # instantiation and must keep resolving to themselves.
+        tu = ast_json.TU.from_stream(stream(ns("0x1", "boost", [
+            {"id": "0x10", "kind": "ClassTemplateDecl", "loc": loc("/b/t.hpp", 1),
+             "name": "box", "inner": [
+                 {"id": "0x11", "kind": "TemplateTypeParmDecl", "name": "T"},
+                 {"id": "0x12", "kind": "CXXRecordDecl", "name": "box",
+                  "tagUsed": "struct", "completeDefinition": True},
+                 {"id": "0x13", "kind": "ClassTemplateSpecializationDecl",
+                  "name": "box", "inner": [
+                      {"id": "0x14", "kind": "CXXMethodDecl", "name": "swap",
+                       "inner": [{"id": "0x15", "kind": "CompoundStmt",
+                                  "inner": [{
+                                      "id": "0x16",
+                                      "kind": "UnresolvedLookupExpr",
+                                      "lookups": [
+                                          {"id": "0x99",
+                                           "kind": "FunctionTemplateDecl",
+                                           "name": "swap"}],
+                                      "inner": [{"id": "0x17",
+                                                 "kind": "DeclRefExpr"}]}]}]},
+                  ]},
+             ]},
+        ])))
+        tmpl = tu.by_id["0x10"]
+        for nid in ("0x13", "0x14", "0x15", "0x16", "0x17"):
+            self.assertIs(tu.resolve(nid), tmpl, nid)
+        self.assertNotIn("0x99", tu.alias)
+
     def test_null_children_and_foreign_top_level_objects(self):
         tu = ast_json.TU.from_stream(stream(
             {"id": "0x90", "kind": "CXXRecordDecl", "loc": loc("/std/x.h", 1),

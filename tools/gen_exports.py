@@ -47,6 +47,7 @@ import argparse
 import difflib
 import hashlib
 import json
+import os
 import re
 import shutil
 import sys
@@ -1302,6 +1303,82 @@ def _closure_hash(gfm):
     return h.hexdigest()
 
 
+def _input_manifest(tu, cwd):
+    """{file: content hash} of every file clang read for the TU (its
+    depfile), keyed relative to the repository when inside it. The bundle
+    itself is left out: its text is part of the cache keys."""
+    out = {}
+    root = os.path.normcase(os.path.normpath(str(bc.ROOT)))
+    bundles = Path(os.path.normpath(str(bc.CACHE_DIR / "bundles")))
+    for raw in tu.inputs:
+        f = Path(os.path.normpath(os.path.join(str(cwd), raw)))
+        if f.parent == bundles:
+            continue
+        if os.path.normcase(str(f)).startswith(root + os.sep):
+            key = f.relative_to(bc.ROOT).as_posix()
+        else:
+            key = f.as_posix()
+        out[key] = _file_hash(f)
+    return out
+
+
+def _manifest_ok(manifest):
+    """The files an entry was computed from still have the recorded content.
+    This covers what the include-closure walk cannot see (relative and
+    macro-computed includes, the sysroot); an entry without one is stale."""
+    if not manifest:
+        return False
+    for key, h in manifest.items():
+        f = Path(key)
+        if not f.is_absolute():
+            f = bc.ROOT / key
+        if _file_hash(f) != h:
+            return False
+    return True
+
+
+class _ClaimView:
+    """A claim table seen through one library's processing: records the
+    owner (None = unclaimed) of every name it probes or claims, as it was
+    before the library touched it. A cache entry is valid only while those
+    observations still hold (first-wins ownership depends on every library
+    processed earlier, not only on include-graph upstreams)."""
+
+    def __init__(self, table):
+        self.table = table
+        self.seen = {}
+
+    def _see(self, k):
+        if k not in self.seen:
+            self.seen[k] = self.table.get(k)
+
+    def __contains__(self, k):
+        self._see(k)
+        return k in self.table
+
+    def __setitem__(self, k, v):
+        self._see(k)
+        self.table[k] = v
+
+    def setdefault(self, k, v):
+        self._see(k)
+        return self.table.setdefault(k, v)
+
+
+def _claims_hold(sk, claimed, claimed_inject):
+    """The ownership an entry was computed under still holds: the same
+    closure members are already claimed, and every probed injection name has
+    the same owner."""
+    pre = sk.get("pre_claimed")
+    view = sk.get("inject_view")
+    if pre is None or view is None:
+        return False
+    probes = {u for u, _ in sk["claims"]}
+    if {u for u in probes if u in claimed} != set(pre):
+        return False
+    return all(claimed_inject.get(k) == o for k, o in view)
+
+
 def _load_json(path):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -1332,7 +1409,8 @@ def parse_bundle(lib, headers, policy, use_cache=True):
     gkey = gh.hexdigest()
     gate_cache = bc.CACHE_DIR / (lib + ".gate.json")
     cached = _load_json(gate_cache) if use_cache else None
-    if cached is not None and cached.get("key") == gkey:
+    if cached is not None and cached.get("key") == gkey \
+            and _manifest_ok(cached.get("inputs")):
         gfm = [bc.DEPS / rel for rel in cached["gfm"]]
 
     for attempt in range(7):
@@ -1364,7 +1442,8 @@ def parse_bundle(lib, headers, policy, use_cache=True):
         bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
         gate_cache.write_text(json.dumps(
             {"key": gkey,
-             "gfm": [h.relative_to(bc.DEPS).as_posix() for h in gfm]}),
+             "gfm": [h.relative_to(bc.DEPS).as_posix() for h in gfm],
+             "inputs": _input_manifest(tu, bc.ROOT)}),
             encoding="utf-8")
     return tu, gfm
 
@@ -1441,7 +1520,9 @@ def generate(args, out):
         key = lib_keys[lib]
         sk = _load_json(bc.CACHE_DIR / (lib + ".skip.json")) \
             if use_cache and key else None
-        hit = sk is not None and sk.get("key") == key
+        hit = sk is not None and sk.get("key") == key \
+            and _manifest_ok(sk.get("inputs")) \
+            and _claims_hold(sk, claimed, claimed_inject)
         if lib not in libs:
             # Not regenerated: its committed output stays, but its claims
             # shape first-wins ownership downstream, so replay them.
@@ -1490,9 +1571,12 @@ def generate(args, out):
         tu, gfm_final = parsed
         m = Model(tu)
         cands = collect_candidates(lib, m)
-        injects = collect_injections(lib, m, claimed_inject)
-        added = collect_added(lib, m, policy, claimed_inject)
+        inject_view = _ClaimView(claimed_inject)
+        injects = collect_injections(lib, m, inject_view)
+        added = collect_added(lib, m, policy, inject_view)
         records = closure_from(m, dict(cands, **injects, **added))
+        pre_claimed = sorted({r["usr"] for r in records.values()
+                              if r["usr"] in claimed})
         exports, deps, sk_entries = emit_inc(
             lib, records, out, claimed, policy,
             extra_deps=bc.lib_deps(lib, gfm_final),
@@ -1530,6 +1614,10 @@ def generate(args, out):
                 "claims": [[r["usr"], lib] for r in records.values()],
                 "inject_claims": [[q, o] for q, o in claimed_inject.items()
                                   if o == lib],
+                "pre_claimed": pre_claimed,
+                "inject_view": sorted([k, o] for k, o in
+                                      inject_view.seen.items()),
+                "inputs": _input_manifest(tu, bc.ROOT),
             }
         del m, tu
 
