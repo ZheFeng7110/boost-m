@@ -3,12 +3,14 @@
 
 export namespace boost {
 #if defined(BOOST_HAS_INT128)
-  // M3 hand-guard (M9: moved to config.inc): suffix.hpp defines int128_type only where BOOST_HAS_INT128.
+  // M3 hand-guard (M9: moved to config.inc): suffix.hpp defines int128_type only
+  // where BOOST_HAS_INT128.
   using boost::int128_type;
 #endif
   using boost::long_long_type;
 #if defined(BOOST_HAS_INT128)
-  // M3 hand-guard (M9: moved to config.inc): suffix.hpp defines uint128_type only where BOOST_HAS_INT128.
+  // M3 hand-guard (M9: moved to config.inc): suffix.hpp defines uint128_type
+  // only where BOOST_HAS_INT128.
   using boost::uint128_type;
 #endif
   using boost::ulong_long_type;

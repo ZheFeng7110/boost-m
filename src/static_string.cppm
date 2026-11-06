@@ -1,11 +1,14 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.static_string — module facade over generated/exports/static_string.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
 #include <boost/static_string.hpp>
 
 export module mcpplibs.mwrap.boost.static_string;
 
+export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/static_string.inc"
 

@@ -23,16 +23,16 @@ boost-m/
 ├── build.mcpp                   root-closure partition generator
 ├── upstream/boost/              pinned official Boost tree (pruned) + SOURCE.md
 ├── upstream/boost-module/       retained pre-mwrap wrapper licence/README/history
-├── patches/                     replayable adaptations; final/<path> = stored forms
+├── patches/                     vendored adaptations of upstream/boost (apply_patches.py)
 ├── port/                        wrapper TUs (system/thread/leaf extras)
 ├── port/include/mwrap/boost/    <mwrap/boost/macros.hpp> include entry
-├── src/                         module interfaces, root module, macros module
-├── generated/exports/           committed export lists (.inc) and edges (.deps)
-├── generated/meta/              committed lists/maps the generators and build.mcpp read
+├── src/                         hand-maintained module facades, root module, macros module
+├── generated/exports/           export lists (.inc) and edges (.deps) — generator output only
+├── generated/meta/              api-surface.json, skipped.txt, lists/maps build.mcpp reads
 ├── templates/                   basic (default) and lib templates
 ├── tests/                       one standalone program per file
 ├── examples/                    basic, git-dep, profiles consumers
-├── tools/                       import, generation, audit, packaging, CI helpers
+├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI
 └── docs/
 ```
 
@@ -56,10 +56,17 @@ export import mcpplibs.mwrap.boost.type_traits;
 #include "../generated/exports/optional.inc"   // export namespace boost { using ...; }
 ```
 
-- The GMF include set comes from the library's public include DAG, minus headers
-  that are not standalone-parseable; the `.inc` file carries the
-  `export namespace boost { using ...; }` list generated from a libclang AST
-  snapshot.
+- The facade is hand-maintained; the generator never writes it. Its GMF include
+  set is exactly the bundle translation unit the export list was computed from
+  (the library's public include DAG, minus headers that do not compile on the
+  snapshot platform), and the `.inc` file carries the generated
+  `export namespace boost { using ...; }` list. `gen_exports.py --check`
+  verifies both halves agree: the GMF equals the bundle (plus any
+  `facade-includes` the policy declares), and the `export import` block
+  covers every `.deps` edge, because the `.inc` leaves out what an earlier
+  module owns. An edge the facade cannot take (range does not import regex:
+  abi-tag mismatch under gcc) is declared in the policy's `[<lib>.facade]`
+  `omit-imports` with a reason.
 - One entity has one export owner. A dependency that another target library owns
   becomes an `export import` edge in the primary module, recorded in `<lib>.deps`
   as the complete module name.
@@ -101,31 +108,113 @@ a clang build of the whole closure can hit the source-location limit.
 
 ## 5. Generation chain
 
+The principle: **the compiler computes the public surface, the generator only
+lists it, and nothing edits the result.** The upstream headers are the single
+source of truth; the generated files are reproducible from them byte for byte.
+
 ```sh
 python3 tools/import_boost.py --tarball boost_1_92_0.tar.gz   # repopulates upstream/boost/
-python3 tools/reapply_hand_edits.py        # vendored adaptations
-python3 tools/gen_exports.py --emit-cppm   # generated/exports/*.inc|*.deps + draft .cppm
-python3 tools/reapply_hand_edits.py        # module-side adaptations, final forms
-python3 tools/gen_features.py              # mcpp.toml blocks + generated/meta/*
+python3 tools/apply_patches.py             # vendored adaptations (patches/*.patch)
+python3 tools/gen_exports.py               # generated/exports/*, api-surface.json, skipped.txt
+python3 tools/gen_features.py              # mcpp.toml blocks + generated/meta/*.lst
+python3 tools/gen_exports.py --check       # byte-compare, writes nothing
 python3 tools/gen_features.py --check
-python3 tools/gen_audit.py                 # export completeness (AST)
+python3 tools/gen_audit.py                 # linkage audit (AST, target/gen/audit)
 python3 tools/gen_audit.py --macros        # macro-surface inventory
-git diff --exit-code && git status --short
 ```
 
+### 5.1 The AST comes from clang++
+
+For each library one bundle TU includes the facade's GMF headers and is compiled
+once:
+
+```sh
+clang++ -std=c++23 --target=x86_64-w64-mingw32 --sysroot=<pinned MinGW> \
+        -fsyntax-only -Xclang -ast-dump=json -Xclang -ast-dump-filter=boost bundle.cpp
+```
+
+The same invocation is the syntax gate: when it fails, the GMF headers named by
+the diagnostics (platform-exclusive alternatives such as the pthread/win32 thread
+backends) are pruned and the bundle is recompiled; the pruned set is recorded in
+`api-surface.json`. `-ast-dump-filter=boost` keeps the `namespace boost`
+subtrees only. The dump of an instantiation-heavy library is still several GB,
+so `tools/ast_json.py` reads it as a stream into a flat declaration table:
+
+- clang prints a location's file only when it differs from the previously
+  printed location, so the reader carries that state across every location in
+  output order — including the ones it drops — and never trusts a single
+  `loc.file` in isolation;
+- implicit template instantiations (every declaration of a `*TemplateDecl`
+  after its pattern), `UsingShadowDecl` copies, comments, source ranges and
+  record definition data are dropped while streaming; references to a dropped
+  instantiation resolve to its template;
+- references found in a declaration's subtree (declaration references,
+  lookups, type-node declarations, written types) are attributed to the
+  namespace-scope entity that owns it.
+
+Only the clang++ driver pinned in `.xlings.json` (`llvm`) is needed — no
+libclang, no Python bindings, no LLVM release archive.
+
+### 5.2 What is exported
+
+- **Candidates**: namespace-scope `boost::` entities with external linkage whose
+  definition lives in a header the library owns (`boost/<lib>/**`,
+  `boost/<lib>.hpp`) or in no target library's headers ("shared"). Linkage is
+  read from the AST: anonymous namespaces, `static`, non-inline const variables
+  and Itanium `L`-marked manglings are internal; typedef names are exportable
+  members. Compiler-implicit declarations, friend-only declarations, explicit
+  and partial specializations (reachable through the primary template),
+  deduction guides and class members are not candidates.
+- **Using-injections**: namespace-scope `using X::y;` / `using namespace X;`
+  that give entities their public spelling (ADL barriers, `detail` re-exports).
+- **Signature closure**: entities named by the candidates' signatures
+  (parameters, results, bases, fields, typedef targets — with typedefs looked
+  through), so the API's own types are exported with it.
+- **Ownership**: libraries are processed dependencies-first; the first library
+  to claim an entity owns it, later ones get an `export import` edge to the
+  owner in `<lib>.deps`. Pass 2 walks the bodies of every exported entity and
+  adds the edges a consumer instantiating them needs (cycle-closing and
+  transitive edges skipped).
+- Output is sorted, carries no paths or timestamps, and uses LF; a name
+  shadowed inside the export block (`boost::hana::ext::boost`) is spelled with a
+  leading `::`.
+
+### 5.3 What the AST cannot decide: `tools/export_policy.toml`
+
+The snapshot is one platform flavor (MinGW x86_64, libstdc++). Every human
+decision about the surface is declared in `tools/export_policy.toml` with a
+written reason and applied by the generator, never patched into its output:
+
+| Rule | Effect |
+|---|---|
+| `[[<lib>.guard]]` | wrap the matching exports in the upstream header's own condition (`#if defined(_WIN32)` ...), optional `#else` lines |
+| `[[<lib>.drop]]` | never export the matching names / namespaces |
+| `[[<lib>.extra]]` | verbatim declarations (the gcc `extern template` vtable workarounds) |
+| `add` | names no collector reaches (body-only or ADL-only references) |
+| `gmf`, `defines`, `facade-includes` | the bundle's include set and macros; facade-only includes |
+| `inline-namespaces` | export a macro-selected inline namespace through its parent |
+| `[<lib>.deps]` | module edge corrections; edges of the hand-written special modules |
+
+`generated/meta/skipped.txt` lists every name a rule guards, drops or adds, so
+the boundary is reviewable in one file, and `generated/meta/api-surface.json`
+records the generator identity (clang release, target, defines) and per-library
+GMF, export count and edges. A diff after a compiler update therefore shows as a
+generator change, not as an unexplained API change.
+
+### 5.4 Checks
+
+- `gen_exports.py --check` regenerates into a scratch copy and compares every
+  generated file byte for byte, then verifies each facade's GMF against the
+  bundle; it never writes the tree. CI runs it on Linux, macOS and Windows.
 - `import_boost.py` is the single upstream import: URL, archive SHA-256, kept
   entries, pruned directories/files and the CRLF-normalized files are recorded in
   `upstream/boost/SOURCE.md`. The release `README.md` and `LICENSE_1_0.txt` are
   copied byte-for-byte; `.gitattributes` disables text conversion under
   `upstream/**`.
-- `reapply_hand_edits.py` never reads Git history. It applies `patches/*.patch`
-  (forward/reverse idempotent, with a `patch -p1` fallback when Git is absent)
-  and replays hand-maintained final forms from `patches/final/<path>`. A patch
-  whose anchor is missing is an error unless listed in `TOLERANT` with a written
-  reason.
-- `gen_exports.py` keeps its two passes: the libclang AST snapshot produces the
-  export lists, and a body-reference pass completes the `.deps` edges. Caches and
-  bundle TUs live under the gitignored `target/gen/`.
+- `apply_patches.py` replays `patches/*.patch` onto `upstream/boost/` only
+  (forward/reverse idempotent, `patch -p1` fallback without Git); see
+  [patches/README.md](../patches/README.md). It never touches generated files or
+  facades.
 - `gen_features.py` splices two marked blocks in `mcpp.toml` and writes
   `generated/meta/{libs.json,features.lst,modules.lst,profiles.lst}`. It is
   byte- and mtime-idempotent. Feature names are kebab-case; `implies` lists
@@ -133,12 +222,14 @@ git diff --exit-code && git status --short
   `export import` lines plus the generated body edges. `modules.lst` is the
   feature → module map `build.mcpp` reads; `all-modules` expands to the 117 module
   entries.
-- `gen_audit.py` is the migration gate for export completeness; its report is
-  reviewed with the committed tree, not treated as "not public API" on failure.
+- `gen_audit.py` reports internal-linkage functions, anonymous-namespace
+  entities and explicit specializations per library from the same AST; its
+  report is reviewed with the committed tree, not treated as "not public API".
 
-Generation needs LLVM 23.1.3 with matching libclang and the pinned MinGW sysroot
-(`tools/fetch_mingw_sysroot.py`, `tools/uv.lock`). Consumers do not: they use the
-committed output.
+Generation needs the clang++ pinned in `.xlings.json` and the pinned MinGW
+sysroot (`tools/fetch_mingw_sysroot.py`); set `CLANG_NO_DEFAULT_CONFIG=1` when
+the xlings LLVM package installs a host config file. Consumers need neither:
+they use the committed output.
 
 ## 6. Features
 
@@ -169,8 +260,8 @@ The module TUs, the library TUs and raw-header consumers share one configuration
 - the profile's `NDEBUG` state reaches the headers, so release-only declaration
   differences follow upstream: Boost.uBLAS's tensor `BOOST_UBLAS_INLINE` ordering
   is corrected by `patches/numeric.patch` (it is ill-formed when the macro expands
-  to `inline`), and the checked-build-only `same_impl_ex` export is guarded in
-  `generated/exports/numeric.inc` by the replay tool.
+  to `inline`), and the checked-build-only `same_impl_ex` export is guarded by
+  the `numeric` rule of `tools/export_policy.toml`.
 
 The same `upstream/boost` tree feeds the interfaces, the library TUs and raw
 header consumption. One Boost implementation per program: there is no
@@ -193,9 +284,10 @@ keeps byte-identical notices.
 
 - Native build + `mcpp test` on Linux x86_64 (GCC 16.1, LLVM), Linux arm64 (GCC),
   macOS arm64 (LLVM), Windows x86_64 (clang-msvc).
-- `tools/ci/verify_generated.py`: import/replay, generation, feature splice and
-  audit on a clean tree, with `git diff`/`git status` as the oracle; a second
-  build on the same configuration records the incremental TU count and mtimes.
+- `tools/ci/verify_generated.py`: patch replay, `gen_exports.py --check`,
+  `gen_features.py --check` and the audits on a clean tree on all three host
+  platforms, then `git status` must be clean; a second build on the same
+  configuration records the incremental TU count and mtimes.
 - `tools/check_mwrap_release.py`: identity, version scheme, tag, licence split and
   retained-document bytes.
 - `tools/test_template.py`: installs an isolated `MCPP_HOME` fixture, runs a real

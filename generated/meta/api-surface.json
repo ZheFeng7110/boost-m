@@ -1,0 +1,2804 @@
+{
+ "boost": "1.92.0",
+ "generator": {
+  "ast": "clang++ -ast-dump=json",
+  "clang": "23.1.3",
+  "defines": [
+   "_WIN32_WINNT=0x0A00",
+   "WIN32_LEAN_AND_MEAN"
+  ],
+  "target": "x86_64-w64-mingw32",
+  "tool": "tools/gen_exports.py"
+ },
+ "libraries": {
+  "accumulators": {
+   "deps": [
+    "array",
+    "assert",
+    "circular_buffer",
+    "concept_check",
+    "config",
+    "core",
+    "iterator",
+    "mp11",
+    "numeric",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 711,
+   "gmf": [
+    "boost/accumulators/statistics.hpp",
+    "boost/accumulators/statistics/p_square_cumulative_distribution.hpp",
+    "boost/accumulators/statistics/rolling_variance.hpp",
+    "boost/accumulators/statistics/weighted_p_square_cumulative_distribution.hpp"
+   ]
+  },
+  "algorithm": {
+   "deps": [
+    "assert",
+    "bind",
+    "concept_check",
+    "config",
+    "core",
+    "function",
+    "range",
+    "smart_ptr",
+    "throw_exception",
+    "tuple",
+    "type_traits"
+   ],
+   "exported": 477,
+   "gmf": [
+    "boost/algorithm/algorithm.hpp",
+    "boost/algorithm/apply_permutation.hpp",
+    "boost/algorithm/clamp.hpp",
+    "boost/algorithm/cxx11/all_of.hpp",
+    "boost/algorithm/cxx11/any_of.hpp",
+    "boost/algorithm/cxx11/copy_if.hpp",
+    "boost/algorithm/cxx11/copy_n.hpp",
+    "boost/algorithm/cxx11/find_if_not.hpp",
+    "boost/algorithm/cxx11/iota.hpp",
+    "boost/algorithm/cxx11/is_partitioned.hpp",
+    "boost/algorithm/cxx11/is_sorted.hpp",
+    "boost/algorithm/cxx11/one_of.hpp",
+    "boost/algorithm/cxx11/partition_copy.hpp",
+    "boost/algorithm/cxx11/partition_point.hpp",
+    "boost/algorithm/cxx14/equal.hpp",
+    "boost/algorithm/cxx14/is_permutation.hpp",
+    "boost/algorithm/cxx17/exclusive_scan.hpp",
+    "boost/algorithm/cxx17/for_each_n.hpp",
+    "boost/algorithm/cxx17/inclusive_scan.hpp",
+    "boost/algorithm/cxx17/reduce.hpp",
+    "boost/algorithm/cxx17/transform_exclusive_scan.hpp",
+    "boost/algorithm/cxx17/transform_inclusive_scan.hpp",
+    "boost/algorithm/cxx17/transform_reduce.hpp",
+    "boost/algorithm/find_backward.hpp",
+    "boost/algorithm/find_not.hpp",
+    "boost/algorithm/gather.hpp",
+    "boost/algorithm/hex.hpp",
+    "boost/algorithm/is_clamped.hpp",
+    "boost/algorithm/is_palindrome.hpp",
+    "boost/algorithm/is_partitioned_until.hpp",
+    "boost/algorithm/minmax.hpp",
+    "boost/algorithm/minmax_element.hpp",
+    "boost/algorithm/searching/boyer_moore.hpp",
+    "boost/algorithm/searching/boyer_moore_horspool.hpp",
+    "boost/algorithm/searching/knuth_morris_pratt.hpp",
+    "boost/algorithm/sort_subrange.hpp",
+    "boost/algorithm/string.hpp",
+    "boost/algorithm/string/trim_all.hpp"
+   ]
+  },
+  "align": {
+   "deps": [
+    "core"
+   ],
+   "exported": 28,
+   "gmf": [
+    "boost/align.hpp"
+   ]
+  },
+  "any": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception",
+    "type_index"
+   ],
+   "exported": 28,
+   "gmf": [
+    "boost/any.hpp",
+    "boost/any/basic_any.hpp",
+    "boost/any/unique_any.hpp"
+   ]
+  },
+  "array": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception"
+   ],
+   "exported": 12,
+   "gmf": [
+    "boost/array.hpp"
+   ]
+  },
+  "asio": {
+   "deps": [
+    "align",
+    "assert",
+    "date_time",
+    "smart_ptr",
+    "system",
+    "type_traits"
+   ],
+   "exported": 1426,
+   "gmf": [
+    "boost/asio.hpp",
+    "boost/asio/deadline_timer.hpp",
+    "boost/asio/experimental/as_single.hpp",
+    "boost/asio/experimental/awaitable_operators.hpp",
+    "boost/asio/experimental/channel.hpp",
+    "boost/asio/experimental/co_composed.hpp",
+    "boost/asio/experimental/co_spawn.hpp",
+    "boost/asio/experimental/concurrent_channel.hpp",
+    "boost/asio/experimental/promise.hpp",
+    "boost/asio/experimental/use_coro.hpp",
+    "boost/asio/fwd.hpp",
+    "boost/asio/spawn.hpp",
+    "boost/asio/ssl/stream_base.hpp",
+    "boost/asio/ts/net.hpp",
+    "boost/asio/unyield.hpp",
+    "boost/asio/yield.hpp"
+   ]
+  },
+  "assert": {
+   "deps": [
+    "config"
+   ],
+   "exported": 32,
+   "gmf": [
+    "boost/assert.hpp",
+    "boost/assert/source_location.hpp"
+   ]
+  },
+  "assign": {
+   "deps": [
+    "assert",
+    "config",
+    "move",
+    "ptr_container",
+    "type_traits"
+   ],
+   "exported": 56,
+   "gmf": [
+    "boost/assign.hpp",
+    "boost/assign/ptr_list_inserter.hpp",
+    "boost/assign/ptr_list_of.hpp",
+    "boost/assign/ptr_map_inserter.hpp"
+   ]
+  },
+  "atomic": {
+   "deps": [
+    "config",
+    "winapi"
+   ],
+   "exported": 216,
+   "gmf": [
+    "boost/atomic.hpp"
+   ]
+  },
+  "beast": {
+   "deps": [
+    "asio",
+    "assert",
+    "config",
+    "container_hash",
+    "core",
+    "endian",
+    "intrusive",
+    "logic",
+    "mp11",
+    "optional",
+    "smart_ptr",
+    "static_string",
+    "system",
+    "throw_exception",
+    "type_index",
+    "utility",
+    "winapi"
+   ],
+   "exported": 499,
+   "gmf": [
+    "boost/beast.hpp",
+    "boost/beast/_experimental/http/icy_stream.hpp",
+    "boost/beast/_experimental/test/immediate_executor.hpp",
+    "boost/beast/_experimental/test/stream.hpp",
+    "boost/beast/_experimental/test/tcp.hpp",
+    "boost/beast/_experimental/unit_test/dstream.hpp",
+    "boost/beast/_experimental/unit_test/match.hpp",
+    "boost/beast/_experimental/unit_test/reporter.hpp",
+    "boost/beast/core/buffer_ref.hpp",
+    "boost/beast/core/string_param.hpp"
+   ]
+  },
+  "bimap": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "functional",
+    "lambda",
+    "multi_index",
+    "type_traits"
+   ],
+   "exported": 190,
+   "gmf": [
+    "boost/bimap.hpp",
+    "boost/bimap/container_adaptor/support/iterator_facade_converters.hpp",
+    "boost/bimap/list_of.hpp",
+    "boost/bimap/multiset_of.hpp",
+    "boost/bimap/property_map/set_support.hpp",
+    "boost/bimap/property_map/unordered_set_support.hpp",
+    "boost/bimap/relation/mutant_relation.hpp",
+    "boost/bimap/relation/support/get_pair_functor.hpp",
+    "boost/bimap/relation/support/is_tag_of_member_at.hpp",
+    "boost/bimap/relation/support/opposite_tag.hpp",
+    "boost/bimap/support/lambda.hpp",
+    "boost/bimap/support/value_type_by.hpp",
+    "boost/bimap/tags/support/apply_to_value_type.hpp",
+    "boost/bimap/tags/support/is_tagged.hpp",
+    "boost/bimap/tags/support/overwrite_tagged.hpp",
+    "boost/bimap/unconstrained_set_of.hpp",
+    "boost/bimap/unordered_multiset_of.hpp",
+    "boost/bimap/vector_of.hpp"
+   ]
+  },
+  "bind": {
+   "deps": [
+    "config",
+    "core"
+   ],
+   "exported": 78,
+   "gmf": [
+    "boost/bind.hpp",
+    "boost/bind/apply.hpp",
+    "boost/bind/make_adaptable.hpp",
+    "boost/bind/protect.hpp"
+   ]
+  },
+  "bloom": {
+   "deps": [
+    "assert",
+    "container_hash",
+    "core"
+   ],
+   "exported": 45,
+   "gmf": [
+    "boost/bloom.hpp"
+   ]
+  },
+  "callable_traits": {
+   "deps": [],
+   "exported": 203,
+   "gmf": [
+    "boost/callable_traits.hpp",
+    "boost/callable_traits/is_cv_member.hpp"
+   ]
+  },
+  "charconv": {
+   "deps": [
+    "assert",
+    "core"
+   ],
+   "exported": 61,
+   "gmf": [
+    "boost/charconv.hpp"
+   ]
+  },
+  "chrono": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "integer",
+    "move",
+    "ratio",
+    "system",
+    "type_traits"
+   ],
+   "exported": 71,
+   "gmf": [
+    "boost/chrono.hpp",
+    "boost/chrono/typeof/boost/chrono/chrono.hpp",
+    "boost/chrono/typeof/boost/ratio.hpp"
+   ]
+  },
+  "circular_buffer": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "move",
+    "type_traits"
+   ],
+   "exported": 23,
+   "gmf": [
+    "boost/circular_buffer.hpp"
+   ]
+  },
+  "cobalt": {
+   "deps": [
+    "asio",
+    "assert",
+    "callable_traits",
+    "circular_buffer",
+    "config",
+    "core",
+    "endian",
+    "intrusive",
+    "mp11",
+    "smart_ptr",
+    "system",
+    "utility",
+    "variant2"
+   ],
+   "exported": 211,
+   "gmf": [
+    "boost/cobalt.hpp",
+    "boost/cobalt/composition.hpp",
+    "boost/cobalt/experimental/context.hpp",
+    "boost/cobalt/experimental/yield_context.hpp",
+    "boost/cobalt/io.hpp"
+   ]
+  },
+  "compat": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception"
+   ],
+   "exported": 76,
+   "gmf": [
+    "boost/compat/bind_back.hpp",
+    "boost/compat/bind_front.hpp",
+    "boost/compat/function_ref.hpp",
+    "boost/compat/latch.hpp",
+    "boost/compat/move_only_function.hpp",
+    "boost/compat/shared_lock.hpp",
+    "boost/compat/to_array.hpp",
+    "boost/compat/to_underlying.hpp"
+   ]
+  },
+  "concept_check": {
+   "deps": [
+    "config",
+    "type_traits"
+   ],
+   "exported": 143,
+   "gmf": [
+    "boost/concept_check.hpp",
+    "boost/concept_check/borland.hpp",
+    "boost/concept_check/general.hpp"
+   ]
+  },
+  "config": {
+   "deps": [],
+   "exported": 4,
+   "gmf": [
+    "boost/config.hpp"
+   ]
+  },
+  "container": {
+   "deps": [
+    "assert",
+    "config",
+    "intrusive",
+    "move"
+   ],
+   "exported": 976,
+   "gmf": [
+    "boost/container/adaptive_pool.hpp",
+    "boost/container/allocator.hpp",
+    "boost/container/experimental/pmr/nest.hpp",
+    "boost/container/experimental/segmented_all_of.hpp",
+    "boost/container/experimental/segmented_any_of.hpp",
+    "boost/container/experimental/segmented_copy_if.hpp",
+    "boost/container/experimental/segmented_copy_n.hpp",
+    "boost/container/experimental/segmented_count.hpp",
+    "boost/container/experimental/segmented_count_if.hpp",
+    "boost/container/experimental/segmented_equal.hpp",
+    "boost/container/experimental/segmented_fill.hpp",
+    "boost/container/experimental/segmented_find_last.hpp",
+    "boost/container/experimental/segmented_find_last_if_not.hpp",
+    "boost/container/experimental/segmented_for_each.hpp",
+    "boost/container/experimental/segmented_generate.hpp",
+    "boost/container/experimental/segmented_generate_n.hpp",
+    "boost/container/experimental/segmented_is_partitioned.hpp",
+    "boost/container/experimental/segmented_is_sorted.hpp",
+    "boost/container/experimental/segmented_merge.hpp",
+    "boost/container/experimental/segmented_partition.hpp",
+    "boost/container/experimental/segmented_partition_copy.hpp",
+    "boost/container/experimental/segmented_partition_point.hpp",
+    "boost/container/experimental/segmented_remove.hpp",
+    "boost/container/experimental/segmented_remove_if.hpp",
+    "boost/container/experimental/segmented_replace.hpp",
+    "boost/container/experimental/segmented_replace_if.hpp",
+    "boost/container/experimental/segmented_reverse.hpp",
+    "boost/container/experimental/segmented_reverse_copy.hpp",
+    "boost/container/experimental/segmented_search.hpp",
+    "boost/container/experimental/segmented_search_n.hpp",
+    "boost/container/experimental/segmented_set_difference.hpp",
+    "boost/container/experimental/segmented_set_intersection.hpp",
+    "boost/container/experimental/segmented_set_symmetric_difference.hpp",
+    "boost/container/experimental/segmented_set_union.hpp",
+    "boost/container/experimental/segmented_stable_partition.hpp",
+    "boost/container/experimental/segmented_swap_ranges.hpp",
+    "boost/container/experimental/segmented_transform.hpp",
+    "boost/container/experimental/wrapped_iterator.hpp",
+    "boost/container/node_handle.hpp",
+    "boost/container/pmr/deque.hpp",
+    "boost/container/pmr/devector.hpp",
+    "boost/container/pmr/flat_map.hpp",
+    "boost/container/pmr/flat_set.hpp",
+    "boost/container/pmr/hub.hpp",
+    "boost/container/pmr/list.hpp",
+    "boost/container/pmr/map.hpp",
+    "boost/container/pmr/monotonic_buffer_resource.hpp",
+    "boost/container/pmr/pool_options.hpp",
+    "boost/container/pmr/resource_adaptor.hpp",
+    "boost/container/pmr/segtor.hpp",
+    "boost/container/pmr/set.hpp",
+    "boost/container/pmr/slist.hpp",
+    "boost/container/pmr/small_vector.hpp",
+    "boost/container/pmr/stable_vector.hpp",
+    "boost/container/pmr/string.hpp",
+    "boost/container/pmr/synchronized_pool_resource.hpp",
+    "boost/container/pmr/unsynchronized_pool_resource.hpp",
+    "boost/container/pmr/vector.hpp",
+    "boost/container/scoped_allocator.hpp",
+    "boost/container/static_vector.hpp",
+    "boost/container/uses_allocator.hpp",
+    "boost/container/uses_allocator_construction.hpp"
+   ]
+  },
+  "container_hash": {
+   "deps": [
+    "mp11"
+   ],
+   "exported": 76,
+   "gmf": [
+    "boost/container_hash/extensions.hpp",
+    "boost/container_hash/is_tuple_like.hpp"
+   ]
+  },
+  "contract": {
+   "deps": [
+    "any",
+    "assert",
+    "config",
+    "core",
+    "function",
+    "optional",
+    "smart_ptr",
+    "thread",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 173,
+   "gmf": [
+    "boost/contract/assert.hpp",
+    "boost/contract/base_types.hpp",
+    "boost/contract/call_if.hpp",
+    "boost/contract/check.hpp",
+    "boost/contract/constructor.hpp",
+    "boost/contract/core/access.hpp",
+    "boost/contract/core/check_macro.hpp",
+    "boost/contract/core/config.hpp",
+    "boost/contract/core/constructor_precondition.hpp",
+    "boost/contract/core/exception.hpp",
+    "boost/contract/core/specify.hpp",
+    "boost/contract/core/virtual.hpp",
+    "boost/contract/destructor.hpp",
+    "boost/contract/function.hpp",
+    "boost/contract/old.hpp",
+    "boost/contract/override.hpp",
+    "boost/contract/public_function.hpp",
+    "boost/contract.hpp"
+   ]
+  },
+  "convert": {
+   "deps": [
+    "assert",
+    "core",
+    "optional",
+    "type_traits"
+   ],
+   "exported": 12,
+   "gmf": [
+    "boost/convert.hpp"
+   ]
+  },
+  "core": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception"
+   ],
+   "exported": 270,
+   "gmf": [
+    "boost/core/alloc_construct.hpp",
+    "boost/core/allocator_traits.hpp",
+    "boost/core/bit.hpp",
+    "boost/core/checked_delete.hpp",
+    "boost/core/cmath.hpp",
+    "boost/core/default_allocator.hpp",
+    "boost/core/empty_value.hpp",
+    "boost/core/exchange.hpp",
+    "boost/core/explicit_operator_bool.hpp",
+    "boost/core/fclose_deleter.hpp",
+    "boost/core/first_scalar.hpp",
+    "boost/core/functor.hpp",
+    "boost/core/identity.hpp",
+    "boost/core/ignore_unused.hpp",
+    "boost/core/is_same.hpp",
+    "boost/core/launder.hpp",
+    "boost/core/lightweight_test_trait.hpp",
+    "boost/core/make_span.hpp",
+    "boost/core/memory_resource.hpp",
+    "boost/core/no_exceptions_support.hpp",
+    "boost/core/noncopyable.hpp",
+    "boost/core/null_deleter.hpp",
+    "boost/core/pointer_in_range.hpp",
+    "boost/core/quick_exit.hpp",
+    "boost/core/ref.hpp",
+    "boost/core/scoped_enum.hpp",
+    "boost/core/serialization.hpp",
+    "boost/core/size.hpp",
+    "boost/core/snprintf.hpp",
+    "boost/core/swap.hpp",
+    "boost/core/typeinfo.hpp",
+    "boost/core/uncaught_exceptions.hpp",
+    "boost/core/underlying_type.hpp",
+    "boost/core/use_default.hpp",
+    "boost/core/verbose_terminate_handler.hpp",
+    "boost/core/yield_primitives.hpp"
+   ]
+  },
+  "crc": {
+   "deps": [],
+   "exported": 44,
+   "gmf": [
+    "boost/crc.hpp"
+   ]
+  },
+  "date_time": {
+   "deps": [
+    "algorithm",
+    "assert",
+    "core",
+    "io",
+    "iterator",
+    "numeric",
+    "smart_ptr",
+    "throw_exception",
+    "tokenizer",
+    "type_traits"
+   ],
+   "exported": 391,
+   "gmf": [
+    "boost/date_time.hpp",
+    "boost/date_time/c_local_time_adjustor.hpp",
+    "boost/date_time/local_time_adjustor.hpp",
+    "boost/date_time/local_timezone_defs.hpp",
+    "boost/date_time/posix_time/time_serialize.hpp"
+   ]
+  },
+  "decimal": {
+   "deps": [],
+   "exported": 914,
+   "gmf": [
+    "boost/decimal.hpp",
+    "boost/decimal/fmt_format.hpp"
+   ]
+  },
+  "dll": {
+   "deps": [
+    "assert",
+    "core",
+    "filesystem",
+    "io",
+    "type_index",
+    "winapi"
+   ],
+   "exported": 150,
+   "gmf": [
+    "boost/dll.hpp",
+    "boost/dll/import_class.hpp",
+    "boost/dll/shared_library_load_mode.hpp"
+   ]
+  },
+  "dynamic_bitset": {
+   "deps": [
+    "assert",
+    "container_hash",
+    "core"
+   ],
+   "exported": 34,
+   "gmf": [
+    "boost/dynamic_bitset.hpp",
+    "boost/dynamic_bitset/serialization.hpp"
+   ]
+  },
+  "endian": {
+   "deps": [],
+   "exported": 236,
+   "gmf": [
+    "boost/endian.hpp"
+   ]
+  },
+  "filesystem": {
+   "deps": [
+    "container_hash",
+    "io",
+    "iterator",
+    "smart_ptr",
+    "system"
+   ],
+   "exported": 244,
+   "gmf": [
+    "boost/filesystem.hpp",
+    "boost/filesystem/cstdio.hpp",
+    "boost/filesystem/fstream.hpp"
+   ]
+  },
+  "flyweight": {
+   "deps": [
+    "assert",
+    "config",
+    "container_hash",
+    "core",
+    "interprocess",
+    "mp11",
+    "multi_index",
+    "smart_ptr",
+    "throw_exception",
+    "type_traits",
+    "unordered"
+   ],
+   "exported": 81,
+   "gmf": [
+    "boost/flyweight.hpp",
+    "boost/flyweight/concurrent_factory.hpp",
+    "boost/flyweight/intermodule_holder.hpp",
+    "boost/flyweight/key_value.hpp",
+    "boost/flyweight/no_locking.hpp",
+    "boost/flyweight/no_tracking.hpp",
+    "boost/flyweight/serialize.hpp",
+    "boost/flyweight/set_factory.hpp"
+   ]
+  },
+  "format": {
+   "deps": [
+    "assert",
+    "config",
+    "optional",
+    "smart_ptr",
+    "utility"
+   ],
+   "exported": 62,
+   "gmf": [
+    "boost/format.hpp"
+   ]
+  },
+  "function": {
+   "deps": [
+    "assert",
+    "bind",
+    "core"
+   ],
+   "exported": 78,
+   "gmf": [
+    "boost/function.hpp",
+    "boost/function/function0.hpp",
+    "boost/function/function1.hpp",
+    "boost/function/function10.hpp",
+    "boost/function/function2.hpp",
+    "boost/function/function3.hpp",
+    "boost/function/function4.hpp",
+    "boost/function/function5.hpp",
+    "boost/function/function6.hpp",
+    "boost/function/function7.hpp",
+    "boost/function/function8.hpp",
+    "boost/function/function9.hpp",
+    "boost/function/function_typeof.hpp"
+   ]
+  },
+  "functional": {
+   "deps": [
+    "assert",
+    "config",
+    "container_hash",
+    "core",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 389,
+   "gmf": [
+    "boost/functional.hpp",
+    "boost/functional/factory.hpp",
+    "boost/functional/forward_adapter.hpp",
+    "boost/functional/hash.hpp",
+    "boost/functional/hash/extensions.hpp",
+    "boost/functional/hash/hash.hpp",
+    "boost/functional/hash/hash_fwd.hpp",
+    "boost/functional/hash_fwd.hpp",
+    "boost/functional/identity.hpp",
+    "boost/functional/lightweight_forward_adapter.hpp",
+    "boost/functional/overloaded_function.hpp",
+    "boost/functional/value_factory.hpp"
+   ]
+  },
+  "geometry": {
+   "deps": [
+    "any",
+    "array",
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "graph",
+    "iterator",
+    "math",
+    "mp11",
+    "polygon",
+    "qvm",
+    "range",
+    "rational",
+    "smart_ptr",
+    "thread",
+    "throw_exception",
+    "tokenizer",
+    "tuple",
+    "type_traits",
+    "utility",
+    "variant",
+    "variant2"
+   ],
+   "exported": 4675,
+   "gmf": [
+    "boost/geometry.hpp",
+    "boost/geometry/algorithms/dispatch/closest_points.hpp",
+    "boost/geometry/algorithms/dispatch/distance.hpp",
+    "boost/geometry/algorithms/dispatch/expand.hpp",
+    "boost/geometry/algorithms/dispatch/is_simple.hpp",
+    "boost/geometry/algorithms/dispatch/is_valid.hpp",
+    "boost/geometry/algorithms/merge_elements.hpp",
+    "boost/geometry/core/is_areal.hpp",
+    "boost/geometry/formulas/gnomonic_intersection.hpp",
+    "boost/geometry/formulas/meridian_direct.hpp",
+    "boost/geometry/formulas/vertex_longitude.hpp",
+    "boost/geometry/geometries/adapted/boost_any.hpp",
+    "boost/geometry/geometries/adapted/boost_array.hpp",
+    "boost/geometry/geometries/adapted/boost_fusion.hpp",
+    "boost/geometry/geometries/adapted/boost_polygon.hpp",
+    "boost/geometry/geometries/adapted/boost_range/adjacent_filtered.hpp",
+    "boost/geometry/geometries/adapted/boost_range/filtered.hpp",
+    "boost/geometry/geometries/adapted/boost_range/reversed.hpp",
+    "boost/geometry/geometries/adapted/boost_range/sliced.hpp",
+    "boost/geometry/geometries/adapted/boost_range/strided.hpp",
+    "boost/geometry/geometries/adapted/boost_range/uniqued.hpp",
+    "boost/geometry/geometries/adapted/boost_tuple.hpp",
+    "boost/geometry/geometries/adapted/boost_variant2.hpp",
+    "boost/geometry/geometries/adapted/c_array.hpp",
+    "boost/geometry/geometries/adapted/std_any.hpp",
+    "boost/geometry/geometries/adapted/std_array.hpp",
+    "boost/geometry/geometries/adapted/std_pair_as_segment.hpp",
+    "boost/geometry/geometries/adapted/std_variant.hpp",
+    "boost/geometry/geometries/pointing_segment.hpp",
+    "boost/geometry/geometries/register/box.hpp",
+    "boost/geometry/geometries/register/linestring.hpp",
+    "boost/geometry/geometries/register/multi_linestring.hpp",
+    "boost/geometry/geometries/register/multi_point.hpp",
+    "boost/geometry/geometries/register/multi_polygon.hpp",
+    "boost/geometry/geometries/register/point.hpp",
+    "boost/geometry/geometries/register/ring.hpp",
+    "boost/geometry/geometries/register/segment.hpp",
+    "boost/geometry/index/adaptors/query.hpp",
+    "boost/geometry/index/parameters.hpp",
+    "boost/geometry/io/svg/write_svg.hpp",
+    "boost/geometry/io/svg/write_svg_multi.hpp",
+    "boost/geometry/io/wkt/stream.hpp",
+    "boost/geometry/iterators/concatenate_iterator.hpp",
+    "boost/geometry/iterators/flatten_iterator.hpp",
+    "boost/geometry/iterators/point_reverse_iterator.hpp",
+    "boost/geometry/policies/disjoint_interrupt_policy.hpp",
+    "boost/geometry/policies/is_valid/default_policy.hpp",
+    "boost/geometry/policies/is_valid/failing_reason_policy.hpp",
+    "boost/geometry/policies/is_valid/failure_type_policy.hpp",
+    "boost/geometry/policies/predicate_based_interrupt_policy.hpp",
+    "boost/geometry/policies/relate/intersection_ratios.hpp",
+    "boost/geometry/srs/epsg.hpp",
+    "boost/geometry/srs/esri.hpp",
+    "boost/geometry/srs/iau2000.hpp",
+    "boost/geometry/srs/shared_grids.hpp",
+    "boost/geometry/srs/shared_grids_std.hpp",
+    "boost/geometry/srs/transformation.hpp",
+    "boost/geometry/strategies/agnostic/point_in_poly_oriented_winding.hpp",
+    "boost/geometry/strategies/cartesian/distance_projected_point_ax.hpp",
+    "boost/geometry/strategies/cartesian/turn_in_ring_winding.hpp",
+    "boost/geometry/strategies/concepts/convex_hull_concept.hpp",
+    "boost/geometry/strategies/concepts/segment_intersect_concept.hpp",
+    "boost/geometry/strategies/concepts/simplify_concept.hpp",
+    "boost/geometry/strategies/concepts/within_concept.hpp",
+    "boost/geometry/strategies/default_comparable_distance_result.hpp",
+    "boost/geometry/strategies/distance/backward_compatibility.hpp",
+    "boost/geometry/strategies/geographic/intersection_elliptic.hpp",
+    "boost/geometry/strategies/geographic/mapping_ssf.hpp",
+    "boost/geometry/strategies/relate3/cartesian.hpp",
+    "boost/geometry/strategies/spherical/side_by_cross_track.hpp",
+    "boost/geometry/strategies/transform/srs_transformer.hpp",
+    "boost/geometry/strategy/cartesian/in_circle_robust.hpp",
+    "boost/geometry/strategy/cartesian/precise_area.hpp",
+    "boost/geometry/util/add_const_if_c.hpp",
+    "boost/geometry/util/bare_type.hpp",
+    "boost/geometry/util/closure_as_bool.hpp",
+    "boost/geometry/util/combine_if.hpp",
+    "boost/geometry/util/compress_variant.hpp",
+    "boost/geometry/util/has_infinite_coordinate.hpp",
+    "boost/geometry/util/has_non_finite_coordinate.hpp",
+    "boost/geometry/util/promote_floating_point.hpp",
+    "boost/geometry/util/rational.hpp",
+    "boost/geometry/util/transform_variant.hpp",
+    "boost/geometry/views/enumerate_view.hpp"
+   ]
+  },
+  "gil": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "container_hash",
+    "core",
+    "mp11",
+    "type_traits",
+    "variant2"
+   ],
+   "exported": 3880,
+   "gmf": [
+    "boost/gil/extension/dynamic_image/dynamic_at_c.hpp",
+    "boost/gil/extension/histogram/std.hpp",
+    "boost/gil/extension/io/bmp/old.hpp",
+    "boost/gil/extension/io/pnm/old.hpp",
+    "boost/gil/extension/io/targa/old.hpp",
+    "boost/gil/extension/numeric/algorithm.hpp",
+    "boost/gil/extension/numeric/channel_numeric_operations.hpp",
+    "boost/gil/extension/numeric/convolve.hpp",
+    "boost/gil/extension/numeric/kernel.hpp",
+    "boost/gil/extension/numeric/pixel_numeric_operations.hpp",
+    "boost/gil/extension/numeric/resample.hpp",
+    "boost/gil/extension/numeric/sampler.hpp",
+    "boost/gil/extension/toolbox/color_spaces/ycbcr.hpp",
+    "boost/gil/extension/toolbox/image_types/subchroma_image.hpp",
+    "boost/gil/io/bit_operations.hpp",
+    "boost/gil/io/io.hpp",
+    "boost/gil/io/reader_base.hpp",
+    "boost/gil/io/row_buffer_helper.hpp"
+   ]
+  },
+  "graph": {
+   "deps": [
+    "algorithm",
+    "any",
+    "array",
+    "assert",
+    "bimap",
+    "concept_check",
+    "config",
+    "container_hash",
+    "core",
+    "function",
+    "integer",
+    "iterator",
+    "lexical_cast",
+    "math",
+    "move",
+    "mp11",
+    "multi_index",
+    "multiprecision",
+    "numeric",
+    "optional",
+    "property_map",
+    "property_tree",
+    "random",
+    "range",
+    "serialization",
+    "smart_ptr",
+    "throw_exception",
+    "tuple",
+    "type_traits",
+    "unordered",
+    "utility",
+    "version"
+   ],
+   "exported": 3072,
+   "gmf": [
+    "boost/graph/adj_list_serialize.hpp",
+    "boost/graph/adjacency_list_io.hpp",
+    "boost/graph/adjacency_matrix.hpp",
+    "boost/graph/astar_search.hpp",
+    "boost/graph/bc_clustering.hpp",
+    "boost/graph/bipartite.hpp",
+    "boost/graph/boyer_myrvold_planar_test.hpp",
+    "boost/graph/boykov_kolmogorov_max_flow.hpp",
+    "boost/graph/bron_kerbosch_all_cliques.hpp",
+    "boost/graph/chrobak_payne_drawing.hpp",
+    "boost/graph/circle_layout.hpp",
+    "boost/graph/closeness_centrality.hpp",
+    "boost/graph/clustering_coefficient.hpp",
+    "boost/graph/core_numbers.hpp",
+    "boost/graph/create_condensation_graph.hpp",
+    "boost/graph/cycle_canceling.hpp",
+    "boost/graph/dag_shortest_paths.hpp",
+    "boost/graph/degree_centrality.hpp",
+    "boost/graph/dijkstra_shortest_paths_no_color_map.hpp",
+    "boost/graph/dimacs.hpp",
+    "boost/graph/directed_graph.hpp",
+    "boost/graph/dominator_tree.hpp",
+    "boost/graph/eccentricity.hpp",
+    "boost/graph/edge_coloring.hpp",
+    "boost/graph/edge_connectivity.hpp",
+    "boost/graph/edge_list.hpp",
+    "boost/graph/edmunds_karp_max_flow.hpp",
+    "boost/graph/erdos_renyi_generator.hpp",
+    "boost/graph/floyd_warshall_shortest.hpp",
+    "boost/graph/fruchterman_reingold.hpp",
+    "boost/graph/geodesic_distance.hpp",
+    "boost/graph/graph_archetypes.hpp",
+    "boost/graph/graph_stats.hpp",
+    "boost/graph/graphml.hpp",
+    "boost/graph/graphviz.hpp",
+    "boost/graph/grid_graph.hpp",
+    "boost/graph/gursoy_atun_layout.hpp",
+    "boost/graph/hawick_circuits.hpp",
+    "boost/graph/howard_cycle_ratio.hpp",
+    "boost/graph/incremental_components.hpp",
+    "boost/graph/is_kuratowski_subgraph.hpp",
+    "boost/graph/is_straight_line_drawing.hpp",
+    "boost/graph/kamada_kawai_spring_layout.hpp",
+    "boost/graph/king_ordering.hpp",
+    "boost/graph/kruskal_min_spanning_tree.hpp",
+    "boost/graph/labeled_graph.hpp",
+    "boost/graph/louvain_clustering.hpp",
+    "boost/graph/make_biconnected_planar.hpp",
+    "boost/graph/make_connected.hpp",
+    "boost/graph/make_maximal_planar.hpp",
+    "boost/graph/matrix_as_graph.hpp",
+    "boost/graph/maximum_weighted_matching.hpp",
+    "boost/graph/mesh_graph_generator.hpp",
+    "boost/graph/metis.hpp",
+    "boost/graph/metric_tsp_approx.hpp",
+    "boost/graph/minimum_degree_ordering.hpp",
+    "boost/graph/neighbor_bfs.hpp",
+    "boost/graph/page_rank.hpp",
+    "boost/graph/parallel/process_group.hpp",
+    "boost/graph/parallel/simple_trigger.hpp",
+    "boost/graph/planar_canonical_ordering.hpp",
+    "boost/graph/plod_generator.hpp",
+    "boost/graph/point_traits.hpp",
+    "boost/graph/profile.hpp",
+    "boost/graph/property_iter_range.hpp",
+    "boost/graph/push_relabel_max_flow.hpp",
+    "boost/graph/r_c_shortest_paths.hpp",
+    "boost/graph/random_layout.hpp",
+    "boost/graph/random_spanning_tree.hpp",
+    "boost/graph/read_dimacs.hpp",
+    "boost/graph/rmat_graph_generator.hpp",
+    "boost/graph/sequential_vertex_coloring.hpp",
+    "boost/graph/simple_point.hpp",
+    "boost/graph/small_world_generator.hpp",
+    "boost/graph/smallest_last_ordering.hpp",
+    "boost/graph/ssca_graph_generator.hpp",
+    "boost/graph/st_connected.hpp",
+    "boost/graph/stoer_wagner_min_cut.hpp",
+    "boost/graph/successive_shortest_path_nonnegative_weights.hpp",
+    "boost/graph/tiernan_all_cycles.hpp",
+    "boost/graph/transitive_closure.hpp",
+    "boost/graph/transitive_reduction.hpp",
+    "boost/graph/two_graphs_common_spanning_trees.hpp",
+    "boost/graph/undirected_graph.hpp",
+    "boost/graph/use_mpi.hpp",
+    "boost/graph/vector_as_graph.hpp",
+    "boost/graph/vertex_and_edge_range.hpp",
+    "boost/graph/vf2_sub_graph_iso.hpp",
+    "boost/graph/wavefront.hpp",
+    "boost/graph/write_dimacs.hpp"
+   ]
+  },
+  "hana": {
+   "deps": [
+    "core",
+    "type_traits"
+   ],
+   "exported": 1046,
+   "gmf": [
+    "boost/hana.hpp",
+    "boost/hana/experimental/printable.hpp",
+    "boost/hana/experimental/type_name.hpp",
+    "boost/hana/experimental/types.hpp",
+    "boost/hana/experimental/view.hpp",
+    "boost/hana/ext/boost.hpp",
+    "boost/hana/ext/std.hpp",
+    "boost/hana/fwd/core.hpp"
+   ]
+  },
+  "hash2": {
+   "deps": [
+    "assert",
+    "config",
+    "container_hash",
+    "mp11"
+   ],
+   "exported": 119,
+   "gmf": [
+    "boost/hash2/blake2.hpp",
+    "boost/hash2/fnv1a.hpp",
+    "boost/hash2/hash_append.hpp",
+    "boost/hash2/legacy/murmur3.hpp",
+    "boost/hash2/legacy/spooky2.hpp",
+    "boost/hash2/md5.hpp",
+    "boost/hash2/ripemd.hpp",
+    "boost/hash2/sha1.hpp",
+    "boost/hash2/sha2.hpp",
+    "boost/hash2/sha3.hpp",
+    "boost/hash2/siphash.hpp",
+    "boost/hash2/xxh3.hpp",
+    "boost/hash2/xxhash.hpp"
+   ]
+  },
+  "heap": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "intrusive",
+    "iterator",
+    "mp11",
+    "type_traits"
+   ],
+   "exported": 92,
+   "gmf": [
+    "boost/heap/binomial_heap.hpp",
+    "boost/heap/d_ary_heap.hpp",
+    "boost/heap/fibonacci_heap.hpp",
+    "boost/heap/heap_merge.hpp",
+    "boost/heap/pairing_heap.hpp",
+    "boost/heap/priority_queue.hpp",
+    "boost/heap/skew_heap.hpp"
+   ]
+  },
+  "histogram": {
+   "deps": [
+    "assert",
+    "core",
+    "math",
+    "mp11",
+    "serialization"
+   ],
+   "exported": 382,
+   "gmf": [
+    "boost/histogram.hpp",
+    "boost/histogram/ostream.hpp",
+    "boost/histogram/serialization.hpp",
+    "boost/histogram/utility/clopper_pearson_interval.hpp",
+    "boost/histogram/utility/jeffreys_interval.hpp",
+    "boost/histogram/utility/wald_interval.hpp"
+   ]
+  },
+  "hof": {
+   "deps": [],
+   "exported": 355,
+   "gmf": [
+    "boost/hof.hpp",
+    "boost/hof/version.hpp"
+   ]
+  },
+  "icl": {
+   "deps": [
+    "assert",
+    "config",
+    "date_time",
+    "io",
+    "iterator",
+    "rational",
+    "smart_ptr",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 414,
+   "gmf": [
+    "boost/icl/concept/interval_set_value.hpp",
+    "boost/icl/gregorian.hpp",
+    "boost/icl/map.hpp",
+    "boost/icl/predicates/distinct_equal.hpp",
+    "boost/icl/predicates/element_equal.hpp",
+    "boost/icl/predicates/std_equal.hpp",
+    "boost/icl/predicates/sub_super_set.hpp",
+    "boost/icl/ptime.hpp",
+    "boost/icl/rational.hpp",
+    "boost/icl/separate_interval_set.hpp",
+    "boost/icl/set.hpp",
+    "boost/icl/split_interval_map.hpp",
+    "boost/icl/type_traits/adds_inversely.hpp",
+    "boost/icl/type_traits/difference.hpp"
+   ]
+  },
+  "integer": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 63,
+   "gmf": [
+    "boost/integer/common_factor.hpp",
+    "boost/integer/integer_log2.hpp",
+    "boost/integer/integer_mask.hpp",
+    "boost/integer/mod_inverse.hpp",
+    "boost/integer/static_log2.hpp",
+    "boost/integer/static_min_max.hpp"
+   ]
+  },
+  "interprocess": {
+   "deps": [
+    "assert",
+    "config",
+    "container",
+    "intrusive",
+    "move",
+    "winapi"
+   ],
+   "exported": 716,
+   "gmf": [
+    "boost/interprocess/allocators/adaptive_pool.hpp",
+    "boost/interprocess/allocators/cached_adaptive_pool.hpp",
+    "boost/interprocess/allocators/cached_node_allocator.hpp",
+    "boost/interprocess/allocators/node_allocator.hpp",
+    "boost/interprocess/allocators/private_node_allocator.hpp",
+    "boost/interprocess/anonymous_shared_memory.hpp",
+    "boost/interprocess/containers/deque.hpp",
+    "boost/interprocess/containers/flat_map.hpp",
+    "boost/interprocess/containers/flat_set.hpp",
+    "boost/interprocess/containers/list.hpp",
+    "boost/interprocess/containers/map.hpp",
+    "boost/interprocess/containers/pair.hpp",
+    "boost/interprocess/containers/set.hpp",
+    "boost/interprocess/containers/slist.hpp",
+    "boost/interprocess/containers/stable_vector.hpp",
+    "boost/interprocess/containers/string.hpp",
+    "boost/interprocess/containers/vector.hpp",
+    "boost/interprocess/indexes/flat_map_index.hpp",
+    "boost/interprocess/indexes/iunordered_set_index.hpp",
+    "boost/interprocess/indexes/map_index.hpp",
+    "boost/interprocess/indexes/null_index.hpp",
+    "boost/interprocess/ipc/message_queue.hpp",
+    "boost/interprocess/managed_external_buffer.hpp",
+    "boost/interprocess/managed_heap_memory.hpp",
+    "boost/interprocess/managed_mapped_file.hpp",
+    "boost/interprocess/managed_shared_memory.hpp",
+    "boost/interprocess/managed_windows_shared_memory.hpp",
+    "boost/interprocess/mem_algo/simple_seq_fit.hpp",
+    "boost/interprocess/segment_manager.hpp",
+    "boost/interprocess/smart_ptr/enable_shared_from_this.hpp",
+    "boost/interprocess/smart_ptr/intrusive_ptr.hpp",
+    "boost/interprocess/smart_ptr/scoped_ptr.hpp",
+    "boost/interprocess/smart_ptr/unique_ptr.hpp",
+    "boost/interprocess/streams/bufferstream.hpp",
+    "boost/interprocess/streams/vectorstream.hpp",
+    "boost/interprocess/sync/file_lock.hpp",
+    "boost/interprocess/sync/interprocess_condition_any.hpp",
+    "boost/interprocess/sync/named_condition.hpp",
+    "boost/interprocess/sync/named_condition_any.hpp",
+    "boost/interprocess/sync/named_recursive_mutex.hpp",
+    "boost/interprocess/sync/named_semaphore.hpp",
+    "boost/interprocess/sync/named_sharable_mutex.hpp",
+    "boost/interprocess/sync/sharable_lock.hpp",
+    "boost/interprocess/sync/upgradable_lock.hpp"
+   ]
+  },
+  "intrusive": {
+   "deps": [
+    "move"
+   ],
+   "exported": 502,
+   "gmf": [
+    "boost/intrusive/any_hook.hpp",
+    "boost/intrusive/avl_set.hpp",
+    "boost/intrusive/bs_set.hpp",
+    "boost/intrusive/derivation_value_traits.hpp",
+    "boost/intrusive/list.hpp",
+    "boost/intrusive/member_value_traits.hpp",
+    "boost/intrusive/pointer_plus_bits.hpp",
+    "boost/intrusive/set.hpp",
+    "boost/intrusive/sg_set.hpp",
+    "boost/intrusive/slist.hpp",
+    "boost/intrusive/splay_set.hpp",
+    "boost/intrusive/treap_set.hpp",
+    "boost/intrusive/trivial_value_traits.hpp",
+    "boost/intrusive/unordered_set.hpp"
+   ]
+  },
+  "io": {
+   "deps": [
+    "config"
+   ],
+   "exported": 46,
+   "gmf": [
+    "boost/io/nullstream.hpp",
+    "boost/io/ostream_joiner.hpp",
+    "boost/io/quoted.hpp"
+   ]
+  },
+  "iostreams": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "random",
+    "range",
+    "smart_ptr",
+    "throw_exception",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 437,
+   "gmf": [
+    "boost/iostreams/code_converter.hpp",
+    "boost/iostreams/combine.hpp",
+    "boost/iostreams/device/file.hpp",
+    "boost/iostreams/device/file_descriptor.hpp",
+    "boost/iostreams/device/mapped_file.hpp",
+    "boost/iostreams/filter/counter.hpp",
+    "boost/iostreams/filter/line.hpp",
+    "boost/iostreams/filter/newline.hpp",
+    "boost/iostreams/filter/stdio.hpp",
+    "boost/iostreams/filter/symmetric.hpp",
+    "boost/iostreams/filter/test.hpp",
+    "boost/iostreams/filtering_stream.hpp",
+    "boost/iostreams/invert.hpp",
+    "boost/iostreams/restrict.hpp",
+    "boost/iostreams/skip.hpp",
+    "boost/iostreams/slice.hpp",
+    "boost/iostreams/stream.hpp",
+    "boost/iostreams/tee.hpp"
+   ]
+  },
+  "iterator": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "mp11",
+    "optional",
+    "tuple",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 968,
+   "gmf": [
+    "boost/iterator.hpp",
+    "boost/iterator/advance.hpp",
+    "boost/iterator/counting_iterator.hpp",
+    "boost/iterator/distance.hpp",
+    "boost/iterator/filter_iterator.hpp",
+    "boost/iterator/function_input_iterator.hpp",
+    "boost/iterator/function_output_iterator.hpp",
+    "boost/iterator/generator_iterator.hpp",
+    "boost/iterator/indirect_iterator.hpp",
+    "boost/iterator/iterator_archetypes.hpp",
+    "boost/iterator/iterator_concepts.hpp",
+    "boost/iterator/minimum_category.hpp",
+    "boost/iterator/new_iterator_tests.hpp",
+    "boost/iterator/permutation_iterator.hpp",
+    "boost/iterator/reverse_iterator.hpp",
+    "boost/iterator/shared_container_iterator.hpp",
+    "boost/iterator/transform_iterator.hpp",
+    "boost/iterator/zip_iterator.hpp"
+   ]
+  },
+  "json": {
+   "deps": [
+    "assert",
+    "container",
+    "core",
+    "endian",
+    "mp11",
+    "system",
+    "variant2"
+   ],
+   "exported": 306,
+   "gmf": [
+    "boost/json/debug_printers.hpp",
+    "boost/json.hpp"
+   ]
+  },
+  "lambda": {
+   "deps": [
+    "config",
+    "tuple",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 360,
+   "gmf": [
+    "boost/lambda/algorithm.hpp",
+    "boost/lambda/bind.hpp",
+    "boost/lambda/casts.hpp",
+    "boost/lambda/closures.hpp",
+    "boost/lambda/construct.hpp",
+    "boost/lambda/control_structures.hpp",
+    "boost/lambda/exceptions.hpp",
+    "boost/lambda/lambda.hpp",
+    "boost/lambda/numeric.hpp",
+    "boost/lambda/switch.hpp"
+   ]
+  },
+  "lambda2": {
+   "deps": [],
+   "exported": 70,
+   "gmf": [
+    "boost/lambda2.hpp"
+   ]
+  },
+  "leaf": {
+   "deps": [],
+   "exported": 207,
+   "gmf": [
+    "boost/leaf.hpp",
+    "boost/leaf/common.hpp",
+    "boost/leaf/diagnostics.hpp",
+    "boost/leaf/on_error.hpp",
+    "boost/leaf/pred.hpp",
+    "boost/leaf/serialization/boost_json_encoder.hpp",
+    "boost/leaf/serialization/nlohmann_json_encoder.hpp",
+    "boost/leaf/to_variant.hpp"
+   ]
+  },
+  "lexical_cast": {
+   "deps": [
+    "assert",
+    "config",
+    "container",
+    "core"
+   ],
+   "exported": 55,
+   "gmf": [
+    "boost/lexical_cast.hpp"
+   ]
+  },
+  "lockfree": {
+   "deps": [
+    "align",
+    "assert",
+    "config",
+    "core",
+    "function",
+    "mp11",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 65,
+   "gmf": [
+    "boost/lockfree/bounded_ticket_queue.hpp",
+    "boost/lockfree/mpsc_weak_queue.hpp",
+    "boost/lockfree/queue.hpp",
+    "boost/lockfree/spsc_queue.hpp",
+    "boost/lockfree/spsc_value.hpp",
+    "boost/lockfree/stack.hpp"
+   ]
+  },
+  "logic": {
+   "deps": [
+    "config",
+    "core"
+   ],
+   "exported": 15,
+   "gmf": [
+    "boost/logic/tribool_io.hpp"
+   ]
+  },
+  "math": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "lexical_cast",
+    "random"
+   ],
+   "exported": 2621,
+   "gmf": [
+    "boost/math/ccmath/ccmath.hpp",
+    "boost/math/common_factor.hpp",
+    "boost/math/complex.hpp",
+    "boost/math/concepts/distributions.hpp",
+    "boost/math/concepts/real_concept.hpp",
+    "boost/math/concepts/real_type_concept.hpp",
+    "boost/math/concepts/std_real_concept.hpp",
+    "boost/math/constants/info.hpp",
+    "boost/math/cstdfloat/cstdfloat_complex.hpp",
+    "boost/math/differentiation/autodiff.hpp",
+    "boost/math/differentiation/lanczos_smoothing.hpp",
+    "boost/math/distributions.hpp",
+    "boost/math/distributions/empirical_cumulative_distribution_function.hpp",
+    "boost/math/interpolators/barycentric_rational.hpp",
+    "boost/math/interpolators/bezier_polynomial.hpp",
+    "boost/math/interpolators/bilinear_uniform.hpp",
+    "boost/math/interpolators/cardinal_cubic_b_spline.hpp",
+    "boost/math/interpolators/cardinal_quadratic_b_spline.hpp",
+    "boost/math/interpolators/cardinal_quintic_b_spline.hpp",
+    "boost/math/interpolators/catmull_rom.hpp",
+    "boost/math/interpolators/cubic_b_spline.hpp",
+    "boost/math/interpolators/cubic_hermite.hpp",
+    "boost/math/interpolators/makima.hpp",
+    "boost/math/interpolators/pchip.hpp",
+    "boost/math/interpolators/quintic_hermite.hpp",
+    "boost/math/interpolators/septic_hermite.hpp",
+    "boost/math/interpolators/vector_barycentric_rational.hpp",
+    "boost/math/interpolators/whittaker_shannon.hpp",
+    "boost/math/octonion.hpp",
+    "boost/math/optimization/differential_evolution.hpp",
+    "boost/math/optimization/jso.hpp",
+    "boost/math/optimization/minimizer.hpp",
+    "boost/math/optimization/random_search.hpp",
+    "boost/math/quadrature/gauss_kronrod.hpp",
+    "boost/math/quadrature/naive_monte_carlo.hpp",
+    "boost/math/quadrature/ooura_fourier_integrals.hpp",
+    "boost/math/quadrature/sinh_sinh.hpp",
+    "boost/math/quadrature/tanh_sinh.hpp",
+    "boost/math/quadrature/wavelet_transforms.hpp",
+    "boost/math/special_functions.hpp",
+    "boost/math/special_functions/bessel_iterators.hpp",
+    "boost/math/special_functions/cardinal_b_spline.hpp",
+    "boost/math/special_functions/fibonacci.hpp",
+    "boost/math/special_functions/fourier_transform_daubechies.hpp",
+    "boost/math/special_functions/logsumexp.hpp",
+    "boost/math/special_functions/nonfinite_num_facets.hpp",
+    "boost/math/special_functions/prime.hpp",
+    "boost/math/special_functions/rsqrt.hpp",
+    "boost/math/statistics/anderson_darling.hpp",
+    "boost/math/statistics/chatterjee_correlation.hpp",
+    "boost/math/statistics/linear_regression.hpp",
+    "boost/math/statistics/ljung_box.hpp",
+    "boost/math/statistics/runs_test.hpp",
+    "boost/math/statistics/signal_statistics.hpp",
+    "boost/math/statistics/t_test.hpp",
+    "boost/math/statistics/z_test.hpp",
+    "boost/math/tools/agm.hpp",
+    "boost/math/tools/array.hpp",
+    "boost/math/tools/atomic.hpp",
+    "boost/math/tools/bivariate_statistics.hpp",
+    "boost/math/tools/centered_continued_fraction.hpp",
+    "boost/math/tools/cohen_acceleration.hpp",
+    "boost/math/tools/color_maps.hpp",
+    "boost/math/tools/concepts.hpp",
+    "boost/math/tools/engel_expansion.hpp",
+    "boost/math/tools/luroth_expansion.hpp",
+    "boost/math/tools/norms.hpp",
+    "boost/math/tools/numerical_differentiation.hpp",
+    "boost/math/tools/polynomial.hpp",
+    "boost/math/tools/quartic_roots.hpp",
+    "boost/math/tools/random_vector.hpp",
+    "boost/math/tools/simple_continued_fraction.hpp",
+    "boost/math/tools/stats.hpp",
+    "boost/math/tools/test_value.hpp",
+    "boost/math/tools/ulps_plot.hpp",
+    "boost/math/tools/univariate_statistics.hpp",
+    "boost/math/tr1.hpp"
+   ]
+  },
+  "move": {
+   "deps": [
+    "config"
+   ],
+   "exported": 355,
+   "gmf": [
+    "boost/move/algo/adaptive_merge.hpp",
+    "boost/move/algo/adaptive_sort.hpp",
+    "boost/move/algo/predicate.hpp",
+    "boost/move/algo/unique.hpp",
+    "boost/move/make_unique.hpp",
+    "boost/move/move.hpp"
+   ]
+  },
+  "mp11": {
+   "deps": [],
+   "exported": 471,
+   "gmf": [
+    "boost/mp11.hpp",
+    "boost/mp11/mpl.hpp"
+   ]
+  },
+  "mqtt5": {
+   "deps": [
+    "asio",
+    "assert",
+    "beast",
+    "container",
+    "core",
+    "random",
+    "smart_ptr",
+    "static_string",
+    "system",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 327,
+   "gmf": [
+    "boost/mqtt5.hpp",
+    "boost/mqtt5/websocket.hpp"
+   ]
+  },
+  "multi_array": {
+   "deps": [
+    "array",
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "functional",
+    "iterator",
+    "type_traits"
+   ],
+   "exported": 55,
+   "gmf": [
+    "boost/multi_array.hpp"
+   ]
+  },
+  "multi_index": {
+   "deps": [
+    "assert",
+    "bind",
+    "config",
+    "container_hash",
+    "core",
+    "integer",
+    "mp11",
+    "throw_exception",
+    "tuple",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 274,
+   "gmf": [
+    "boost/multi_index/hashed_index.hpp",
+    "boost/multi_index/key.hpp",
+    "boost/multi_index/key_extractors.hpp",
+    "boost/multi_index/ordered_index.hpp",
+    "boost/multi_index/random_access_index.hpp",
+    "boost/multi_index/ranked_index.hpp",
+    "boost/multi_index/safe_mode_errors.hpp",
+    "boost/multi_index/sequenced_index.hpp",
+    "boost/multi_index_container.hpp"
+   ]
+  },
+  "multiprecision": {
+   "deps": [
+    "assert",
+    "io",
+    "math",
+    "random"
+   ],
+   "exported": 890,
+   "gmf": [
+    "boost/multiprecision/concepts/mp_number_archetypes.hpp",
+    "boost/multiprecision/cpp_complex.hpp",
+    "boost/multiprecision/cpp_dec_float.hpp",
+    "boost/multiprecision/cpp_df_qf/cpp_df_qf_detail_ccmath_floor.hpp",
+    "boost/multiprecision/cpp_df_qf/cpp_df_qf_detail_ccmath_fma.hpp",
+    "boost/multiprecision/cpp_df_qf/cpp_df_qf_detail_ccmath_fpclassify.hpp",
+    "boost/multiprecision/cpp_df_qf/cpp_df_qf_detail_ccmath_sqrt.hpp",
+    "boost/multiprecision/cpp_double_fp.hpp",
+    "boost/multiprecision/debug_adaptor.hpp",
+    "boost/multiprecision/logged_adaptor.hpp",
+    "boost/multiprecision/miller_rabin.hpp",
+    "boost/multiprecision/random.hpp",
+    "boost/multiprecision/traits/is_backend.hpp",
+    "boost/multiprecision/traits/is_variable_precision.hpp",
+    "boost/multiprecision/traits/transcendental_reduction_type.hpp"
+   ]
+  },
+  "nowide": {
+   "deps": [
+    "config",
+    "filesystem",
+    "io"
+   ],
+   "exported": 77,
+   "gmf": [
+    "boost/nowide/args.hpp",
+    "boost/nowide/cstdlib.hpp",
+    "boost/nowide/filesystem.hpp",
+    "boost/nowide/fstream.hpp",
+    "boost/nowide/iostream.hpp",
+    "boost/nowide/quoted.hpp",
+    "boost/nowide/stat.hpp"
+   ]
+  },
+  "numeric": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "iterator",
+    "math",
+    "range",
+    "serialization",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 1115,
+   "gmf": [
+    "boost/numeric/conversion/bounds.hpp",
+    "boost/numeric/conversion/cast.hpp",
+    "boost/numeric/conversion/int_float_mixture.hpp",
+    "boost/numeric/conversion/int_float_mixture_enum.hpp",
+    "boost/numeric/conversion/is_subranged.hpp",
+    "boost/numeric/conversion/sign_mixture.hpp",
+    "boost/numeric/conversion/sign_mixture_enum.hpp",
+    "boost/numeric/conversion/udt_builtin_mixture.hpp",
+    "boost/numeric/conversion/udt_builtin_mixture_enum.hpp",
+    "boost/numeric/interval/ext/integer.hpp",
+    "boost/numeric/interval/io.hpp",
+    "boost/numeric/interval/limits.hpp",
+    "boost/numeric/odeint.hpp",
+    "boost/numeric/odeint/algebra/fusion_algebra_dispatcher.hpp",
+    "boost/numeric/odeint/external/openmp/openmp_nested_algebra.hpp",
+    "boost/numeric/odeint/external/openmp/openmp_range_algebra.hpp",
+    "boost/numeric/odeint/iterator/integrate/integrate.hpp",
+    "boost/numeric/odeint/iterator/integrate/integrate_const.hpp",
+    "boost/numeric/odeint/iterator/integrate/integrate_n_steps.hpp",
+    "boost/numeric/odeint/iterator/integrate/integrate_times.hpp",
+    "boost/numeric/odeint/iterator/integrate/observer_collection.hpp",
+    "boost/numeric/odeint/iterator/n_step_iterator.hpp",
+    "boost/numeric/odeint/iterator/n_step_time_iterator.hpp",
+    "boost/numeric/odeint/iterator/times_iterator.hpp",
+    "boost/numeric/odeint/iterator/times_time_iterator.hpp",
+    "boost/numeric/odeint/tools/traits.hpp",
+    "boost/numeric/odeint/util/split.hpp",
+    "boost/numeric/odeint/util/split_adaptor.hpp",
+    "boost/numeric/ublas/assignment.hpp",
+    "boost/numeric/ublas/banded.hpp",
+    "boost/numeric/ublas/blas.hpp",
+    "boost/numeric/ublas/doxydoc.hpp",
+    "boost/numeric/ublas/experimental/sparse_view.hpp",
+    "boost/numeric/ublas/hermitian.hpp",
+    "boost/numeric/ublas/io.hpp",
+    "boost/numeric/ublas/matrix_vector.hpp",
+    "boost/numeric/ublas/operation_blocked.hpp",
+    "boost/numeric/ublas/operation_sparse.hpp",
+    "boost/numeric/ublas/operations.hpp",
+    "boost/numeric/ublas/symmetric.hpp",
+    "boost/numeric/ublas/tensor.hpp",
+    "boost/numeric/ublas/tensor/algorithms.hpp",
+    "boost/numeric/ublas/tensor/extents.hpp",
+    "boost/numeric/ublas/tensor/functions.hpp",
+    "boost/numeric/ublas/tensor/index.hpp",
+    "boost/numeric/ublas/tensor/multiplication.hpp",
+    "boost/numeric/ublas/tensor/operators_arithmetic.hpp",
+    "boost/numeric/ublas/tensor/operators_comparison.hpp",
+    "boost/numeric/ublas/tensor/ostream.hpp",
+    "boost/numeric/ublas/tensor/storage_traits.hpp",
+    "boost/numeric/ublas/tensor/strides.hpp",
+    "boost/numeric/ublas/tensor/tensor.hpp",
+    "boost/numeric/ublas/traits/c_array.hpp",
+    "boost/numeric/ublas/vector_of_vector.hpp"
+   ]
+  },
+  "optional": {
+   "deps": [
+    "assert",
+    "config",
+    "core"
+   ],
+   "exported": 53,
+   "gmf": [
+    "boost/optional.hpp",
+    "boost/optional/optional_io.hpp"
+   ]
+  },
+  "outcome": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "smart_ptr",
+    "system",
+    "throw_exception",
+    "type_traits",
+    "version"
+   ],
+   "exported": 192,
+   "gmf": [
+    "boost/outcome.hpp",
+    "boost/outcome/bad_access.hpp",
+    "boost/outcome/basic_outcome.hpp",
+    "boost/outcome/basic_result.hpp",
+    "boost/outcome/boost_outcome.hpp",
+    "boost/outcome/boost_result.hpp",
+    "boost/outcome/config.hpp",
+    "boost/outcome/convert.hpp",
+    "boost/outcome/coroutine_support.hpp",
+    "boost/outcome/iostream_support.hpp",
+    "boost/outcome/iostream_support_result.hpp",
+    "boost/outcome/outcome.hpp",
+    "boost/outcome/result.hpp",
+    "boost/outcome/std_outcome.hpp",
+    "boost/outcome/std_result.hpp",
+    "boost/outcome/success_failure.hpp",
+    "boost/outcome/trait.hpp",
+    "boost/outcome/try.hpp",
+    "boost/outcome/utils.hpp"
+   ]
+  },
+  "parser": {
+   "deps": [
+    "assert",
+    "type_index"
+   ],
+   "exported": 1062,
+   "gmf": [
+    "boost/parser/split.hpp",
+    "boost/parser/transform_replace.hpp"
+   ]
+  },
+  "pfr": {
+   "deps": [],
+   "exported": 155,
+   "gmf": [
+    "boost/pfr.hpp"
+   ]
+  },
+  "poly_collection": {
+   "deps": [
+    "assert",
+    "config",
+    "mp11",
+    "smart_ptr",
+    "type_erasure",
+    "type_traits"
+   ],
+   "exported": 324,
+   "gmf": [
+    "boost/poly_collection/algorithm.hpp",
+    "boost/poly_collection/any_collection.hpp",
+    "boost/poly_collection/base_collection.hpp",
+    "boost/poly_collection/exception.hpp",
+    "boost/poly_collection/function_collection.hpp",
+    "boost/poly_collection/variant_collection.hpp"
+   ]
+  },
+  "polygon": {
+   "deps": [
+    "config"
+   ],
+   "exported": 693,
+   "gmf": [
+    "boost/polygon/gtl.hpp",
+    "boost/polygon/interval_concept.hpp",
+    "boost/polygon/interval_data.hpp",
+    "boost/polygon/interval_traits.hpp",
+    "boost/polygon/isotropy.hpp",
+    "boost/polygon/point_concept.hpp",
+    "boost/polygon/point_data.hpp",
+    "boost/polygon/point_traits.hpp",
+    "boost/polygon/polygon.hpp",
+    "boost/polygon/polygon_90_with_holes_data.hpp",
+    "boost/polygon/rectangle_concept.hpp",
+    "boost/polygon/rectangle_data.hpp",
+    "boost/polygon/rectangle_traits.hpp",
+    "boost/polygon/segment_concept.hpp",
+    "boost/polygon/segment_data.hpp",
+    "boost/polygon/segment_traits.hpp",
+    "boost/polygon/voronoi.hpp",
+    "boost/polygon/voronoi_builder.hpp",
+    "boost/polygon/voronoi_diagram.hpp",
+    "boost/polygon/voronoi_geometry_type.hpp"
+   ]
+  },
+  "pool": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 14,
+   "gmf": [
+    "boost/pool/object_pool.hpp",
+    "boost/pool/pool_alloc.hpp"
+   ]
+  },
+  "process": {
+   "deps": [
+    "asio",
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "filesystem",
+    "io",
+    "system",
+    "type_traits",
+    "utility",
+    "winapi"
+   ],
+   "exported": 471,
+   "gmf": [
+    "boost/process.hpp",
+    "boost/process/cstring_ref.hpp",
+    "boost/process/ext/cmd.hpp",
+    "boost/process/ext/cwd.hpp",
+    "boost/process/ext/env.hpp",
+    "boost/process/ext/exe.hpp",
+    "boost/process/process_handle.hpp",
+    "boost/process/v1.hpp",
+    "boost/process/v1/async_pipe.hpp",
+    "boost/process/v1/exception.hpp",
+    "boost/process/v1/extend.hpp",
+    "boost/process/v1/windows.hpp",
+    "boost/process/v2/windows/show_window.hpp",
+    "boost/process/v2/windows/with_logon_launcher.hpp",
+    "boost/process/v2/windows/with_token_launcher.hpp",
+    "boost/process/windows/as_user_launcher.hpp",
+    "boost/process/windows/creation_flags.hpp",
+    "boost/process/windows/default_launcher.hpp",
+    "boost/process/windows/show_window.hpp",
+    "boost/process/windows/with_logon_launcher.hpp",
+    "boost/process/windows/with_token_launcher.hpp"
+   ]
+  },
+  "program_options": {
+   "deps": [
+    "any",
+    "assert",
+    "function",
+    "iterator",
+    "lexical_cast",
+    "smart_ptr"
+   ],
+   "exported": 90,
+   "gmf": [
+    "boost/program_options.hpp",
+    "boost/program_options/environment_iterator.hpp",
+    "boost/program_options/eof_iterator.hpp"
+   ]
+  },
+  "property_map": {
+   "deps": [
+    "any",
+    "assert",
+    "config",
+    "core",
+    "function",
+    "iterator",
+    "lexical_cast",
+    "smart_ptr",
+    "throw_exception",
+    "type_index",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 116,
+   "gmf": [
+    "boost/property_map/compose_property_map.hpp",
+    "boost/property_map/dynamic_property_map.hpp",
+    "boost/property_map/function_property_map.hpp",
+    "boost/property_map/parallel/caching_property_map.hpp",
+    "boost/property_map/parallel/global_index_map.hpp",
+    "boost/property_map/parallel/local_property_map.hpp",
+    "boost/property_map/parallel/simple_trigger.hpp",
+    "boost/property_map/property_map_iterator.hpp",
+    "boost/property_map/shared_array_property_map.hpp",
+    "boost/property_map/transform_value_property_map.hpp"
+   ]
+  },
+  "property_tree": {
+   "deps": [
+    "any",
+    "assert",
+    "bind",
+    "concept_check",
+    "optional",
+    "range",
+    "serialization",
+    "type_traits"
+   ],
+   "exported": 147,
+   "gmf": [
+    "boost/property_tree/info_parser.hpp",
+    "boost/property_tree/ini_parser.hpp",
+    "boost/property_tree/json_parser.hpp",
+    "boost/property_tree/ptree_serialization.hpp",
+    "boost/property_tree/xml_parser.hpp"
+   ]
+  },
+  "ptr_container": {
+   "deps": [
+    "array",
+    "assert",
+    "circular_buffer",
+    "config",
+    "core",
+    "range",
+    "smart_ptr",
+    "type_traits"
+   ],
+   "exported": 101,
+   "gmf": [
+    "boost/ptr_container/clone_allocator.hpp",
+    "boost/ptr_container/exception.hpp",
+    "boost/ptr_container/nullable.hpp",
+    "boost/ptr_container/ptr_container.hpp",
+    "boost/ptr_container/serialize_ptr_container.hpp"
+   ]
+  },
+  "qvm": {
+   "deps": [],
+   "exported": 2053,
+   "gmf": [
+    "boost/qvm.hpp",
+    "boost/qvm/operations.hpp",
+    "boost/qvm/quat_traits_array.hpp"
+   ]
+  },
+  "random": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "dynamic_bitset",
+    "integer",
+    "io",
+    "system",
+    "type_traits"
+   ],
+   "exported": 248,
+   "gmf": [
+    "boost/random.hpp",
+    "boost/random/faure.hpp",
+    "boost/random/niederreiter_base2.hpp",
+    "boost/random/random_device.hpp",
+    "boost/random/sobol.hpp"
+   ]
+  },
+  "range": {
+   "deps": [
+    "array",
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "functional",
+    "iterator",
+    "optional",
+    "regex",
+    "tuple",
+    "type_traits"
+   ],
+   "exported": 482,
+   "gmf": [
+    "boost/range.hpp",
+    "boost/range/adaptor/define_adaptor.hpp",
+    "boost/range/adaptor/ref_unwrapped.hpp",
+    "boost/range/adaptor/type_erased.hpp",
+    "boost/range/adaptors.hpp",
+    "boost/range/algorithm.hpp",
+    "boost/range/algorithm/swap_ranges.hpp",
+    "boost/range/algorithm_ext.hpp",
+    "boost/range/as_array.hpp",
+    "boost/range/as_literal.hpp",
+    "boost/range/combine.hpp",
+    "boost/range/const_reverse_iterator.hpp",
+    "boost/range/counting_range.hpp",
+    "boost/range/irange.hpp",
+    "boost/range/istream_range.hpp",
+    "boost/range/iterator_range_hash.hpp",
+    "boost/range/join.hpp",
+    "boost/range/numeric.hpp",
+    "boost/range/result_iterator.hpp",
+    "boost/range/reverse_result_iterator.hpp"
+   ]
+  },
+  "ratio": {
+   "deps": [],
+   "exported": 34,
+   "gmf": [
+    "boost/ratio.hpp",
+    "boost/ratio/config.hpp"
+   ]
+  },
+  "rational": {
+   "deps": [
+    "assert",
+    "config",
+    "integer",
+    "throw_exception",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 21,
+   "gmf": [
+    "boost/rational.hpp"
+   ]
+  },
+  "regex": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 404,
+   "gmf": [
+    "boost/regex/concepts.hpp",
+    "boost/regex/pending/object_cache.hpp",
+    "boost/regex/pending/unicode_iterator.hpp",
+    "boost/regex/user.hpp",
+    "boost/regex/v5/cregex.hpp",
+    "boost/regex/v5/iterator_category.hpp",
+    "boost/regex/v5/iterator_traits.hpp",
+    "boost/regex/v5/perl_matcher_common.hpp",
+    "boost/regex/v5/perl_matcher_non_recursive.hpp",
+    "boost/regex/v5/regex_fwd.hpp"
+   ]
+  },
+  "safe_numerics": {
+   "deps": [
+    "config",
+    "core",
+    "integer",
+    "logic",
+    "mp11",
+    "type_traits"
+   ],
+   "exported": 149,
+   "gmf": [
+    "boost/safe_numerics/automatic.hpp",
+    "boost/safe_numerics/checked_default.hpp",
+    "boost/safe_numerics/checked_integer.hpp",
+    "boost/safe_numerics/checked_result.hpp",
+    "boost/safe_numerics/checked_result_operations.hpp",
+    "boost/safe_numerics/concept/exception_policy.hpp",
+    "boost/safe_numerics/concept/integer.hpp",
+    "boost/safe_numerics/concept/numeric.hpp",
+    "boost/safe_numerics/concept/promotion_policy.hpp",
+    "boost/safe_numerics/cpp.hpp",
+    "boost/safe_numerics/exception.hpp",
+    "boost/safe_numerics/exception_policies.hpp",
+    "boost/safe_numerics/interval.hpp",
+    "boost/safe_numerics/safe_base.hpp",
+    "boost/safe_numerics/safe_base_operations.hpp",
+    "boost/safe_numerics/safe_common.hpp",
+    "boost/safe_numerics/safe_compare.hpp",
+    "boost/safe_numerics/safe_integer.hpp",
+    "boost/safe_numerics/safe_integer_literal.hpp",
+    "boost/safe_numerics/safe_integer_range.hpp",
+    "boost/safe_numerics/utility.hpp"
+   ]
+  },
+  "scope": {
+   "deps": [
+    "core"
+   ],
+   "exported": 51,
+   "gmf": [
+    "boost/scope/defer.hpp",
+    "boost/scope/error_code_checker.hpp",
+    "boost/scope/scope_fail.hpp",
+    "boost/scope/scope_success.hpp",
+    "boost/scope/unique_fd.hpp"
+   ]
+  },
+  "serialization": {
+   "deps": [
+    "array",
+    "assert",
+    "config",
+    "core",
+    "integer",
+    "io",
+    "iterator",
+    "move",
+    "optional",
+    "smart_ptr",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 401,
+   "gmf": [
+    "boost/archive/basic_xml_archive.hpp",
+    "boost/archive/binary_wiarchive.hpp",
+    "boost/archive/binary_woarchive.hpp",
+    "boost/archive/impl/basic_xml_grammar.hpp",
+    "boost/archive/iterators/base64_exception.hpp",
+    "boost/archive/iterators/base64_from_binary.hpp",
+    "boost/archive/iterators/binary_from_base64.hpp",
+    "boost/archive/iterators/dataflow.hpp",
+    "boost/archive/iterators/insert_linebreaks.hpp",
+    "boost/archive/iterators/istream_iterator.hpp",
+    "boost/archive/iterators/mb_from_wchar.hpp",
+    "boost/archive/iterators/ostream_iterator.hpp",
+    "boost/archive/iterators/remove_whitespace.hpp",
+    "boost/archive/iterators/transform_width.hpp",
+    "boost/archive/iterators/wchar_from_mb.hpp",
+    "boost/archive/iterators/xml_escape.hpp",
+    "boost/archive/iterators/xml_unescape.hpp",
+    "boost/archive/iterators/xml_unescape_exception.hpp",
+    "boost/archive/polymorphic_binary_iarchive.hpp",
+    "boost/archive/polymorphic_binary_oarchive.hpp",
+    "boost/archive/polymorphic_iarchive.hpp",
+    "boost/archive/polymorphic_oarchive.hpp",
+    "boost/archive/polymorphic_text_iarchive.hpp",
+    "boost/archive/polymorphic_text_oarchive.hpp",
+    "boost/archive/polymorphic_text_wiarchive.hpp",
+    "boost/archive/polymorphic_text_woarchive.hpp",
+    "boost/archive/polymorphic_xml_iarchive.hpp",
+    "boost/archive/polymorphic_xml_oarchive.hpp",
+    "boost/archive/polymorphic_xml_wiarchive.hpp",
+    "boost/archive/polymorphic_xml_woarchive.hpp",
+    "boost/archive/tmpdir.hpp",
+    "boost/archive/wcslen.hpp",
+    "boost/archive/xml_archive_exception.hpp",
+    "boost/serialization/array.hpp",
+    "boost/serialization/binary_object.hpp",
+    "boost/serialization/bitset.hpp",
+    "boost/serialization/boost_array.hpp",
+    "boost/serialization/complex.hpp",
+    "boost/serialization/deque.hpp",
+    "boost/serialization/export.hpp",
+    "boost/serialization/extended_type_info_no_rtti.hpp",
+    "boost/serialization/extended_type_info_typeid.hpp",
+    "boost/serialization/forward_list.hpp",
+    "boost/serialization/hash_map.hpp",
+    "boost/serialization/hash_set.hpp",
+    "boost/serialization/list.hpp",
+    "boost/serialization/map.hpp",
+    "boost/serialization/optional.hpp",
+    "boost/serialization/priority_queue.hpp",
+    "boost/serialization/queue.hpp",
+    "boost/serialization/scoped_ptr.hpp",
+    "boost/serialization/set.hpp",
+    "boost/serialization/shared_ptr_132.hpp",
+    "boost/serialization/slist.hpp",
+    "boost/serialization/stack.hpp",
+    "boost/serialization/state_saver.hpp",
+    "boost/serialization/unique_ptr.hpp",
+    "boost/serialization/unordered_map.hpp",
+    "boost/serialization/unordered_set.hpp",
+    "boost/serialization/valarray.hpp",
+    "boost/serialization/vector_135.hpp",
+    "boost/serialization/weak_ptr.hpp"
+   ]
+  },
+  "signals2": {
+   "deps": [
+    "assert",
+    "bind",
+    "core",
+    "function",
+    "iterator",
+    "move",
+    "mp11",
+    "optional",
+    "smart_ptr",
+    "type_traits",
+    "variant"
+   ],
+   "exported": 124,
+   "gmf": [
+    "boost/signals2.hpp",
+    "boost/signals2/trackable.hpp"
+   ]
+  },
+  "smart_ptr": {
+   "deps": [
+    "assert",
+    "config",
+    "core"
+   ],
+   "exported": 144,
+   "gmf": [
+    "boost/smart_ptr.hpp",
+    "boost/smart_ptr/allocate_unique.hpp",
+    "boost/smart_ptr/atomic_shared_ptr.hpp",
+    "boost/smart_ptr/bad_weak_ptr.hpp",
+    "boost/smart_ptr/enable_shared_from.hpp",
+    "boost/smart_ptr/enable_shared_from_raw.hpp",
+    "boost/smart_ptr/intrusive_ptr.hpp",
+    "boost/smart_ptr/intrusive_ref_counter.hpp",
+    "boost/smart_ptr/make_local_shared.hpp",
+    "boost/smart_ptr/make_unique.hpp",
+    "boost/smart_ptr/owner_equal_to.hpp",
+    "boost/smart_ptr/owner_hash.hpp",
+    "boost/smart_ptr/owner_less.hpp",
+    "boost/smart_ptr/scoped_array.hpp",
+    "boost/smart_ptr/scoped_ptr.hpp",
+    "boost/smart_ptr/shared_array.hpp"
+   ]
+  },
+  "sort": {
+   "deps": [
+    "core",
+    "range",
+    "type_traits"
+   ],
+   "exported": 160,
+   "gmf": [
+    "boost/sort/block_indirect_sort/blk_detail/constants.hpp",
+    "boost/sort/common/deque_cnc.hpp",
+    "boost/sort/common/file_vector.hpp",
+    "boost/sort/common/int_array.hpp",
+    "boost/sort/common/rearrange.hpp",
+    "boost/sort/common/scheduler.hpp",
+    "boost/sort/common/time_measure.hpp",
+    "boost/sort/insert_sort/insert_sort.hpp",
+    "boost/sort/sort.hpp"
+   ]
+  },
+  "stacktrace": {
+   "deps": [
+    "container_hash"
+   ],
+   "exported": 23,
+   "gmf": [
+    "boost/stacktrace.hpp"
+   ]
+  },
+  "statechart": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "function",
+    "smart_ptr",
+    "thread",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 73,
+   "gmf": [
+    "boost/statechart/asynchronous_state_machine.hpp",
+    "boost/statechart/custom_reaction.hpp",
+    "boost/statechart/deferral.hpp",
+    "boost/statechart/exception_translator.hpp",
+    "boost/statechart/history.hpp",
+    "boost/statechart/in_state_reaction.hpp",
+    "boost/statechart/state.hpp",
+    "boost/statechart/termination.hpp",
+    "boost/statechart/transition.hpp"
+   ]
+  },
+  "static_string": {
+   "deps": [
+    "assert",
+    "container_hash",
+    "core",
+    "utility"
+   ],
+   "exported": 50,
+   "gmf": [
+    "boost/static_string.hpp"
+   ]
+  },
+  "stl_interfaces": {
+   "deps": [
+    "assert",
+    "config"
+   ],
+   "exported": 95,
+   "gmf": [
+    "boost/stl_interfaces/sequence_container_interface.hpp",
+    "boost/stl_interfaces/view_interface.hpp"
+   ]
+  },
+  "system": {
+   "deps": [
+    "assert",
+    "compat",
+    "variant2",
+    "winapi"
+   ],
+   "exported": 198,
+   "gmf": [
+    "boost/system.hpp",
+    "boost/system/is_error_code_enum.hpp",
+    "boost/system/is_error_condition_enum.hpp",
+    "boost/system/linux_error.hpp",
+    "boost/system/windows_error.hpp"
+   ]
+  },
+  "thread": {
+   "deps": [
+    "assert",
+    "atomic",
+    "chrono",
+    "concept_check",
+    "config",
+    "core",
+    "date_time",
+    "io",
+    "optional",
+    "smart_ptr",
+    "system",
+    "throw_exception",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 446,
+   "gmf": [
+    "boost/thread.hpp",
+    "boost/thread/caller_context.hpp",
+    "boost/thread/completion_latch.hpp",
+    "boost/thread/concurrent_queues/deque_adaptor.hpp",
+    "boost/thread/concurrent_queues/deque_views.hpp",
+    "boost/thread/concurrent_queues/queue_adaptor.hpp",
+    "boost/thread/concurrent_queues/queue_views.hpp",
+    "boost/thread/concurrent_queues/sync_deque.hpp",
+    "boost/thread/concurrent_queues/sync_timed_queue.hpp",
+    "boost/thread/condition.hpp",
+    "boost/thread/csbl/deque.hpp",
+    "boost/thread/csbl/list.hpp",
+    "boost/thread/csbl/memory.hpp",
+    "boost/thread/csbl/memory/shared_ptr.hpp",
+    "boost/thread/csbl/queue.hpp",
+    "boost/thread/executors/inline_executor.hpp",
+    "boost/thread/executors/loop_executor.hpp",
+    "boost/thread/executors/scheduled_thread_pool.hpp",
+    "boost/thread/executors/scheduler.hpp",
+    "boost/thread/executors/scheduling_adaptor.hpp",
+    "boost/thread/executors/serial_executor.hpp",
+    "boost/thread/executors/serial_executor_cont.hpp",
+    "boost/thread/executors/thread_executor.hpp",
+    "boost/thread/experimental/task_region.hpp",
+    "boost/thread/externally_locked_stream.hpp",
+    "boost/thread/latch.hpp",
+    "boost/thread/lockable_adapter.hpp",
+    "boost/thread/null_mutex.hpp",
+    "boost/thread/ostream_buffer.hpp",
+    "boost/thread/poly_shared_lockable_adapter.hpp",
+    "boost/thread/reverse_lock.hpp",
+    "boost/thread/sync_bounded_queue.hpp",
+    "boost/thread/sync_queue.hpp",
+    "boost/thread/synchronized_value.hpp",
+    "boost/thread/testable_mutex.hpp",
+    "boost/thread/thread_guard.hpp",
+    "boost/thread/thread_pool.hpp",
+    "boost/thread/user_scheduler.hpp",
+    "boost/thread/win32/mfc_thread_init.hpp",
+    "boost/thread/with_lock_guard.hpp"
+   ]
+  },
+  "throw_exception": {
+   "deps": [
+    "assert",
+    "config"
+   ],
+   "exported": 45,
+   "gmf": [
+    "boost/throw_exception.hpp"
+   ]
+  },
+  "timer": {
+   "deps": [
+    "config"
+   ],
+   "exported": 6,
+   "gmf": [
+    "boost/timer/progress_display.hpp",
+    "boost/timer/timer.hpp"
+   ]
+  },
+  "tokenizer": {
+   "deps": [
+    "assert",
+    "config",
+    "iterator",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 18,
+   "gmf": [
+    "boost/tokenizer.hpp"
+   ]
+  },
+  "tuple": {
+   "deps": [
+    "core",
+    "type_traits"
+   ],
+   "exported": 51,
+   "gmf": [
+    "boost/tuple/tuple_comparison.hpp",
+    "boost/tuple/tuple_io.hpp"
+   ]
+  },
+  "type_erasure": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "iterator",
+    "mp11",
+    "smart_ptr",
+    "throw_exception",
+    "type_traits",
+    "utility"
+   ],
+   "exported": 300,
+   "gmf": [
+    "boost/type_erasure/any_cast.hpp",
+    "boost/type_erasure/dynamic_any_cast.hpp",
+    "boost/type_erasure/free.hpp",
+    "boost/type_erasure/is_empty.hpp",
+    "boost/type_erasure/iterator.hpp",
+    "boost/type_erasure/member.hpp",
+    "boost/type_erasure/register_binding.hpp",
+    "boost/type_erasure/same_type.hpp",
+    "boost/type_erasure/tuple.hpp"
+   ]
+  },
+  "type_index": {
+   "deps": [
+    "assert",
+    "container_hash",
+    "throw_exception"
+   ],
+   "exported": 24,
+   "gmf": [
+    "boost/type_index/runtime_cast.hpp",
+    "boost/type_index/runtime_cast/boost_shared_ptr_cast.hpp",
+    "boost/type_index/runtime_cast/std_shared_ptr_cast.hpp"
+   ]
+  },
+  "type_traits": {
+   "deps": [
+    "config"
+   ],
+   "exported": 405,
+   "gmf": [
+    "boost/type_traits.hpp",
+    "boost/type_traits/alignment_traits.hpp",
+    "boost/type_traits/arithmetic_traits.hpp",
+    "boost/type_traits/array_traits.hpp",
+    "boost/type_traits/broken_compiler_spec.hpp",
+    "boost/type_traits/composite_traits.hpp",
+    "boost/type_traits/config.hpp",
+    "boost/type_traits/conversion_traits.hpp",
+    "boost/type_traits/cv_traits.hpp",
+    "boost/type_traits/detected_or.hpp",
+    "boost/type_traits/has_operator.hpp",
+    "boost/type_traits/ice.hpp",
+    "boost/type_traits/is_base_of_tr1.hpp",
+    "boost/type_traits/is_bounded_array.hpp",
+    "boost/type_traits/is_detected.hpp",
+    "boost/type_traits/is_detected_convertible.hpp",
+    "boost/type_traits/is_detected_exact.hpp",
+    "boost/type_traits/is_unbounded_array.hpp",
+    "boost/type_traits/object_traits.hpp",
+    "boost/type_traits/reference_traits.hpp",
+    "boost/type_traits/same_traits.hpp",
+    "boost/type_traits/transform_traits.hpp"
+   ]
+  },
+  "units": {
+   "deps": [
+    "assert",
+    "config",
+    "io",
+    "lambda",
+    "math",
+    "type_traits"
+   ],
+   "exported": 1156,
+   "gmf": [
+    "boost/units/base_units/angle/arcminute.hpp",
+    "boost/units/base_units/angle/arcsecond.hpp",
+    "boost/units/base_units/astronomical/astronomical_unit.hpp",
+    "boost/units/base_units/astronomical/light_day.hpp",
+    "boost/units/base_units/astronomical/light_hour.hpp",
+    "boost/units/base_units/astronomical/light_minute.hpp",
+    "boost/units/base_units/astronomical/light_year.hpp",
+    "boost/units/base_units/astronomical/parsec.hpp",
+    "boost/units/base_units/imperial/conversions.hpp",
+    "boost/units/base_units/imperial/drachm.hpp",
+    "boost/units/base_units/imperial/fluid_ounce.hpp",
+    "boost/units/base_units/imperial/foot.hpp",
+    "boost/units/base_units/imperial/furlong.hpp",
+    "boost/units/base_units/imperial/gallon.hpp",
+    "boost/units/base_units/imperial/gill.hpp",
+    "boost/units/base_units/imperial/grain.hpp",
+    "boost/units/base_units/imperial/hundredweight.hpp",
+    "boost/units/base_units/imperial/inch.hpp",
+    "boost/units/base_units/imperial/league.hpp",
+    "boost/units/base_units/imperial/mile.hpp",
+    "boost/units/base_units/imperial/ounce.hpp",
+    "boost/units/base_units/imperial/quart.hpp",
+    "boost/units/base_units/imperial/quarter.hpp",
+    "boost/units/base_units/imperial/stone.hpp",
+    "boost/units/base_units/imperial/thou.hpp",
+    "boost/units/base_units/imperial/ton.hpp",
+    "boost/units/base_units/metric/angstrom.hpp",
+    "boost/units/base_units/metric/are.hpp",
+    "boost/units/base_units/metric/atmosphere.hpp",
+    "boost/units/base_units/metric/bar.hpp",
+    "boost/units/base_units/metric/barn.hpp",
+    "boost/units/base_units/metric/day.hpp",
+    "boost/units/base_units/metric/fermi.hpp",
+    "boost/units/base_units/metric/hectare.hpp",
+    "boost/units/base_units/metric/hour.hpp",
+    "boost/units/base_units/metric/knot.hpp",
+    "boost/units/base_units/metric/liter.hpp",
+    "boost/units/base_units/metric/micron.hpp",
+    "boost/units/base_units/metric/minute.hpp",
+    "boost/units/base_units/metric/mmHg.hpp",
+    "boost/units/base_units/metric/nautical_mile.hpp",
+    "boost/units/base_units/metric/ton.hpp",
+    "boost/units/base_units/metric/torr.hpp",
+    "boost/units/base_units/metric/year.hpp",
+    "boost/units/base_units/us/cup.hpp",
+    "boost/units/base_units/us/dram.hpp",
+    "boost/units/base_units/us/fluid_dram.hpp",
+    "boost/units/base_units/us/fluid_ounce.hpp",
+    "boost/units/base_units/us/foot.hpp",
+    "boost/units/base_units/us/gallon.hpp",
+    "boost/units/base_units/us/gill.hpp",
+    "boost/units/base_units/us/grain.hpp",
+    "boost/units/base_units/us/hundredweight.hpp",
+    "boost/units/base_units/us/inch.hpp",
+    "boost/units/base_units/us/mil.hpp",
+    "boost/units/base_units/us/mile.hpp",
+    "boost/units/base_units/us/minim.hpp",
+    "boost/units/base_units/us/ounce.hpp",
+    "boost/units/base_units/us/pound_force.hpp",
+    "boost/units/base_units/us/quart.hpp",
+    "boost/units/base_units/us/tablespoon.hpp",
+    "boost/units/base_units/us/teaspoon.hpp",
+    "boost/units/base_units/us/ton.hpp",
+    "boost/units/cmath.hpp",
+    "boost/units/get_dimension.hpp",
+    "boost/units/get_system.hpp",
+    "boost/units/is_dim.hpp",
+    "boost/units/is_dimensionless.hpp",
+    "boost/units/is_dimensionless_quantity.hpp",
+    "boost/units/is_dimensionless_unit.hpp",
+    "boost/units/is_quantity.hpp",
+    "boost/units/is_quantity_of_system.hpp",
+    "boost/units/is_unit.hpp",
+    "boost/units/lambda.hpp",
+    "boost/units/limits.hpp",
+    "boost/units/physical_dimensions.hpp",
+    "boost/units/systems/abstract.hpp",
+    "boost/units/systems/angle/degrees.hpp",
+    "boost/units/systems/angle/gradians.hpp",
+    "boost/units/systems/angle/revolutions.hpp",
+    "boost/units/systems/cgs/io.hpp",
+    "boost/units/systems/information.hpp",
+    "boost/units/systems/si/codata/atomic-nuclear_constants.hpp",
+    "boost/units/systems/si/codata/physico-chemical_constants.hpp",
+    "boost/units/systems/si/codata_constants.hpp",
+    "boost/units/systems/si/io.hpp",
+    "boost/units/systems/si/prefixes.hpp",
+    "boost/units/systems/temperature/celsius.hpp",
+    "boost/units/systems/temperature/fahrenheit.hpp"
+   ]
+  },
+  "unordered": {
+   "deps": [
+    "assert",
+    "config",
+    "container_hash",
+    "core",
+    "mp11",
+    "throw_exception"
+   ],
+   "exported": 245,
+   "gmf": [
+    "boost/unordered/concurrent_flat_map.hpp",
+    "boost/unordered/concurrent_flat_set.hpp",
+    "boost/unordered/concurrent_node_map.hpp",
+    "boost/unordered/concurrent_node_set.hpp",
+    "boost/unordered/hash_traits.hpp",
+    "boost/unordered/unordered_flat_map.hpp",
+    "boost/unordered/unordered_flat_set.hpp",
+    "boost/unordered/unordered_map.hpp",
+    "boost/unordered/unordered_map_fwd.hpp",
+    "boost/unordered/unordered_node_map.hpp",
+    "boost/unordered/unordered_node_set.hpp",
+    "boost/unordered/unordered_set.hpp",
+    "boost/unordered/unordered_set_fwd.hpp"
+   ]
+  },
+  "url": {
+   "deps": [
+    "assert",
+    "core",
+    "mp11",
+    "optional",
+    "system",
+    "type_traits",
+    "variant2"
+   ],
+   "exported": 318,
+   "gmf": [
+    "boost/url.hpp"
+   ]
+  },
+  "utility": {
+   "deps": [
+    "assert",
+    "config",
+    "core",
+    "io",
+    "throw_exception",
+    "type_traits"
+   ],
+   "exported": 75,
+   "gmf": [
+    "boost/compressed_pair.hpp",
+    "boost/utility.hpp",
+    "boost/utility/addressof.hpp",
+    "boost/utility/compare_pointees.hpp",
+    "boost/utility/declval.hpp",
+    "boost/utility/explicit_operator_bool.hpp",
+    "boost/utility/in_place_factory.hpp",
+    "boost/utility/result_of.hpp",
+    "boost/utility/string_ref_fwd.hpp",
+    "boost/utility/string_view.hpp",
+    "boost/utility/swap.hpp",
+    "boost/utility/typed_in_place_factory.hpp",
+    "boost/utility/value_init.hpp"
+   ]
+  },
+  "uuid": {
+   "deps": [
+    "assert",
+    "config",
+    "throw_exception"
+   ],
+   "exported": 113,
+   "gmf": [
+    "boost/uuid.hpp",
+    "boost/uuid/basic_name_generator.hpp",
+    "boost/uuid/entropy_error.hpp",
+    "boost/uuid/invalid_uuid.hpp",
+    "boost/uuid/uuid_generators.hpp",
+    "boost/uuid/uuid_hash.hpp",
+    "boost/uuid/uuid_serialize.hpp"
+   ]
+  },
+  "variant": {
+   "deps": [
+    "assert",
+    "config",
+    "container_hash",
+    "core",
+    "integer",
+    "throw_exception",
+    "type_index",
+    "type_traits"
+   ],
+   "exported": 347,
+   "gmf": [
+    "boost/variant.hpp",
+    "boost/variant/multivisitors.hpp",
+    "boost/variant/polymorphic_get.hpp"
+   ]
+  },
+  "variant2": {
+   "deps": [
+    "assert",
+    "mp11"
+   ],
+   "exported": 99,
+   "gmf": [
+    "boost/variant2.hpp"
+   ]
+  },
+  "wave": {
+   "deps": [
+    "assert",
+    "concept_check",
+    "config",
+    "core",
+    "filesystem",
+    "format",
+    "io",
+    "iterator",
+    "mp11",
+    "multi_index",
+    "optional",
+    "pool",
+    "smart_ptr",
+    "thread",
+    "throw_exception",
+    "type_traits",
+    "utility",
+    "version"
+   ],
+   "exported": 878,
+   "gmf": [
+    "boost/wave.hpp",
+    "boost/wave/cpplexer/cpp_lex_iterator.hpp",
+    "boost/wave/cpplexer/re2clex/cpp_re2c_lexer.hpp",
+    "boost/wave/grammars/cpp_chlit_grammar.hpp",
+    "boost/wave/grammars/cpp_defined_grammar.hpp",
+    "boost/wave/grammars/cpp_expression_grammar.hpp",
+    "boost/wave/grammars/cpp_grammar.hpp",
+    "boost/wave/grammars/cpp_has_include_grammar.hpp",
+    "boost/wave/grammars/cpp_intlit_grammar.hpp",
+    "boost/wave/grammars/cpp_predef_macros_grammar.hpp"
+   ]
+  },
+  "winapi": {
+   "deps": [],
+   "exported": 427,
+   "gmf": [
+    "boost/winapi/bcrypt.hpp",
+    "boost/winapi/character_code_conversion.hpp",
+    "boost/winapi/crypt.hpp",
+    "boost/winapi/dbghelp.hpp",
+    "boost/winapi/debugapi.hpp",
+    "boost/winapi/directory_management.hpp",
+    "boost/winapi/dll.hpp",
+    "boost/winapi/environment.hpp",
+    "boost/winapi/error_codes.hpp",
+    "boost/winapi/error_handling.hpp",
+    "boost/winapi/file_management.hpp",
+    "boost/winapi/file_mapping.hpp",
+    "boost/winapi/get_process_times.hpp",
+    "boost/winapi/get_thread_times.hpp",
+    "boost/winapi/handle_info.hpp",
+    "boost/winapi/handles.hpp",
+    "boost/winapi/jobs.hpp",
+    "boost/winapi/memory.hpp",
+    "boost/winapi/page_protection_flags.hpp",
+    "boost/winapi/pipes.hpp",
+    "boost/winapi/priority_class.hpp",
+    "boost/winapi/process.hpp",
+    "boost/winapi/security.hpp",
+    "boost/winapi/shell.hpp",
+    "boost/winapi/show_window.hpp",
+    "boost/winapi/stack_backtrace.hpp",
+    "boost/winapi/synchronization.hpp",
+    "boost/winapi/system.hpp",
+    "boost/winapi/thread.hpp",
+    "boost/winapi/thread_pool.hpp",
+    "boost/winapi/timers.hpp",
+    "boost/winapi/tls.hpp",
+    "boost/winapi/waitable_timer.hpp"
+   ]
+  },
+  "yap": {
+   "deps": [
+    "assert",
+    "hana",
+    "type_index"
+   ],
+   "exported": 130,
+   "gmf": [
+    "boost/yap/print.hpp",
+    "boost/yap/yap.hpp"
+   ]
+  }
+ }
+}

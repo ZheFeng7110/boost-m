@@ -4,7 +4,7 @@ export generator.
 
 Why this exists
 ---------------
-`gen_exports.py` drives libclang and the real clang++ driver with
+`gen_exports.py` runs the clang++ driver (`-ast-dump=json`) with
 `--target=x86_64-w64-mingw32 --sysroot=...` (see boost_common.GEN_TARGET) to
 reproduce the committed mingw-flavor `generated/exports/*.inc` snapshots. The
 generator only ever runs `-fsyntax-only` and never links, so it needs the

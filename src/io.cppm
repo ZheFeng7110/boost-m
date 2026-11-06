@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.io — module facade over generated/exports/io.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
 #include <boost/io/nullstream.hpp>
 #include <boost/io/ostream_joiner.hpp>
@@ -8,6 +9,8 @@ module;
 #include <boost/io/quoted.hpp>
 
 export module mcpplibs.mwrap.boost.io;
+
+export import mcpplibs.mwrap.boost.config;
 
 #include "../generated/exports/io.inc"
 

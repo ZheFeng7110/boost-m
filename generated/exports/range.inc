@@ -36,6 +36,7 @@ export namespace boost {
   using boost::count;
   using boost::count_if;
   using boost::counting_range;
+  using boost::distance;
   using boost::empty;
   using boost::end;
   using boost::equal;
@@ -245,11 +246,6 @@ export namespace boost { namespace iterator_range_detail {
   using boost::iterator_range_detail::test_traversal_tag;
 }}
 
-export namespace boost { namespace iterators { namespace detail {
-  using boost::iterators::detail::postfix_increment_proxy;
-  using boost::iterators::detail::writable_postfix_increment_proxy;
-}}}
-
 export namespace boost { namespace next_prior_detail {
   using boost::next_prior_detail::next_advance_impl;
   using boost::next_prior_detail::next_plus_assign_impl;
@@ -279,6 +275,7 @@ export namespace boost { namespace range {
   using boost::range::find_first_of;
   using boost::range::find_if;
   using boost::range::for_each;
+  using boost::range::formatted_range;
   using boost::range::generate;
   using boost::range::includes;
   using boost::range::index_value;
@@ -344,8 +341,8 @@ export namespace boost { namespace range { namespace detail {
   using boost::range::detail::max_element;
   using boost::range::detail::min_element;
 #if defined(__GLIBCXX__)
-  // M9 platform guard: std::random_shuffle was removed in C++17; only
-  // libstdc++ (mingw/linux-gcc) still provides it.
+  // M9 platform guard: std::random_shuffle was removed in C++17; only libstdc++
+  // (mingw/linux-gcc) still provides it.
   using std::random_shuffle;
 #endif
 }}}

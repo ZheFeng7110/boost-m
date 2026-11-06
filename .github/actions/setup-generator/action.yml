@@ -1,0 +1,65 @@
+# Toolchain of the generation chain, shared by the jobs of verify-scripts.yml:
+# Python + uv, xlings and the tools pinned in .xlings.json (mcpp, the
+# generator's clang++), the cached MinGW sysroot archive and the tool
+# dependencies. Expects a checkout; sets CLANG_NO_DEFAULT_CONFIG and
+# LLVM_VERSION for the following steps.
+name: Set up the generation toolchain
+description: Python, uv, xlings, the pinned clang++ and the MinGW sysroot archive cache
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: "3.x"
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+      with:
+        enable-cache: true
+        cache-dependency-glob: tools/uv.lock
+
+    - name: Install xlings
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        set -euo pipefail
+        curl -fsSL --retry 3 --retry-all-errors \
+          https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.sh \
+          | bash -s "$XLINGS_VERSION"
+        echo "$HOME/.xlings/subos/current/bin" >> "$GITHUB_PATH"
+
+    - name: Install xlings
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        irm https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.ps1 | iex
+        "$env:USERPROFILE\.xlings\subos\current\bin" |
+          Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+    # .xlings.json pins the generator's clang++ next to mcpp. The xlings
+    # package installs a host config file for native builds; the generator
+    # parses for an explicit MinGW target and sysroot, so it is ignored.
+    - name: Install project tools (.xlings.json -> mcpp, llvm)
+      shell: bash
+      run: |
+        set -euo pipefail
+        xlings update
+        xlings install -y
+        echo "CLANG_NO_DEFAULT_CONFIG=1" >> "$GITHUB_ENV"
+        LLVM_VERSION="$(python -c "import json; print(json.load(open('.xlings.json'))['workspace']['llvm'])")"
+        echo "LLVM_VERSION=$LLVM_VERSION" >> "$GITHUB_ENV"
+        clang++ --version
+
+    - name: Cache MinGW sysroot archive
+      uses: actions/cache@v6
+      with:
+        path: tools/_deps/_archives
+        key: mingw-sysroot-archive-${{ runner.os }}-${{ hashFiles('tools/fetch_mingw_sysroot.py') }}
+        restore-keys: |
+          mingw-sysroot-archive-${{ runner.os }}-
+
+    - name: Install tool dependencies
+      shell: bash
+      run: uv sync --project tools --locked

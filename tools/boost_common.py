@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""boost_common.py — shared plumbing for the M2 module-export generators.
+"""boost_common.py — shared plumbing for the module-export generators.
 
 Handles the vendored layout: all library headers live under
 upstream/boost/boost/
 (the aggregated include root; libs/<lib>/ has no include/). This module knows
-the target library list, resolves each library's public headers, builds one
-"bundle" translation unit per library (mirroring the future .cppm GMF include
-set), and provides libclang helpers shared by gen_exports.py / gen_audit.py.
+the target library list, resolves each library's public headers (the bundle
+translation unit / .cppm GMF include set), the include-based dependency graph
+and the clang++ command line shared by gen_exports.py / gen_audit.py. The AST
+itself comes from the compiler (tools/ast_json.py); nothing here needs
+libclang.
 """
 
 import json
@@ -29,6 +31,18 @@ GEN_DIR = ROOT / "generated" / "exports"
 CACHE_DIR = ROOT / "target" / "gen" / "exports-cache"
 AUDIT_DIR = ROOT / "target" / "gen" / "audit"
 MODULE_PREFIX = "mcpplibs.mwrap.boost"
+
+
+def _boost_version():
+    """Upstream version from mcpp.toml [package.metadata.mwrap] (the single
+    place it is recorded; generated headers and the API surface read it)."""
+    import tomllib
+    with open(ROOT / "mcpp.toml", "rb") as f:
+        meta = tomllib.load(f)
+    return meta["package"]["metadata"]["mwrap"]["upstream-version"]
+
+
+BOOST_VERSION = _boost_version()
 
 # M3 header-only libraries, then M4 compiled libraries (plan order), then the
 # M9 T1a batch (regular header-only libs, no src/ TU, no public macro surface).
@@ -63,7 +77,7 @@ LIBS_M4 = [
 # internal-linkage `static`/`const constexpr` objects — boost::hof::compose/_1
 # and boost::units::si::meter etc.). The C2 vendored macro patches
 # (hof/detail/static_const_var.hpp + units/static_constant.hpp →
-# `inline constexpr`, replayed by reapply_hand_edits.py) give the objects
+# `inline constexpr`, replayed by apply_patches.py) give the objects
 # external linkage, so both libraries are target libs again.
 # C4 re-entry (2026-09-07): bind + lambda + lambda2 were excluded in M10 as T3
 # "macro-driven" — a misattribution: their macro counts are tiny and every
@@ -73,7 +87,7 @@ LIBS_M4 = [
 # boost::placeholders::_1.._9 via BOOST_INLINE_CONSTEXPR) and lambda2 (inline
 # constexpr) were already module-safe as-is. Classic lambda needed the C2
 # treatment: its _1.._3/_e placeholders were TU-local (anonymous namespace) —
-# the C4 vendored patches (replayed by reapply_hand_edits.py) convert them to
+# the C4 vendored patches (replayed by apply_patches.py) convert them to
 # inline constexpr (external linkage). Caveat: the deprecated boost/bind.hpp
 # global `using namespace boost::placeholders;` cannot be reproduced by a
 # module — consumers of the module face write their own using-directive
@@ -199,8 +213,8 @@ LIBS_INCLUDE_ONLY_M11 = ["exception"]
 LIBS_COMPILED_INCLUDE_ONLY = ["log", "test"]
 
 # Target triple for the bundle AST snapshot. The committed .inc files are a
-# mingw-flavor snapshot (platform-specific entities are wrapped in guards by
-# reapply_hand_edits.py), so the default stays x86_64-w64-mingw32. Set
+# mingw-flavor snapshot (platform-specific entities are wrapped in the guards of
+# tools/export_policy.toml), so the default stays x86_64-w64-mingw32. Set
 # BOOST_MODULE_GEN_TARGET (e.g. x86_64-linux-gnu) to snapshot another flavor.
 _DEFAULT_GEN_TARGET = "x86_64-w64-mingw32"
 GEN_TARGET = os.environ.get("BOOST_MODULE_GEN_TARGET", _DEFAULT_GEN_TARGET)
@@ -248,9 +262,8 @@ TARGET_ARGS = ["--target=" + GEN_TARGET]
 if GEN_SYSROOT:
     TARGET_ARGS.append("--sysroot=" + GEN_SYSROOT)
 
-# Platform defines every bundle TU is parsed under, shared by both the libclang
-# AST snapshot and the clang++ gate (gen_exports._parse_bundle passes CLANG_ARGS
-# to each), so the two can never disagree:
+# Platform defines every bundle TU is compiled under (the AST dump and the
+# syntax gate are the same clang++ invocation, so they cannot disagree):
 #   _WIN32_WINNT=0x0A00     — Win10 API set. MinGW's default is older and hides
 #     e.g. WaitOnAddress from boost.winapi, which made the gate mis-prune
 #     boost/atomic.hpp under the pinned sysroot.
@@ -268,12 +281,8 @@ _ENV_GEN_DEFINES = os.environ.get("BOOST_MODULE_GEN_DEFINES", "")
 GEN_DEFINES = _ENV_GEN_DEFINES.split() if _ENV_GEN_DEFINES.strip() \
     else list(_DEFAULT_GEN_DEFINES)
 
-# clang command-line used for every bundle TU (same as M0 probe 4).
-# The libclang resource dir (-I .../lib/clang/<ver>/include) is appended at
-# load time: without it libclang cannot find its own builtin headers (e.g.
-# mm_malloc.h), the mingw <malloc.h> chain breaks, the std surface degrades,
-# and every declaration touching std::size_t/std types silently drops out of
-# the AST (mp11's mp_at_c/mp_iota_c were lost this way in M2).
+# clang++ command line used for every bundle TU. The driver finds its own
+# builtin headers; tools/ast_json.py adds the AST-dump flags.
 CLANG_ARGS = [
     "-std=c++23",
     "-I" + str(DEPS),
@@ -282,144 +291,6 @@ CLANG_ARGS = [
     *["-D" + d for d in GEN_DEFINES],
     "-w",
 ]
-
-
-def _append_resource_dir():
-    """Locate libclang's bundled clang resource dir (bin/libclang.dll or
-    lib/libclang.so ↔ ../lib/clang/<ver>/include) and add it to CLANG_ARGS
-    (idempotent). CLANG_RESOURCE_DIR can specify the builtin include directory
-    explicitly; it must belong to the selected libclang's LLVM release.
-    pip's libclang wheel ships no resource dir at all. Refuse to silently
-    generate an incomplete AST when no builtin headers can be found."""
-    explicit = os.environ.get("CLANG_RESOURCE_DIR")
-    if explicit:
-        inc = Path(explicit).expanduser()
-        if not (inc.is_dir() and (inc / "stddef.h").is_file()):
-            raise RuntimeError(
-                "CLANG_RESOURCE_DIR does not contain clang builtin headers: "
-                + str(inc)
-            )
-        flag = "-I{}".format(inc)
-        if flag not in CLANG_ARGS:
-            CLANG_ARGS.append(flag)
-        return
-    try:
-        import clang.cindex as ci
-        # Two loading modes: set_library_path(dir) leaves library_path set,
-        # set_library_file(dll) sets library_file with library_path None
-        # (clang-on-PATH fallback and LIBCLANG_PATH=<file> form).
-        if ci.Config.library_file:
-            dll = Path(ci.Config.library_file)
-        elif ci.Config.library_path:
-            base = Path(ci.Config.library_path)
-            # linux/macOS name the shared object libclang.so/.dylib; the
-            # resource dir lives next to it (../lib/clang/<ver>/include).
-            cands = sorted(base.glob("libclang.*"))
-            dll = cands[0] if cands else base / "libclang.dll"
-        else:
-            raise RuntimeError("libclang library location is unknown")
-    except ImportError as e:
-        raise RuntimeError("libclang is not installed") from e
-    for base in (dll.parent.parent / "lib" / "clang",
-                 dll.parent / "lib" / "clang",
-                 dll.parent.parent / "include" / "clang"):
-        try:
-            vers = sorted([p for p in base.glob("*/include")
-                           if (p / "stddef.h").is_file()],
-                          key=lambda p: p.name, reverse=True)
-        except Exception:
-            continue
-        if not vers:
-            continue
-        inc = "-I{}".format(vers[0])
-        if inc not in CLANG_ARGS:
-            CLANG_ARGS.append(inc)
-        return
-    raise RuntimeError(
-        "clang builtin headers not found for {}. The pip libclang wheel "
-        "does not include them; set LIBCLANG_PATH to a full LLVM installation "
-        "(with matching libclang and builtin headers).".format(dll)
-    )
-
-
-# ---------------------------------------------------------------------------
-# libclang bootstrap
-# ---------------------------------------------------------------------------
-
-_CI = None
-
-
-def _libclang_in(directory):
-    """Path to a libclang shared library in `directory`, or None.
-
-    Accepts the Windows (.dll), Linux (.so[.N]) and macOS (.dylib) names so
-    LIBCLANG_PATH works as a directory on every platform."""
-    for pattern in ("libclang.dll", "libclang.so", "libclang.so.*",
-                    "libclang.dylib"):
-        for p in sorted(directory.glob(pattern)):
-            if p.is_file():
-                return p
-    return None
-
-
-def load_libclang():
-    """Prefer a full LLVM installation over pip's older bundled libclang.
-
-    LIBCLANG_PATH accepts a file or a library directory; LLVM_PATH also
-    accepts an installation prefix. Otherwise use the clang++ gate's LLVM
-    (CXX or PATH), looking in both bin/ (Windows) and lib/ (Unix).
-    """
-    import clang.cindex as ci
-    env = os.environ.get("LIBCLANG_PATH") or os.environ.get("LLVM_PATH")
-    if env:
-        p = Path(env)
-        lib = _libclang_in_installation(p) if p.is_dir() else p
-        if lib is None:
-            raise RuntimeError("libclang not found under " + str(p))
-        ci.Config.set_library_file(str(lib))
-        return ci
-    import shutil
-    exe = shutil.which(os.environ.get("CXX") or "clang++")
-    if exe:
-        bindir = Path(exe).resolve().parent
-        lib = _libclang_in_installation(bindir.parent)
-        if lib is not None:
-            ci.Config.set_library_file(str(lib))
-            return ci
-    try:
-        ci.Index.create()
-        return ci
-    except Exception:
-        pass
-    raise RuntimeError(
-        "libclang not found — set LIBCLANG_PATH to the directory containing "
-        "libclang in a full LLVM installation")
-
-
-def _libclang_in_installation(prefix):
-    """Find the C API library, not libclang-cpp or compiler-rt libraries."""
-    for directory in (prefix, prefix / "bin", prefix / "lib", prefix / "lib64"):
-        lib = _libclang_in(directory)
-        if lib is not None:
-            return lib
-    return None
-
-
-def libclang_version():
-    """Identity of the AST parser (which need not be the clang++ driver)."""
-    ci = get_ci()
-    version = ci.conf.lib.clang_getClangVersion
-    version.restype = ci._CXString
-    return ci._CXString.from_result(version())
-
-
-def get_ci():
-    """Cached libclang module (loads on first use)."""
-    global _CI
-    if _CI is None:
-        _CI = load_libclang()
-        _append_resource_dir()
-    return _CI
 
 
 # ---------------------------------------------------------------------------
@@ -567,10 +438,8 @@ def scan_libs_json():
     """Regenerate libs.json from the heuristic, dropping root headers that do
     not compile standalone (legacy opt-in headers — e.g.
     boost/algorithm/string/std/rope_traits.hpp requires the SGI <rope> header
-    that modern libstdc++ no longer ships). The bundle TU check cannot be
-    trusted for these: libclang silently swallows some missing-include fatals,
-    while a standalone parse reports them (verified empirically). Human-curate
-    the result afterwards if needed."""
+    that modern libstdc++ no longer ships). Human-curate the result
+    afterwards if needed."""
     db = {}
     for lib in TARGET_LIBS:
         kept, dropped = standalone_compile_filter(resolve_headers_heuristic(lib))
@@ -581,29 +450,30 @@ def scan_libs_json():
 
 
 def standalone_compile_filter(headers):
-    """Return (kept, dropped) — root headers whose standalone parse produces a
-    severe diagnostic located under upstream/boost/ are dropped (they cannot be
-    part of any compilable module GMF). System-header noise (e.g. the missing
-    mm_malloc.h inside mingw's malloc.h) is ignored. NB: libclang reports
-    paths relative to the CWD, so locations are resolved before comparison."""
-    ci = get_ci()
-    idx = ci.Index.create()
-    boost_prefix = str((BOOST_ROOT).resolve()).lower()
+    """Return (kept, dropped) — root headers whose standalone compile reports
+    an error located under upstream/boost/ are dropped (they cannot be part of
+    any compilable module GMF). System-header noise is ignored."""
+    import subprocess
+    import ast_json
+    boost_prefix = str(BOOST_ROOT.resolve()).replace("\\", "/").lower()
     kept, dropped = [], []
-    for i, h in enumerate(headers):
-        tmp = ROOT / "target" / "gen" / ("standalone_%d.cpp" % i)
+    tmp = ROOT / "target" / "gen" / "standalone.cpp"
+    tmp.parent.mkdir(parents=True, exist_ok=True)
+    for h in headers:
         tmp.write_text("#include <{}>\n".format(
             h.relative_to(BOOST_ROOT.parent).as_posix()), encoding="utf-8")
-        tu = idx.parse(str(tmp.resolve()), args=CLANG_ARGS,
-                       options=ci.TranslationUnit.PARSE_SKIP_FUNCTION_BODIES)
-        bad = [d for d in tu.diagnostics
-               if d.severity >= ci.Diagnostic.Error and d.location.file
-               and str(Path(d.location.file.name).resolve()).lower().startswith(boost_prefix)]
+        r = subprocess.run(ast_json.clang_command("-fsyntax-only", *CLANG_ARGS,
+                                                  str(tmp)),
+                           capture_output=True, text=True, cwd=str(ROOT))
+        bad = [line for line in r.stderr.splitlines()
+               if ": error:" in line or ": fatal error:" in line]
+        bad = [line for line in bad
+               if line.replace("\\", "/").lower().startswith(boost_prefix)]
         if bad:
-            dropped.append((h, bad[0].spelling[:100]))
+            dropped.append((h, bad[0].split("error:", 1)[-1].strip()[:100]))
         else:
             kept.append(h)
-        tmp.unlink(missing_ok=True)
+    tmp.unlink(missing_ok=True)
     return kept, dropped
 
 
@@ -655,6 +525,41 @@ def _lib_of_include(rel: str):
     return top if top in TARGET_LIBS else ""
 
 
+def lib_deps(lib, headers, file_to_lib=None):
+    """Target libraries whose headers `headers` include (transitively through
+    headers no target library owns) — one row of dep_graph()."""
+    deps = set()
+    visited = set()
+    queue = list(headers)
+    while queue:
+        h = queue.pop()
+        try:
+            key = str(h.resolve()).lower()
+        except OSError:
+            continue
+        if key in visited:
+            continue
+        visited.add(key)
+        try:
+            text = h.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        for m in _INC_RE.finditer(text):
+            rel = m.group(1)
+            dep = _lib_of_include(rel)
+            if dep:
+                if dep != lib:
+                    deps.add(dep)
+                continue            # target-owned root: don't recurse
+            p = BOOST_ROOT.parent / rel
+            if p.suffix != ".hpp" or not p.is_file():
+                continue
+            if str(p.resolve()).lower() in visited:
+                continue
+            queue.append(p)
+    return deps
+
+
 def dep_graph(headers_by_lib=None):
     """{lib: set(lib)} — which target libs' headers a lib's headers include.
     headers_by_lib overrides the header set per lib (defaults to libs.json /
@@ -671,43 +576,11 @@ def dep_graph(headers_by_lib=None):
     walk stops at target-owned roots and system/std headers. This keeps the
     topological order (and first-wins claiming) consistent with what the
     module GMF actually compiles."""
-    file_to_lib = build_file_to_lib()
-    graph = {lib: set() for lib in TARGET_LIBS}
+    graph = {}
     for lib in TARGET_LIBS:
         headers = (headers_by_lib.get(lib) if headers_by_lib else None) \
             or headers_of(lib)
-        visited = set()
-        queue = list(headers)
-        while queue:
-            h = queue.pop()
-            try:
-                key = str(h.resolve()).lower()
-            except OSError:
-                continue
-            if key in visited:
-                continue
-            visited.add(key)
-            try:
-                text = h.read_text(encoding="utf-8", errors="ignore")
-            except OSError:
-                continue
-            for m in _INC_RE.finditer(text):
-                rel = m.group(1)
-                dep = _lib_of_include(rel)
-                p = BOOST_ROOT.parent / rel
-                if dep:
-                    if dep != lib:
-                        graph[lib].add(dep)
-                    continue            # target-owned root: don't recurse
-                # non-target include: recurse through vendored boost headers
-                # (e.g. boost/date_time/..., boost/mpl/..., boost/version.hpp)
-                # when the file exists under the include root.
-                p = BOOST_ROOT.parent / rel
-                if p.suffix != ".hpp" or not p.is_file():
-                    continue
-                if str(p.resolve()).lower() in visited:
-                    continue
-                queue.append(p)
+        graph[lib] = lib_deps(lib, headers)
     return graph
 
 
@@ -730,150 +603,3 @@ def topo_order(graph=None):
     for lib in TARGET_LIBS:
         visit(lib, set())
     return order
-
-
-# ---------------------------------------------------------------------------
-# libclang cursor helpers
-# ---------------------------------------------------------------------------
-
-def iter_descendants(cursor):
-    """Depth-first over the cursor subtree, skipping FRIEND_DECL subtrees."""
-    ci = get_ci()
-    stack = [cursor]
-    while stack:
-        cur = stack.pop()
-        for child in cur.get_children():
-            try:
-                is_friend = child.kind == ci.CursorKind.FRIEND_DECL
-            except ValueError:
-                is_friend = False      # cursor kinds unknown to older bindings
-            if is_friend:
-                continue
-            yield child
-            stack.append(child)
-
-
-def kind_of(cursor):
-    """Cursor kind or None when the loaded bindings do not know it."""
-    try:
-        return cursor.kind
-    except Exception:
-        return None
-
-
-def linkage_ok(cursor):
-    """External linkage only (static / anonymous-namespace entities cannot be
-    exported through a using-declaration). Typedefs/aliases have no linkage
-    concept at all (libclang reports NO_LINKAGE for them), yet a namespace-
-    scope typedef name is a namespace member that a using-declaration can
-    re-export (e.g. boost::endian::big_uint16_t) — so they pass unconditionally."""
-    try:
-        k = str(cursor.kind).replace("CursorKind.", "")
-        if k in ("TYPEDEF_DECL", "TYPE_ALIAS_DECL"):
-            return True
-        return cursor.linkage == get_ci().LinkageKind.EXTERNAL
-    except Exception:
-        return False
-
-
-def namespace_chain(cursor):
-    """Namespace names from the TU down to the entity, e.g. ['boost','mp11'].
-
-    Returns [] when the entity is not namespace-scoped (class member, friend,
-    local, or inside an anonymous namespace)."""
-    ci = get_ci()
-    chain = []
-    cur = cursor
-    while True:
-        parent = cur.semantic_parent
-        if parent is None or parent == cur:
-            return []
-        pk = kind_of(parent)
-        if pk == ci.CursorKind.TRANSLATION_UNIT:
-            return chain[::-1]
-        if pk != ci.CursorKind.NAMESPACE:
-            return []
-        try:
-            if parent.is_anonymous():
-                return []
-        except Exception:
-            return []
-        chain.append(parent.spelling)
-        cur = parent
-
-
-def qualified_name(cursor):
-    """Full qualified name like boost::mp11::mp_list; '' when the entity is not
-    reachable through plain qualified names (members include the class name,
-    e.g. boost::X::Inner; anonymous namespaces yield '')."""
-    ci = get_ci()
-    parts = []
-    cur = cursor
-    while True:
-        parent = cur.semantic_parent
-        if parent is None or parent == cur:
-            return ""
-        pk = kind_of(parent)
-        if pk == ci.CursorKind.TRANSLATION_UNIT:
-            # cur is the outermost namespace; parts holds the chain below it
-            # bottom-up, so reverse it under cur's name for top-down order.
-            if not cur.spelling:
-                return ""
-            return "::".join([cur.spelling] + parts[::-1])
-        if pk == ci.CursorKind.NAMESPACE:
-            try:
-                if parent.is_anonymous():
-                    return ""
-            except Exception:
-                return ""
-        if pk not in (ci.CursorKind.NAMESPACE,
-                      ci.CursorKind.CLASS_DECL,
-                      ci.CursorKind.STRUCT_DECL,
-                      ci.CursorKind.UNION_DECL,
-                      ci.CursorKind.ENUM_DECL,
-                      ci.CursorKind.CLASS_TEMPLATE,
-                      ci.CursorKind.TYPE_ALIAS_DECL,
-                      ci.CursorKind.TYPEDEF_DECL):
-            return ""
-        if pk == ci.CursorKind.ENUM_DECL and cur.spelling.startswith("(unnamed"):
-            # Anonymous enums contribute no name to qualified names:
-            # their enumerators are members of the enclosing namespace/class.
-            cur = parent
-            continue
-        parts.append(cur.spelling)
-        cur = parent
-
-
-def cursor_file(cursor):
-    try:
-        return Path(cursor.location.file.name)
-    except Exception:
-        return None
-
-
-def usr_of(cursor):
-    try:
-        return cursor.get_usr()
-    except Exception:
-        return None
-
-
-def tokens_of(tu, cursor):
-    """Token list over a cursor's extent, tolerant of the two libclang
-    binding generations (extent= vs ranges=[...])."""
-    try:
-        return list(tu.get_tokens(extent=cursor.extent))
-    except TypeError:
-        return list(tu.get_tokens(ranges=[cursor.extent]))
-    except Exception:
-        return []
-
-
-def is_specialization(cursor):
-    """True for explicit instantiation / explicit specialization decls."""
-    try:
-        ci = get_ci()
-        r = ci.conf.lib.clang_getSpecializedCursorTemplate(cursor)
-        return r is not None and r.kind != ci.CursorKind.INVALID
-    except Exception:
-        return False

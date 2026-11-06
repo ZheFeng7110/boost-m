@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized).
+// mcpplibs.mwrap.boost.core — module facade over generated/exports/core.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 //
 // C5 (2026-09-09): BOOST_VERSION / BOOST_LIB_VERSION moved out of this module
 // to a dedicated `mcpplibs.mwrap.boost.version` module (src/version.cppm — LIBS_SPECIAL tier
@@ -49,6 +50,10 @@ module;
 #include <boost/core/yield_primitives.hpp>
 
 export module mcpplibs.mwrap.boost.core;
+
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.throw_exception;
 
 #include "../generated/exports/core.inc"
 

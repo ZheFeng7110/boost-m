@@ -1,27 +1,38 @@
 # Verify the committed outputs of the repository's generation chain.
 #
 # The generated export lists, the feature blocks and the committed metadata are
-# build inputs, so "regenerate and diff" is the only honest check that they still
-# describe the sources. LLVM is pinned because the AST snapshot must come from
-# the same parser family the committed files were generated with; the MinGW
-# sysroot under tools/_deps is provisioned by fetch_mingw_sysroot.py.
+# build inputs, so every generator runs in --check mode (regenerate into a
+# scratch copy, compare byte for byte) on all three host platforms. The AST
+# comes from clang++ itself (-ast-dump=json): the generator needs only the
+# compiler driver pinned in .xlings.json (`llvm`), installed by xlings like the
+# build toolchains, plus the MinGW sysroot under tools/_deps provisioned by
+# fetch_mingw_sysroot.py. No libclang, no LLVM release archive.
 #
-# LLVM itself is installed from the pinned upstream archive on every run: caching
-# the ~1 GiB dist tree was measured to save no meaningful time. The generator
-# cache under target/gen/exports-cache (bundle TUs, clang++ gate verdicts and
-# incremental-skip keys) is worth caching because it removes the libclang parse
-# and the gate loop entirely on a hit.
+# The generator cache under target/gen/exports-cache (bundle TUs, pruned-GMF
+# verdicts, incremental-skip keys and gen_audit.py's linkage reports) is worth
+# caching because a hit skips the AST dump of an unchanged library entirely.
+#
+# Nightly (and on demand), the cache-drift job proves that cache sound: it
+# regenerates and audits once with the restored CI cache and once from an
+# empty cache, and compares both with each other and the generated files with
+# the committed ones (tools/ci/check_cache_drift.py). On
+# drift the job fails, uploads the evidence, saves the cold cache over the
+# stale one, and the report job opens or updates the `cache-drift` issue.
 name: Verify Generation Scripts
 
 env:
-  LLVM_VERSION: "23.1.3"
-  LLVM_MAJOR: "23"
+  XLINGS_VERSION: v2026.10.26.1
+  XLINGS_NON_INTERACTIVE: '1'
 
 on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - ".github/workflows/verify-scripts.yml"
+      - ".github/actions/setup-generator/**"
       - "tools/**"
       - "src/**"
       - "patches/**"
@@ -35,6 +46,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/verify-scripts.yml"
+      - ".github/actions/setup-generator/**"
       - "tools/**"
       - "src/**"
       - "patches/**"
@@ -45,13 +57,16 @@ on:
       - ".gitignore"
       - ".gitattributes"
 
+# The event is part of the group: a push to main must not cancel the nightly
+# run on main (or the reverse).
 concurrency:
-  group: generated-${{ github.workflow }}-${{ github.ref }}
+  group: generated-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   verify:
     name: ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 240
     env:
@@ -64,16 +79,10 @@ jobs:
           # leg, so an update does not trigger three large downloads.
           - os: ubuntu-latest
             check_import_boost: true
-            llvm_archive: LLVM-23.1.3-Linux-X64.tar.xz
-            llvm_sha256: ca9fe385a5d9e2d88132dc0e23a00e9f87f38fa75f67207b5e457d208e71d013
           - os: windows-latest
             check_import_boost: false
-            llvm_archive: clang+llvm-23.1.3-x86_64-pc-windows-msvc.tar.xz
-            llvm_sha256: 9ee6a2192fbb30c776415af529927f76ca6b5d1d55699bb1315f9878e610b5b8
           - os: macos-latest
             check_import_boost: false
-            llvm_archive: LLVM-23.1.3-macOS-ARM64.tar.xz
-            llvm_sha256: 3dcfd88aec10be204a24037bcb0dc0ad777882e9dbe8ac60e2639060d8a794b1
 
     steps:
       - name: Checkout full history
@@ -81,120 +90,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.x"
+      - name: Set up the generation toolchain
+        uses: ./.github/actions/setup-generator
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
-        with:
-          enable-cache: true
-          cache-dependency-glob: tools/uv.lock
-
-      # The slim xlings compiler package omits libclang. Using its headers with
-      # pip's older libclang corrupts the AST even though clang++ passes, so the
-      # full upstream release is installed and the driver, C API and builtin
-      # headers all come from the pinned LLVM version.
-      - name: Install LLVM ${{ env.LLVM_VERSION }}
-        shell: bash
-        env:
-          LLVM_ARCHIVE: ${{ matrix.llvm_archive }}
-          LLVM_SHA256: ${{ matrix.llvm_sha256 }}
-        run: |
-          set -euo pipefail
-          LLVM_PREFIX="$HOME/llvm/dist"
-          ARCHIVE="$RUNNER_TEMP/$LLVM_ARCHIVE"
-          mkdir -p "$LLVM_PREFIX" "$RUNNER_TEMP"
-
-          curl --fail --location --retry 3 \
-            "https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/$LLVM_ARCHIVE" \
-            --output "$ARCHIVE.part"
-
-          LLVM_ARCHIVE_FILE="$ARCHIVE.part"
-          if [[ "${RUNNER_OS:-}" == Windows ]]; then
-            LLVM_ARCHIVE_FILE="$(cygpath -w "$LLVM_ARCHIVE_FILE")"
-          fi
-          export LLVM_ARCHIVE_FILE
-
-          python - <<'PY'
-          import hashlib
-          import os
-          from pathlib import Path
-          with Path(os.environ["LLVM_ARCHIVE_FILE"]).open("rb") as f:
-              digest = hashlib.file_digest(f, "sha256").hexdigest()
-          if digest != os.environ["LLVM_SHA256"]:
-              raise SystemExit("LLVM archive SHA-256 mismatch: " + digest)
-          PY
-
-          mv "$ARCHIVE.part" "$ARCHIVE"
-          # Read the archive through stdin: GNU tar on the Windows runner treats
-          # a drive letter in `-f D:/...` as a remote host.
-          tar -xJf - -C "$LLVM_PREFIX" --strip-components=1 < "$ARCHIVE"
-          rm -f "$ARCHIVE"
-
-      - name: Configure LLVM generator environment (Unix)
-        if: runner.os != 'Windows'
-        shell: bash
-        run: |
-          set -euo pipefail
-          LLVM_PREFIX="$HOME/llvm/dist"
-          test -x "$LLVM_PREFIX/bin/clang++"
-          test -f "$LLVM_PREFIX/lib/clang/$LLVM_MAJOR/include/mm_malloc.h"
-          echo "$LLVM_PREFIX/bin" >> "$GITHUB_PATH"
-          echo "LLVM_PATH=$LLVM_PREFIX" >> "$GITHUB_ENV"
-          echo "CXX=$LLVM_PREFIX/bin/clang++" >> "$GITHUB_ENV"
-          echo "CLANG_RESOURCE_DIR=$LLVM_PREFIX/lib/clang/$LLVM_MAJOR/include" >> "$GITHUB_ENV"
-          echo "CLANG_NO_DEFAULT_CONFIG=1" >> "$GITHUB_ENV"
-          if [[ "$RUNNER_OS" == Linux ]]; then
-            echo "LD_LIBRARY_PATH=$LLVM_PREFIX/lib:$LLVM_PREFIX/lib/x86_64-unknown-linux-gnu:${LD_LIBRARY_PATH:-}" >> "$GITHUB_ENV"
-          fi
-
-      - name: Configure LLVM generator environment (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          $llvmPrefix = Join-Path $env:USERPROFILE "llvm\dist"
-          $clangxx = Join-Path $llvmPrefix "bin\clang++.exe"
-          $resource = Join-Path $llvmPrefix "lib\clang\$env:LLVM_MAJOR\include"
-          if (-not (Test-Path $clangxx)) { throw "missing $clangxx" }
-          if (-not (Test-Path (Join-Path $resource "mm_malloc.h"))) { throw "missing mm_malloc.h under $resource" }
-          "$llvmPrefix\bin" >> $env:GITHUB_PATH
-          "LLVM_PATH=$llvmPrefix" >> $env:GITHUB_ENV
-          "CXX=$clangxx" >> $env:GITHUB_ENV
-          "CLANG_RESOURCE_DIR=$resource" >> $env:GITHUB_ENV
-          "CLANG_NO_DEFAULT_CONFIG=1" >> $env:GITHUB_ENV
-
-      - name: Cache MinGW sysroot archive
-        uses: actions/cache@v6
-        with:
-          path: tools/_deps/_archives
-          key: mingw-sysroot-archive-${{ runner.os }}-${{ hashFiles('tools/fetch_mingw_sysroot.py') }}
-          restore-keys: |
-            mingw-sysroot-archive-${{ runner.os }}-
-
-      # gen_exports.py caches bundle TUs, clang++ gate verdicts and
-      # incremental-skip keys under target/gen/exports-cache. Every entry is
-      # self-validating (keyed on the content hash of the closure it describes
-      # plus the generator/libclang/clang versions), so restoring an older
-      # commit's cache yields misses rather than wrong output. The salt in the
-      # key only bounds rollover: a generator or sysroot-pin change drops the
-      # restore prefix instead of mixing verdicts across engine changes.
+      # gen_exports.py caches bundle TUs, pruned-GMF verdicts and
+      # incremental-skip keys under target/gen/exports-cache, gen_audit.py
+      # its linkage reports. Every entry is self-validating (keyed on the
+      # generator, clang and flags, and valid only while every file clang
+      # read for it and the first-wins ownership it was computed under still
+      # hold), so restoring an older commit's
+      # cache yields misses rather than wrong output; the nightly cache-drift
+      # job checks exactly that. The salt in the key only bounds rollover: a
+      # generator or sysroot-pin change drops the restore prefix instead of
+      # mixing verdicts across engine changes.
       - name: Cache generator export intermediates
         uses: actions/cache@v6
         with:
           path: target/gen/exports-cache
-          key: exports-cache-v1-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/boost_common.py', 'tools/curated/**', 'tools/fetch_mingw_sysroot.py', 'tools/uv.lock') }}-${{ github.sha }}
+          key: exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-${{ github.sha }}
           restore-keys: |
-            exports-cache-v1-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/boost_common.py', 'tools/curated/**', 'tools/fetch_mingw_sysroot.py', 'tools/uv.lock') }}-
+            exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-
 
-      - name: Install tool dependencies
-        run: uv sync --project tools --locked
-
-      - name: Check AST parser and tool regressions
+      - name: Check the AST compiler and tool regressions
         working-directory: tools
         run: |
-          uv run --locked python -c "import boost_common as bc; v = bc.libclang_version(); print('AST parser:', v); assert '${{ env.LLVM_VERSION }}' in v, v"
+          uv run --locked python -c "import ast_json as aj; v = aj.clang_release(); print('AST compiler: clang', v); assert v == '${{ env.LLVM_VERSION }}', v"
           uv run --locked python -m unittest discover -s tests
 
       - name: Verify generated outputs (including import_boost when changed)
@@ -204,3 +124,105 @@ jobs:
       - name: Verify generated outputs
         if: ${{ !matrix.check_import_boost }}
         run: uv run --project tools --locked python tools/ci/verify_generated.py
+
+  cache-drift:
+    name: cache drift (${{ matrix.os }})
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up the generation toolchain
+        uses: ./.github/actions/setup-generator
+
+      # The cache verify restores: the newest entry under the current salt.
+      - name: Restore generator export intermediates
+        uses: actions/cache/restore@v6
+        with:
+          path: target/gen/exports-cache
+          key: exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-${{ github.sha }}
+          restore-keys: |
+            exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-
+
+      - name: Compare cached, cold and committed generation
+        id: drift
+        run: uv run --project tools --locked python tools/ci/check_cache_drift.py --out target/cache-drift
+
+      # Upload before anything replaces the stale entries: the restored
+      # versions are the evidence of what the cache key missed.
+      - name: Upload drift evidence
+        if: ${{ !cancelled() && steps.drift.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cache-drift-${{ runner.os }}
+          path: target/cache-drift
+          if-no-files-found: ignore
+          retention-days: 30
+
+      # The cold run rewrote target/gen/exports-cache from scratch. Saved
+      # under the restore prefix, it is the newest entry, so the next verify
+      # run restores it instead of the stale one.
+      - name: Save the cold cache over the stale one
+        if: ${{ !cancelled() && steps.drift.outputs.cache_drift == 'true' }}
+        uses: actions/cache/save@v6
+        with:
+          path: target/gen/exports-cache
+          key: exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-${{ github.sha }}-cold-${{ github.run_id }}
+
+  report:
+    name: report cache drift
+    needs: cache-drift
+    if: ${{ !cancelled() && needs.cache-drift.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: tools
+
+      # Absent when no platform got as far as the comparison.
+      - name: Download drift results
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          pattern: cache-drift-*
+          path: drift
+
+      # One open issue tracks drift: later runs comment on it instead of
+      # opening duplicates.
+      - name: Open or update the cache-drift issue
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p drift
+          python3 tools/ci/check_cache_drift.py --summarize drift \
+            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            > issue.md
+          if [ ! -s issue.md ]; then
+            echo "no drift reported"
+            exit 0
+          fi
+          gh label create cache-drift --color B60205 \
+            --description "Generator cache replayed output a cold run does not produce" \
+            --force
+          number="$(gh issue list --label cache-drift --state open \
+            --json number --jq '.[0].number // empty')"
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file issue.md
+          else
+            gh issue create --title "Generator cache drift detected" \
+              --label cache-drift --body-file issue.md
+          fi

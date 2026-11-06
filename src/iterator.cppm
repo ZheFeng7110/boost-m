@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.iterator — module facade over generated/exports/iterator.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
 #include <boost/iterator.hpp>
 #include <boost/iterator/advance.hpp>
@@ -9,7 +10,6 @@ module;
 #include <boost/iterator/function_output_iterator.hpp>
 #include <boost/iterator/generator_iterator.hpp>
 #include <boost/iterator/indirect_iterator.hpp>
-#include <boost/iterator/is_iterator.hpp>
 #include <boost/iterator/iterator_archetypes.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/iterator/minimum_category.hpp>
@@ -22,10 +22,15 @@ module;
 
 export module mcpplibs.mwrap.boost.iterator;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
+export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.mp11;
 export import mcpplibs.mwrap.boost.optional;
+export import mcpplibs.mwrap.boost.tuple;
 export import mcpplibs.mwrap.boost.type_traits;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/iterator.inc"
 

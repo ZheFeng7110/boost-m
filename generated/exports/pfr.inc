@@ -95,8 +95,8 @@ export namespace boost { namespace pfr { namespace detail {
   using boost::pfr::detail::fields_count;
   using boost::pfr::detail::fields_count_dispatch;
 #if BOOST_PFR_USE_CPP26_REFLECTION || BOOST_PFR_USE_CPP26
-  // M9 platform guard: fields_count_dispatch_impl exists only under the
-  // C++26 reflection / structured-bindings branches (fields_count.hpp).
+  // M9 platform guard: fields_count_dispatch_impl exists only under the C++26
+  // reflection / structured-bindings branches (fields_count.hpp).
   using boost::pfr::detail::fields_count_dispatch_impl;
 #endif
   using boost::pfr::detail::for_each_field;

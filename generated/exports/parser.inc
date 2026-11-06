@@ -510,13 +510,10 @@ export namespace boost { namespace parser { namespace detail { namespace hl {
 
 export namespace boost { namespace parser { namespace detail { namespace numeric {
   using boost::parser::detail::numeric::common_range;
-  using boost::parser::detail::numeric::unpacked_iter;
-  using boost::parser::detail::numeric::unpacks_to_chars;
-}}}}
-
-export namespace boost { namespace parser { namespace detail { namespace numeric {
   using boost::parser::detail::numeric::parse_int;
   using boost::parser::detail::numeric::parse_real;
+  using boost::parser::detail::numeric::unpacked_iter;
+  using boost::parser::detail::numeric::unpacks_to_chars;
   using boost::parser::detail::numeric::use_charconv_int;
   using boost::parser::detail::numeric::use_charconv_real;
 }}}}

@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.type_traits — module facade over generated/exports/type_traits.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
 #include <boost/type_traits.hpp>
 #include <boost/type_traits/alignment_traits.hpp>
@@ -24,6 +25,8 @@ module;
 #include <boost/type_traits/transform_traits.hpp>
 
 export module mcpplibs.mwrap.boost.type_traits;
+
+export import mcpplibs.mwrap.boost.config;
 
 #include "../generated/exports/type_traits.inc"
 

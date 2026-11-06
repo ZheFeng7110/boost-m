@@ -4,5 +4,6 @@ mcpplibs.mwrap.boost.date_time
 mcpplibs.mwrap.boost.io
 mcpplibs.mwrap.boost.iterator
 mcpplibs.mwrap.boost.rational
+mcpplibs.mwrap.boost.smart_ptr
 mcpplibs.mwrap.boost.type_traits
 mcpplibs.mwrap.boost.utility

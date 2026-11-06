@@ -2,7 +2,6 @@
 // lib=chrono boost=1.92.0 target=x86_64-w64-mingw32 entities=71
 
 export namespace boost {
-  using boost::common_type;
   using boost::unique_ptr;
 }
 
@@ -85,4 +84,5 @@ export namespace boost { namespace chrono { namespace detail {
 
 export namespace boost { namespace ratio_detail {
   using boost::ratio_detail::is_evenly_divisible_by;
+  using boost::ratio_detail::is_evenly_divisible_by_;
 }}

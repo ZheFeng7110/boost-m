@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.container_hash — module facade over generated/exports/container_hash.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
 #include <boost/container_hash/extensions.hpp>
 #include <boost/container_hash/is_tuple_like.hpp>

@@ -148,28 +148,28 @@ export namespace boost { namespace hof { namespace detail {
   using boost::hof::detail::basic_first_of_adaptor;
   using boost::hof::detail::bind_transformer;
 #if !defined(_MSC_VER)
-  // C2 platform guard: bool_seq is the non-_MSC_VER branch of
-  // detail/and.hpp (the MSVC branch declares struct and_ instead).
+  // C2 platform guard: bool_seq is the non-_MSC_VER branch of detail/and.hpp
+  // (the MSVC branch declares struct and_ instead).
   using boost::hof::detail::bool_seq;
 #endif
   using boost::hof::detail::by_eval;
   using boost::hof::detail::by_void_eval;
 #if !BOOST_HOF_NO_EXPRESSION_SFINAE
-  // C2 platform guard: callable_args is the !NO_EXPRESSION_SFINAE branch
-  // of detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
+  // C2 platform guard: callable_args is the !NO_EXPRESSION_SFINAE branch of
+  // detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
   using boost::hof::detail::callable_args;
 #endif
   using boost::hof::detail::callable_base;
   using boost::hof::detail::callable_base_type;
 #if !BOOST_HOF_NO_EXPRESSION_SFINAE
-  // C2 platform guard: called_val is the !NO_EXPRESSION_SFINAE branch
-  // of detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
+  // C2 platform guard: called_val is the !NO_EXPRESSION_SFINAE branch of
+  // detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
   using boost::hof::detail::called_val;
 #endif
   using boost::hof::detail::can_be_called;
 #if !BOOST_HOF_NO_EXPRESSION_SFINAE
-  // C2 platform guard: can_be_called_impl is the !NO_EXPRESSION_SFINAE branch
-  // of detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
+  // C2 platform guard: can_be_called_impl is the !NO_EXPRESSION_SFINAE branch of
+  // detail/can_be_called.hpp (config.hpp: _MSC_VER → 1).
   using boost::hof::detail::can_be_called_impl;
 #endif
   using boost::hof::detail::capture_f;
@@ -195,8 +195,8 @@ export namespace boost { namespace hof { namespace detail {
   using boost::hof::detail::decorator_invoke;
   using boost::hof::detail::enable_if_constructible;
 #if !BOOST_HOF_NO_ORDERED_BRACE_INIT
-  // C2 platform guard: eval_helper is the !NO_ORDERED_BRACE_INIT branch
-  // of apply_eval.hpp (config.hpp: _MSC_VER → 1).
+  // C2 platform guard: eval_helper is the !NO_ORDERED_BRACE_INIT branch of
+  // apply_eval.hpp (config.hpp: _MSC_VER → 1).
   using boost::hof::detail::eval_helper;
 #endif
   using boost::hof::detail::fix_adaptor_base;
@@ -362,8 +362,8 @@ export namespace boost { namespace hof { namespace operators {
   using boost::hof::operators::call;
   using boost::hof::operators::compl_;
 #if !defined(_MSC_VER)
-  // C2 platform guard: operators::decrement is the #ifndef _MSC_VER
-  // branch of placeholders.hpp (MSVC 2017 ICE on ++/-- constexpr).
+  // C2 platform guard: operators::decrement is the #ifndef _MSC_VER branch of
+  // placeholders.hpp (MSVC 2017 ICE on ++/-- constexpr).
   using boost::hof::operators::decrement;
 #endif
   using boost::hof::operators::dereference;
@@ -372,8 +372,8 @@ export namespace boost { namespace hof { namespace operators {
   using boost::hof::operators::greater_than;
   using boost::hof::operators::greater_than_equal;
 #if !defined(_MSC_VER)
-  // C2 platform guard: operators::increment is the #ifndef _MSC_VER
-  // branch of placeholders.hpp (MSVC 2017 ICE on ++/-- constexpr).
+  // C2 platform guard: operators::increment is the #ifndef _MSC_VER branch of
+  // placeholders.hpp (MSVC 2017 ICE on ++/-- constexpr).
   using boost::hof::operators::increment;
 #endif
   using boost::hof::operators::less_than;

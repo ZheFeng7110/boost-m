@@ -8,6 +8,6 @@ mcpplibs.mwrap.boost.endian
 mcpplibs.mwrap.boost.intrusive
 mcpplibs.mwrap.boost.mp11
 mcpplibs.mwrap.boost.smart_ptr
-mcpplibs.mwrap.boost.static_string
 mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.utility
 mcpplibs.mwrap.boost.variant2

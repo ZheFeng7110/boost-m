@@ -2,10 +2,10 @@
 name = "boost-m-tools"
 version = "0.1.0"
 description = "Tooling for generating and auditing the Boost mwrap package sources"
-requires-python = ">=3.9"
-dependencies = [
-    "libclang",
-]
+# tomllib (export policy, mcpp.toml) is in the standard library from 3.11.
+# The generators need no third-party packages: the AST comes from clang++.
+requires-python = ">=3.11"
+dependencies = []
 
 [tool.uv]
 package = false

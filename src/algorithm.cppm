@@ -1,4 +1,5 @@
-// M3 final form (derived from the tools/gen_exports.py draft; hand-finalized)
+// mcpplibs.mwrap.boost.algorithm — module facade over generated/exports/algorithm.inc
+// (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 // NB: string_regex.hpp is NOT in the GFM (replaced by the string.hpp
 // aggregate): gcc 16.1.0 rejects the boost::regex v5 abi-tag surface inside a
 // module interface ("mismatching abi tags for get_catalog_name_inst") even
@@ -47,9 +48,16 @@ module;
 
 export module mcpplibs.mwrap.boost.algorithm;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.bind;
+export import mcpplibs.mwrap.boost.concept_check;
+export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.function;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.range;
+export import mcpplibs.mwrap.boost.smart_ptr;
+export import mcpplibs.mwrap.boost.throw_exception;
 export import mcpplibs.mwrap.boost.tuple;
 export import mcpplibs.mwrap.boost.type_traits;
 

@@ -38,8 +38,9 @@ class ExportNewlineTests(unittest.TestCase):
                     "qname": "boost::example", "ns": ["boost"]},
         }
         self.assertEqual(gen_exports.emit_inc(
-            "example", records, self.root, False, {}, extra_deps=["core"]),
-            (1, ["core"]))
+            "example", records, self.root, {}, gen_exports.Policy({}),
+            extra_deps=["core"]),
+            (1, ["core"], []))
         self.assertIn(b"  using boost::example;\n",
                       self.assert_lf("generated/exports/example.inc"))
         self.assertEqual(self.assert_lf("generated/exports/example.deps"),
@@ -59,10 +60,21 @@ class ExportNewlineTests(unittest.TestCase):
         prefix = gen_exports.bc.MODULE_PREFIX
         (deps / "example.deps").write_bytes((prefix + ".core\n").encode())
         added = gen_exports.merge_body_edges(
-            self.root, ["example"], {"example": {"system": ["reference"]}})
+            self.root, ["example"], {"example": {"system": ["reference"]}},
+            gen_exports.Policy({}))
         self.assertEqual(added, {"example": {"system": 1}})
         self.assertEqual(self.assert_lf("generated/exports/example.deps"),
                          (prefix + ".core\n" + prefix + ".system\n").encode())
+
+    def test_meta_files(self):
+        with mock.patch.object(gen_exports.aj, "clang_release",
+                               return_value="23.1.3"):
+            gen_exports.write_meta(
+                self.root, {"example": {"exported": 1, "deps": [], "gmf": []}},
+                [("example", "guard", "boost::x", "defined(_WIN32)", "why")])
+        self.assert_lf("generated/meta/api-surface.json")
+        self.assertIn(b"example guard boost::x if defined(_WIN32) -- why\n",
+                      self.assert_lf("generated/meta/skipped.txt"))
 
     def test_scanned_metadata(self):
         output = self.root / "libs.json"

@@ -452,7 +452,8 @@ export namespace boost { namespace mp11 { namespace detail {
   using boost::mp11::detail::mp_void_impl;
   using boost::mp11::detail::mp_with_index_impl_;
 #if !defined(__GNUC__)
-  // M3 hand-guard: mp_map_find.hpp (gcc bug 120161 workaround) defines mpmf_* only outside gcc.
+  // M3 hand-guard: mp_map_find.hpp (gcc bug 120161 workaround) defines mpmf_*
+  // only outside gcc.
   using boost::mp11::detail::mpmf_unwrap;
   using boost::mp11::detail::mpmf_wrap;
 #endif
