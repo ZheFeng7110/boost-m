@@ -1393,6 +1393,22 @@ def _load_json(path):
         return None
 
 
+def _bundle_args(lib, policy):
+    return [*bc.CLANG_ARGS, *("-D" + d for d in policy.defines(lib))]
+
+
+def gate_key(lib, headers, policy):
+    """Cache key of the compile gate for an include set: bundle text,
+    header-closure hash, the driver line (with the policy's defines) and the
+    compiler version. gen_audit.py keys its results on it too."""
+    gh = hashlib.sha256()
+    gh.update(_bundle_text(headers).encode())
+    gh.update(_closure_hash(headers).encode())
+    gh.update(" ".join(aj.clang_command(*_bundle_args(lib, policy))).encode())
+    gh.update(aj.clang_version().encode())
+    return gh.hexdigest()
+
+
 def parse_bundle(lib, headers, policy, use_cache=True):
     """Compile the bundle TU once per attempt; the compile is the gate.
 
@@ -1405,15 +1421,8 @@ def parse_bundle(lib, headers, policy, use_cache=True):
     bundle = (bc.CACHE_DIR / "bundles" / (lib + ".cpp")).resolve()
     bundle.parent.mkdir(parents=True, exist_ok=True)
     gfm = list(headers)
-    extra = ["-D" + d for d in policy.defines(lib)]
-    args = [*bc.CLANG_ARGS, *extra]
-
-    gh = hashlib.sha256()
-    gh.update(_bundle_text(gfm).encode())
-    gh.update(_closure_hash(gfm).encode())
-    gh.update(" ".join(aj.clang_command(*args)).encode())
-    gh.update(aj.clang_version().encode())
-    gkey = gh.hexdigest()
+    args = _bundle_args(lib, policy)
+    gkey = gate_key(lib, gfm, policy)
     gate_cache = bc.CACHE_DIR / (lib + ".gate.json")
     cached = _load_json(gate_cache) if use_cache else None
     if cached is not None and cached.get("key") == gkey \

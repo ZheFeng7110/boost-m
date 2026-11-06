@@ -10,7 +10,10 @@ Default mode (linkage audit), per library, from clang's AST of the bundle TU
     only; a specialization declared here is lost to module consumers)
   - friend operators (informational: re-exported through the class by ADL)
 
-Output: target/gen/audit/<lib>.txt + stdout summary.
+Output: target/gen/audit/<lib>.txt + stdout summary. Each library's report is
+cached in target/gen/exports-cache/<lib>.audit.json, keyed on the compile gate
+key, this tool's and the generator's code, and valid only while every file
+clang read for it is unchanged: a hit skips the AST dump.
 
 --macros mode (M10, T3 boundary check): macro-surface statistics per library —
   how many macros the library's own public header set #defines (minus #undefs),
@@ -29,6 +32,8 @@ Usage:
 """
 
 import argparse
+import hashlib
+import json
 import re
 import sys
 from collections import Counter
@@ -183,16 +188,37 @@ def macros_audit(libs, out):
     return 0
 
 
-def audit_lib(lib, out_dir, policy):
+def _audit_key(lib, gfm, policy):
+    import gen_exports as ge
+    h = hashlib.sha256()
+    h.update(b"gate:" + ge.gate_key(lib, gfm, policy).encode())
+    h.update(b"code:" + ge._code_hash().encode())
+    h.update(b"audit:" + hashlib.sha256(
+        Path(__file__).read_bytes()).hexdigest().encode())
+    return h.hexdigest()
+
+
+def audit_lib(lib, out_dir, policy, use_cache=True):
     """Linkage audit of one library from the compiler's AST of its bundle TU
     (the same compile gen_exports.py runs; its pruned-GMF cache is reused)."""
     import gen_exports as ge
     g = policy.gmf(lib)
     gfm = [bc.DEPS / h for h in g] if g else bc.gfm_headers_of(lib)
-    parsed = ge.parse_bundle(lib, gfm, policy)
+    out = out_dir / (lib + ".txt")
+    cache = bc.CACHE_DIR / (lib + ".audit.json")
+    key = _audit_key(lib, gfm, policy) if use_cache else None
+    cached = ge._load_json(cache) if use_cache else None
+    if cached is not None and cached.get("key") == key \
+            and ge._manifest_ok(cached.get("inputs")):
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(cached["text"], encoding="utf-8", newline="\n")
+        return tuple(cached["counts"])
+
+    parsed = ge.parse_bundle(lib, gfm, policy, use_cache=use_cache)
     if parsed is None:
         raise SystemExit("error: {} does not compile".format(lib))
-    m = ge.Model(parsed[0])
+    tu = parsed[0]
+    m = ge.Model(tu)
 
     static_fns, anon, specs, friends = [], [], [], []
     for d in m.decls:
@@ -218,19 +244,27 @@ def audit_lib(lib, out_dir, policy):
         if m.is_specialization(d) and m.namespace_chain(m.primary(d)):
             specs.append("{} {}".format(loc, qn))
 
-    out = out_dir / (lib + ".txt")
+    text = "".join((
+        "# audit {} (boost {})\n".format(lib, bc.BOOST_VERSION),
+        "# {} static/internal free functions\n".format(len(static_fns)),
+        "\n".join(sorted(static_fns)) + "\n\n",
+        "# {} anonymous-namespace entities\n".format(len(anon)),
+        "\n".join(sorted(anon)) + "\n\n",
+        "# {} explicit specializations\n".format(len(specs)),
+        "\n".join(sorted(specs)) + "\n\n",
+        "# {} friend operator decls (info)\n".format(len(friends)),
+        "\n".join(sorted(friends)) + "\n",
+    ))
+    counts = (len(static_fns), len(anon), len(specs), len(friends))
     out.parent.mkdir(parents=True, exist_ok=True)
-    with open(out, "w", encoding="utf-8") as fh:
-        fh.write("# audit {} (boost {})\n".format(lib, bc.BOOST_VERSION))
-        fh.write("# {} static/internal free functions\n".format(len(static_fns)))
-        fh.write("\n".join(sorted(static_fns)) + "\n\n")
-        fh.write("# {} anonymous-namespace entities\n".format(len(anon)))
-        fh.write("\n".join(sorted(anon)) + "\n\n")
-        fh.write("# {} explicit specializations\n".format(len(specs)))
-        fh.write("\n".join(sorted(specs)) + "\n\n")
-        fh.write("# {} friend operator decls (info)\n".format(len(friends)))
-        fh.write("\n".join(sorted(friends)) + "\n")
-    return len(static_fns), len(anon), len(specs), len(friends)
+    out.write_text(text, encoding="utf-8", newline="\n")
+    if use_cache:
+        bc.CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(
+            {"key": key, "inputs": ge._input_manifest(tu, bc.ROOT),
+             "text": text, "counts": list(counts)}),
+            encoding="utf-8")
+    return counts
 
 
 def main() -> int:
