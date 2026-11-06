@@ -3,7 +3,6 @@
 
 export namespace boost {
   using boost::bad_numeric_cast;
-  using boost::get_pointer;
   using boost::numeric_cast;
 }
 
@@ -44,6 +43,7 @@ export namespace boost { namespace fusion {
   using boost::fusion::make_vector;
   using boost::fusion::none;
   using boost::fusion::not_equal_to;
+  using boost::fusion::operator!=;
   using boost::fusion::operator<;
   using boost::fusion::operator<<;
   using boost::fusion::operator<=;

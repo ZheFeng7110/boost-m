@@ -20,6 +20,7 @@ export module mcpplibs.mwrap.boost.nowide;
 
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.filesystem;
+export import mcpplibs.mwrap.boost.io;
 
 #include "../generated/exports/nowide.inc"
 

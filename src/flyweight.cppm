@@ -14,6 +14,7 @@ export module mcpplibs.mwrap.boost.flyweight;
 
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.interprocess;
 export import mcpplibs.mwrap.boost.mp11;

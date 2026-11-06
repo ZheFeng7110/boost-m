@@ -12,6 +12,7 @@ export module mcpplibs.mwrap.boost.property_tree;
 export import mcpplibs.mwrap.boost.any;
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.bind;
+export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.optional;
 export import mcpplibs.mwrap.boost.range;
 export import mcpplibs.mwrap.boost.serialization;

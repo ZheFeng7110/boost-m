@@ -5,8 +5,10 @@ module;
 
 export module mcpplibs.mwrap.boost.static_string;
 
+export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/static_string.inc"
 

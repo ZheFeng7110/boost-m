@@ -7,6 +7,7 @@ module;
 export module mcpplibs.mwrap.boost.tuple;
 
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.type_traits;
 
 #include "../generated/exports/tuple.inc"
 

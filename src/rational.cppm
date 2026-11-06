@@ -5,7 +5,12 @@ module;
 
 export module mcpplibs.mwrap.boost.rational;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.integer;
+export import mcpplibs.mwrap.boost.throw_exception;
 export import mcpplibs.mwrap.boost.type_traits;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/rational.inc"
 

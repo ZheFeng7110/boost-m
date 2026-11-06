@@ -23,6 +23,7 @@ module;
 export module mcpplibs.mwrap.boost.iostreams;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.iterator;

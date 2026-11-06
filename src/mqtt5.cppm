@@ -15,6 +15,8 @@ export import mcpplibs.mwrap.boost.random;
 export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.static_string;
 export import mcpplibs.mwrap.boost.system;
+export import mcpplibs.mwrap.boost.type_traits;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/mqtt5.inc"
 

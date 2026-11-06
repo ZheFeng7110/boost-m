@@ -32,9 +32,11 @@ export module mcpplibs.mwrap.boost.process;
 
 export import mcpplibs.mwrap.boost.asio;
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.filesystem;
+export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.system;
 export import mcpplibs.mwrap.boost.type_traits;

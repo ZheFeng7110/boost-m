@@ -15,6 +15,7 @@ export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.mp11;
+export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.type_erasure;
 export import mcpplibs.mwrap.boost.type_traits;
 

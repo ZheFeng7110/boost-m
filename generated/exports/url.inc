@@ -6,11 +6,6 @@ export namespace boost {
   using boost::url_view;
 }
 
-export namespace boost { namespace system {
-  using boost::system::generic_category;
-  using boost::system::system_category;
-}}
-
 export namespace boost { namespace urls {
   using boost::urls::absolute_uri_rule;
   using boost::urls::arg;
@@ -206,7 +201,9 @@ export namespace boost { namespace urls { namespace error_types {
   using boost::urls::error_types::error_category;
   using boost::urls::error_types::error_code;
   using boost::urls::error_types::error_condition;
+  using boost::urls::error_types::generic_category;
   using boost::urls::error_types::result;
+  using boost::urls::error_types::system_category;
   using boost::urls::error_types::system_error;
 }}}
 

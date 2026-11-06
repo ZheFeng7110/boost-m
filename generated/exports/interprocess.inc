@@ -6,44 +6,12 @@ export namespace boost {
   using boost::pointer_to_other;
 }
 
-export namespace boost { namespace container {
-  using boost::container::allocation_type;
-  using boost::container::basic_string;
-  using boost::container::deque;
-  using boost::container::flat_map;
-  using boost::container::flat_multimap;
-  using boost::container::flat_multiset;
-  using boost::container::flat_set;
-  using boost::container::list;
-  using boost::container::make_transform_iterator;
-  using boost::container::map;
-  using boost::container::multimap;
-  using boost::container::multiset;
-  using boost::container::ordered_range;
-  using boost::container::ordered_unique_range;
-  using boost::container::set;
-  using boost::container::slist;
-  using boost::container::stable_vector;
-  using boost::container::string;
-  using boost::container::transform_iterator;
-  using boost::container::vector;
-}}
-
-export namespace boost { namespace container { namespace dtl {
-  using boost::container::dtl::build_number_seq;
-  using boost::container::dtl::get;
-  using boost::container::dtl::index_tuple;
-  using boost::container::dtl::pair;
-  using boost::container::dtl::tuple;
-  using boost::container::dtl::version;
-  using boost::container::dtl::version_type;
-}}}
-
 export namespace boost { namespace interprocess {
   using boost::interprocess::accept_ownership_type;
   using boost::interprocess::adaptive_pool;
   using boost::interprocess::addressof;
   using boost::interprocess::alignof_value;
+  using boost::interprocess::allocation_type;
   using boost::interprocess::allocator;
   using boost::interprocess::anonymous_shared_memory;
   using boost::interprocess::bad_alloc;
@@ -63,6 +31,7 @@ export namespace boost { namespace interprocess {
 #endif
   using boost::interprocess::basic_obufferstream;
   using boost::interprocess::basic_ovectorstream;
+  using boost::interprocess::basic_string;
   using boost::interprocess::basic_vectorbuf;
   using boost::interprocess::basic_vectorstream;
   using boost::interprocess::bufferbuf;
@@ -75,6 +44,7 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::cv_status;
   using boost::interprocess::defer_lock_type;
   using boost::interprocess::deleter;
+  using boost::interprocess::deque;
   using boost::interprocess::dynamic_pointer_cast;
   using boost::interprocess::ec_xlate;
   using boost::interprocess::enable_shared_from_this;
@@ -115,8 +85,12 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::file_pos_t::file_end;
   using boost::interprocess::fill_system_message;
   using boost::interprocess::fixed_managed_shared_memory;
+  using boost::interprocess::flat_map;
   using boost::interprocess::flat_map_index;
   using boost::interprocess::flat_map_index_aux;
+  using boost::interprocess::flat_multimap;
+  using boost::interprocess::flat_multiset;
+  using boost::interprocess::flat_set;
   using boost::interprocess::ibufferstream;
   using boost::interprocess::ignore;
   using boost::interprocess::instance_type;
@@ -139,11 +113,13 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::iset_index_aux;
   using boost::interprocess::iunordered_set_index;
   using boost::interprocess::iunordered_set_index_aux;
+  using boost::interprocess::list;
   using boost::interprocess::lock_exception;
   using boost::interprocess::lookup_error;
   using boost::interprocess::make_managed_shared_ptr;
   using boost::interprocess::make_managed_unique_ptr;
   using boost::interprocess::make_managed_weak_ptr;
+  using boost::interprocess::make_transform_iterator;
   using boost::interprocess::managed_external_buffer;
   using boost::interprocess::managed_heap_memory;
   using boost::interprocess::managed_mapped_file;
@@ -156,6 +132,7 @@ export namespace boost { namespace interprocess {
   // chain); POSIX interprocess never declares it.
   using boost::interprocess::managed_windows_shared_memory;
 #endif
+  using boost::interprocess::map;
   using boost::interprocess::map_index;
   using boost::interprocess::map_options_t;
   using boost::interprocess::mapped_region;
@@ -175,7 +152,9 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::mqblock_types::blocking;
   using boost::interprocess::mqblock_types::non_blocking;
   using boost::interprocess::mqblock_types::timed;
+  using boost::interprocess::multimap;
   using boost::interprocess::multiplication_overflows;
+  using boost::interprocess::multiset;
   using boost::interprocess::mutex_family;
   using boost::interprocess::named_condition;
   using boost::interprocess::named_condition_any;
@@ -204,6 +183,9 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::operator<<;
   using boost::interprocess::operator==;
   using boost::interprocess::operator>>;
+  using boost::interprocess::ordered_range;
+  using boost::interprocess::ordered_unique_range;
+  using boost::interprocess::pair;
   using boost::interprocess::permissions;
   using boost::interprocess::pointer_offset_caster;
   using boost::interprocess::private_adaptive_pool;
@@ -216,6 +198,7 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::scoped_ptr;
   using boost::interprocess::segment_manager;
   using boost::interprocess::segment_manager_base;
+  using boost::interprocess::set;
   using boost::interprocess::sharable_lock;
   using boost::interprocess::shared_memory_object;
   using boost::interprocess::shared_ptr;
@@ -223,13 +206,17 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::simple_swap;
   using boost::interprocess::size_overflows;
   using boost::interprocess::sizeof_value;
+  using boost::interprocess::slist;
   using boost::interprocess::spin_wait;
   using boost::interprocess::sqrt_size_type_max;
+  using boost::interprocess::stable_vector;
   using boost::interprocess::static_pointer_cast;
+  using boost::interprocess::string;
   using boost::interprocess::sum_overflows;
   using boost::interprocess::swap;
   using boost::interprocess::system_error_code;
   using boost::interprocess::to_raw_pointer;
+  using boost::interprocess::transform_iterator;
   using boost::interprocess::try_to_lock_type;
   using boost::interprocess::unique_ptr;
   using boost::interprocess::unordered_map_index;
@@ -241,6 +228,9 @@ export namespace boost { namespace interprocess {
   using boost::interprocess::ustime;
   using boost::interprocess::ustime_delay_milliseconds;
   using boost::interprocess::value_eraser;
+  using boost::interprocess::vector;
+  using boost::interprocess::version;
+  using boost::interprocess::version_type;
   using boost::interprocess::wbufferbuf;
   using boost::interprocess::wbufferstream;
   using boost::interprocess::weak_ptr;
@@ -298,6 +288,7 @@ export namespace boost { namespace interprocess { namespace ipcdetail {
   using boost::interprocess::ipcdetail::boost_intrusive_has_type_rep;
   using boost::interprocess::ipcdetail::boost_intrusive_has_type_rep_type;
   using boost::interprocess::ipcdetail::boost_intrusive_has_type_time_duration_type;
+  using boost::interprocess::ipcdetail::build_number_seq;
   using boost::interprocess::ipcdetail::cache_impl;
   using boost::interprocess::ipcdetail::cached_adaptive_pool_v1;
   using boost::interprocess::ipcdetail::cached_allocator_impl;
@@ -359,6 +350,7 @@ export namespace boost { namespace interprocess { namespace ipcdetail {
   using boost::interprocess::ipcdetail::floor_log2;
   using boost::interprocess::ipcdetail::for_each_file_in_dir;
   using boost::interprocess::ipcdetail::gcd;
+  using boost::interprocess::ipcdetail::get;
 #if defined(_WIN32)
   // The Windows shared-memory and synchronization surface (detail/win32_api.hpp
   // chain); POSIX interprocess never declares it.
@@ -400,6 +392,7 @@ export namespace boost { namespace interprocess { namespace ipcdetail {
   using boost::interprocess::ipcdetail::index_config;
   using boost::interprocess::ipcdetail::index_data;
   using boost::interprocess::ipcdetail::index_key;
+  using boost::interprocess::ipcdetail::index_tuple;
   using boost::interprocess::ipcdetail::instance_t;
   using boost::interprocess::ipcdetail::integral_constant;
 #if defined(_WIN32)
@@ -562,6 +555,7 @@ export namespace boost { namespace interprocess { namespace ipcdetail {
   using boost::interprocess::ipcdetail::try_acquire_file_lock_sharable;
   using boost::interprocess::ipcdetail::try_based_lock;
   using boost::interprocess::ipcdetail::try_based_timed_lock;
+  using boost::interprocess::ipcdetail::tuple;
   using boost::interprocess::ipcdetail::two;
   using boost::interprocess::ipcdetail::unique_instance_t;
   using boost::interprocess::ipcdetail::universal_time_u64_us;

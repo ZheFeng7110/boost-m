@@ -22,10 +22,15 @@ module;
 
 export module mcpplibs.mwrap.boost.iterator;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
+export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.mp11;
 export import mcpplibs.mwrap.boost.optional;
+export import mcpplibs.mwrap.boost.tuple;
 export import mcpplibs.mwrap.boost.type_traits;
+export import mcpplibs.mwrap.boost.utility;
 
 #include "../generated/exports/iterator.inc"
 

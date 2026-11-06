@@ -5,5 +5,8 @@ module;
 
 export module mcpplibs.mwrap.boost.variant2;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.mp11;
+
 #include "../generated/exports/variant2.inc"
 

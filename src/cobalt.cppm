@@ -35,6 +35,7 @@ export import mcpplibs.mwrap.boost.mp11;
 export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.static_string;
 export import mcpplibs.mwrap.boost.system;
+export import mcpplibs.mwrap.boost.utility;
 export import mcpplibs.mwrap.boost.variant2;
 
 #include "../generated/exports/cobalt.inc"

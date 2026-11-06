@@ -175,6 +175,10 @@ export namespace boost { namespace intrusive {
   using boost::intrusive::inverted_typelist;
   using boost::intrusive::is_default_hook_tag;
   using boost::intrusive::is_safe_autounlink;
+  using boost::intrusive::iter_category;
+  using boost::intrusive::iter_difference;
+  using boost::intrusive::iter_size;
+  using boost::intrusive::iter_value;
   using boost::intrusive::iterator;
   using boost::intrusive::iterator_advance;
   using boost::intrusive::iterator_arrow_result;
@@ -226,6 +230,7 @@ export namespace boost { namespace intrusive {
   using boost::intrusive::make_list_member_hook;
   using boost::intrusive::make_multiset;
   using boost::intrusive::make_rbtree;
+  using boost::intrusive::make_reverse_iterator;
   using boost::intrusive::make_set;
   using boost::intrusive::make_set_base_hook;
   using boost::intrusive::make_set_member_hook;
@@ -284,6 +289,7 @@ export namespace boost { namespace intrusive {
   using boost::intrusive::rbtree_node_traits;
   using boost::intrusive::rbtree_node_traits_dispatch;
   using boost::intrusive::reduced_slist_node_traits;
+  using boost::intrusive::reverse_iterator;
   using boost::intrusive::set;
   using boost::intrusive::set_base_hook;
   using boost::intrusive::set_impl;
@@ -364,14 +370,22 @@ export namespace boost { namespace intrusive { namespace adldft {
 }}}
 
 export namespace boost { namespace intrusive { namespace detail {
+  using boost::intrusive::detail::add_const;
+  using boost::intrusive::detail::add_const_if_c;
+  using boost::intrusive::detail::add_pointer;
+  using boost::intrusive::detail::add_reference;
+  using boost::intrusive::detail::addressof;
+  using boost::intrusive::detail::alignment_of;
   using boost::intrusive::detail::alpha_0_75_by_max_size_t;
   using boost::intrusive::detail::alpha_by_max_size_t;
   using boost::intrusive::detail::alpha_holder;
   using boost::intrusive::detail::any_hook_base_value_traits;
   using boost::intrusive::detail::any_or_concrete_value_traits;
   using boost::intrusive::detail::any_to_some_hook;
+  using boost::intrusive::detail::apply;
   using boost::intrusive::detail::array_initializer;
   using boost::intrusive::detail::avltree_node_checker;
+  using boost::intrusive::detail::bool_;
   using boost::intrusive::detail::boost_intrusive_default_type_difference_type;
   using boost::intrusive::detail::boost_intrusive_default_type_reference;
   using boost::intrusive::detail::boost_intrusive_default_type_size_type;
@@ -395,11 +409,21 @@ export namespace boost { namespace intrusive { namespace detail {
   using boost::intrusive::detail::constptr;
   using boost::intrusive::detail::default_header_holder;
   using boost::intrusive::detail::destructor_impl;
+  using boost::intrusive::detail::disable_if;
+  using boost::intrusive::detail::disable_if_c;
+  using boost::intrusive::detail::disable_if_convertible;
   using boost::intrusive::detail::dummy_constptr;
   using boost::intrusive::detail::ebo_functor_holder;
   using boost::intrusive::detail::empty_node_checker;
+  using boost::intrusive::detail::enable_if;
+  using boost::intrusive::detail::enable_if_c;
+  using boost::intrusive::detail::enable_if_convertible;
   using boost::intrusive::detail::equal_to_value;
+  using boost::intrusive::detail::eval_if;
+  using boost::intrusive::detail::eval_if_c;
   using boost::intrusive::detail::exception_disposer;
+  using boost::intrusive::detail::false_;
+  using boost::intrusive::detail::false_type;
   using boost::intrusive::detail::fast_log2;
   using boost::intrusive::detail::floor_log2;
   using boost::intrusive::detail::get_base_value_traits;
@@ -420,20 +444,35 @@ export namespace boost { namespace intrusive { namespace detail {
   using boost::intrusive::detail::hash_mix_impl;
   using boost::intrusive::detail::hash_value;
   using boost::intrusive::detail::hash_value_dispatch;
+  using boost::intrusive::detail::identity;
+  using boost::intrusive::detail::if_;
+  using boost::intrusive::detail::if_c;
   using boost::intrusive::detail::init_disposer;
+  using boost::intrusive::detail::integral_constant;
   using boost::intrusive::detail::internal_any_hook_bool;
   using boost::intrusive::detail::internal_any_hook_bool_is_true;
   using boost::intrusive::detail::internal_base_hook_bool;
   using boost::intrusive::detail::internal_base_hook_bool_is_true;
   using boost::intrusive::detail::internal_hash_functor;
   using boost::intrusive::detail::internal_member_value_traits;
+  using boost::intrusive::detail::is_const;
+  using boost::intrusive::detail::is_convertible;
+  using boost::intrusive::detail::is_empty;
+  using boost::intrusive::detail::is_enum;
+  using boost::intrusive::detail::is_floating_point;
+  using boost::intrusive::detail::is_integral;
   using boost::intrusive::detail::is_pow2;
+  using boost::intrusive::detail::is_same;
+  using boost::intrusive::detail::is_scalar;
   using boost::intrusive::detail::is_stateful_value_traits;
+  using boost::intrusive::detail::is_unsigned;
   using boost::intrusive::detail::key_nodeptr_comp;
   using boost::intrusive::detail::key_nodeptr_comp_types;
   using boost::intrusive::detail::link_dispatch;
   using boost::intrusive::detail::ls_zeros;
+  using boost::intrusive::detail::make_unsigned;
   using boost::intrusive::detail::max_align;
+  using boost::intrusive::detail::no_type;
   using boost::intrusive::detail::node_cloner;
   using boost::intrusive::detail::node_disposer;
   using boost::intrusive::detail::node_to_value;
@@ -446,6 +485,10 @@ export namespace boost { namespace intrusive { namespace detail {
   using boost::intrusive::detail::parent_from_member;
   using boost::intrusive::detail::previous_or_equal_pow2;
   using boost::intrusive::detail::rbtree_node_checker;
+  using boost::intrusive::detail::remove_const;
+  using boost::intrusive::detail::remove_cv;
+  using boost::intrusive::detail::remove_pointer;
+  using boost::intrusive::detail::remove_reference;
   using boost::intrusive::detail::select_constptr;
   using boost::intrusive::detail::size_holder;
   using boost::intrusive::detail::splaydown_assemble_and_fix_header;
@@ -457,7 +500,12 @@ export namespace boost { namespace intrusive { namespace detail {
   using boost::intrusive::detail::supposed_value_traits;
   using boost::intrusive::detail::transform_iterator;
   using boost::intrusive::detail::treap_node_extra_checker;
+  using boost::intrusive::detail::true_;
+  using boost::intrusive::detail::true_type;
   using boost::intrusive::detail::uncast_types;
+  using boost::intrusive::detail::unvoid_ref;
+  using boost::intrusive::detail::voider;
+  using boost::intrusive::detail::yes_type;
 }}}
 
 export namespace boost { namespace intrusive { namespace function_detector {
@@ -479,57 +527,3 @@ export namespace boost { namespace iterators {
 export namespace boost { namespace iterators { namespace detail {
   using boost::iterators::detail::iterator_category_with_traversal;
 }}}
-
-export namespace boost { namespace move_detail {
-  using boost::move_detail::add_const;
-  using boost::move_detail::add_const_if_c;
-  using boost::move_detail::add_pointer;
-  using boost::move_detail::add_reference;
-  using boost::move_detail::addressof;
-  using boost::move_detail::alignment_of;
-  using boost::move_detail::apply;
-  using boost::move_detail::bool_;
-  using boost::move_detail::disable_if;
-  using boost::move_detail::disable_if_c;
-  using boost::move_detail::disable_if_convertible;
-  using boost::move_detail::enable_if;
-  using boost::move_detail::enable_if_c;
-  using boost::move_detail::enable_if_convertible;
-  using boost::move_detail::eval_if;
-  using boost::move_detail::eval_if_c;
-  using boost::move_detail::false_;
-  using boost::move_detail::false_type;
-  using boost::move_detail::identity;
-  using boost::move_detail::if_;
-  using boost::move_detail::if_c;
-  using boost::move_detail::integral_constant;
-  using boost::move_detail::is_const;
-  using boost::move_detail::is_convertible;
-  using boost::move_detail::is_empty;
-  using boost::move_detail::is_enum;
-  using boost::move_detail::is_floating_point;
-  using boost::move_detail::is_integral;
-  using boost::move_detail::is_same;
-  using boost::move_detail::is_scalar;
-  using boost::move_detail::is_unsigned;
-  using boost::move_detail::make_unsigned;
-  using boost::move_detail::no_type;
-  using boost::move_detail::remove_const;
-  using boost::move_detail::remove_cv;
-  using boost::move_detail::remove_pointer;
-  using boost::move_detail::remove_reference;
-  using boost::move_detail::true_;
-  using boost::move_detail::true_type;
-  using boost::move_detail::unvoid_ref;
-  using boost::move_detail::voider;
-  using boost::move_detail::yes_type;
-}}
-
-export namespace boost { namespace movelib {
-  using boost::movelib::iter_category;
-  using boost::movelib::iter_difference;
-  using boost::movelib::iter_size;
-  using boost::movelib::iter_value;
-  using boost::movelib::make_reverse_iterator;
-  using boost::movelib::reverse_iterator;
-}}

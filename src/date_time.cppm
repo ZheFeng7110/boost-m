@@ -15,6 +15,7 @@ export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.numeric;
+export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.throw_exception;
 export import mcpplibs.mwrap.boost.tokenizer;
 export import mcpplibs.mwrap.boost.type_traits;

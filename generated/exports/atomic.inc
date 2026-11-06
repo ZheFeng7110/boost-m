@@ -62,20 +62,8 @@ export namespace boost {
   using boost::ipc_atomic;
   using boost::ipc_atomic_flag;
   using boost::ipc_atomic_ref;
-#if defined(BOOST_HAS_INT128)
-  // M11 platform guard: atomic/detail/type_traits/is_integral.hpp (and
-  // is_signed) pull the boost:: trait only under BOOST_HAS_INT128 (libstdc++
-  // __int128 workaround); the MSVC ABI takes the std:: trait instead.
-  using boost::is_integral;
-  using boost::is_signed;
-#endif
   using boost::make_atomic_ref;
   using boost::make_ipc_atomic_ref;
-#if defined(BOOST_HAS_INT128)
-  // M11 platform guard: atomic/detail/type_traits/make_signed.hpp — as above.
-  using boost::make_signed;
-  using boost::make_unsigned;
-#endif
   using boost::memory_order;
   using boost::memory_order_acq_rel;
   using boost::memory_order_acquire;
@@ -217,6 +205,10 @@ export namespace boost { namespace atomics { namespace detail {
   using boost::atomics::detail::integral_truncate;
   using boost::atomics::detail::is_atomic_ref_lock_free;
   using boost::atomics::detail::is_iec559;
+  using boost::atomics::detail::is_integral;
+  using boost::atomics::detail::is_signed;
+  using boost::atomics::detail::make_signed;
+  using boost::atomics::detail::make_unsigned;
   using boost::atomics::detail::non_atomic_load;
   using boost::atomics::detail::sign_extend;
   using boost::atomics::detail::sign_extend_impl;

@@ -95,6 +95,7 @@ export module mcpplibs.mwrap.boost.units;
 
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.lambda;
 export import mcpplibs.mwrap.boost.math;
 export import mcpplibs.mwrap.boost.type_traits;

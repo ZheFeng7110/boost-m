@@ -48,9 +48,16 @@ module;
 
 export module mcpplibs.mwrap.boost.algorithm;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.bind;
+export import mcpplibs.mwrap.boost.concept_check;
+export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.function;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.range;
+export import mcpplibs.mwrap.boost.smart_ptr;
+export import mcpplibs.mwrap.boost.throw_exception;
 export import mcpplibs.mwrap.boost.tuple;
 export import mcpplibs.mwrap.boost.type_traits;
 

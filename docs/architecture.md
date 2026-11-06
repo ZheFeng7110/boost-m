@@ -62,10 +62,11 @@ export import mcpplibs.mwrap.boost.type_traits;
   snapshot platform), and the `.inc` file carries the generated
   `export namespace boost { using ...; }` list. `gen_exports.py --check`
   verifies both halves agree: the GMF equals the bundle (plus any
-  `facade-includes` the policy declares). The `export import` block is the
-  facade's own: it may import less than `.deps` where gcc cannot take an edge
-  (range does not import regex: abi-tag mismatch), and the build and the tests
-  validate it.
+  `facade-includes` the policy declares), and the `export import` block
+  covers every `.deps` edge, because the `.inc` leaves out what an earlier
+  module owns. An edge the facade cannot take (range does not import regex:
+  abi-tag mismatch under gcc) is declared in the policy's `[<lib>.facade]`
+  `omit-imports` with a reason.
 - One entity has one export owner. A dependency that another target library owns
   becomes an `export import` edge in the primary module, recorded in `<lib>.deps`
   as the complete module name.

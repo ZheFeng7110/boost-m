@@ -10,5 +10,7 @@ module;
 
 export module mcpplibs.mwrap.boost.io;
 
+export import mcpplibs.mwrap.boost.config;
+
 #include "../generated/exports/io.inc"
 

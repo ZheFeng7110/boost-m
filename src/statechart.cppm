@@ -16,6 +16,7 @@ export module mcpplibs.mwrap.boost.statechart;
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.function;
 export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.thread;
 export import mcpplibs.mwrap.boost.throw_exception;

@@ -18,6 +18,7 @@ module;
 export module mcpplibs.mwrap.boost.function;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.bind;
 export import mcpplibs.mwrap.boost.core;
 
 #include "../generated/exports/function.inc"

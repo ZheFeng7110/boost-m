@@ -10,6 +10,7 @@ export module mcpplibs.mwrap.boost.dll;
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.filesystem;
+export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.type_index;
 export import mcpplibs.mwrap.boost.winapi;
 

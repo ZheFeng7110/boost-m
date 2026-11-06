@@ -24,7 +24,12 @@ module;
 
 export module mcpplibs.mwrap.boost.range;
 
+export import mcpplibs.mwrap.boost.array;
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
+export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.functional;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.optional;
 export import mcpplibs.mwrap.boost.tuple;

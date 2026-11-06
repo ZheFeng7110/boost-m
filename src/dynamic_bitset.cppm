@@ -7,6 +7,7 @@ module;
 export module mcpplibs.mwrap.boost.dynamic_bitset;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
 
 #include "../generated/exports/dynamic_bitset.inc"

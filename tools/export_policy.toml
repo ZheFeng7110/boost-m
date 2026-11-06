@@ -342,28 +342,6 @@ names = [  # any :: segment
 # atomic
 
 [[atomic.guard]]
-if = "defined(BOOST_HAS_INT128)"
-reason = '''
-M11 platform guard: atomic/detail/type_traits/is_integral.hpp (and
-is_signed) pull the boost:: trait only under BOOST_HAS_INT128 (libstdc++
-__int128 workaround); the MSVC ABI takes the std:: trait instead.
-'''
-names = [
-    "boost::is_integral",
-    "boost::is_signed",
-]
-
-[[atomic.guard]]
-if = "defined(BOOST_HAS_INT128)"
-reason = '''
-M11 platform guard: atomic/detail/type_traits/make_signed.hpp — as above.
-'''
-names = [
-    "boost::make_signed",
-    "boost::make_unsigned",
-]
-
-[[atomic.guard]]
 if = "defined(__GNUC__)"
 reason = '''
 M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw
@@ -1931,6 +1909,27 @@ names = [
     "std::random_shuffle",
 ]
 
+[range.facade]
+omit-imports = ["regex"]
+reason = '''
+The regex adaptors reference entities regex owns, but src/range.cppm does not
+`export import` regex: gcc 16.1.0 rejects the boost::regex v5 abi-tag surface
+inside a module interface (see [algorithm]), so the edge stays out of the
+facade.
+'''
+
+# --------------------------------------------------------------------------
+# scope
+
+[scope.facade]
+omit-imports = ["core"]
+reason = '''
+gcc 16.1.0 ICEs (segmentation fault at the export-module line) when the scope
+GMF (unique_fd.hpp, whose entities depend on core) is combined with re-exporting
+mcpplibs.mwrap.boost.core; clang has no such issue (see src/scope.cppm).
+Consumers import mcpplibs.mwrap.boost.core on their own.
+'''
+
 # --------------------------------------------------------------------------
 # signals2
 
@@ -1945,6 +1944,18 @@ names = [  # any :: segment
     "critical_section_debug",
     "rtl_critical_section",
 ]
+
+# --------------------------------------------------------------------------
+# sort
+
+[sort.facade]
+omit-imports = ["range"]
+reason = '''
+range exports `using boost::sort;` (boost::range::sort injected into boost),
+which collides with namespace boost::sort: re-exporting range makes every
+`boost::sort::...` in sort.inc ambiguous. The body references to range stay a
+.deps edge only.
+'''
 
 # --------------------------------------------------------------------------
 # system

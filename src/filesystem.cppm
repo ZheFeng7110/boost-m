@@ -7,6 +7,7 @@ module;
 
 export module mcpplibs.mwrap.boost.filesystem;
 
+export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.smart_ptr;

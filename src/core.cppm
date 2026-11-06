@@ -51,5 +51,9 @@ module;
 
 export module mcpplibs.mwrap.boost.core;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.throw_exception;
+
 #include "../generated/exports/core.inc"
 

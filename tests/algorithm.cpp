@@ -1,4 +1,5 @@
-// mcpplibs.mwrap.boost.algorithm smoke — clamp, hex, minmax, is_palindrome, find, copy_if
+// mcpplibs.mwrap.boost.algorithm smoke — clamp, hex, minmax, is_palindrome, find, copy_if,
+// split/join and names the module re-exports from its dependencies
 #include "test_assert.hpp"
 import std;
 import mcpplibs.mwrap.boost.algorithm;
@@ -27,5 +28,23 @@ int main() {
     assert(boost::algorithm::all_of(v.begin(), v.end(), [](int i) { return i > 0; }));
     std::vector<int> d{1, 2, 3, 4, 5};
     assert(boost::algorithm::find_backward(d, 3) - d.begin() == 2);
+    // Namespace-scope using-declarations: unscoped enumerators
+    // (`using algorithm::token_compress_on;`) and a name range also injects
+    // (boost::join from algorithm::join, not only range::join).
+    std::vector<std::string> parts;
+    boost::split(parts, std::string("a,,b"), boost::is_any_of(","),
+                 boost::token_compress_on);
+    assert(parts == std::vector<std::string>({"a", "b"}));
+    boost::split(parts, std::string("a,,b"), boost::is_any_of(","),
+                 boost::token_compress_off);
+    assert(parts.size() == 3);
+    // range::join(r1, r2) wins overload resolution for a plain call, so name
+    // algorithm::join through boost::join by its exact function type.
+    std::string (*join_fn)(const std::vector<std::string>&, const char (&)[2]) =
+        &boost::join;
+    assert(join_fn(parts, "-") == "a--b");
+    // Entities owned by modules the facade re-exports (smart_ptr via .deps).
+    boost::shared_ptr<int> sp(new int(7));
+    assert(*sp == 7 && sp.use_count() == 1);
     return 0;
 }

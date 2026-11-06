@@ -7,6 +7,7 @@ export module mcpplibs.mwrap.boost.url;
 
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.mp11;
 export import mcpplibs.mwrap.boost.optional;
 export import mcpplibs.mwrap.boost.system;
 export import mcpplibs.mwrap.boost.type_traits;

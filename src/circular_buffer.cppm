@@ -6,8 +6,10 @@ module;
 export module mcpplibs.mwrap.boost.circular_buffer;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.core;
+export import mcpplibs.mwrap.boost.move;
 export import mcpplibs.mwrap.boost.type_traits;
 
 #include "../generated/exports/circular_buffer.inc"

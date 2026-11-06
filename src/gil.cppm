@@ -23,11 +23,14 @@ module;
 export module mcpplibs.mwrap.boost.gil;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.integer;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.mp11;
+export import mcpplibs.mwrap.boost.type_traits;
 export import mcpplibs.mwrap.boost.variant2;
 
 #include "../generated/exports/gil.inc"

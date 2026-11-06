@@ -7,5 +7,10 @@ module;
 
 export module mcpplibs.mwrap.boost.any;
 
+export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.throw_exception;
+export import mcpplibs.mwrap.boost.type_index;
+
 #include "../generated/exports/any.inc"
 

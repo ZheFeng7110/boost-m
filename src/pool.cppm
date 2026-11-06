@@ -10,6 +10,7 @@ export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.config;
 export import mcpplibs.mwrap.boost.integer;
 export import mcpplibs.mwrap.boost.throw_exception;
+export import mcpplibs.mwrap.boost.type_traits;
 
 #include "../generated/exports/pool.inc"
 

@@ -26,5 +26,7 @@ module;
 
 export module mcpplibs.mwrap.boost.type_traits;
 
+export import mcpplibs.mwrap.boost.config;
+
 #include "../generated/exports/type_traits.inc"
 

@@ -264,7 +264,6 @@ export namespace boost {
   using boost::unary_predicate_archetype;
   using boost::undefined;
   using boost::unit_steppable;
-  using boost::use_default;
   using boost::void_generator_archetype;
   using boost::writable_iterator_test;
   using boost::writable_iterator_traversal_test;
@@ -768,6 +767,7 @@ export namespace boost { namespace iterators {
   using boost::iterators::traversal_archetype_base;
   using boost::iterators::trivial_iterator_test;
   using boost::iterators::undefined;
+  using boost::iterators::use_default;
   using boost::iterators::zip_iterator;
 }}
 

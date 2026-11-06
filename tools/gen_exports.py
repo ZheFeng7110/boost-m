@@ -26,7 +26,8 @@ generator writes and `--check` can prove it byte for byte.
 The `src/<lib>.cppm` interfaces are hand-maintained facades: GMF includes,
 `export import` edges and `#include` of the generated list. The generator never
 rewrites them; `--check` verifies that each facade's GMF include set equals the
-bundle's (gate-pruned) include set the export list was computed from.
+bundle's (gate-pruned) include set the export list was computed from, and
+that its `export import` block covers every <lib>.deps edge.
 
 Ownership and dedup: libraries are processed dependencies-first (include-based
 topological order); the first library to claim an entity owns it, later
@@ -85,6 +86,8 @@ class Policy:
                         matching names (or anything inside the namespaces)
     [[<lib>.extra]]     namespace / reason / lines — verbatim declarations
     [<lib>.deps]        add / remove / reason — module edge corrections
+    [<lib>.facade]      omit-imports / reason — .deps edges src/<lib>.cppm
+                        cannot `export import` (checked by check_facade)
 
     A `names` entry containing `::` matches a qualified name exactly; a bare
     identifier matches any `::` segment of the exported name.
@@ -129,6 +132,9 @@ class Policy:
 
     def facade_includes(self, lib):
         return list(self.lib(lib).get("facade-includes", ()))
+
+    def facade_omit_imports(self, lib):
+        return list(self.lib(lib).get("facade", {}).get("omit-imports", ()))
 
     def digest(self, lib):
         return hashlib.sha256(json.dumps(
@@ -421,13 +427,24 @@ class Model:
             yield d
 
     def qindex(self):
-        """{qualified name: [decl, ...]} over every visible declaration."""
+        """{qualified name: [decl, ...]} over every visible declaration.
+        Enumerators of an unscoped enum are also found through the enclosing
+        scope (`boost::algorithm::token_compress_on`), as name lookup finds
+        them."""
         if self._qindex is None:
             idx = {}
             for d in self.indexed():
                 qn = self.qualified_name(d)
-                if qn:
-                    idx.setdefault(qn, []).append(d)
+                if not qn:
+                    continue
+                idx.setdefault(qn, []).append(d)
+                if d.kind == "EnumConstantDecl":
+                    enum = self.sem_parent(d)
+                    if enum is not None and enum.name and \
+                            not enum.attrs.get("scopedEnumTag") and \
+                            qn.count("::") >= 2:
+                        outer = qn.rsplit("::", 2)[0] + "::" + d.name
+                        idx.setdefault(outer, []).append(d)
             self._qindex = idx
         return self._qindex
 
@@ -680,17 +697,17 @@ def _using_target_name(m, d):
     if not rel:
         return "", ""
     parts = _enclosing_ns(m, d)
-    if rel.startswith("::"):
+    absolute = rel.startswith("::")
+    if absolute:
         rel = rel[2:]
+    if absolute or rel.startswith(("std::", "boost::")):
+        # Fully qualified target: the declaration still injects its last
+        # segment into the enclosing namespace (`namespace boost::range {
+        # using boost::range_detail::formatted_range; }` publishes
+        # boost::range::formatted_range).
         if not parts or parts[0] != "boost":
             return "", ""
         return "::".join(parts) + "::" + rel.rsplit("::", 1)[-1], rel
-    if rel.startswith("std::"):
-        if not parts or parts[0] != "boost":
-            return "", ""
-        return "::".join(parts) + "::" + rel.rsplit("::", 1)[-1], rel
-    if rel.startswith("boost::"):
-        return rel, rel
     if not parts or parts[0] != "boost":
         return "", ""
     prefix = "::".join(parts)
@@ -713,7 +730,11 @@ def collect_injections(lib, m, claimed):
             continue
         if d.kind == "UsingDecl":
             q, target = _using_target_name(m, d)
-            if not q or q in claimed:
+            # First wins per (name, target): `boost::join` from range::join
+            # and from algorithm::join are different overload sets, and an
+            # exported using-declaration carries only what its own GMF sees.
+            ckey = q + "=" + target
+            if not q or q in claimed or ckey in claimed:
                 continue
             if target.startswith("std::") or not target.startswith("boost::"):
                 emit_q = target if target.startswith("std::") \
@@ -725,10 +746,10 @@ def collect_injections(lib, m, claimed):
                     continue
                 if any(not m.linkage_ok(c) for c in cur):
                     continue
-            claimed[q] = lib
+            claimed[ckey] = lib
             out[q] = {
                 "name": emit_q.rsplit("::", 1)[-1], "qname": emit_q,
-                "usr": "inject:" + q, "ns": q.split("::")[:-1],
+                "usr": "inject:" + ckey, "ns": q.split("::")[:-1],
                 "file": d.file, "home": lib, "kind": "USING_INJECT",
             }
         else:
@@ -761,11 +782,12 @@ def collect_injections(lib, m, claimed):
             if not m.linkage_ok(d):
                 continue
             q = prefix + "::" + d.name
-            if not q.startswith("boost::") or q in claimed:
+            ckey = q + "=" + "::".join(tgt_chain) + "::" + d.name
+            if not q.startswith("boost::") or q in claimed or ckey in claimed:
                 continue
-            claimed[q] = lib
+            claimed[ckey] = lib
             out[q] = {
-                "name": d.name, "qname": q, "usr": "inject:" + q,
+                "name": d.name, "qname": q, "usr": "inject:" + ckey,
                 "ns": q.split("::")[:-1], "file": df, "home": lib,
                 "kind": "USING_INJECT",
             }
@@ -1145,18 +1167,24 @@ def emit_cppm(lib, out_dir, gfm_headers):
 _GMF_INCLUDE = re.compile(r'^\s*#\s*include\s*<(boost/[^>]+)>', re.MULTILINE)
 
 
-def check_facade(lib, gfm_headers, extra_includes=()):
+_EXPORT_IMPORT = re.compile(r'^\s*export\s+import\s+([\w.]+)\s*;', re.MULTILINE)
+
+
+def check_facade(lib, gfm_headers, extra_includes=(), deps=(),
+                 omit_imports=()):
     """Problems of src/<lib>.cppm against the generated data: its GMF must
     include exactly the bundle's header set (the export list was computed
-    from it), plus the `facade-includes` the policy declares. The facade's
-    `export import` block is its own (hand-finalized facades import less
-    than .deps where gcc cannot take an edge, e.g. range -> regex); the build
-    and the tests validate it."""
+    from it), plus the `facade-includes` the policy declares. Its `export
+    import` block must cover every .deps edge: the .inc leaves out what an
+    earlier module claimed, so an edge the facade does not re-export loses
+    those names for consumers. An edge the facade cannot take (range ->
+    regex: abi-tag mismatch under gcc) is declared in the policy's
+    [<lib>.facade] omit-imports with a reason."""
     path = bc.ROOT / "src" / (lib + ".cppm")
     if not path.is_file():
         return ["src/{}.cppm is missing (run --emit-cppm)".format(lib)]
     text = path.read_text(encoding="utf-8")
-    head, sep, _ = text.partition("export module ")
+    head, sep, body = text.partition("export module ")
     if not sep:
         return ["src/{}.cppm has no module declaration".format(lib)]
     have = set(_GMF_INCLUDE.findall(head))
@@ -1167,6 +1195,18 @@ def check_facade(lib, gfm_headers, extra_includes=()):
     for h in sorted(have - want - set(extra_includes)):
         problems.append("src/{}.cppm GMF includes <{}>, which the export "
                         "list was not generated from".format(lib, h))
+    imported = set(_EXPORT_IMPORT.findall(body))
+    omit = {bc.MODULE_PREFIX + "." + d for d in omit_imports}
+    for dep in sorted(set(deps) - imported - omit):
+        problems.append("src/{}.cppm lacks `export import {};` (a .deps edge; "
+                        "declare it in [{}.facade] omit-imports if the facade "
+                        "cannot take it)".format(lib, dep, lib))
+    for dep in sorted(omit - set(deps)):
+        problems.append("[{}.facade] omit-imports lists {}, which is not a "
+                        ".deps edge".format(lib, dep))
+    for dep in sorted(omit & imported):
+        problems.append("[{}.facade] omit-imports lists {}, but src/{}.cppm "
+                        "imports it".format(lib, dep, lib))
     return problems
 
 
@@ -1539,8 +1579,12 @@ def generate(args, out):
     problems = []
     for lib in order:
         if lib in gfm_by_lib:
+            dfile = out / "generated" / "exports" / (lib + ".deps")
+            deps = dfile.read_text(encoding="utf-8").split() \
+                if dfile.exists() else []
             problems += check_facade(lib, gfm_by_lib[lib],
-                                     policy.facade_includes(lib))
+                                     policy.facade_includes(lib), deps,
+                                     policy.facade_omit_imports(lib))
     report = bc.ROOT / "target" / "gen" / "gen_report.json"
     report.parent.mkdir(parents=True, exist_ok=True)
     report.write_text(json.dumps(summary, indent=1, sort_keys=True) + "\n",

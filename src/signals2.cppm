@@ -7,9 +7,11 @@ module;
 export module mcpplibs.mwrap.boost.signals2;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.bind;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.function;
 export import mcpplibs.mwrap.boost.iterator;
+export import mcpplibs.mwrap.boost.move;
 export import mcpplibs.mwrap.boost.mp11;
 export import mcpplibs.mwrap.boost.optional;
 export import mcpplibs.mwrap.boost.smart_ptr;

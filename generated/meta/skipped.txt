@@ -75,10 +75,6 @@ atomic guard boost::atomics::detail::core_operations_gcc_atomic if defined(__GNU
 atomic guard boost::atomics::detail::fence_arch_operations_gcc_x86 if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)) -- M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86 only.
 atomic guard boost::atomics::detail::fence_operations_gcc_atomic if defined(__GNUC__) -- M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw flavor).
 atomic guard boost::atomics::detail::wait_operations_windows if defined(BOOST_WINDOWS) -- M11 platform guard: wait_ops_windows.hpp (wait backend = windows, platform.hpp BOOST_WINDOWS); POSIX uses futex/darwin_ulock/generic.
-atomic guard boost::is_integral if defined(BOOST_HAS_INT128) -- M11 platform guard: atomic/detail/type_traits/is_integral.hpp (and is_signed) pull the boost:: trait only under BOOST_HAS_INT128 (libstdc++ __int128 workaround); the MSVC ABI takes the std:: trait instead.
-atomic guard boost::is_signed if defined(BOOST_HAS_INT128) -- M11 platform guard: atomic/detail/type_traits/is_integral.hpp (and is_signed) pull the boost:: trait only under BOOST_HAS_INT128 (libstdc++ __int128 workaround); the MSVC ABI takes the std:: trait instead.
-atomic guard boost::make_signed if defined(BOOST_HAS_INT128) -- M11 platform guard: atomic/detail/type_traits/make_signed.hpp — as above.
-atomic guard boost::make_unsigned if defined(BOOST_HAS_INT128) -- M11 platform guard: atomic/detail/type_traits/make_signed.hpp — as above.
 beast guard boost::beast::detail::set_file_pointer_ex if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.
 beast guard boost::beast::detail::win32_unicode_path if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.
 beast guard boost::beast::file_win32 if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.

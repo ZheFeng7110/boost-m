@@ -58,8 +58,9 @@ export import mcpplibs.mwrap.boost.type_traits;
   列表时所用的 bundle 翻译单元（该库的公共 include DAG，去掉在快照平台上无法编译
   的头文件）；`.inc` 文件承载生成的 `export namespace boost { using ...; }` 列表。
   `gen_exports.py --check` 校验两半一致：GMF 等于 bundle（外加策略声明的
-  `facade-includes`）。`export import` 块属于门面自身：在 gcc 无法接受某条边时
-  可以少于 `.deps`（range 不导入 regex：abi tag 不匹配），由构建和测试验证。
+  `facade-includes`），且 `export import` 块覆盖 `.deps` 中的每条边，因为 `.inc`
+  不再导出更早模块拥有的实体。门面无法接受的边（range 不导入 regex：gcc 下 abi
+  tag 不匹配）须在策略的 `[<lib>.facade]` `omit-imports` 中声明并写明原因。
 - 一个实体只有一个导出归属。由另一个目标库拥有的依赖，在主模块中成为一条
   `export import` 边，并以完整模块名记录在 `<lib>.deps` 中。
 - 跨库类型引用、友元运算符、ADL 辅助函数，以及补丁赋予外部链接的常量，都在

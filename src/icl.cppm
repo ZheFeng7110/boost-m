@@ -24,6 +24,7 @@ export import mcpplibs.mwrap.boost.date_time;
 export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.iterator;
 export import mcpplibs.mwrap.boost.rational;
+export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.type_traits;
 export import mcpplibs.mwrap.boost.utility;
 

@@ -8,6 +8,7 @@ module;
 export module mcpplibs.mwrap.boost.stacktrace;
 
 export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.container_hash;
 
 #include "../generated/exports/stacktrace.inc"
 

@@ -23,7 +23,9 @@ export module mcpplibs.mwrap.boost.asio;
 export import mcpplibs.mwrap.boost.align;
 export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.date_time;
+export import mcpplibs.mwrap.boost.smart_ptr;
 export import mcpplibs.mwrap.boost.system;
+export import mcpplibs.mwrap.boost.type_traits;
 
 #include "../generated/exports/asio.inc"
 

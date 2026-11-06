@@ -20,6 +20,7 @@ module;
 export module mcpplibs.mwrap.boost.multiprecision;
 
 export import mcpplibs.mwrap.boost.assert;
+export import mcpplibs.mwrap.boost.io;
 export import mcpplibs.mwrap.boost.math;
 export import mcpplibs.mwrap.boost.random;
 

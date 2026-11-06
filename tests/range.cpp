@@ -39,5 +39,11 @@ int main() {
     assert(me != boost::end(rng) && *me == 5);
     assert(boost::accumulate(rng, 0) == 14);
     assert(boost::as_literal("abc").size() == 3);
+    // `namespace range { using boost::range_detail::formatted_range; }`
+    // publishes boost::range::formatted_range.
+    using fmt_t = boost::range::formatted_range<
+        std::vector<int>::const_iterator, char, char, char>;
+    static_assert(std::is_same_v<
+        decltype(boost::adaptors::format(v, ',', '{', '}')), fmt_t>);
     return 0;
 }
