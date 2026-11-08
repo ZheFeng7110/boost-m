@@ -5,6 +5,7 @@
 > 本文档**替代** `.agents/` 下全部旧设计/计划/分析文档 (清单见 §11)。
 > **旧文档最后存在提交: `03f616196468f71ae6bf7f22010777450356d3ec`**
 > (refactor(scripts): reapply_hand_edits — string patches as git .patch files)。
+> (旧仓库 [ZheFeng7110/boost-module](https://github.com/ZheFeng7110/boost-module), 本仓库不含该提交; 旧文档见 [该提交的 `.agents/`](https://github.com/ZheFeng7110/boost-module/tree/03f616196468f71ae6bf7f22010777450356d3ec/.agents))。
 > 矛盾与不明确之处集中列于 §10, 在后续对话中逐项修正。
 
 ## 1. 项目定位与目标
@@ -267,7 +268,7 @@ boost.boost = { path = "..", features = ["all"] }                          # 全
 | C4 (+C4.1) | bind/lambda/lambda2 重新模块化 | T3 宏面误判纠正; lambda 占位符 TU-local → inline constexpr (vendored 3 处); bimap 的 boost.iterator 边丢失 → 定点钉定 (全局修法两案否决); C4.1: gcc 16 重复符号 (constant_null_type CMI 重复发射) → inline constexpr |
 | C5 | `boost.version` 模块形式化 + `macros.hpp` 移除 + core 去重 | `src/version.cppm` 手写特例转 LIBS_SPECIAL (新 tier, `boost_common.py`), 经 gen_features.py 流程; `include/boost-module/macros.hpp` 与 `tests/macros.cpp` 删除; `core.cppm` 内冗余常量移除; 默认闭包 48 → 49; 详见 plan/2026-09-09-boost-version-module-promotion.md + docs/2026-09-09-boost-version-module.md |
 | M13 | 外部依赖/asm 11 库 | **用户决策暂缓 (2026-09-05), 持续暂缓 (2026-09-08, 2026-09-09 维持)** |
-| M14 | 发布 | **下一步: 发布预览版 (2026-09-08 决策, 见 plan/2026-09-08-release-preview-plan.md)** |
+| M14 | 发布 | **下一步: 发布预览版 (2026-09-08 决策, 见 docs/2026-09-08-release-preview-plan.md)** |
 
 用户历史决策 (2026-08-13): 动态汇总模块 / 精简核心默认集 / 宏驱动库
 include-only / 外部依赖库单列里程碑 / 每库最小 smoke。
@@ -483,6 +484,8 @@ dump_avx2/ssse3 不入包; atomic sse41 走探测失败回退; type_erasure `any
     docs/2026-09-09-boost-version-module.md。
 
 ## 11. 被本文替代的旧文档 (最后存在提交 `03f616196468f71ae6bf7f22010777450356d3ec`)
+
+旧文档在旧仓库 [ZheFeng7110/boost-module](https://github.com/ZheFeng7110/boost-module) 的该提交中: <https://github.com/ZheFeng7110/boost-module/tree/03f616196468f71ae6bf7f22010777450356d3ec/.agents>。
 
 plan/: boost-mcpp-module-plan.md (M0–M7 主线)、boost-mcpp-all-libs-features-plan.md
 (M8–M14 全库计划)、2026-08-08-m0-spike-results.md、

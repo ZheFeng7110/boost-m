@@ -1,0 +1,50 @@
+# Check where the documents live and what the design records declare.
+#
+# tools/doc-tools/ holds the scripts that manage the documents: gen_index.py
+# derives .agents/docs/README.md from the records, check_docs.py checks the
+# layout, front matter, links and citation direction, and move_record.py /
+# archive_records.py move records while rewriting references to them. They use
+# only the standard library today (a third-party package would be declared in
+# tools/pyproject.toml) and run on any host; CI runs them on Linux, with the
+# oldest Python the repository's tools support.
+name: Check Documents
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-docs.yml"
+      - ".agents/**"
+      - "docs/**"
+      - "README*.md"
+      - "tools/doc-tools/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/check-docs.yml"
+      - ".agents/**"
+      - "docs/**"
+      - "README*.md"
+      - "tools/doc-tools/**"
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Test the document tools
+        run: python3 -m unittest discover -s tools/doc-tools/tests -v
+
+      - name: Check documents and the design-record index
+        run: python3 tools/doc-tools/check_docs.py

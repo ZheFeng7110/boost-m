@@ -16,7 +16,7 @@ libstdc++），并不需要 MinGW 的 gcc/ld/binutils。
 
 - 维护机（非 Windows）没有 mingw sysroot 时，默认 mingw target 的 gate 与
   libclang parse 会因找不到头文件而失败，只能改用 host target
-  （`.agents/plan/2026-09-19-var-template-initializer-deps.md` §4），
+  （`.agents/docs/2026-09-19-var-template-initializer-deps-plan.md` §4），
   无法复现已提交快照。
 - 此前 `BOOST_MODULE_GEN_SYSROOT` 只能由使用者手动指向一份"本地解包"的
   sysroot，来源、版本、校验都没有固化。
