@@ -12,12 +12,8 @@
 # verdicts, incremental-skip keys and gen_audit.py's linkage reports) is worth
 # caching because a hit skips the AST dump of an unchanged library entirely.
 #
-# Nightly (and on demand), the cache-drift job proves that cache sound: it
-# regenerates and audits once with the restored CI cache and once from an
-# empty cache, and compares both with each other and the generated files with
-# the committed ones (tools/ci/check_cache_drift.py). On
-# drift the job fails, uploads the evidence, saves the cold cache over the
-# stale one, and the report job opens or updates the `cache-drift` issue.
+# The nightly cache-drift check that proves that cache sound lives in
+# check-script-cache-drift.yml.
 name: Verify Generation Scripts
 
 env:
@@ -25,9 +21,6 @@ env:
   XLINGS_NON_INTERACTIVE: '1'
 
 on:
-  schedule:
-    - cron: "17 3 * * *"
-  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -57,8 +50,8 @@ on:
       - ".gitignore"
       - ".gitattributes"
 
-# The event is part of the group: a push to main must not cancel the nightly
-# run on main (or the reverse).
+# The event is part of the group: a push to main must not cancel a run
+# triggered by another event on main.
 concurrency:
   group: generated-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
@@ -66,7 +59,6 @@ concurrency:
 jobs:
   verify:
     name: ${{ matrix.os }}
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ${{ matrix.os }}
     timeout-minutes: 240
     env:
@@ -100,7 +92,7 @@ jobs:
       # read for it and the first-wins ownership it was computed under still
       # hold), so restoring an older commit's
       # cache yields misses rather than wrong output; the nightly cache-drift
-      # job checks exactly that. The salt in the key only bounds rollover: a
+      # workflow checks exactly that. The salt in the key only bounds rollover: a
       # generator or sysroot-pin change drops the restore prefix instead of
       # mixing verdicts across engine changes.
       - name: Cache generator export intermediates
@@ -124,105 +116,3 @@ jobs:
       - name: Verify generated outputs
         if: ${{ !matrix.check_import_boost }}
         run: uv run --project tools --locked python tools/ci/verify_generated.py
-
-  cache-drift:
-    name: cache drift (${{ matrix.os }})
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Set up the generation toolchain
-        uses: ./.github/actions/setup-generator
-
-      # The cache verify restores: the newest entry under the current salt.
-      - name: Restore generator export intermediates
-        uses: actions/cache/restore@v6
-        with:
-          path: target/gen/exports-cache
-          key: exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-${{ github.sha }}
-          restore-keys: |
-            exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-
-
-      - name: Compare cached, cold and committed generation
-        id: drift
-        run: uv run --project tools --locked python tools/ci/check_cache_drift.py --out target/cache-drift
-
-      # Upload before anything replaces the stale entries: the restored
-      # versions are the evidence of what the cache key missed.
-      - name: Upload drift evidence
-        if: ${{ !cancelled() && steps.drift.outcome != 'skipped' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: cache-drift-${{ runner.os }}
-          path: target/cache-drift
-          if-no-files-found: ignore
-          retention-days: 30
-
-      # The cold run rewrote target/gen/exports-cache from scratch. Saved
-      # under the restore prefix, it is the newest entry, so the next verify
-      # run restores it instead of the stale one.
-      - name: Save the cold cache over the stale one
-        if: ${{ !cancelled() && steps.drift.outputs.cache_drift == 'true' }}
-        uses: actions/cache/save@v6
-        with:
-          path: target/gen/exports-cache
-          key: exports-cache-v2-${{ runner.os }}-${{ runner.arch }}-llvm-${{ env.LLVM_VERSION }}-${{ hashFiles('tools/gen_exports.py', 'tools/ast_json.py', 'tools/boost_common.py', 'tools/export_policy.toml', 'tools/fetch_mingw_sysroot.py') }}-${{ github.sha }}-cold-${{ github.run_id }}
-
-  report:
-    name: report cache drift
-    needs: cache-drift
-    if: ${{ !cancelled() && needs.cache-drift.result != 'skipped' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-    env:
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          sparse-checkout: tools
-
-      # Absent when no platform got as far as the comparison.
-      - name: Download drift results
-        continue-on-error: true
-        uses: actions/download-artifact@v8
-        with:
-          pattern: cache-drift-*
-          path: drift
-
-      # One open issue tracks drift: later runs comment on it instead of
-      # opening duplicates.
-      - name: Open or update the cache-drift issue
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p drift
-          python3 tools/ci/check_cache_drift.py --summarize drift \
-            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
-            > issue.md
-          if [ ! -s issue.md ]; then
-            echo "no drift reported"
-            exit 0
-          fi
-          gh label create cache-drift --color B60205 \
-            --description "Generator cache replayed output a cold run does not produce" \
-            --force
-          number="$(gh issue list --label cache-drift --state open \
-            --json number --jq '.[0].number // empty')"
-          if [ -n "$number" ]; then
-            gh issue comment "$number" --body-file issue.md
-          else
-            gh issue create --title "Generator cache drift detected" \
-              --label cache-drift --body-file issue.md
-          fi

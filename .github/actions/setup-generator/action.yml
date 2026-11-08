@@ -1,5 +1,6 @@
-# Toolchain of the generation chain, shared by the jobs of verify-scripts.yml:
-# Python + uv, xlings and the tools pinned in .xlings.json (mcpp, the
+# Toolchain of the generation chain, shared by the jobs of verify-scripts.yml
+# and check-script-cache-drift.yml: Python + uv, xlings and the tools pinned in
+# .xlings.json (mcpp, the
 # generator's clang++), the cached MinGW sysroot archive and the tool
 # dependencies. Expects a checkout; sets CLANG_NO_DEFAULT_CONFIG and
 # LLVM_VERSION for the following steps.
