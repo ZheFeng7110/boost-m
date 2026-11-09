@@ -6,131 +6,132 @@ upstream = "1.92.0"
 library = "container"
 
 [[example]]
-path   = "libs/container/example/doc_custom_deque.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_deque.cpp"
+case = "container/examples:example: doc_custom_deque"
 
 [[example]]
-path   = "libs/container/example/doc_custom_devector.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_devector.cpp"
+case = "container/examples:example: doc_custom_devector"
 
 [[example]]
-path   = "libs/container/example/doc_custom_segtor.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_segtor.cpp"
+case = "container/examples:example: doc_custom_segtor"
 
 [[example]]
-path   = "libs/container/example/doc_custom_small_vector.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_small_vector.cpp"
+case = "container/examples:example: doc_custom_small_vector"
 
 [[example]]
-path   = "libs/container/example/doc_custom_static_vector.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_static_vector.cpp"
+case = "container/examples:example: doc_custom_static_vector"
 
 [[example]]
-path   = "libs/container/example/doc_custom_string.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_string.cpp"
+case = "container/examples:example: doc_custom_string"
 
 [[example]]
-path   = "libs/container/example/doc_custom_tree.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_tree.cpp"
+case = "container/examples:example: doc_custom_tree"
 
 [[example]]
-path   = "libs/container/example/doc_custom_vector.cpp"
-status = "todo"
+path = "libs/container/example/doc_custom_vector.cpp"
+case = "container/examples:example: doc_custom_vector"
 
 [[example]]
-path   = "libs/container/example/doc_devector.cpp"
-status = "todo"
+path = "libs/container/example/doc_devector.cpp"
+case = "container/examples:example: doc_devector"
 
 [[example]]
-path   = "libs/container/example/doc_emplace.cpp"
-status = "todo"
+path = "libs/container/example/doc_emplace.cpp"
+case = "container/examples:example: doc_emplace"
 
 [[example]]
 path   = "libs/container/example/doc_extended_allocators.cpp"
-status = "todo"
+status = "gap"
+reason = "uses the dlmalloc-based allocators (allocator<T,2>, adaptive_pool, node_allocator); the package does not build libs/container/src/alloc_lib.c + dlmalloc.cpp (tools/gen_features.py)"
 
 [[example]]
-path   = "libs/container/example/doc_flat_map.cpp"
-status = "todo"
+path = "libs/container/example/doc_flat_map.cpp"
+case = "container/examples:example: doc_flat_map"
 
 [[example]]
-path   = "libs/container/example/doc_hub_basic.cpp"
-status = "todo"
+path = "libs/container/example/doc_hub_basic.cpp"
+case = "container/examples:example: doc_hub_basic"
 
 [[example]]
-path   = "libs/container/example/doc_move_containers.cpp"
-status = "todo"
+path = "libs/container/example/doc_move_containers.cpp"
+case = "container/examples:example: doc_move_containers"
 
 [[example]]
-path   = "libs/container/example/doc_pmr.cpp"
-status = "todo"
+path = "libs/container/example/doc_pmr.cpp"
+case = "container/examples:example: doc_pmr"
 
 [[example]]
-path   = "libs/container/example/doc_recursive_containers.cpp"
-status = "todo"
+path = "libs/container/example/doc_recursive_containers.cpp"
+case = "container/examples:example: doc_recursive_containers"
 
 [[example]]
-path   = "libs/container/example/doc_slist.cpp"
-status = "todo"
+path = "libs/container/example/doc_slist.cpp"
+case = "container/examples:example: doc_slist"
 
 [[example]]
-path   = "libs/container/example/doc_small_vector_base.cpp"
-status = "todo"
+path = "libs/container/example/doc_small_vector_base.cpp"
+case = "container/examples:example: doc_small_vector_base"
 
 [[example]]
-path   = "libs/container/example/doc_static_vector.cpp"
-status = "todo"
+path = "libs/container/example/doc_static_vector.cpp"
+case = "container/examples:example: doc_static_vector"
 
 [[example]]
-path   = "libs/container/example/doc_type_erasure.cpp"
-status = "todo"
+path = "libs/container/example/doc_type_erasure.cpp"
+case = "container/examples:example: doc_type_erasure"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#container_const_reference_parameters"
-title  = "Parameter taken by const reference that can be changed"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#container_const_reference_parameters"
+title = "Parameter taken by const reference that can be changed"
+case  = "container/api:doc: container_const_reference_parameters"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#devector"
-title  = "['devector]"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#devector"
+title = "['devector]"
+case  = "container/api:doc: devector"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#hub_capacity"
-title  = "Capacity"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#hub_capacity"
+title = "Capacity"
+case  = "container/api:doc: hub_capacity"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#hub_introduction"
-title  = "Introduction"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#hub_introduction"
+title = "Introduction"
+case  = "container/api:doc: hub_introduction"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#hub_std_hive_operations"
-title  = "`std::hive` operations"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#hub_std_hive_operations"
+title = "`std::hive` operations"
+case  = "container/api:doc: hub_std_hive_operations"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#hub_unordered_insertion"
-title  = "Unordered insertion"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#hub_unordered_insertion"
+title = "Unordered insertion"
+case  = "container/api:doc: hub_unordered_insertion"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#hub_visitation"
-title  = "Visitation"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#hub_visitation"
+title = "Visitation"
+case  = "container/api:doc: hub_visitation"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#null_iterators"
-title  = "Null Forward Iterators"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#null_iterators"
+title = "Null Forward Iterators"
+case  = "container/api:doc: null_iterators"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#polymorphic_memory_resources"
-title  = "Polymorphic Memory Resources"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#polymorphic_memory_resources"
+title = "Polymorphic Memory Resources"
+case  = "container/api:doc: polymorphic_memory_resources"
 
 [[snippet]]
-doc    = "libs/container/doc/container.qbk#stable_vector"
-title  = "['stable_vector]"
-status = "todo"
+doc   = "libs/container/doc/container.qbk#stable_vector"
+title = "['stable_vector]"
+case  = "container/api:doc: stable_vector"

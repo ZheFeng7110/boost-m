@@ -398,7 +398,7 @@
     "intrusive",
     "move"
    ],
-   "exported": 976,
+   "exported": 978,
    "gmf": [
     "boost/container/adaptive_pool.hpp",
     "boost/container/allocator.hpp",

@@ -16,8 +16,15 @@ import mcpplibs.mwrap.boost.tokenizer;
 // what the original program printed (built from upstream/boost alone).
 inline std::ostringstream ex_out;
 inline std::istringstream ex_in;
-inline char ex_arg0[] = "example";
-inline char* ex_argv[] = {ex_arg0, nullptr};
+inline std::vector<std::string> ex_args;  // argv of the ported main
+inline std::vector<char*> ex_argv_store;
+inline char** ex_argv = nullptr;
+inline int ex_argc = 0;
+struct ex_argv_t {  // converts to char** and char const** (both main signatures)
+    char** p;
+    operator char**() const { return p; }
+    operator const char**() const { return const_cast<const char**>(p); }
+};
 template <class... A>
 int ex_printf(const char* fmt, A... a) {
     int n = std::snprintf(nullptr, 0, fmt, a...);

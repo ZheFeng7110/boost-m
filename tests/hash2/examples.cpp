@@ -7,6 +7,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
+#include <boost/config.hpp>
 #include <cerrno>
 import std;
 import mcpplibs.mwrap.boost.hash2;

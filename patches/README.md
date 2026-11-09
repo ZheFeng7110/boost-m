@@ -34,6 +34,11 @@ second one. The algorithm module's GMF includes them in that order, and
 `boost::algorithm::transform_reduce` was missing from its export list; plain
 `#include` consumers hit the same bug. The patch gives the header its own guard.
 
+`container.patch` is the same upstream bug as `algorithm.patch`:
+`boost/container/pmr/devector.hpp` reuses the include guard of
+`pmr/vector.hpp`, so `boost::container::pmr::vector` and `vector_of` were
+missing from the container module (and from any TU including devector first).
+
 `convert.patch` is the TU-local-object case: `boost::throw_on_failure` was a
 namespace-scope `const` object (internal linkage), which a module cannot
 export; it becomes `inline constexpr`.
