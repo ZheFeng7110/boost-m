@@ -9,7 +9,7 @@
 [![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
 [![tests](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml)
 
-116 個 Boost 庫可以按具名模組使用：封裝在模組的全域模組片段中 `#include` 上游標頭檔，
+117 個 Boost 庫可以按具名模組使用：封裝在模組的全域模組片段中 `#include` 上游標頭檔，
 再用 `export using` 重新匯出上游實體，因此型別、多載、ADL 與拼寫都仍是 Boost 的。
 純標頭庫、編譯庫與純巨集庫各自保留既有消費方式；程式裡只有 vendored Boost 這一實作，
 不會重複連結第二份。
@@ -58,7 +58,7 @@ feature 名一律小寫 kebab-case；模組後綴保留 Boost 自己的分組拼
 | Feature | 作用 |
 |---|---|
 | `default` | 50 庫基線閉包（純標頭核心 + filesystem/regex/thread/chrono/json/serialization） |
-| `all-modules` | 全部模組介面（117 個）；`log`、`unit-test-framework` 仍需明確啟用 |
+| `all-modules` | 全部模組介面（118 個）；`log`、`unit-test-framework` 仍需明確啟用 |
 | `macros` | 巨集常數映射模組；`version` 會重新匯出它 |
 | `log`、`unit-test-framework` | 無模組的編譯庫：直接 include 上游標頭檔 |
 | `backend-log-avx2`、`backend-log-ssse3` | 建置期 Boost.Log dump 實作（僅 x86_64，同軸互斥） |

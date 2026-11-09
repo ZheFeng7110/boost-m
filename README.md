@@ -9,7 +9,7 @@
 [![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
 [![tests](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml)
 
-116 Boost libraries are reachable as named modules: the wrapper runs
+117 Boost libraries are reachable as named modules: the wrapper runs
 `#include` inside a module's global module fragment and re-exports the upstream
 entities with `export using`, so types, overloads, ADL and spelling stay
 Boost's. The header-only, compiled and macro-only libraries keep their own
@@ -60,7 +60,7 @@ grouping spelling (`type-traits` enables `mcpplibs.mwrap.boost.type_traits`).
 | Feature | Purpose |
 |---|---|
 | `default` | The 50-library baseline closure (header-only core + filesystem/regex/thread/chrono/json/serialization) |
-| `all-modules` | Every module interface (117 entries); `log` and `unit-test-framework` stay explicit |
+| `all-modules` | Every module interface (118 entries); `log` and `unit-test-framework` stay explicit |
 | `macros` | The mapped macro constants module; `version` re-exports it |
 | `log`, `unit-test-framework` | Compiled libraries with no module: include the upstream headers |
 | `backend-log-avx2`, `backend-log-ssse3` | Build-time Boost.Log dump implementation (x86_64 only, mutually exclusive) |

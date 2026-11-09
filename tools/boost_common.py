@@ -92,10 +92,15 @@ LIBS_M4 = [
 # global `using namespace boost::placeholders;` cannot be reproduced by a
 # module — consumers of the module face write their own using-directive
 # (the upstream-recommended spelling anyway).
+# Conversion (2026-11-09, .agents/docs/2026-11-09-module-test-hardening-design.md
+# §5.3): its public headers sit at the top of boost/ (implicit_cast.hpp,
+# polymorphic_cast.hpp, polymorphic_pointer_cast.hpp) and boost/conversion/
+# holds only detail/, so the prefix heuristic saw an empty library and the
+# 2026-09-08 inventory filed it as a "no-header stub". See EXTRA_HEADERS.
 LIBS_T1A = [
     "align", "array", "assert", "assign", "bimap", "bind", "bloom",
     "callable_traits", "circular_buffer", "compat", "concept_check",
-    "config", "convert", "crc", "decimal",
+    "config", "conversion", "convert", "crc", "decimal",
     "dll", "dynamic_bitset", "flyweight", "format", "function",
     "functional", "hash2", "heap", "histogram", "hof", "icl",
     "integer", "intrusive", "lambda", "lambda2", "leaf", "lexical_cast", "lockfree",
@@ -173,6 +178,37 @@ LIBS_T4 = [
 # is absent, which it intentionally is for SPECIAL).
 LIBS_SPECIAL = ["version", "macros"]
 TARGET_LIBS = LIBS_M3 + LIBS_M4 + LIBS_T1A + LIBS_T2 + LIBS_T1B + LIBS_SPECIAL
+
+# Public headers the prefix rules (boost/<lib>/** minus detail/, boost/<lib>.hpp)
+# do not see. Paths are relative to boost/.
+#
+# EXTRA_HEADERS: added to the library's public header set (its GMF) and owned
+#   by it. Header resolution, file ownership and include-edge detection all
+#   read it, so the three cannot disagree.
+#   - conversion: its headers sit at the top of boost/ under other names.
+#   - core: boost::core::string_view is a documented Core component
+#     (libs/core/doc/string_view.qbk) whose only header is
+#     boost/core/detail/string_view.hpp; without it no module exported the
+#     string_view alias, which charconv's from_chars(string_view) overloads
+#     take (only json exported basic_string_view, reached through its own GMF).
+# TOP_LEVEL_OWNERS: ownership (and include edges) only, for top-level files;
+#   the file stays out of the owner's header set, so the owner's GMF and
+#   export list do not change. boost/pointer_cast.hpp is smart_ptr's
+#   (upstream: Boost::conversion links Boost::smart_ptr for it); without the
+#   entry conversion, which reaches it first in TARGET_LIBS order, would claim
+#   smart_ptr's *_pointer_cast names.
+EXTRA_HEADERS = {
+    "conversion": ["implicit_cast.hpp", "polymorphic_cast.hpp",
+                   "polymorphic_pointer_cast.hpp"],
+    "core": ["core/detail/string_view.hpp"],
+}
+TOP_LEVEL_OWNERS = {
+    "pointer_cast.hpp": "smart_ptr",
+}
+for _lib, _names in EXTRA_HEADERS.items():
+    for _name in _names:
+        if "/" not in _name:
+            TOP_LEVEL_OWNERS[_name] = _lib
 
 # M9 downgrades to include-only (plan §2 note + 2026-08-17 M9 doc §1): pure
 # macro libs (predef: .h only; static_assert: module name is a keyword) and
@@ -321,6 +357,8 @@ def resolve_headers_heuristic(lib: str):
     single = BOOST_ROOT / (lib + ".hpp")
     if single.is_file():
         headers.add(single)
+    headers.update(BOOST_ROOT / name for name in EXTRA_HEADERS.get(lib, ())
+                   if (BOOST_ROOT / name).is_file())
 
     def key(p: Path):
         rel = p.relative_to(BOOST_ROOT).as_posix()
@@ -482,7 +520,8 @@ def build_file_to_lib():
 
     Prefix-based: every file under boost/<lib>/ (including detail/ subtrees,
     which are enumerated but not GMF-included) plus the boost/<lib>.hpp
-    aggregate belongs to the library."""
+    aggregate belongs to the library; TOP_LEVEL_OWNERS adds the top-level
+    files whose name is not a library's."""
     mapping = {}
     for lib in TARGET_LIBS:
         d = BOOST_ROOT / lib
@@ -492,6 +531,8 @@ def build_file_to_lib():
         single = BOOST_ROOT / (lib + ".hpp")
         if single.is_file():
             mapping[str(single.resolve()).lower()] = lib
+    for name, lib in TOP_LEVEL_OWNERS.items():
+        mapping[str((BOOST_ROOT / name).resolve()).lower()] = lib
     return mapping
 
 
@@ -514,8 +555,11 @@ def _lib_of_include(rel: str):
     """boost/<x>... -> target lib x ('' when not a target lib root).
 
     Handles both directory roots (boost/<lib>/...) and single-header
-    aggregates (boost/<lib>.hpp, e.g. boost/tokenizer.hpp / boost/crc.hpp)."""
+    aggregates (boost/<lib>.hpp, e.g. boost/tokenizer.hpp / boost/crc.hpp),
+    and the TOP_LEVEL_OWNERS files (boost/polymorphic_cast.hpp -> conversion)."""
     top = rel[len("boost/"):].split("/")[0]
+    if top in TOP_LEVEL_OWNERS:
+        return TOP_LEVEL_OWNERS[top]
     if "." in top:
         # single-header aggregate include (boost/<lib>.hpp)
         stem = top.rsplit(".", 1)[0]

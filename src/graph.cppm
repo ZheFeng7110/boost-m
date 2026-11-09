@@ -101,6 +101,7 @@ export import mcpplibs.mwrap.boost.assert;
 export import mcpplibs.mwrap.boost.bimap;
 export import mcpplibs.mwrap.boost.concept_check;
 export import mcpplibs.mwrap.boost.config;
+export import mcpplibs.mwrap.boost.conversion;
 export import mcpplibs.mwrap.boost.container_hash;
 export import mcpplibs.mwrap.boost.core;
 export import mcpplibs.mwrap.boost.function;

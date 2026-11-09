@@ -9,7 +9,7 @@
 模块让其可被 import，同时保留上游 API。包装层不重新实现 Boost，不把它的实体
 搬进新的命名空间，也不链接第二份 Boost 实现。
 
-- 116 个库模块接口 + 根模块 + 宏映射模块。
+- 117 个库模块接口 + 根模块 + 宏映射模块。
 - 22 个纯 include-only 库，以及 2 个需要编译的 include-only feature（`log`、
   `unit-test-framework`）：按头文件方式消费，列于 [usage.zh.md](usage.zh.md)。
 - 11 个库需要外部工具链/SDK，未做声明。
@@ -195,7 +195,7 @@ clang++ -std=c++23 --target=x86_64-w64-mingw32 --sysroot=<pinned MinGW> \
   mtime 上都是幂等的。feature 名使用 kebab-case；`implies` 列出的是 feature
   名（绝不是内部键），由各接口的 `export import` 行加上生成的函数体边推导而来。
   `modules.lst` 是 `build.mcpp` 读取的 feature → 模块映射；`all-modules` 展开为
-  117 个模块条目。
+  118 个模块条目。
 - `gen_audit.py` 从同一份 AST 报告每个库的内部链接函数、匿名命名空间实体和显式
   特化；其报告要结合已提交的代码树审阅，不能当成“不属于公共 API”。
 

@@ -13,9 +13,10 @@
 # Every host is built twice, once per feature group, because a single clang
 # aggregate closure of the whole package can exhaust the source-location space:
 #
-#   A — the 105 library features of the original group A: 103 module-bearing
-#       libraries plus the two compiled include-only features (`log`,
-#       `unit-test-framework`);
+#   A — the 105 library features of the original group A (103 module-bearing
+#       libraries plus the two compiled include-only features `log` and
+#       `unit-test-framework`), plus `conversion` (six function templates,
+#       added by the module test hardening);
 #   B — the twelve heavy libraries (asio, beast, geometry, ...) plus the two
 #       wrapper-only modules the mwrap migration added (`version`, `macros`),
 #       so group A's aggregate closure stays at the module count whose limit was
@@ -89,10 +90,11 @@ env:
   # Leave the runners room: the vendored tree is large and every leg compiles
   # Boost from the same checkout.
   MCPP_JOBS: '4'
-  # M12 grouping: group A is the original wrapper's 105-feature set; group B is
+  # M12 grouping: group A is the original wrapper's 105-feature set plus
+  # `conversion`; group B is
   # its twelve heavy libraries plus the two wrapper-only modules added by the
   # mwrap migration. Both are kebab-case features declared in mcpp.toml.
-  BOOST_GROUP_A: "optional,variant,variant2,any,core,container-hash,mp11,static-string,scope,type-traits,algorithm,iterator,range,io,rational,endian,tuple,system,filesystem,regex,thread,chrono,program-options,stacktrace,json,url,align,array,assert,assign,bimap,bind,bloom,callable-traits,circular-buffer,compat,concept-check,config,convert,crc,decimal,dll,dynamic-bitset,flyweight,format,function,functional,hash2,heap,histogram,hof,icl,integer,intrusive,lambda,lambda2,leaf,lexical-cast,lockfree,logic,move,multi-array,multi-index,outcome,parser,pfr,poly-collection,pool,property-map,property-tree,ptr-container,ratio,safe-numerics,signals2,smart-ptr,sort,statechart,stl-interfaces,throw-exception,tokenizer,type-index,units,unordered,utility,uuid,winapi,yap,atomic,charconv,cobalt,container,contract,date-time,graph,iostreams,log,math,nowide,process,random,serialization,unit-test-framework,timer,type-erasure,wave"
+  BOOST_GROUP_A: "optional,variant,variant2,any,core,container-hash,mp11,static-string,scope,type-traits,algorithm,iterator,range,io,rational,endian,tuple,system,filesystem,regex,thread,chrono,program-options,stacktrace,json,url,align,array,assert,assign,bimap,bind,bloom,callable-traits,circular-buffer,compat,concept-check,config,conversion,convert,crc,decimal,dll,dynamic-bitset,flyweight,format,function,functional,hash2,heap,histogram,hof,icl,integer,intrusive,lambda,lambda2,leaf,lexical-cast,lockfree,logic,move,multi-array,multi-index,outcome,parser,pfr,poly-collection,pool,property-map,property-tree,ptr-container,ratio,safe-numerics,signals2,smart-ptr,sort,statechart,stl-interfaces,throw-exception,tokenizer,type-index,units,unordered,utility,uuid,winapi,yap,atomic,charconv,cobalt,container,contract,date-time,graph,iostreams,log,math,nowide,process,random,serialization,unit-test-framework,timer,type-erasure,wave"
   BOOST_GROUP_B: "accumulators,asio,beast,geometry,gil,hana,interprocess,mqtt5,multiprecision,numeric,polygon,qvm,version,macros"
 
 jobs:

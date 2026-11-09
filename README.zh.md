@@ -9,7 +9,7 @@
 [![mcpp-community](https://img.shields.io/badge/mcpp--community-mwrap-blue)](https://github.com/mcpp-community)
 [![tests](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/mcpplibs/boost-m/actions/workflows/tests.yml)
 
-116 个 Boost 库可以按命名模块使用：封装在模块的全局模块片段中 `#include` 上游头文件，
+117 个 Boost 库可以按命名模块使用：封装在模块的全局模块片段中 `#include` 上游头文件，
 再用 `export using` 重新导出上游实体，因此类型、重载、ADL 和拼写都仍是 Boost 的。
 纯头库、编译库与纯宏库各自保留既有消费方式；程序里只有 vendored Boost 这一份实现，
 不会重复链接第二份。
@@ -58,7 +58,7 @@ feature 名一律小写 kebab-case；模块后缀保留 Boost 自己的分组拼
 | Feature | 作用 |
 |---|---|
 | `default` | 50 库基线闭包（纯头核心 + filesystem/regex/thread/chrono/json/serialization） |
-| `all-modules` | 全部模块接口（117 个）；`log`、`unit-test-framework` 仍需显式启用 |
+| `all-modules` | 全部模块接口（118 个）；`log`、`unit-test-framework` 仍需显式启用 |
 | `macros` | 宏常量映射模块；`version` 会重新导出它 |
 | `log`、`unit-test-framework` | 无模块的编译库：直接 include 上游头文件 |
 | `backend-log-avx2`、`backend-log-ssse3` | 构建期 Boost.Log dump 实现（仅 x86_64，同轴互斥） |

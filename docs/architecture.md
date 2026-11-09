@@ -10,7 +10,7 @@ C++23 module layer makes them importable while preserving the upstream API.
 The wrapper does not re-implement Boost, does not relocate its entities into a
 new namespace, and does not link a second Boost implementation.
 
-- 116 library module interfaces + the root module + the macro mapping module.
+- 117 library module interfaces + the root module + the macro mapping module.
 - 22 pure include-only libraries and 2 compiled include-only features (`log`,
   `unit-test-framework`): consumed by header, listed in [usage.md](usage.md).
 - 11 libraries need external toolchains/SDKs and are not declared.
@@ -220,7 +220,7 @@ generator change, not as an unexplained API change.
   byte- and mtime-idempotent. Feature names are kebab-case; `implies` lists
   feature names (never internal keys), derived from each interface's
   `export import` lines plus the generated body edges. `modules.lst` is the
-  feature → module map `build.mcpp` reads; `all-modules` expands to the 117 module
+  feature → module map `build.mcpp` reads; `all-modules` expands to the 118 module
   entries.
 - `gen_audit.py` reports internal-linkage functions, anonymous-namespace
   entities and explicit specializations per library from the same AST; its

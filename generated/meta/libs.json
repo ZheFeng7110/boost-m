@@ -955,6 +955,11 @@
   "boost/contract/override.hpp",
   "boost/contract/public_function.hpp"
  ],
+ "conversion": [
+  "boost/implicit_cast.hpp",
+  "boost/polymorphic_cast.hpp",
+  "boost/polymorphic_pointer_cast.hpp"
+ ],
  "convert": [
   "boost/convert.hpp"
  ],
@@ -970,6 +975,7 @@
   "boost/core/data.hpp",
   "boost/core/default_allocator.hpp",
   "boost/core/demangle.hpp",
+  "boost/core/detail/string_view.hpp",
   "boost/core/empty_value.hpp",
   "boost/core/enable_if.hpp",
   "boost/core/exchange.hpp",

@@ -47,7 +47,7 @@
     "tuple",
     "type_traits"
    ],
-   "exported": 477,
+   "exported": 478,
    "gmf": [
     "boost/algorithm/algorithm.hpp",
     "boost/algorithm/apply_permutation.hpp",
@@ -509,6 +509,19 @@
     "boost/contract.hpp"
    ]
   },
+  "conversion": {
+   "deps": [
+    "assert",
+    "smart_ptr",
+    "throw_exception"
+   ],
+   "exported": 6,
+   "gmf": [
+    "boost/implicit_cast.hpp",
+    "boost/polymorphic_cast.hpp",
+    "boost/polymorphic_pointer_cast.hpp"
+   ]
+  },
   "convert": {
    "deps": [
     "assert",
@@ -527,7 +540,7 @@
     "config",
     "throw_exception"
    ],
-   "exported": 270,
+   "exported": 283,
    "gmf": [
     "boost/core/alloc_construct.hpp",
     "boost/core/allocator_traits.hpp",
@@ -535,6 +548,7 @@
     "boost/core/checked_delete.hpp",
     "boost/core/cmath.hpp",
     "boost/core/default_allocator.hpp",
+    "boost/core/detail/string_view.hpp",
     "boost/core/empty_value.hpp",
     "boost/core/exchange.hpp",
     "boost/core/explicit_operator_bool.hpp",
@@ -898,6 +912,7 @@
     "concept_check",
     "config",
     "container_hash",
+    "conversion",
     "core",
     "function",
     "integer",
@@ -923,7 +938,7 @@
     "utility",
     "version"
    ],
-   "exported": 3072,
+   "exported": 3070,
    "gmf": [
     "boost/graph/adj_list_serialize.hpp",
     "boost/graph/adjacency_list_io.hpp",
@@ -1323,7 +1338,7 @@
     "system",
     "variant2"
    ],
-   "exported": 306,
+   "exported": 305,
    "gmf": [
     "boost/json/debug_printers.hpp",
     "boost/json.hpp"
@@ -1986,6 +2001,7 @@
     "assert",
     "concept_check",
     "config",
+    "conversion",
     "core",
     "functional",
     "iterator",
@@ -1994,7 +2010,7 @@
     "tuple",
     "type_traits"
    ],
-   "exported": 482,
+   "exported": 480,
    "gmf": [
     "boost/range.hpp",
     "boost/range/adaptor/define_adaptor.hpp",
@@ -2268,11 +2284,11 @@
    "deps": [
     "assert",
     "config",
+    "conversion",
     "core",
     "function",
     "smart_ptr",
     "thread",
-    "throw_exception",
     "type_traits"
    ],
    "exported": 73,

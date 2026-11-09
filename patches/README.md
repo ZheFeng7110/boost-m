@@ -27,6 +27,13 @@ numeric module needs the swap. The exported `same_impl_ex` follows the same
 header condition through the `numeric` guard in `tools/export_policy.toml`, so
 the release module neither exports a name the header hides nor fails on it.
 
+`algorithm.patch` fixes an upstream bug rather than adapting to modules:
+`boost/algorithm/cxx17/transform_inclusive_scan.hpp` reuses the include guard
+of `transform_reduce.hpp`, so a translation unit that includes both loses the
+second one. The algorithm module's GMF includes them in that order, and
+`boost::algorithm::transform_reduce` was missing from its export list; plain
+`#include` consumers hit the same bug. The patch gives the header its own guard.
+
 Every patch is reviewed against the 1.92.0 tag it was written for;
 `upstream/boost/SOURCE.md` records the archive and checksum the tree comes
 from. A patch that neither applies nor is already applied fails the replay.

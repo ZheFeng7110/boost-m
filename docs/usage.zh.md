@@ -128,7 +128,7 @@ static_assert(mcpplibs::mwrap::boost::macros::BOOST_VERSION == raw_version);
 | 特征 | 作用 |
 |---|---|
 | `default` | 50 个库构成的闭包（见下文） |
-| `all-modules` | 全部 117 个模块条目（116 个库接口 + `macros`）；不含 `log`，不含 `unit-test-framework` |
+| `all-modules` | 全部 118 个模块条目（117 个库接口 + `macros`）；不含 `log`，不含 `unit-test-framework` |
 | `macros`、`version` | 映射模块及其薄重导出 |
 | `backend-log-avx2`、`backend-log-ssse3` | 构建期的 Boost.Log dump 实现，仅限 x86_64，每条轴各择其一 |
 

@@ -36,6 +36,7 @@ circular-buffer	circular_buffer
 compat	compat
 concept-check	concept_check
 config	config
+conversion	conversion
 convert	convert
 crc	crc
 decimal	decimal

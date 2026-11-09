@@ -18,6 +18,7 @@ module;
 #include <boost/core/checked_delete.hpp>
 #include <boost/core/cmath.hpp>
 #include <boost/core/default_allocator.hpp>
+#include <boost/core/detail/string_view.hpp>
 #include <boost/core/empty_value.hpp>
 #include <boost/core/exchange.hpp>
 #include <boost/core/explicit_operator_bool.hpp>

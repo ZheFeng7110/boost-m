@@ -161,7 +161,7 @@ spelling, so feature `type-traits` enables `mcpplibs.mwrap.boost.type_traits`.
 | Feature | Effect |
 |---|---|
 | `default` | 50-library closure (see below) |
-| `all-modules` | All 117 module entries (116 library interfaces + `macros`); not `log`, not `unit-test-framework` |
+| `all-modules` | All 118 module entries (117 library interfaces + `macros`); not `log`, not `unit-test-framework` |
 | `macros`, `version` | The mapping module and its thin re-export |
 | `backend-log-avx2`, `backend-log-ssse3` | Build-time Boost.Log dump implementation, x86_64 only, one per axis |
 
