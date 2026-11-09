@@ -6,140 +6,144 @@ upstream = "1.92.0"
 library = "hash2"
 
 [[example]]
-path   = "libs/hash2/example/compile_time.cpp"
-status = "todo"
+path = "libs/hash2/example/compile_time.cpp"
+case = "hash2/examples:example: compile_time"
 
 [[example]]
-path   = "libs/hash2/example/compile_time_2.cpp"
-status = "todo"
+path = "libs/hash2/example/compile_time_2.cpp"
+case = "hash2/examples:example: compile_time_2"
 
 [[example]]
-path   = "libs/hash2/example/hash2sum.cpp"
-status = "todo"
+path = "libs/hash2/example/hash2sum.cpp"
+case = "hash2/examples:example: hash2sum"
 
 [[example]]
-path   = "libs/hash2/example/hash_32_64.cpp"
-status = "todo"
+path = "libs/hash2/example/hash_32_64.cpp"
+case = "hash2/examples:example: hash_32_64"
 
 [[example]]
-path   = "libs/hash2/example/hash_with_any_seed.cpp"
-status = "todo"
+path = "libs/hash2/example/hash_with_any_seed.cpp"
+case = "hash2/examples:example: hash_with_any_seed"
 
 [[example]]
-path   = "libs/hash2/example/hash_with_byte_seed.cpp"
-status = "todo"
+path = "libs/hash2/example/hash_with_byte_seed.cpp"
+case = "hash2/examples:example: hash_with_byte_seed"
 
 [[example]]
-path   = "libs/hash2/example/hash_with_uint64_seed.cpp"
-status = "todo"
+path = "libs/hash2/example/hash_with_uint64_seed.cpp"
+case = "hash2/examples:example: hash_with_uint64_seed"
 
 [[example]]
-path   = "libs/hash2/example/hash_without_seed.cpp"
-status = "todo"
+path = "libs/hash2/example/hash_without_seed.cpp"
+case = "hash2/examples:example: hash_without_seed"
 
 [[example]]
-path   = "libs/hash2/example/json_value.cpp"
-status = "todo"
+path = "libs/hash2/example/json_value.cpp"
+case = "hash2/examples:example: json_value"
 
 [[example]]
-path   = "libs/hash2/example/md5sum.cpp"
-status = "todo"
+path = "libs/hash2/example/md5sum.cpp"
+case = "hash2/examples:example: md5sum"
 
 [[example]]
-path   = "libs/hash2/example/xxh128_from_xxh64.cpp"
-status = "todo"
+path = "libs/hash2/example/xxh128_from_xxh64.cpp"
+case = "hash2/examples:example: xxh128_from_xxh64"
 
 [[snippet]]
 doc    = "libs/hash2/doc/hash2/examples.adoc#compile-time-hashing"
 title  = "Compile Time Hashing"
-status = "todo"
+case   = "hash2/examples:example: compile_time"
+reason = "the section shows compile_time.cpp"
 
 [[snippet]]
 doc    = "libs/hash2/doc/hash2/examples.adoc#hash2sum"
 title  = "hash2sum"
-status = "todo"
+case   = "hash2/examples:example: hash2sum"
+reason = "the section shows hash2sum.cpp"
 
 [[snippet]]
 doc    = "libs/hash2/doc/hash2/examples.adoc#md5sum"
 title  = "md5sum"
-status = "todo"
+case   = "hash2/examples:example: md5sum"
+reason = "the section shows md5sum.cpp"
 
 [[snippet]]
 doc    = "libs/hash2/doc/hash2/examples.adoc#result-extension"
 title  = "Result Extension"
-status = "todo"
+case   = "hash2/examples:example: xxh128_from_xxh64"
+reason = "the section shows xxh128_from_xxh64.cpp"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/examples.adoc#use-with-unordered-containers"
-title  = "Use with Unordered Containers"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/examples.adoc#use-with-unordered-containers"
+title = "Use with Unordered Containers"
+case  = "hash2/custom_types:doc: examples#use-with-unordered-containers"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#compile-time-hashing"
-title  = "Compile Time Hashing"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_bytes.adoc#compile-time-hashing"
+title = "Compile Time Hashing"
+case  = "hash2/api:doc: hashing_bytes#compile-time-hashing"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#hash-algorithm-requirements"
-title  = "Hash Algorithm Requirements"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_bytes.adoc#hash-algorithm-requirements"
+title = "Hash Algorithm Requirements"
+case  = "hash2/api:doc: hashing_bytes#hash-algorithm-requirements"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#result"
-title  = "result"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_bytes.adoc#result"
+title = "result"
+case  = "hash2/api:doc: hashing_bytes#result"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#update"
-title  = "update"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_bytes.adoc#update"
+title = "update"
+case  = "hash2/api:doc: hashing_bytes#update"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#arrays"
-title  = "Arrays"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#arrays"
+title = "Arrays"
+case  = "hash2/api:doc: hashing_objects#arrays"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#described-classes"
-title  = "Described Classes"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#described-classes"
+title = "Described Classes"
+case  = "hash2/mixed_describe:doc: hashing_objects#described-classes"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#enumeration-types"
-title  = "Enumeration Types"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#enumeration-types"
+title = "Enumeration Types"
+case  = "hash2/api:doc: hashing_objects#enumeration-types"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#floating-point-types"
-title  = "Floating Point Types"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#floating-point-types"
+title = "Floating Point Types"
+case  = "hash2/api:doc: hashing_objects#floating-point-types"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#hashing_objects"
-title  = "Hashing {cpp} Objects"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#hashing_objects"
+title = "Hashing {cpp} Objects"
+case  = "hash2/api:doc: hashing_objects#hashing_objects"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#integral-types"
-title  = "Integral Types"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#integral-types"
+title = "Integral Types"
+case  = "hash2/api:doc: hashing_objects#integral-types"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#pointers"
-title  = "Pointers"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#pointers"
+title = "Pointers"
+case  = "hash2/api:doc: hashing_objects#pointers"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#ranges"
-title  = "Ranges"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#ranges"
+title = "Ranges"
+case  = "hash2/api:doc: hashing_objects#ranges"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#tuples"
-title  = "Tuples"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#tuples"
+title = "Tuples"
+case  = "hash2/api:doc: hashing_objects#tuples"
 
 [[snippet]]
-doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#user-defined-types"
-title  = "User Defined Types"
-status = "todo"
+doc   = "libs/hash2/doc/hash2/hashing_objects.adoc#user-defined-types"
+title = "User Defined Types"
+case  = "hash2/custom_types:doc: hashing_objects#user-defined-types"
