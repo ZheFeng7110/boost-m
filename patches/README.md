@@ -38,6 +38,10 @@ second one. The algorithm module's GMF includes them in that order, and
 namespace-scope `const` object (internal linkage), which a module cannot
 export; it becomes `inline constexpr`.
 
+`bimap.patch` is the same case: the `_key` / `_data` lambda placeholders
+of `boost/bimap/support/lambda.hpp` were references in an anonymous
+namespace; they become `inline constexpr`, as `boost::lambda::_1` did.
+
 Every patch is reviewed against the 1.92.0 tag it was written for;
 `upstream/boost/SOURCE.md` records the archive and checksum the tree comes
 from. A patch that neither applies nor is already applied fails the replay.

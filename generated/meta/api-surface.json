@@ -233,7 +233,7 @@
     "multi_index",
     "type_traits"
    ],
-   "exported": 190,
+   "exported": 192,
    "gmf": [
     "boost/bimap.hpp",
     "boost/bimap/container_adaptor/support/iterator_facade_converters.hpp",
