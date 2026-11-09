@@ -37,6 +37,8 @@ Naming convention (what ``link`` matches, in any tests/<lib>/**/*.cpp):
     libs/<lib>/**/<page>.qbk#<section>   TEST_CASE("doc: <page>#<section>"), or
                                          TEST_CASE("doc: <section>") when no
                                          other page of the library has <section>
+    ...#example_<stem>                   TEST_CASE("example: <stem>") (sections
+                                         that present an example program)
 
 Documentation sections are the granularity for snippets: a qbk
 ``[section ...]`` or an AsciiDoc / Markdown heading whose body has a code
@@ -174,9 +176,11 @@ def md_sections(text):
                 fence = None
             continue
         s = line.strip()
-        if s.startswith("```") or s == "----" or s == "....":
+        # ``` fences, and AsciiDoc ---- (listing) / .... (literal) blocks of
+        # four or more delimiter characters.
+        if s.startswith("```") or re.fullmatch(r"-{4,}|\.{4,}", s):
             fence = "```" if s.startswith("```") else s
-            if s != "....":
+            if not s.startswith("."):
                 has_code = True
             continue
         m = re.match(r"^\[#([\w.-]+)\]\s*$", s)
@@ -403,6 +407,8 @@ def cmd_link(args):
                     wanted = ["doc: {}#{}".format(Path(doc).stem, sid)]
                     if sids[sid] == 1:
                         wanted.append("doc: " + sid)
+                    if sid.startswith("example_"):  # a page section per example
+                        wanted.append("example: " + sid[len("example_"):])
                 hit = next((w for w in wanted if w in cases), None)
                 if hit is None:
                     todo.append(e[key])
@@ -436,7 +442,7 @@ def cmd_check(_args):
         totals[lib] = counts
         if lib in CUSTOM_TYPES:
             base = TESTS / lib
-            hits = list(base.rglob("custom_types*.cpp")) if base.is_dir() else []
+            hits = list(base.rglob("*custom_types*.cpp")) if base.is_dir() else []
             if not hits:
                 errors.append("tests/{}/custom_types.cpp is missing (the "
                               "library has customization points)".format(lib))

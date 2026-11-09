@@ -6,170 +6,174 @@ upstream = "1.92.0"
 library = "describe"
 
 [[example]]
-path   = "libs/describe/example/console.cpp"
-status = "todo"
+path = "libs/describe/example/console.cpp"
+case = "describe/examples_json:example: console"
 
 [[example]]
-path   = "libs/describe/example/enum_to_string.cpp"
-status = "todo"
+path = "libs/describe/example/enum_to_string.cpp"
+case = "describe/include_examples:example: enum_to_string"
 
 [[example]]
-path   = "libs/describe/example/equality.cpp"
-status = "todo"
+path = "libs/describe/example/equality.cpp"
+case = "describe/include_examples:example: equality"
 
 [[example]]
 path   = "libs/describe/example/fmtlib_class_formatter.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs the {fmt} library, which the package does not vendor"
 
 [[example]]
 path   = "libs/describe/example/fmtlib_enum_formatter.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs the {fmt} library, which the package does not vendor"
 
 [[example]]
-path   = "libs/describe/example/from_json.cpp"
-status = "todo"
+path = "libs/describe/example/from_json.cpp"
+case = "describe/examples_json:example: from_json"
 
 [[example]]
-path   = "libs/describe/example/hash_value.cpp"
-status = "todo"
+path = "libs/describe/example/hash_value.cpp"
+case = "describe/include_examples:example: hash_value"
 
 [[example]]
-path   = "libs/describe/example/json_rpc.cpp"
-status = "todo"
+path = "libs/describe/example/json_rpc.cpp"
+case = "describe/examples_json:example: json_rpc"
 
 [[example]]
-path   = "libs/describe/example/pm_to_string.cpp"
-status = "todo"
+path = "libs/describe/example/pm_to_string.cpp"
+case = "describe/include_examples:example: pm_to_string"
 
 [[example]]
-path   = "libs/describe/example/print_function.cpp"
-status = "todo"
+path = "libs/describe/example/print_function.cpp"
+case = "describe/include_examples:example: print_function"
 
 [[example]]
-path   = "libs/describe/example/printing_enums_ct.cpp"
-status = "todo"
+path = "libs/describe/example/printing_enums_ct.cpp"
+case = "describe/include_examples:example: printing_enums_ct"
 
 [[example]]
-path   = "libs/describe/example/printing_enums_rt.cpp"
-status = "todo"
+path = "libs/describe/example/printing_enums_rt.cpp"
+case = "describe/include_examples:example: printing_enums_rt"
 
 [[example]]
-path   = "libs/describe/example/serialization.cpp"
-status = "todo"
+path = "libs/describe/example/serialization.cpp"
+case = "describe/examples_serialization:example: serialization"
 
 [[example]]
-path   = "libs/describe/example/string_to_enum.cpp"
-status = "todo"
+path = "libs/describe/example/string_to_enum.cpp"
+case = "describe/include_examples:example: string_to_enum"
 
 [[example]]
-path   = "libs/describe/example/struct_to_tuple.cpp"
-status = "todo"
+path = "libs/describe/example/struct_to_tuple.cpp"
+case = "describe/include_examples:example: struct_to_tuple"
 
 [[example]]
-path   = "libs/describe/example/to_json.cpp"
-status = "todo"
+path = "libs/describe/example/to_json.cpp"
+case = "describe/examples_json:example: to_json"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/classes.adoc#class-types-with-protected-or-private-members"
-title  = "Class Types with Protected or Private Members"
-status = "todo"
+doc   = "libs/describe/doc/describe/classes.adoc#class-types-with-protected-or-private-members"
+title = "Class Types with Protected or Private Members"
+case  = "describe/include_custom_types:doc: classes#class-types-with-protected-or-private-members"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/classes.adoc#class-types-with-public-members"
-title  = "Class Types with Public Members"
-status = "todo"
+doc   = "libs/describe/doc/describe/classes.adoc#class-types-with-public-members"
+title = "Class Types with Public Members"
+case  = "describe/include_custom_types:doc: classes#class-types-with-public-members"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/classes.adoc#overloaded-member-functions"
-title  = "Overloaded Member Functions"
-status = "todo"
+doc   = "libs/describe/doc/describe/classes.adoc#overloaded-member-functions"
+title = "Overloaded Member Functions"
+case  = "describe/include_custom_types:doc: classes#overloaded-member-functions"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/classes.adoc#retrieving-class-properties"
-title  = "Retrieving Class Properties"
-status = "todo"
+doc   = "libs/describe/doc/describe/classes.adoc#retrieving-class-properties"
+title = "Retrieving Class Properties"
+case  = "describe/include_custom_types:doc: classes#retrieving-class-properties"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/enums.adoc#enums"
-title  = "Describing Enumeration Types"
-status = "todo"
+doc   = "libs/describe/doc/describe/enums.adoc#enums"
+title = "Describing Enumeration Types"
+case  = "describe/include_custom_types:doc: enums#enums"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_console"
-title  = "Interactive Variable Console"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_console"
+title = "Interactive Variable Console"
+case  = "describe/examples_json:example: console"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_enum_to_string"
-title  = "enum_to_string"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_enum_to_string"
+title = "enum_to_string"
+case  = "describe/include_examples:example: enum_to_string"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_equality"
-title  = "Implementing operator=="
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_equality"
+title = "Implementing operator=="
+case  = "describe/include_examples:example: equality"
 
 [[snippet]]
 doc    = "libs/describe/doc/describe/examples.adoc#example_fmtlib_class_formatter"
 title  = "`fmtlib` Class Formatter"
-status = "todo"
+status = "excluded"
+reason = "needs the {fmt} library, which the package does not vendor"
 
 [[snippet]]
 doc    = "libs/describe/doc/describe/examples.adoc#example_fmtlib_enum_formatter"
 title  = "`fmtlib` Enum Formatter"
-status = "todo"
+status = "excluded"
+reason = "needs the {fmt} library, which the package does not vendor"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_from_json"
-title  = "Automatic Conversion from JSON"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_from_json"
+title = "Automatic Conversion from JSON"
+case  = "describe/examples_json:example: from_json"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_hash_value"
-title  = "Implementing hash_value"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_hash_value"
+title = "Implementing hash_value"
+case  = "describe/include_examples:example: hash_value"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_json_rpc"
-title  = "Automatic JSON RPC"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_json_rpc"
+title = "Automatic JSON RPC"
+case  = "describe/examples_json:example: json_rpc"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_pm_to_string"
-title  = "Printing Pointers to Members"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_pm_to_string"
+title = "Printing Pointers to Members"
+case  = "describe/include_examples:example: pm_to_string"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_print_function"
-title  = "Defining a Universal Print Function"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_print_function"
+title = "Defining a Universal Print Function"
+case  = "describe/include_examples:example: print_function"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_printing_enums_ct"
-title  = "Printing Enumerators with a Compile Time Loop"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_printing_enums_ct"
+title = "Printing Enumerators with a Compile Time Loop"
+case  = "describe/include_examples:example: printing_enums_ct"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_printing_enums_rt"
-title  = "Printing Enumerators with a Run Time Loop"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_printing_enums_rt"
+title = "Printing Enumerators with a Run Time Loop"
+case  = "describe/include_examples:example: printing_enums_rt"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_serialization"
-title  = "Automatic Serialization"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_serialization"
+title = "Automatic Serialization"
+case  = "describe/examples_serialization:example: serialization"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_string_to_enum"
-title  = "string_to_enum"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_string_to_enum"
+title = "string_to_enum"
+case  = "describe/include_examples:example: string_to_enum"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_struct_to_tuple"
-title  = "struct_to_tuple"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_struct_to_tuple"
+title = "struct_to_tuple"
+case  = "describe/include_examples:example: struct_to_tuple"
 
 [[snippet]]
-doc    = "libs/describe/doc/describe/examples.adoc#example_to_json"
-title  = "Automatic Conversion to JSON"
-status = "todo"
+doc   = "libs/describe/doc/describe/examples.adoc#example_to_json"
+title = "Automatic Conversion to JSON"
+case  = "describe/examples_json:example: to_json"

@@ -146,6 +146,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: population_bimap") {
@@ -246,6 +247,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -332,6 +334,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: assign") {
@@ -372,6 +375,7 @@ int example_main()
     bm.left.modify_data( bm.left.begin(), _data *= 10 );
     //]
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: lambda") {
@@ -420,6 +424,7 @@ int example_main()
     foo( name2address.left );
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -533,6 +538,7 @@ int example_main()
               bind<int>( second_extractor(), _1 ) == 2 );
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -612,6 +618,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: serialization") {

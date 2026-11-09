@@ -123,6 +123,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: foreach") {
@@ -215,6 +216,7 @@ int example_main()
     not_using_auto();
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: typeof") {
@@ -267,6 +269,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: xpressive") {

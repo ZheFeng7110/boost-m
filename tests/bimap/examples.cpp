@@ -107,6 +107,7 @@ int example_main()
     first_bimap();
     second_bimap();
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: at_function_examples") {
@@ -176,6 +177,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -256,6 +258,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -401,6 +404,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -481,6 +485,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -586,6 +591,7 @@ int example_main()
         }
     }
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -642,6 +648,7 @@ int example_main()
     years_example();
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: projection") {
@@ -722,6 +729,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: repetitions_counter") {
@@ -795,6 +803,7 @@ int example_main()
     print_map( results.left, " ends in position ", ex_out );
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -893,6 +902,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -987,6 +997,7 @@ int example_main()
     //]
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: step_by_step") {
@@ -1070,6 +1081,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 //]
 
@@ -1235,6 +1247,7 @@ int example_main()
     bimap_without_an_info_hook();
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: tutorial_info_hook") {
@@ -1343,6 +1356,7 @@ int example_main()
     test_replace();
     test_modify();
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: tutorial_modify_and_replace") {
@@ -1433,6 +1447,7 @@ int example_main()
     using_range();
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: tutorial_range") {
@@ -1515,6 +1530,7 @@ int example_main()
     }
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: unconstrained_collection") {
@@ -1650,6 +1666,7 @@ int example_main()
     tagged_version();
 
     return 0;
+    return 0;  // main's implicit return
 }
 
 TEST_CASE("example: user_defined_names") {

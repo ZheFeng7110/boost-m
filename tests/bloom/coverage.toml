@@ -6,17 +6,59 @@ upstream = "1.92.0"
 library = "bloom"
 
 [[example]]
-path   = "libs/bloom/example/basic.cpp"
-status = "todo"
+path = "libs/bloom/example/basic.cpp"
+case = "bloom/examples:example: basic"
 
 [[example]]
 path   = "libs/bloom/example/genome.cpp"
-status = "todo"
+case   = "bloom/genome:example: genome"
+reason = "run on a FASTA fixture: the original reads a 140 MB NCBI genome download"
 
 [[example]]
-path   = "libs/bloom/example/rolling_filter.cpp"
-status = "todo"
+path = "libs/bloom/example/rolling_filter.cpp"
+case = "bloom/examples:example: rolling_filter"
 
 [[example]]
-path   = "libs/bloom/example/serialization.cpp"
-status = "todo"
+path = "libs/bloom/example/serialization.cpp"
+case = "bloom/examples:example: serialization"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/future_work.adoc#future_work"
+title = "`try_insert`"
+case  = "bloom/api:doc: future_work#future_work"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#bulk-operations"
+title = "Bulk Operations"
+case  = "bloom/api:doc: tutorial#bulk-operations"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#capacity"
+title = "Capacity"
+case  = "bloom/api:doc: tutorial#capacity"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#direct-access-to-the-array"
+title = "Direct Access to the Array"
+case  = "bloom/api:doc: tutorial#direct-access-to-the-array"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#filter-combination"
+title = "Filter Combination"
+case  = "bloom/api:doc: tutorial#filter-combination"
+
+[[snippet]]
+doc    = "libs/bloom/doc/bloom/tutorial.adoc#gdb-pretty-printer"
+title  = "GDB Pretty-Printer"
+status = "excluded"
+reason = "GDB session transcript (pretty-printer setup), no C++ API use"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#insertion-and-lookup"
+title = "Insertion and Lookup"
+case  = "bloom/api:doc: tutorial#insertion-and-lookup"
+
+[[snippet]]
+doc   = "libs/bloom/doc/bloom/tutorial.adoc#tutorial"
+title = "Filter Definition"
+case  = "bloom/api:doc: tutorial#tutorial"
