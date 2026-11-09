@@ -1,0 +1,1019 @@
+# tests/test/coverage.toml — official examples and documentation snippets of
+# Boost.test 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "test"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_runtime_list_content.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_bitwise.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_container_default.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_container_lex.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_container_lex_default.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_macro2.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_macro3.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_macro_container_c_array.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_macro_overview.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_macro_workaround.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_message.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_sequence_per_element.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/boost_test_string.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/custom_init.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/custom_main.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/custom_obsolete_init.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example59.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example61.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example62.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example63.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example64.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example65.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example66.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example67.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/dataset_example68.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_00.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_01.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_02.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_03.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_04.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_05.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_06.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_07.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_08.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_09.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_10.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_11.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_12.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_13.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_20.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_21.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_22.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/decorator_23.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example01.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example03.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example06.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example07.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example08.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example09.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example10.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example11.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example12.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example13.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example14.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example15.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example16.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example17.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example18.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example20.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example21.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example22.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example23.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example24.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example25.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example26.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example28.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example29.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example30.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example31.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example32.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example33.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example34.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example35.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example36.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example38.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example40.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example41.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example42.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example43.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example44.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example46.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example47.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example48.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example49.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example50.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example51.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example52.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example53.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example54.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example55.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example56.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example57.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example58.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example80_contexts.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example81_contexts.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example82_contexts.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example83_contexts.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/example84_contexts.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/exception_api.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/exception_check.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/exception_check_predicate.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/exception_nothrow.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/exception_uncaught.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/fixture_02.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/fixture_03.run.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/fixture_04.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/logger-customization-point.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/runtime-configuration_1.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/runtime-configuration_2.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/runtime-configuration_3.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/runtime-configuration_4.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_01.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_02.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_03.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_04.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_05.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/doc/examples/tolerance_06.run-fail.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/const_string_test.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/exec_mon_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/external_main_example_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/external_main_example_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/external_main_example_3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/filtering_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/named_param_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/prg_exec_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/test_case_template_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_01.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_02.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_03.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_04.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_05.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_06.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_07.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_08.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_09_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_09_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_10.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_11.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_12.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_13.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_15.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/test/example/unit_test_example_16.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/building_utf.qbk#build_utf"
+title  = "Building the __UTF__"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/entry_point_overview.qbk#entry_point_overview"
+title  = "Test module's entry point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/link_reference.qbk#link_boost_test_no_main"
+title  = "`BOOST_TEST_NO_MAIN`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/obsolete_init_func.qbk#obsolete_init_func"
+title  = "The obsolete initialization function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/shared_lib_customizations.qbk#entry_point"
+title  = "Customizing the module's entry point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/shared_lib_customizations.qbk#init_func"
+title  = "Customizing the module's initialization function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/static_lib_customizations.qbk#entry_point"
+title  = "Customizing the module's entry point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/static_lib_customizations.qbk#init_func"
+title  = "Customizing the module's initialization function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/test_module_init_overview.qbk#test_module_init_overview"
+title  = "Test module's initialization"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/adv_scenarios/test_module_runner_overview.qbk#test_module_runner_overview"
+title  = "Test module runner"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/closing_chapters/faq.qbk#section_faq"
+title  = "Frequently Asked Questions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/introduction/introduction.qbk#intro"
+title  = "Introduction"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/prod_use/program_execution_monitor.qbk#section_pem_compilation"
+title  = "Compilation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#list_labels"
+title  = "`list_labels`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#log_level"
+title  = "`log_level`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#logger"
+title  = "`logger`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#run_test"
+title  = "`run_test`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#save_pattern"
+title  = "`save_pattern`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/runtime_custom.qbk#custom-command-line-arguments"
+title  = "Custom command line arguments"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/runtime_configuration/test_unit_filtering.qbk#test_unit_filtering"
+title  = "Test unit filtering"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/decorators.qbk#explicit-decorator-declaration"
+title  = "Explicit decorator declaration"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/fixtures.qbk#case"
+title  = "Test case fixture"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/fixtures.qbk#fixtures"
+title  = "Fixtures"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/fixtures.qbk#global"
+title  = "Global fixture"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/fixtures.qbk#models"
+title  = "Fixture models"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/master_test_suite.qbk#master_test_suite"
+title  = "Master test suite"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/nullary_tests.qbk#test_organization_nullary"
+title  = "Test cases without parameters"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#dataset-creation-and-delayed-creation"
+title  = "Dataset creation and delayed creation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#datasets_auto_registration"
+title  = "Declaring and registering test cases with datasets"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#generators"
+title  = "Datasets generators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#grid-cartesian-products"
+title  = "Grid (Cartesian products)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#joins"
+title  = "Joins"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#test_case_generation"
+title  = "Data-driven test cases"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/parametric_test_case_generation.qbk#zips"
+title  = "Zips"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/test_suites.qbk#test_suite"
+title  = "Test suite"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_depends_on"
+title  = "depends_on (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_description"
+title  = "description (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_enable_if"
+title  = "enable_if (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_enabled"
+title  = "enabled / disabled (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_fixture"
+title  = "fixture (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_label"
+title  = "label (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#decorator_precondition"
+title  = "precondition (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#test_org_boost_test_dataset"
+title  = "`BOOST_DATA_TEST_CASE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/testorg_reference.qbk#test_org_boost_test_dataset_fixture"
+title  = "`BOOST_DATA_TEST_CASE_F`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/typed_parametrized_tests.qbk#test_organization_templates"
+title  = "Template test cases"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_organization/unary_tests.qbk#param_test"
+title  = "Parametrized test cases"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/checkpoints.qbk#checkpoints"
+title  = "Checkpoints for accurate failure location"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/contexts.qbk#contexts"
+title  = "Contexts"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/logger_api.qbk#log_ct_log_format"
+title  = "Predefined log format selection"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/logger_api.qbk#log_ct_output_stream_redirection"
+title  = "Log output stream redirection"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/logger_api.qbk#logging_api"
+title  = "Logging API"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/progress_display.qbk#test_output_progress"
+title  = "Progress display"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/report_format.qbk#report_human_readable_format"
+title  = "Human readable report format"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/test_output/test_tools_support.qbk#testing_tool_output_disable"
+title  = "Logging user defined types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/boost_test_collection_comparison.qbk#collections"
+title  = "Collections comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/boost_test_technical_details.qbk#internal_details"
+title  = "`BOOST_TEST`: details on expressions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/boost_test_universal_macro.qbk#boost_test_universal_macro"
+title  = "BOOST_TEST: universal and general purpose assertions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/expected_failures.qbk#expected_failures"
+title  = "Expected failures specification"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_floating_points.qbk#customizing_for_tolerance"
+title  = "Enabling tolerance for user-defined types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_floating_points.qbk#floating_point"
+title  = "Floating point comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_floating_points.qbk#floating_points_comparison_impl"
+title  = "Tolerance-based comparisons"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_floating_points.qbk#floating_points_comparison_theory"
+title  = "Theory behind floating point comparisons"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_error"
+title  = "`BOOST_ERROR`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_fail"
+title  = "`BOOST_FAIL`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_is_defined"
+title  = "`BOOST_IS_DEFINED`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_bitwise_eq"
+title  = "`BOOST_<level>_BITWISE_EQUAL`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_close"
+title  = "`BOOST_<level>_CLOSE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_close_fraction"
+title  = "`BOOST_<level>_CLOSE_FRACTION`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_eq"
+title  = "`BOOST_<level>_EQUAL`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_eq_collections"
+title  = "`BOOST_<level>_EQUAL_COLLECTIONS`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_exception"
+title  = "`BOOST_<level>_EXCEPTION`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_ge"
+title  = "`BOOST_<level>_GE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_gt"
+title  = "`BOOST_<level>_GT`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_le"
+title  = "`BOOST_<level>_LE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_lt"
+title  = "`BOOST_<level>_LT`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_message"
+title  = "`BOOST_<level>_MESSAGE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_ne"
+title  = "`BOOST_<level>_NE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_no_throw"
+title  = "`BOOST_<level>_NO_THROW`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_predicate"
+title  = "`BOOST_<level>_PREDICATE`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_small"
+title  = "`BOOST_<level>_SMALL`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_level_throw"
+title  = "`BOOST_<level>_THROW`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#assertion_boost_test_universal_macro"
+title  = "`BOOST_TEST`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#decorator_expected_failures"
+title  = "expected_failures (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#decorator_timeout"
+title  = "timeout (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/testing_tools/testing_tools_reference.qbk#decorator_tolerance"
+title  = "tolerance (decorator)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/tutorials/hello_world.qbk#hello"
+title  = "A testing framework, what for?"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/tutorials/new_year_resolution.qbk#bt_and_tdd"
+title  = "Test driven development with Boost.Test"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/usage_recommendations.qbk#general"
+title  = "General"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/test/doc/usage_variants.qbk#usage_variants"
+title  = "Usage variants"
+status = "todo"

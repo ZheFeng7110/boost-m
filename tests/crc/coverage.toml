@@ -1,0 +1,39 @@
+# tests/crc/coverage.toml — official examples and documentation snippets of
+# Boost.crc 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "crc"
+
+[[example]]
+path = "libs/crc/crc_example.cpp"
+case = "crc/examples:example: crc_example"
+
+[[example]]
+path = "libs/crc/doc/crc_examples.cpp"
+case = "crc/examples:example: crc_examples"
+
+[[snippet]]
+doc   = "libs/crc/doc/crc.qbk#acrc_function"
+title = "Augmented-CRC Function"
+case  = "crc/api:doc: acrc_function"
+
+[[snippet]]
+doc   = "libs/crc/doc/crc.qbk#crc_basic"
+title = "Theoretical CRC Computer"
+case  = "crc/api:doc: crc_basic"
+
+[[snippet]]
+doc   = "libs/crc/doc/crc.qbk#crc_function"
+title = "CRC Function"
+case  = "crc/api:doc: crc_function"
+
+[[snippet]]
+doc   = "libs/crc/doc/crc.qbk#crc_optimal"
+title = "Optimized CRC Computer"
+case  = "crc/api:doc: crc_optimal"
+
+[[snippet]]
+doc   = "libs/crc/doc/crc.qbk#crc_samples"
+title = "Pre-Defined CRC Samples"
+case  = "crc/api:doc: crc_samples"

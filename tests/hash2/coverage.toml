@@ -1,0 +1,145 @@
+# tests/hash2/coverage.toml — official examples and documentation snippets of
+# Boost.hash2 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "hash2"
+
+[[example]]
+path   = "libs/hash2/example/compile_time.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/compile_time_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash2sum.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash_32_64.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash_with_any_seed.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash_with_byte_seed.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash_with_uint64_seed.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/hash_without_seed.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/json_value.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/md5sum.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/hash2/example/xxh128_from_xxh64.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/examples.adoc#compile-time-hashing"
+title  = "Compile Time Hashing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/examples.adoc#hash2sum"
+title  = "hash2sum"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/examples.adoc#md5sum"
+title  = "md5sum"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/examples.adoc#result-extension"
+title  = "Result Extension"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/examples.adoc#use-with-unordered-containers"
+title  = "Use with Unordered Containers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#compile-time-hashing"
+title  = "Compile Time Hashing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#hash-algorithm-requirements"
+title  = "Hash Algorithm Requirements"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#result"
+title  = "result"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_bytes.adoc#update"
+title  = "update"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#arrays"
+title  = "Arrays"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#described-classes"
+title  = "Described Classes"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#enumeration-types"
+title  = "Enumeration Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#floating-point-types"
+title  = "Floating Point Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#hashing_objects"
+title  = "Hashing {cpp} Objects"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#integral-types"
+title  = "Integral Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#pointers"
+title  = "Pointers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#ranges"
+title  = "Ranges"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#tuples"
+title  = "Tuples"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/hash2/doc/hash2/hashing_objects.adoc#user-defined-types"
+title  = "User Defined Types"
+status = "todo"

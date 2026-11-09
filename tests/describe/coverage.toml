@@ -1,0 +1,175 @@
+# tests/describe/coverage.toml — official examples and documentation snippets of
+# Boost.describe 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "describe"
+
+[[example]]
+path   = "libs/describe/example/console.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/enum_to_string.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/equality.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/fmtlib_class_formatter.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/fmtlib_enum_formatter.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/from_json.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/hash_value.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/json_rpc.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/pm_to_string.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/print_function.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/printing_enums_ct.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/printing_enums_rt.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/serialization.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/string_to_enum.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/struct_to_tuple.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/describe/example/to_json.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/classes.adoc#class-types-with-protected-or-private-members"
+title  = "Class Types with Protected or Private Members"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/classes.adoc#class-types-with-public-members"
+title  = "Class Types with Public Members"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/classes.adoc#overloaded-member-functions"
+title  = "Overloaded Member Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/classes.adoc#retrieving-class-properties"
+title  = "Retrieving Class Properties"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/enums.adoc#enums"
+title  = "Describing Enumeration Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_console"
+title  = "Interactive Variable Console"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_enum_to_string"
+title  = "enum_to_string"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_equality"
+title  = "Implementing operator=="
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_fmtlib_class_formatter"
+title  = "`fmtlib` Class Formatter"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_fmtlib_enum_formatter"
+title  = "`fmtlib` Enum Formatter"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_from_json"
+title  = "Automatic Conversion from JSON"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_hash_value"
+title  = "Implementing hash_value"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_json_rpc"
+title  = "Automatic JSON RPC"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_pm_to_string"
+title  = "Printing Pointers to Members"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_print_function"
+title  = "Defining a Universal Print Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_printing_enums_ct"
+title  = "Printing Enumerators with a Compile Time Loop"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_printing_enums_rt"
+title  = "Printing Enumerators with a Run Time Loop"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_serialization"
+title  = "Automatic Serialization"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_string_to_enum"
+title  = "string_to_enum"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_struct_to_tuple"
+title  = "struct_to_tuple"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/describe/doc/describe/examples.adoc#example_to_json"
+title  = "Automatic Conversion to JSON"
+status = "todo"

@@ -1,0 +1,224 @@
+# tests/cobalt/coverage.toml — official examples and documentation snippets of
+# Boost.cobalt 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "cobalt"
+
+[[example]]
+path   = "libs/cobalt/example/channel.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/delay.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/delay_op.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/echo_server.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/http.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/outcome.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/python.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/signals.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/spsc.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/thread.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/thread_pool.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/cobalt/example/ticker.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/asio_awaitable.adoc#asio-awaitable"
+title  = "`asio::awaitable`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/custom_executors.adoc#a-minimal-executor"
+title  = "A minimal executor"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/custom_executors.adoc#adding-a-work-guard"
+title  = "Adding a work guard."
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/custom_executors.adoc#execute"
+title  = "`execute`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/custom_executors.adoc#properties"
+title  = "Properties"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/custom_executors.adoc#properties-of-the-asio-any-io-executor"
+title  = "Properties of the `asio::any_io_executor`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/lazy_eager.adoc#lazy-eager"
+title  = "Lazy & eager"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/background/stackless.adoc#stackless"
+title  = "Stackless"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/benchmarks.adoc#immediate"
+title  = "Immediate"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/benchmarks.adoc#posting-to-an-executor"
+title  = "Posting to an executor"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/benchmarks.adoc#running-noop-coroutine-in-parallel"
+title  = "Running noop coroutine in parallel"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/compiler.adoc#compiler"
+title  = "Compiler"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/associators.adoc#associators"
+title  = "Associators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/concepts.adoc#concepts"
+title  = "Concepts"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/promise.adoc#promise"
+title  = "Promise"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/race.adoc#interrupt-await"
+title  = "interrupt_await"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/race.adoc#race"
+title  = "Race"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/thread.adoc#threading"
+title  = "Threading"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/design/thread_local.adoc#using-strands"
+title  = "Using Strands"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/primer/async.adoc#async-programming"
+title  = "Async programming"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/primer/awaitables.adoc#awaitables"
+title  = "Awaitables"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/primer/coroutines.adoc#co-await"
+title  = "`co_await`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/primer/coroutines.adoc#co-yield"
+title  = "`co_yield`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/entry.adoc#entry-into-a-cobalt-environment"
+title  = "Entry into a cobalt environment"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/generator.adoc#tour-generator"
+title  = "Generator"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/join.adoc#tour-join"
+title  = "join"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/promise.adoc#promises"
+title  = "Promises"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/race.adoc#tour-race"
+title  = "race"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tour/task.adoc#tasks"
+title  = "Tasks"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tutorial/delay.adoc#delay"
+title  = "delay"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tutorial/delay_op.adoc#delay-op"
+title  = "delay op"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tutorial/echo_server.adoc#echo-server"
+title  = "echo server"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tutorial/push_generator.adoc#generator-with-push-value"
+title  = "Generator with push value"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/cobalt/doc/tutorial/ticker.adoc#price-ticker"
+title  = "price ticker"
+status = "todo"

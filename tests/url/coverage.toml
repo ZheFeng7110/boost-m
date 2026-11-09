@@ -1,0 +1,221 @@
+# tests/url/coverage.toml — official examples and documentation snippets of
+# Boost.url 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "url"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/file_router.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/finicky.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/magnet.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/mailto.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/qrcode.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/router.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/example/sanitize.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/unit/doc_3_urls.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/unit/doc_grammar.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/doc/modules/ROOT/examples/unit/snippets.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/file_router/file_router.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/finicky/finicky.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/magnet/magnet.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/mailto/mailto.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/qrcode/qrcode.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/router/detail/impl/router.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/router/impl/matches.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/router/router.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/sanitize/sanitize.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/url/example/suffix_list/suffix_list.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/README.md#instructions-for-documentation"
+title  = "Instructions for Documentation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/charset.adoc#the-lut-chars-type"
+title  = "The lut_chars Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#optional-rule"
+title  = "Optional Rule"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#tuple-rule"
+title  = "Tuple Rule"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#variant-rule"
+title  = "Variant Rule"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/index.adoc#grammar"
+title  = "Syntax Notation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/rfc3986.adoc#percent-encoding"
+title  = "Percent Encoding"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/grammar/rfc3986.adoc#url-rules"
+title  = "URL Rules"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#accessing"
+title  = "Accessing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#compound-elements"
+title  = "Compound elements"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#integration"
+title  = "Integration"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#modifying"
+title  = "Modifying"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#parsing"
+title  = "Parsing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#percent-encoding"
+title  = "Percent-Encoding"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#api-reference"
+title  = "API Reference"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#authority"
+title  = "Authority"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#scheme"
+title  = "Scheme"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#scheme-and-protocol-based-normalization"
+title  = "Scheme and Protocol-Based Normalization"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#simple-string-comparison"
+title  = "Simple String Comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#syntax-based-normalization"
+title  = "Syntax-Based Normalization"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#syntax-based-normalization-procedure"
+title  = "Syntax-Based Normalization Procedure"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#constexpr-parsing"
+title  = "Constexpr Parsing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#parsing-urls"
+title  = "Parsing URLs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#result-type"
+title  = "Result Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#decode"
+title  = "Decode"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#encoding"
+title  = "Encoding"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#validating"
+title  = "Validating"
+status = "todo"

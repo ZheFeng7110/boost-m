@@ -49,7 +49,7 @@ BOOST_VERSION = _boost_version()
 # C1 downgrade (2026-09-06): scope_exit is include-only now — its public API
 # is the BOOST_SCOPE_EXIT_* macro family (macros never cross module
 # boundaries, M10 rule), and gcc 16.1 ODR-conflicts on include+import mixing
-# (describe.cpp precedent), so consumers #include <boost/scope_exit.hpp>.
+# (describe/smoke.cpp precedent), so consumers #include <boost/scope_exit.hpp>.
 LIBS_M3 = [
     "optional", "variant", "variant2", "any", "core", "container_hash",
     "mp11", "static_string", "scope", "type_traits",
@@ -240,12 +240,13 @@ LIBS_INCLUDE_ONLY_M11 = ["exception"]
 #    the official header-only configuration (<boost/test/included/**>
 #    aggregate,自带 main). The two forms must never link together (the
 #    included aggregate and the framework TUs double-define the framework
-#    symbols, M11 §3) — tests/test_utf.cpp vs tests/test_included.cpp are
-#    gated on MCPP_FEATURE_UNIT_TEST_FRAMEWORK.
+#    symbols, M11 §3): tests/test/utf/ is a project of its own that always
+#    enables the feature; tests/test/included/ (root project) is gated on
+#    MCPP_FEATURE_UNIT_TEST_FRAMEWORK.
 # The feature names live in gen_features.py (test is renamed
 # `unit_test_framework` there, aligned with the upstream CMake target
 # boost_unit_test_framework); the internal keys here stay `log` / `test`
-# (COMPILED_TU_GLOBS keys, tests/test_utf.cpp naming).
+# (COMPILED_TU_GLOBS keys).
 LIBS_COMPILED_INCLUDE_ONLY = ["log", "test"]
 
 # Target triple for the bundle AST snapshot. The committed .inc files are a

@@ -1,0 +1,17 @@
+# Test project of the compiled Boost.Test form (design .agents/docs/2026-11-09-
+# module-test-hardening-design.md §5): the unit-test-framework feature links
+# the framework TUs into every test program, which the header-only form
+# (tests/test/included/, root project) must never meet. The root mcpp.toml
+# keeps tests/test/utf/** out of its own [test] discover; CI runs `mcpp test`
+# here.
+[package]
+name        = "boost-m-tests-test-utf"
+version     = "0.0.0"
+description = "Tests of the compiled Boost.Test framework (unit-test-framework feature)"
+license     = "Apache-2.0"
+
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../../..", default-features = false, features = ["unit-test-framework"] }
+
+[test]
+discover = ["*.cpp"]

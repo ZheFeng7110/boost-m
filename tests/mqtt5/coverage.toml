@@ -1,0 +1,85 @@
+# tests/mqtt5/coverage.toml — official examples and documentation snippets of
+# Boost.mqtt5 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "mqtt5"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_in_coro_multithreaded_env.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_in_multithreaded_env.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_over_tcp.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_over_tls.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_over_websocket_tcp.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/hello_world_over_websocket_tls.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/multiflight_client.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/publisher.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/receiver.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/timeout_with_awaitable_operators.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/mqtt5/example/timeout_with_parallel_group.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/01_intro.qbk#intro"
+title  = "Introduction"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/02_getting_started.qbk#transport_protocol"
+title  = "Choosing a Suitable Transport Protocol"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/03_auto_reconnect.qbk#auto_reconnect"
+title  = "Built-in Auto-Reconnect and Retry Mechanism"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#disconnecting_the_client"
+title  = "Disconnecting the Client"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#reusing_the_client"
+title  = "Restarting the Client After Disconnection"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/09_per_op_cancellation.qbk#per_op_cancellation"
+title  = "Per-Operation Cancellation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/mqtt5/doc/qbk/10_executors.qbk#executors"
+title  = "Executors"
+status = "todo"

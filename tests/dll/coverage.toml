@@ -1,0 +1,125 @@
+# tests/dll/coverage.toml — official examples and documentation snippets of
+# Boost.dll 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "dll"
+
+[[example]]
+path   = "libs/dll/example/getting_started.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/getting_started_library.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/mangled/import_class.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/mangled/smart_lib.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial1/my_plugin_sum.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial1/tutorial1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial2/my_plugin_aggregator.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial2/tutorial2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial3/tutorial3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial4/load_self.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial4/static_plugin.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial5/load_all.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial6/on_unload_lib.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial6/tutorial6.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial7/library1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial7/library2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial7/tutorial7.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial8/refcounting_plugin.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial8/tutorial8.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial8/tutorial8_static.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/dll/example/tutorial9/tutorial9.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/design_rationale.qbk#aliases-vs-mangling"
+title  = "Aliases vs Mangling"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/faq.qbk#f-a-q"
+title  = "F.A.Q."
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/getting_started.qbk#getting_started"
+title  = "Getting started"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/limitations.qbk#multithread"
+title  = "Thread safe library loading (Fails on FreeBSD, MacOS, iOS and some other)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/mangled.qbk#mangled-import"
+title  = "Mangled Import"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/mangled.qbk#overloading-qualifiers"
+title  = "Overloading qualifiers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/dll/doc/missuses.qbk#missuses"
+title  = "Missuses"
+status = "todo"

@@ -1,0 +1,832 @@
+# tests/decimal/coverage.toml — official examples and documentation snippets of
+# Boost.decimal 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "decimal"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/addition.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/adl.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/basic_arithmetic.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/basic_construction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/binary_float_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/bit_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/charconv.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/charconv_cohort_preservation.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/debugger.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/decompose_frexp10_normalize.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/first_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/fmt_format.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/format.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/integral_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/literals.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/numerical_parsing.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/print.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/promotion.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/rounding_mode.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/rounding_mode_compile_time.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/statistics.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/doc/modules/ROOT/examples/to_from_file.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/addition.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/adl.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/basic_arithmetic.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/basic_construction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/binary_float_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/bit_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/charconv.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/charconv_cohort_preservation.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/debugger.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/decompose_frexp10_normalize.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/first_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/fmt_format.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/format.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/integral_conversions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/literals.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/numerical_parsing.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/print.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/promotion.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/rounding_mode.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/rounding_mode_compile_time.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/statistics.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/decimal/example/to_from_file.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#0-1-in-decimal32-exact"
+title  = "0.1 in decimal32 (exact)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#0-1-why-float-double-cannot-represent-it-exactly"
+title  = "0.1: Why float/double cannot represent it exactly"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#1-numeric-meaning"
+title  = "1. Numeric meaning"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#4-summary-comparison"
+title  = "4. Summary comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#5-2-shared-90-entry-table"
+title  = "5.2 Shared 90-Entry Table"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#7-1-implementation-files"
+title  = "7.1 Implementation Files"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#8-algorithm-flow-summary"
+title  = "8. Algorithm Flow Summary"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#binary32-float-32-bits"
+title  = "Binary32 (float) — 32 bits"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/decimal_float_and_sqrt.md#decimal32-bid-32-bits-boost-decimal-internal-bits"
+title  = "Decimal32 (BID) — 32 bits (Boost.Decimal internal `bits_`)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/basics.adoc#construction-from-binary-floating-point"
+title  = "Construction from Binary Floating Point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/basics.adoc#construction-from-coefficient-and-exponent"
+title  = "Construction from Coefficient and Exponent"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/basics.adoc#construction-from-integer"
+title  = "Construction from Integer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/basics.adoc#using-the-library"
+title  = "Using the Library"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cfenv.adoc#cfenv"
+title  = "<cfenv>"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#charconv_limits"
+title  = "Formatting Limits"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#chars_format"
+title  = "chars_format"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#from_chars"
+title  = "from_chars"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#from_chars_result"
+title  = "from_chars_result"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#to_chars"
+title  = "to_chars"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/charconv.adoc#to_chars_result"
+title  = "to_chars_result"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath"
+title  = "Basic Operations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_classification"
+title  = "Classification and Comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_error_funcs"
+title  = "Error and Gamma Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_exp"
+title  = "Exponential Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_hyperbolic_funcs"
+title  = "Hyperbolic Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_manipulation_funcs"
+title  = "Floating Point Manipulation Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_nearest_int"
+title  = "Nearest integer floating point operations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_power_funcs"
+title  = "Power Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_spec_fun"
+title  = "Special Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#cmath_trig_funcs"
+title  = "Trigonometric Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#comparetotal"
+title  = "`comparetotal`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#decompose"
+title  = "`decompose`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#frexp10"
+title  = "`frexp10`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#issignaling"
+title  = "`issignaling`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#normalize"
+title  = "`normalize`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#quantexp"
+title  = "`quantexp`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#quantized"
+title  = "`quantized`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#read-payload"
+title  = "`read_payload`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#rescale"
+title  = "`rescale`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cmath.adoc#samequantum"
+title  = "`samequantum`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/cohorts.adoc#cohorts"
+title  = "Cohort Preserving `<charconv>` Example"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/config.adoc#configuration_user"
+title  = "User Configurable Macros"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/conversions.adoc#conversions"
+title  = "Bit Conversions Example"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/debugger.adoc#debug"
+title  = "LLDB"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/debugger.adoc#example"
+title  = "Example"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/debugger.adoc#gdb"
+title  = "GDB"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#decimal128_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal128_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#decimal32_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal32_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#decimal64_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal64_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#decimal_fast128_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast128_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#decimal_fast32_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast32_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#compound-operators"
+title  = "Compound Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#construction-from-integral-type"
+title  = "Construction From Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#construction-from-string"
+title  = "Construction From String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#construction-to-and-from-binary-floating-point-type"
+title  = "Construction to and from binary floating-point type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#conversion-to-integral-type"
+title  = "Conversion to Integral Type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#conversion-to-other-decimal-types"
+title  = "Conversion to Other Decimal Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#decimal_fast64_t"
+title  = "Description"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/decimal_fast64_t.adoc#increment-and-decrement-operators"
+title  = "Increment and Decrement Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/design.adoc#floating-point-exception-flags-are-not-supported"
+title  = "Floating Point Exception Flags are not Supported"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/design.adoc#non-finite-deviation"
+title  = "`istream` of Non-finite Values is Allowed"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_basic_math"
+title  = "Basic Arithmetic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_binary_floating_conversions"
+title  = "Binary Floating Point Conversions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_charconv"
+title  = "`<charconv>`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_construction"
+title  = "Basic Construction"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_cuda"
+title  = "CUDA Usage"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_file"
+title  = "Reading From and Writing To File"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_generic_programming"
+title  = "Generic Programming"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_integer_conversions"
+title  = "Integral Conversions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_literals_constants"
+title  = "Literals and Constants"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_print"
+title  = "`<print>`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_promotion"
+title  = "Promotion and Mixed Decimal Arithmetic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/examples.adoc#examples_std_format"
+title  = "`<format>`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#addition"
+title  = "Addition"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#comparison-operators"
+title  = "Comparison Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#division"
+title  = "Division"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#multiplication"
+title  = "Multiplication"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#overview"
+title  = "Overview"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#subtraction"
+title  = "Subtraction"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#unary-minus"
+title  = "Unary Minus"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/fast_types.adoc#unary-plus"
+title  = "Unary Plus"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/financial_examples.adoc#examples_boost_math"
+title  = "Boost.Math to Calculate Bollinger Bands"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/financial_examples.adoc#examples_finance"
+title  = "Parsing Pricing Data from File"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/format.adoc#examples"
+title  = "Examples"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/format.adoc#format"
+title  = "Locale Modifier"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#addition"
+title  = "Addition"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#comparison-operators"
+title  = "Comparison Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#division"
+title  = "Division"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#multiplication"
+title  = "Multiplication"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#subtraction"
+title  = "Subtraction"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#unary-minus"
+title  = "Unary Minus"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/generic_decimal.adoc#unary-plus"
+title  = "Unary Plus"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/strings.adoc#conversions-from-std-string"
+title  = "Conversions from `std::string`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/strings.adoc#strings"
+title  = "Construction from `std::string` and `std::string_view`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/decimal/doc/modules/ROOT/pages/strings.adoc#to-string"
+title  = "`to_string`"
+status = "todo"

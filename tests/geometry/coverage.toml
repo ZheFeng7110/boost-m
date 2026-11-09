@@ -1,0 +1,1392 @@
+# tests/geometry/coverage.toml — official examples and documentation snippets of
+# Boost.geometry 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "geometry"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/interprocess.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/iterative_query.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/mapped_file.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/polygons_shared_ptr.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/polygons_vector.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/quick_start.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/range_adaptors.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/value_index.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/value_shared_ptr.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/index/src/examples/rtree/variants_map.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/docutils/tools/doxygen_xml2qbk/sample/src/examples/apple_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/append.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/area.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/area_with_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_2d_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_3d_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_box_corners.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_inverse.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_point_from_index.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_point_to_index.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/assign_points.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/azimuth.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/azimuth_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/buffer_with_strategies.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/centroid.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/clear.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/closest_points.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/closest_points_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/comparable_distance.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/convert.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/convex_hull.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/correct.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/covered_by.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/crosses.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/densify.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/densify_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/difference.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/discrete_frechet_distance.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/discrete_frechet_distance_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/discrete_hausdorff_distance.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/discrete_hausdorff_distance_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/disjoint.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/distance.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/envelope.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/equals.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/expand.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/for_each_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/for_each_point_const.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/for_each_segment_const.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/intersection_ls_ls_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/intersection_poly_poly.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/intersection_segment.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/intersects_linestring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/intersects_segment.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/is_empty.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/is_simple.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/is_valid.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/is_valid_failure.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/is_valid_message.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/length.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/length_with_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/line_interpolate.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/line_interpolate_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/make_2d_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/make_3d_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/make_inverse.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/make_with_range.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/num_geometries.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/num_interior_rings.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/num_points.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/num_segments.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/overlaps.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/perimeter.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/relate.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/relation.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/return_envelope.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/reverse.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/simplify.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/simplify_insert.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/sym_difference.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/touches_one_geometry.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/touches_two_geometries.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/transform.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/transform_with_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/union.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/unique.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/algorithms/within.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/arithmetic/cross_product.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/arithmetic/dot_product.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/closure.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/coordinate_dimension.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/coordinate_system.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/coordinate_type.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/degree_radian.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/get_box.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/get_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/interior_type.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/point_order.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/point_type.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/ring_type.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/rings.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/set_box.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/set_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/tag.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/core/tag_cast.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_array.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_fusion.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_box.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_polygon.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_ring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/filtered.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/reversed.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/sliced.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/strided.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/uniqued.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_tuple.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/c_array.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/std_array.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/box.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/linestring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/multi_linestring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/multi_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/multi_polygon.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/point_xy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/point_xyz.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/polygon.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/polyhedral_surface.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/box.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/box_2d_4values.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/box_templated.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/linestring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/linestring_templated.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/multi_linestring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/multi_point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/multi_point_templated.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/multi_polygon.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/ring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/register/ring_templated.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/ring.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/segment.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/from_wkt.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/read_wkt.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/svg.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/svg_mapper_custom.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/to_wkt.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/io/wkt.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/quick_start.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_distance_asymmetric.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_distance_symmetric.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_end_flat.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_end_round.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_geographic_point_circle.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_join_miter.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_join_round.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_point_circle.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/strategies/buffer_point_square.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/views/box_view.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/views/segment_view.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/01_point_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/02_linestring_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/03_polygon_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/04_boost_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/05_a_overlay_polygon_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/05_b_overlay_linestring_polygon_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/06_a_transformation_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/06_b_transformation_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/07_a_graph_route_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/07_b_graph_route_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c01_custom_point_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c02_custom_box_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c03_custom_linestring_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c04_a_custom_triangle_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c04_b_custom_triangle_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c05_custom_point_pointer_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c06_custom_polygon_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c07_custom_ring_pointer_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c08_custom_non_std_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c09_custom_fusion_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c10_custom_cs_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/c11_custom_cs_transform_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/ml01_multipolygon_simplify.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/ml02_distance_strategy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/ml03_distance_formula.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/qt/qt_world_mapper.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/wxwidgets/wxwidgets_world_mapper.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x02_gd_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_a_soci_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_b_soci_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_c_soci_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_d_soci_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x05_shapelib_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/3d_benchmark.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark_experimental.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark_insert.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/glut_vis.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/random_test.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/geometry/index/example/serialize.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/concept/point.qbk#concept_point"
+title  = "Point Concept"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/design_rationale.qbk#design"
+title  = "Design Rationale"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/example_adapting_a_legacy_geometry_object_model.qbk#example-adapting-a-legacy-geometry-object-model"
+title  = "Example: Adapting a legacy geometry object model"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/example_adapting_a_legacy_geometry_object_model.qbk#example-source-code-adapting-a-legacy-geometry-object-model"
+title  = "Example source code: Adapting a legacy geometry object model"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/area_cartesian.qbk#strategy_area_cartesian"
+title  = "strategy::area::cartesian"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/area_geographic.qbk#strategy_area_geographic"
+title  = "strategy::area::geographic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/area_spherical.qbk#strategy_area_spherical"
+title  = "strategy::area::spherical"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/box.qbk#model_box"
+title  = "model::box"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/box_view.qbk#box_view"
+title  = "box_view"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_distance_asymmetric.qbk#strategy_buffer_distance_asymmetric"
+title  = "strategy::buffer::distance_asymmetric"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_distance_symmetric.qbk#strategy_buffer_distance_symmetric"
+title  = "strategy::buffer::distance_symmetric"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_end_flat.qbk#strategy_buffer_end_flat"
+title  = "strategy::buffer::end_flat"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_end_round.qbk#strategy_buffer_end_round"
+title  = "strategy::buffer::end_round"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_geographic_point_circle.qbk#strategy_buffer_geographic_point_circle"
+title  = "strategy::buffer::geographic_point_circle"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_join_miter.qbk#strategy_buffer_join_miter"
+title  = "strategy::buffer::join_miter"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_join_round.qbk#strategy_buffer_join_round"
+title  = "strategy::buffer::join_round"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_point_circle.qbk#strategy_buffer_point_circle"
+title  = "strategy::buffer::point_circle"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_point_square.qbk#strategy_buffer_point_square"
+title  = "strategy::buffer::point_square"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/buffer_side_straight.qbk#strategy_buffer_side_straight"
+title  = "strategy::buffer::side_straight"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/cartesian.qbk#cs_cartesian"
+title  = "cs::cartesian"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/centroid_average.qbk#strategy_centroid_average"
+title  = "strategy::centroid::average"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/centroid_bashein_detmer.qbk#strategy_centroid_bashein_detmer"
+title  = "strategy::centroid::bashein_detmer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/centroid_exception.qbk#centroid_exception"
+title  = "centroid_exception"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/closeable_view.qbk#closeable_view"
+title  = "closeable_view"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/closing_iterator.qbk#closing_iterator"
+title  = "closing_iterator"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/closure.qbk#closure"
+title  = "closure"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/coordinate_system.qbk#coordinate_system"
+title  = "coordinate_system"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/coordinate_type.qbk#coordinate_type"
+title  = "coordinate_type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/cs_tag.qbk#cs_tag"
+title  = "cs_tag"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/de9im_mask.qbk#de9im_mask"
+title  = "de9im::mask"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/de9im_matrix.qbk#de9im_matrix"
+title  = "de9im::matrix"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/de9im_static_mask.qbk#de9im_static_mask"
+title  = "de9im::static_mask"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/degree.qbk#degree"
+title  = "degree"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/densify_cartesian.qbk#strategy_densify_cartesian"
+title  = "strategy::densify::cartesian"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/densify_geographic.qbk#strategy_densify_geographic"
+title  = "strategy::densify::geographic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/densify_spherical.qbk#strategy_densify_spherical"
+title  = "strategy::densify::spherical"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/dimension.qbk#dimension"
+title  = "dimension"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_cross_track.qbk#strategy_distance_cross_track"
+title  = "strategy::distance::cross_track"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_cross_track_point_box.qbk#strategy_distance_cross_track_point_box"
+title  = "strategy::distance::cross_track_point_box"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_haversine.qbk#strategy_distance_haversine"
+title  = "strategy::distance::haversine"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_projected_point.qbk#strategy_distance_projected_point"
+title  = "strategy::distance::projected_point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_pythagoras.qbk#strategy_distance_pythagoras"
+title  = "strategy::distance::pythagoras"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_pythagoras_box_box.qbk#strategy_distance_pythagoras_box_box"
+title  = "strategy::distance::pythagoras_box_box"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/distance_pythagoras_point_box.qbk#strategy_distance_pythagoras_point_box"
+title  = "strategy::distance::pythagoras_point_box"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/ever_circling_iterator.qbk#ever_circling_iterator"
+title  = "ever_circling_iterator"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/exception.qbk#exception"
+title  = "exception"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/geographic.qbk#cs_geographic"
+title  = "cs::geographic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/identity_view.qbk#identity_view"
+title  = "identity_view"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/interior_type.qbk#interior_type"
+title  = "interior_type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/line_interpolate_cartesian.qbk#strategy_line_interpolate_cartesian"
+title  = "strategy::line_interpolate::cartesian"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/line_interpolate_geographic.qbk#strategy_line_interpolate_geographic"
+title  = "strategy::line_interpolate::geographic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/line_interpolate_spherical.qbk#strategy_line_interpolate_spherical"
+title  = "strategy::line_interpolate::spherical"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/linestring.qbk#model_linestring"
+title  = "model::linestring"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/multi_linestring.qbk#model_multi_linestring"
+title  = "model::multi_linestring"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/multi_point.qbk#model_multi_point"
+title  = "model::multi_point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/multi_polygon.qbk#model_multi_polygon"
+title  = "model::multi_polygon"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/point.qbk#model_point"
+title  = "model::point"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/point_order.qbk#point_order"
+title  = "point_order"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/point_type.qbk#point_type"
+title  = "point_type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/point_xy.qbk#model_d2_point_xy"
+title  = "model::d2::point_xy"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/point_xyz.qbk#model_d3_point_xyz"
+title  = "model::d3::point_xyz"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/polar.qbk#cs_polar"
+title  = "cs::polar"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/polygon.qbk#model_polygon"
+title  = "model::polygon"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/polyhedral_surface.qbk#model_polyhedral_surface"
+title  = "model::polyhedral_surface"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/radian.qbk#radian"
+title  = "radian"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/referring_segment.qbk#model_referring_segment"
+title  = "model::referring_segment"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/reversible_view.qbk#reversible_view"
+title  = "reversible_view"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/ring.qbk#model_ring"
+title  = "model::ring"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/ring_type.qbk#ring_type"
+title  = "ring_type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/segment.qbk#model_segment"
+title  = "model::segment"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/segment_view.qbk#segment_view"
+title  = "segment_view"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/side_geographic.qbk#strategy_side_geographic"
+title  = "strategy::side::geographic"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/side_side_by_cross_track.qbk#strategy_side_side_by_cross_track"
+title  = "strategy::side::side_by_cross_track"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/side_side_by_triangle.qbk#strategy_side_side_by_triangle"
+title  = "strategy::side::side_by_triangle"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/side_spherical_side_formula.qbk#strategy_side_spherical_side_formula"
+title  = "strategy::side::spherical_side_formula"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/simplify_douglas_peucker.qbk#strategy_simplify_douglas_peucker"
+title  = "strategy::simplify::douglas_peucker"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/spherical.qbk#cs_spherical"
+title  = "cs::spherical"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/spherical_equatorial.qbk#cs_spherical_equatorial"
+title  = "cs::spherical_equatorial"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/srs_spheroid.qbk#srs_spheroid"
+title  = "srs::spheroid"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/svg_mapper.qbk#svg_mapper"
+title  = "svg_mapper"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/tag.qbk#tag"
+title  = "tag"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/tag_cast.qbk#tag_cast"
+title  = "tag_cast"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_inverse_transformer.qbk#strategy_transform_inverse_transformer"
+title  = "strategy::transform::inverse_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_map_transformer.qbk#strategy_transform_map_transformer"
+title  = "strategy::transform::map_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_matrix_transformer.qbk#strategy_transform_matrix_transformer"
+title  = "strategy::transform::matrix_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_rotate_transformer.qbk#strategy_transform_rotate_transformer"
+title  = "strategy::transform::rotate_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_scale_transformer.qbk#strategy_transform_scale_transformer"
+title  = "strategy::transform::scale_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/transform_translate_transformer.qbk#strategy_transform_translate_transformer"
+title  = "strategy::transform::translate_transformer"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/within_crossings_multiply.qbk#strategy_within_crossings_multiply"
+title  = "strategy::within::crossings_multiply"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/within_franklin.qbk#strategy_within_franklin"
+title  = "strategy::within::franklin"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/generated/within_winding.qbk#strategy_within_winding"
+title  = "strategy::within::winding"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#contains-geometry-const"
+title  = "contains(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#covered-by-geometry-const"
+title  = "covered_by(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#covers-geometry-const"
+title  = "covers(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#disjoint-geometry-const"
+title  = "disjoint(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#intersects-geometry-const"
+title  = "intersects(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#nearest-geometry-const-std-size-t"
+title  = "nearest(Geometry const &, std::size_t)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#overlaps-geometry-const"
+title  = "overlaps(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#satisfies-unarypredicate-const"
+title  = "satisfies(UnaryPredicate const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/predicates.qbk#within-geometry-const"
+title  = "within(Geometry const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree.qbk#begin"
+title  = "begin()"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree.qbk#end"
+title  = "end()"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree.qbk#qbegin-predicates-const"
+title  = "qbegin(Predicates const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree.qbk#qend"
+title  = "qend()"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree.qbk#query-predicates-const-outiter"
+title  = "query(Predicates const &, OutIter)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree_functions.qbk#begin-rtree-const"
+title  = "begin(rtree<...> const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree_functions.qbk#end-rtree-const"
+title  = "end(rtree<...> const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree_functions.qbk#qbegin-rtree-const-predicates-const"
+title  = "qbegin(rtree<...> const &, Predicates const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree_functions.qbk#qend-rtree-const"
+title  = "qend(rtree<...> const &)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/generated/rtree_functions.qbk#query-rtree-const-predicates-const-outiter"
+title  = "query(rtree<...> const &, Predicates const &, OutIter)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/rtree/creation.qbk#creation-and-modification"
+title  = "Creation and Modification"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/rtree/experimental.qbk#experimental-features"
+title  = "Experimental Features"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/rtree/query.qbk#queries"
+title  = "Queries"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/geometry/doc/src/docutils/tools/doxygen_xml2qbk/sample/apple.qbk#fruit_apple"
+title  = "fruit::apple"
+status = "todo"

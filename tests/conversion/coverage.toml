@@ -1,0 +1,16 @@
+# tests/conversion/coverage.toml — official examples and documentation snippets of
+# Boost.conversion 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "conversion"
+
+[[snippet]]
+doc   = "libs/conversion/doc/conversion.qbk#polymorphic-downcast"
+title = "polymorphic_downcast"
+case  = "conversion/examples:doc: polymorphic-downcast"
+
+[[snippet]]
+doc   = "libs/conversion/doc/conversion.qbk#polymorphic-pointer-cast"
+title = "polymorphic_pointer_cast"
+case  = "conversion/examples:doc: polymorphic-pointer-cast"

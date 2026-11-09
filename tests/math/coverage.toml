@@ -1,0 +1,1910 @@
+# tests/math/coverage.toml — official examples and documentation snippets of
+# Boost.math 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "math"
+
+[[example]]
+path   = "libs/math/example/HSO3SO4.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/agm_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/airy_ulps_plot.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/airy_zeros_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/arcsine_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_black_scholes.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_black_scholes_brief.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_fourth_power.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_mixed_partials.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_multiprecision.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/autodiff_reverse_black_scholes.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/barycentric_interpolation_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/barycentric_interpolation_example_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/bernoulli_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/bessel_errors_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/bessel_zeros_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/bessel_zeros_example_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/bessel_zeros_interator_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/big_seventh.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/binomial_coinflip_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/binomial_confidence_limits.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/binomial_example_nag.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/binomial_quiz_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/binomial_sample_sizes.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/brent_minimise_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/c_error_policy_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/calculate_fourier_transform_daubechies_constants.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/cardinal_cubic_b_spline_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/catmull_rom_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/centered_continued_fraction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/chi_square_std_dev_test.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/cma_es_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/cohen_acceleration.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/color_maps_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/color_maps_sf_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/constants_eg1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/continued_fractions.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/cstdfloat_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/bench.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/bootstrap_chebyshev.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/daubechies_coefficients.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/daubechies_scaling_integer_grid.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/daubechies_scaling_memory_occupation.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/daubechies_scaling_plots.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/daubechies_wavelet_plots.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/find_best_daubechies_interpolator.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/regress_daubechies_accuracy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/daubechies_wavelets/wavelet_transform.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/differential_evolution.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/distribution_construction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/dot_net_example/boost_math/AssemblyInfo.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/dot_net_example/boost_math/Stdafx.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/dot_net_example/boost_math/boost_math.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/double_exponential.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/error_handling_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/error_policies_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/error_policy_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/estrin_vs_horner_accuracy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/f_test.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/factorial_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/fft_sines_table.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/find_location_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/find_mean_and_sd_normal.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/find_root_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/find_scale_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/float128_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/float_comparison_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/fourier_transform_daubechies_ulp_plot.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/gauss_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/geometric_examples.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/gradient_descent_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/hyperexponential_more_snips.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/hyperexponential_snips.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inspect_fp.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_chi_squared_bayes_eg.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_chi_squared_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_chi_squared_find_df_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_gamma_distribution_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_gamma_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/inverse_gaussian_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/jacobi_zeta_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/jso_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_basic_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_diode.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_diode_graph.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_graph.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_precision_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lambert_w_simple_examples.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/laplace_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lbfgs_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/legendre_stieltjes_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lexical_cast_native.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/lexical_cast_nonfinite_facets.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/luroth.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/naive_monte_carlo_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nc_chi_sq_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/neg_binom_confidence_limits.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/neg_binomial_sample_sizes.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/negative_binomial_example1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/negative_binomial_example2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nesterov_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/neumann_zeros_example_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_facet_simple.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_facet_sstream.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_legacy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_loopback_ok.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_num_facet.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_num_facet_serialization.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_num_facet_trap.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_serialization_archives.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/nonfinite_signaling_NaN.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/normal_misc_examples.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/normal_tables.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/numerical_derivative_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/ooura_fourier_integrals_cosine_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/ooura_fourier_integrals_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/ooura_fourier_integrals_multiprecision_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/owens_t_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_10.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_4.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_5.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_6.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_7.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_8.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_eg_9.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip10.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip11.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip12.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip13.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip4.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip5.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip6.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip7.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip8.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/policy_ref_snip9.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/polynomial_arithmetic.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/random_search_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/reciprocal_fibonacci_constant.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/reverse_mode_linear_regression_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_elliptic_finding.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_algorithms.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_fifth.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_multiprecision_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_n_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_finding_start_locations.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/root_n_finding_algorithms.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/series.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/skew_normal_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/special_data.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/students_t_example1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/students_t_example2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/students_t_example3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/students_t_single_sample.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/students_t_two_samples.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/test_cpp_float_close_fraction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/test_nonfinite_loopback.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/to_continued_fraction.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/math/example/trapezoidal_example.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/background/implementation.qbk#sf_implementation"
+title  = "Additional Implementation Notes"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/background/special_tut.qbk#special_tut_impl"
+title  = "Implementation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/background/special_tut.qbk#special_tut_test"
+title  = "Testing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/concepts/concepts.qbk#archetypes"
+title  = "Conceptual Archetypes for Reals and Distributions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/concepts/concepts.qbk#use_mpfr"
+title  = "Using With MPFR or GMP - High-Precision Floating-Point Library"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/constants/constants.qbk#new_const"
+title  = "Defining New Constants"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/constants/constants.qbk#non_templ"
+title  = "Use in non-template code"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/constants/constants.qbk#templ"
+title  = "Use in template code"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/constants/constants.qbk#user_def"
+title  = "Use With User-Defined Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/cstdfloat/cstdfloat.qbk#float128"
+title  = "Implementation of Float128 type"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/cstdfloat/cstdfloat.qbk#overloading"
+title  = "Overloading template functions with float128_t"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/differentiation/autodiff.qbk#autodiff"
+title  = "Automatic Differentiation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/differentiation/autodiff_reverse.qbk#autodiff"
+title  = "Reverse Mode Automatic Differentiation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/differentiation/lanczos_smoothing.qbk#diff"
+title  = "Lanczos Smoothing Derivatives"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/differentiation/numerical_differentiation.qbk#diff"
+title  = "Numerical Differentiation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/arcsine.qbk#arcine_dist"
+title  = "Arcsine Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/bernoulli.qbk#bernoulli_dist"
+title  = "Bernoulli Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/beta.qbk#beta_dist"
+title  = "Beta Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/binomial.qbk#binomial_dist"
+title  = "Binomial Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/binomial_example.qbk#binom_conf"
+title  = "Calculating Confidence Limits on the Frequency of Occurrence for a Binomial Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/binomial_example.qbk#binom_size_eg"
+title  = "Estimating Sample Sizes for a Binomial Distribution."
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/cauchy.qbk#cauchy_dist"
+title  = "Cauchy-Lorentz Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/chi_squared.qbk#chi_squared_dist"
+title  = "Chi Squared Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/chi_squared_examples.qbk#chi_sq_intervals"
+title  = "Confidence Intervals on the Standard Deviation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/chi_squared_examples.qbk#chi_sq_size"
+title  = "Estimating the Required Sample Sizes for a Chi-Square Test for the Standard Deviation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/chi_squared_examples.qbk#chi_sq_test"
+title  = "Chi-Square Test for the Standard Deviation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/dist_reference.qbk#future"
+title  = "Extras/Future Directions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/dist_tutorial.qbk#complements"
+title  = "Complements are supported too - and when to use them"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/empirical_cdf.qbk#empirical_cdf"
+title  = "Empirical Cumulative Distribution Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/exponential.qbk#exp_dist"
+title  = "Exponential Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/extreme_value.qbk#extreme_dist"
+title  = "Extreme Value Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/f_dist_example.qbk#f_eg"
+title  = "F Distribution Examples"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/fisher.qbk#f_dist"
+title  = "F Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/gamma.qbk#gamma_dist"
+title  = "Gamma (and Erlang) Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/geometric.qbk#geometric_dist"
+title  = "Geometric Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/hyperexponential.qbk#hyperexponential_dist"
+title  = "Hyperexponential Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/hypergeometric.qbk#hypergeometric_dist"
+title  = "Hypergeometric Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/inverse_chi_squared.qbk#inverse_chi_squared_dist"
+title  = "Inverse Chi Squared Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/inverse_gamma.qbk#inverse_gamma_dist"
+title  = "Inverse Gamma Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/inverse_gaussian.qbk#inverse_gaussian_dist"
+title  = "Inverse Gaussian (or Inverse Normal) Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/kolmogorov_smirnov.qbk#kolmogorov_smirnov_dist"
+title  = "Kolmogorov-Smirnov Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/laplace.qbk#laplace_dist"
+title  = "Laplace Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/logistic.qbk#logistic_dist"
+title  = "Logistic Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/lognormal.qbk#lognormal_dist"
+title  = "Log Normal Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/nc_beta.qbk#nc_beta_dist"
+title  = "Noncentral Beta Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/nc_chi_squared.qbk#nc_chi_squared_dist"
+title  = "Noncentral Chi-Squared Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/nc_f.qbk#nc_f_dist"
+title  = "Noncentral F Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/nc_t.qbk#nc_t_dist"
+title  = "Noncentral T Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/negative_binomial.qbk#negative_binomial_dist"
+title  = "Negative Binomial Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/negative_binomial_example.qbk#neg_binom_size_eg"
+title  = "Estimating Sample Sizes for the Negative Binomial."
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/normal.qbk#normal_dist"
+title  = "Normal (Gaussian) Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/pareto.qbk#pareto"
+title  = "Pareto Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/poisson.qbk#poisson_dist"
+title  = "Poisson Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/rayleigh.qbk#rayleigh"
+title  = "Rayleigh Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/skew_normal.qbk#skew_normal_dist"
+title  = "Skew Normal Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/students_t.qbk#students_t_dist"
+title  = "Students t Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/students_t_examples.qbk#tut_mean_intervals"
+title  = "Calculating confidence intervals on the mean with the Students-t distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/students_t_examples.qbk#tut_mean_size"
+title  = "Estimating how large a sample size would have to become"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/students_t_examples.qbk#two_sample_students_t"
+title  = "Comparing the means of two samples with the Students-t test"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/triangular.qbk#triangular_dist"
+title  = "Triangular Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/uniform.qbk#uniform_dist"
+title  = "Uniform Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/weibull.qbk#weibull_dist"
+title  = "Weibull Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/filters/daubechies.qbk#daubechies_filters"
+title  = "Daubechies Filters"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/condition_numbers.qbk#cond"
+title  = "Condition Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_comparison.qbk#float_comparison"
+title  = "Floating-point Comparison"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#float_advance"
+title  = "Advancing a floating-point Value by a Specific"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#float_distance"
+title  = "Calculating the Representation Distance"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#float_next"
+title  = "Finding the Next Greater Representable Value (float_next)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#float_prior"
+title  = "Finding the Next Smaller Representable Value (float_prior)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#nextafter"
+title  = "Finding the Next Representable Value in a Specific Direction (nextafter)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/float_next.qbk#ulp"
+title  = "Obtaining the Size of a Unit In the Last Place - ULP"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/fp_facets.qbk#fp_facets"
+title  = "Facets for Floating-Point Infinities and NaNs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/sign.qbk#sign_functions"
+title  = "Sign Manipulation Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/ulps_plots.qbk#ulps_plots"
+title  = "ULPs Plots"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/agm.qbk#agm"
+title  = "Arithmetic-Geometric Mean"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/centered_continued_fraction.qbk#centered_continued_fraction"
+title  = "Centered Continued Fractions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/cohen_acceleration.qbk#cohen_acceleration"
+title  = "Cohen Acceleration"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/color_maps.qbk#color_maps"
+title  = "Color Maps"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/engel_expansion.qbk#engel_expansion"
+title  = "Engel Expansion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/estrin.qbk#estrin"
+title  = "Estrin's method for polynomial evaluation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/fraction.qbk#cf"
+title  = "Continued Fraction Evaluation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/luroth_expansion.qbk#luroth_expansion"
+title  = "Luroth Expansions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/minimax.qbk#minimax"
+title  = "Minimax Approximations and the Remez Algorithm"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/polynomial.qbk#polynomials"
+title  = "Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/rational.qbk#rational"
+title  = "Polynomial and Rational Function Evaluation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/recurrence.qbk#recurrence"
+title  = "Tools For 3-Term Recurrence Relations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/relative_error.qbk#error_test"
+title  = "Relative Error and Testing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/series.qbk#series_evaluation"
+title  = "Series Evaluation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/simple_continued_fraction.qbk#simple_continued_fraction"
+title  = "Simple Continued Fractions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/test_data.qbk#test_data"
+title  = "Graphing, Profiling, and Generating Test Data for Special Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/internals/tuple.qbk#tuples"
+title  = "Tuples"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/barycentric_rational_interpolation.qbk#barycentric"
+title  = "Barycentric Rational Interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/bezier_polynomial.qbk#bezier_polynomial"
+title  = "Bezier Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/bilinear_uniform.qbk#bilinear_uniform"
+title  = "Bilinear Uniform Interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/cardinal_cubic_b_spline.qbk#cardinal_cubic_b"
+title  = "Cardinal Cubic B-spline interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/cardinal_quadratic_b_spline.qbk#cardinal_quadratic_b"
+title  = "Cardinal Quadratic B-spline interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/cardinal_quintic_b_spline.qbk#cardinal_quintic_b"
+title  = "Cardinal Quintic B-spline interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/cardinal_trigonometric.qbk#cardinal_trigonometric"
+title  = "Cardinal Trigonometric interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/catmull_rom.qbk#catmull_rom"
+title  = "Catmull-Rom Splines"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/cubic_hermite.qbk#cubic_hermite"
+title  = "Cubic Hermite interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/makima.qbk#makima"
+title  = "Modified Akima interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/pchip.qbk#pchip"
+title  = "PCHIP interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/quintic_hermite.qbk#quintic_hermite"
+title  = "Quintic Hermite interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/vector_barycentric_rational.qbk#vector_barycentric"
+title  = "Vector-valued Barycentric Rational Interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/interpolators/whittaker_shannon.qbk#whittaker_shannon"
+title  = "Whittaker-Shannon interpolation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_non_mem"
+title  = "Octonion Non-Member Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_specialization"
+title  = "Octonion Specializations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#octonion"
+title  = "Template Class octonion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/cma_es.qbk#cma_es"
+title  = "Evolution Strategy with Covariance Matrix Adaptation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/differential_evolution.qbk#differential_evolution"
+title  = "Differential Evolution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/gradient_optimizers.qbk#gradient_descent"
+title  = "Gradient Descent"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/gradient_optimizers.qbk#lbfgs"
+title  = "L-BFGS"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/gradient_optimizers.qbk#minimize"
+title  = "minimize"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/gradient_optimizers.qbk#nesterov"
+title  = "Nesterov Accelerated Gradient Descent"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/gradient_optimizers.qbk#policies"
+title  = "Reverse Mode autodiff policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/jso.qbk#jso"
+title  = "Algorithm jSO"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/optimization/random_search.qbk#random_search"
+title  = "Random Search"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/overview/gpu.qbk#gpu"
+title  = "Support for GPU programming in Boost.Math"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#pol_ref_ref"
+title  = "Policy Class Reference"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#policy_defaults"
+title  = "Using Macros to Change the Policy Defaults"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#ad_hoc_sf_policies"
+title  = "Changing the Policy on an Ad Hoc Basis for the Special Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_caveats"
+title  = "Caveats"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_exp_sinh"
+title  = "exp_sinh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_levels"
+title  = "Setting the Maximum Interval Halvings and Memory Requirements"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_overview"
+title  = "Overview"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_sinh_sinh"
+title  = "sinh_sinh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_tanh_sinh"
+title  = "tanh_sinh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#de_tanh_sinh_2_arg"
+title  = "Handling functions with large features near an endpoint with tanh-sinh quadrature"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/double_exponential.qbk#gpu_usage"
+title  = "GPU Usage"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/gauss.qbk#gauss"
+title  = "Gauss-Legendre quadrature"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/gauss_kronrod.qbk#gauss_kronrod"
+title  = "Gauss-Kronrod Quadrature"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/naive_monte_carlo.qbk#naive_monte_carlo"
+title  = "Naive Monte Carlo Integration"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/ooura_fourier_integrals.qbk#fourier_integrals"
+title  = "Fourier Integrals"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/trapezoidal.qbk#trapezoidal"
+title  = "Trapezoidal Quadrature"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quadrature/wavelet_transforms.qbk#wavelet_transforms"
+title  = "Wavelet Transforms"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#quat"
+title  = "Template Class quaternion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#quat_non_mem"
+title  = "Quaternion Non-Member Operators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#spec"
+title  = "Quaternion Specializations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/cubic_roots.qbk#cubic_roots"
+title  = "Roots of Cubic Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/minima.qbk#brent_minima"
+title  = "Locating Function Minima using Brent's algorithm"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/quartic_roots.qbk#quartic_roots"
+title  = "Roots of Quartic Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots.qbk#roots_deriv"
+title  = "Root Finding With Derivatives: Newton-Raphson, Halley & Schroeder"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots_without_derivatives.qbk#TOMS748"
+title  = "Algorithm TOMS 748: Alefeld, Potra and Shi: Enclosing zeros of continuous functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots_without_derivatives.qbk#bisect"
+title  = "Bisection"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots_without_derivatives.qbk#bracket_solve"
+title  = "Bracket and Solve Root"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots_without_derivatives.qbk#root_termination"
+title  = "Termination Condition Functors"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/roots_without_derivatives.qbk#roots_noderiv"
+title  = "Root Finding Without Derivatives"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/airy.qbk#ai"
+title  = "Airy Ai Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/airy.qbk#aip"
+title  = "Airy Ai' Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/airy.qbk#bi"
+title  = "Airy Bi Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/airy.qbk#bip"
+title  = "Airy Bi' Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/bernoulli_numbers.qbk#bernoulli_numbers"
+title  = "Bernoulli Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/bernoulli_numbers.qbk#tangent_numbers"
+title  = "Tangent Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/beta.qbk#beta_function"
+title  = "Beta"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/beta_derivative.qbk#beta_derivative"
+title  = "Derivative of the Incomplete Beta Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/cardinal_b_splines.qbk#cardinal_b_splines"
+title  = "Cardinal B-splines"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ccmath.qbk#ccmath"
+title  = "Constexpr CMath"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/chebyshev.qbk#chebyshev"
+title  = "Chebyshev Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/daubechies.qbk#daubechies"
+title  = "Daubechies Wavelets and Scaling Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/digamma.qbk#digamma"
+title  = "Digamma"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_carlson.qbk#ellint_carlson"
+title  = "Elliptic Integrals - Carlson Form"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#ellint_1"
+title  = "Elliptic Integrals of the First Kind - Legendre Form"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#ellint_2"
+title  = "Elliptic Integrals of the Second Kind - Legendre Form"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#ellint_3"
+title  = "Elliptic Integrals of the Third Kind - Legendre Form"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#ellint_d"
+title  = "Elliptic Integral D - Legendre Form"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#heuman_lambda"
+title  = "Heuman Lambda Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ellint_legendre.qbk#jacobi_zeta"
+title  = "Jacobi Zeta Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/erf.qbk#error_function"
+title  = "Error Function erf and complement erfc"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/erf_inv.qbk#error_inv"
+title  = "Error Function Inverses"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/expint.qbk#expint_i"
+title  = "Exponential Integral Ei"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/expint.qbk#expint_n"
+title  = "Exponential Integral En"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/factorials.qbk#sf_binomial"
+title  = "Binomial Coefficients"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/factorials.qbk#sf_double_factorial"
+title  = "Double Factorial"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/factorials.qbk#sf_factorial"
+title  = "Factorial"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/factorials.qbk#sf_falling_factorial"
+title  = "Falling Factorial"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/factorials.qbk#sf_rising_factorial"
+title  = "Rising Factorial"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/gamma_derivatives.qbk#gamma_derivatives"
+title  = "Derivative of the Incomplete Gamma Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/gamma_ratios.qbk#gamma_ratios"
+title  = "Ratios of Gamma Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/gegenbauer.qbk#gegenbauer"
+title  = "Gegenbauer Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hermite.qbk#hermite"
+title  = "Hermite Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_1f1"
+title  = "Hypergeometric [sub 1]/F/[sub 1]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_pfq"
+title  = "Hypergeometric [sub p]F[sub q]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ibeta.qbk#ibeta_function"
+title  = "Incomplete Beta Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/ibeta_inv.qbk#ibeta_inv_function"
+title  = "The Incomplete Beta Function Inverses"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/igamma.qbk#igamma"
+title  = "Incomplete Gamma Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/igamma_inv.qbk#igamma_inv"
+title  = "Incomplete Gamma Function Inverses"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/inv_hyper.qbk#acosh"
+title  = "acosh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/inv_hyper.qbk#asinh"
+title  = "asinh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/inv_hyper.qbk#atanh"
+title  = "atanh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi.qbk#jacobi"
+title  = "Jacobi Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_cd"
+title  = "Jacobi Elliptic Function cd"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_cn"
+title  = "Jacobi Elliptic Function cn"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_cs"
+title  = "Jacobi Elliptic Function cs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_dc"
+title  = "Jacobi Elliptic Function dc"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_dn"
+title  = "Jacobi Elliptic Function dn"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_ds"
+title  = "Jacobi Elliptic Function ds"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_elliptic"
+title  = "Jacobi Elliptic SN, CN and DN"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_nc"
+title  = "Jacobi Elliptic Function nc"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_nd"
+title  = "Jacobi Elliptic Function nd"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_ns"
+title  = "Jacobi Elliptic Function ns"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_sc"
+title  = "Jacobi Elliptic Function sc"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_sd"
+title  = "Jacobi Elliptic Function sd"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jacobi_sn"
+title  = "Jacobi Elliptic Function sn"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta1"
+title  = "Jacobi Theta Function [theta][sub 1]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta2"
+title  = "Jacobi Theta Function [theta][sub 2]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta3"
+title  = "Jacobi Theta Function [theta][sub 3]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta4"
+title  = "Jacobi Theta Function [theta][sub 4]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/laguerre.qbk#laguerre"
+title  = "Laguerre (and Associated) Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/lambert_w.qbk#lambert_w"
+title  = "Lambert /W/ function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/legendre.qbk#legendre"
+title  = "Legendre (and Associated) Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/legendre_stieltjes.qbk#legendre_stieltjes"
+title  = "Legendre-Stieltjes Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/lgamma.qbk#lgamma"
+title  = "Log Gamma"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/logaddexp.qbk#logaddexp"
+title  = "logaddexp and logsumexp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/logistic_sigmoid.qbk#logistic_sigmoid"
+title  = "logistic_sigmoid"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/logit.qbk#logit"
+title  = "logit"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/number_series.qbk#bernoulli_numbers"
+title  = "Bernoulli Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/number_series.qbk#fibonacci_numbers"
+title  = "Fibonacci Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/number_series.qbk#primes"
+title  = "Prime Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/number_series.qbk#tangent_numbers"
+title  = "Tangent Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/owens_t.qbk#owens_t"
+title  = "Owen's T function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/polygamma.qbk#polygamma"
+title  = "Polygamma"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/pow.qbk#ct_pow"
+title  = "Compile Time Power of a Runtime Base"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#cbrt"
+title  = "cbrt"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#cos_pi"
+title  = "cos_pi"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#expm1"
+title  = "expm1"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#log1p"
+title  = "log1p"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#powm1"
+title  = "powm1"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#sin_pi"
+title  = "sin_pi"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/powers.qbk#sqrt1pm1"
+title  = "sqrt1pm1"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/rsqrt.qbk#rsqrt"
+title  = "Reciprocal square root"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/sinc.qbk#sinc-pi"
+title  = "sinc_pi"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/sinc.qbk#sinhc-pi"
+title  = "sinhc_pi"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/spherical_harmonic.qbk#sph_harm"
+title  = "Spherical Harmonics"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/tgamma.qbk#tgamma"
+title  = "Gamma"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/trigamma.qbk#trigamma"
+title  = "Trigamma"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/zeta.qbk#zeta"
+title  = "Riemann Zeta Function"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/anderson_darling.qbk#anderson_darling"
+title  = "The Anderson-Darling Test"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/bivariate_statistics.qbk#bivariate_statistics"
+title  = "Bivariate Statistics"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/chatterjee_correlation.qbk#chatterjee_correlation"
+title  = "Chatterjee Correlation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/linear_regression.qbk#linear_regression"
+title  = "Linear Regression"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/ljung_box.qbk#ljung_box"
+title  = "The Ljung-Box Test"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/runs_test.qbk#runs_test"
+title  = "Runs tests"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/signal_statistics.qbk#signal_statistics"
+title  = "Signal Statistics"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/t_test.qbk#t_test"
+title  = "/t/-tests"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/univariate_statistics.qbk#univariate_statistics"
+title  = "Univariate Statistics"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/statistics/z_test.qbk#z_test"
+title  = "/z/-tests"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/vector_functionals/norms.qbk#norms"
+title  = "Norms"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/tools/doc/cstdfloat.qbk#overview"
+title  = "Overview"
+status = "todo"

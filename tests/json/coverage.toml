@@ -1,0 +1,212 @@
+# tests/json/coverage.toml — official examples and documentation snippets of
+# Boost.json 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "json"
+
+[[example]]
+path   = "libs/json/example/cbor.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/parse_into.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/parse_into_canada.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/parse_into_citm_catalog.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/path.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/pretty.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/proxy.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/use_allocator.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/json/example/validate.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/README.md#instructions-for-documentation"
+title  = "Instructions for Documentation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/background.adoc#polymorphic-allocators"
+title  = "Polymorphic Allocators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#allocator-propagation"
+title  = "Allocator Propagation"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#default-memory-resource"
+title  = "Default Memory Resource"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#monotonic-resource"
+title  = "Monotonic Resource"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#resource-lifetime"
+title  = "Resource Lifetime"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#static-resource"
+title  = "Static Resource"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#user-defined-resource"
+title  = "User-Defined Resource"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-nlohmann-json"
+title  = "Comparison to nlohmann JSON"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-rapidjson"
+title  = "Comparison to RapidJSON"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-simd-json"
+title  = "Comparison to SIMD JSON"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#combining-contexts"
+title  = "Combining Contexts"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#contexts-and-composite-types"
+title  = "Contexts and Composite Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#conversions-for-third-party-types"
+title  = "Conversions for Third-Party Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#passing-data-to-conversion-functions"
+title  = "Passing Data to Conversion Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/custom.adoc#conversion-traits"
+title  = "Conversion Traits"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/custom.adoc#tag-invoke-overloads"
+title  = "`tag_invoke` Overloads"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/dom/string.adoc#accessing-storage-beyond-size"
+title  = "Accessing Storage Beyond `size()`"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/dom/value.adoc#dom_value"
+title  = "Working With Values"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#allocator-aware-conversion"
+title  = "Allocator-Aware Conversion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#cbor"
+title  = "CBOR"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#examples_validate"
+title  = "Validate"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#pretty"
+title  = "Pretty"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#avoiding-dynamic-allocations"
+title  = "Avoiding Dynamic Allocations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#controlling-memory"
+title  = "Controlling Memory"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#full-precision-number-parsing"
+title  = "Full Precision Number Parsing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#non-standard-json"
+title  = "Non-Standard JSON"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#parser"
+title  = "Parser"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#streaming-parser"
+title  = "Streaming Parser"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_allocators"
+title  = "Allocators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_conversion"
+title  = "Value Conversion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_parsing"
+title  = "Parsing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_serializing"
+title  = "Serializing"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_values"
+title  = "Values"
+status = "todo"

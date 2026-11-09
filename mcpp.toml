@@ -738,8 +738,10 @@ kind = "lib"
 [dev-dependencies]
 "compat.doctest" = "2.4.12"
 
-# tests/dll/ and tests/test/ are projects of their own (shared-library plugins;
-# the two exclusive Boost.Test forms); CI runs `mcpp test` inside each of them.
-# A nested mcpp.toml does not hide a directory from this glob, hence the `!`.
+# tests/dll/ (shared-library plugins) and tests/test/utf/ (the compiled
+# Boost.Test form, which needs the unit-test-framework feature on) are projects
+# of their own; CI runs `mcpp test` inside each. The header-only Boost.Test form
+# (tests/test/included/) stays here. A nested mcpp.toml does not hide a
+# directory from this glob, hence the `!`.
 [test]
-discover = ["tests/**/*.cpp", "!tests/dll/**", "!tests/test/**"]
+discover = ["tests/**/*.cpp", "!tests/dll/**", "!tests/test/utf/**"]

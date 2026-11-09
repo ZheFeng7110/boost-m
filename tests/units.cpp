@@ -4,7 +4,7 @@
 // through the mcpplibs.mwrap.boost.units module face alongside the quantity/class surface.
 // The module import works on all three compilers — CI (gcc 16.1 linux leg,
 // 2026-09) verified that importing mcpplibs.mwrap.boost.units does NOT trip the gcc
-// include+import ODR conflict (describe.cpp precedent does not apply: the
+// include+import ODR conflict (describe/smoke.cpp precedent does not apply: the
 // units GMF carries no collision-prone entity family, despite the large
 // macro face M10 own-283 — macros and the module face coexist fine). The
 // BOOST_UNITS_* macro API stays include-side and is covered in

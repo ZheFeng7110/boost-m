@@ -1,0 +1,18 @@
+# Test project of the dll module (design .agents/docs/2026-11-09-module-test-
+# hardening-design.md §5): the official tutorials load plugin shared
+# libraries, which the root project cannot build. The root mcpp.toml keeps
+# tests/dll/** out of its own [test] discover; CI runs `mcpp test` here.
+[package]
+name        = "boost-m-tests-dll"
+version     = "0.0.0"
+description = "Tests of mcpplibs.mwrap.boost.dll with plugin shared libraries"
+license     = "Apache-2.0"
+
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../..", default-features = false, features = ["dll"] }
+
+[dev-dependencies]
+"compat.doctest" = "2.4.12"
+
+[test]
+discover = ["*.cpp"]

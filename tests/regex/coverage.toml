@@ -1,0 +1,219 @@
+# tests/regex/coverage.toml — official examples and documentation snippets of
+# Boost.regex 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "regex"
+
+[[example]]
+path   = "libs/regex/example/grep/grep.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/captures_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/credit_card_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/icu_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/mfc_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/partial_regex_grep.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/partial_regex_iterate.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/partial_regex_match.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_grep_example_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_grep_example_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_grep_example_3.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_grep_example_4.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_iterator_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_match_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_merge_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_replace_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_search_example.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_split_example_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_split_example_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_token_iterator_eg_1.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_token_iterator_eg_2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/regex/example/timer/regex_timer.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/bad_expression.qbk#bad_expression"
+title  = "bad_expression"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/basic_regex.qbk#basic_regex"
+title  = "basic_regex"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/captures.qbk#captures"
+title  = "Understanding Marked Sub-Expressions and Captures"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_algo"
+title  = "Unicode Regular Expression Algorithms"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_iter"
+title  = "Unicode Aware Regex Iterators"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_types"
+title  = "Unicode regular expression types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/introduction.qbk#intro"
+title  = "Introduction and Overview"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/match_result.qbk#match_results"
+title  = "match_results"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_algo"
+title  = "Overloaded Algorithms For MFC String Types"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_iter"
+title  = "Iterating Over the Matches Within An MFC String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_regex_create"
+title  = "Regular Expression Creation From an MFC String"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/modules.qbk#modules"
+title  = "Module Support (Experimental)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/partial_matches.qbk#partial_matches"
+title  = "Partial Matches"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_format.qbk#regex_format"
+title  = "regex_format (Deprecated)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_grep.qbk#regex_grep"
+title  = "regex_grep (Deprecated)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_iterator.qbk#regex_iterator"
+title  = "regex_iterator"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_match.qbk#regex_match"
+title  = "regex_match"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_replace.qbk#regex_replace"
+title  = "regex_replace"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_search.qbk#regex_search"
+title  = "regex_search"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_split.qbk#regex_split"
+title  = "regex_split (deprecated)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_token_iterator.qbk#regex_token_iterator"
+title  = "regex_token_iterator"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_traits.qbk#regex_traits"
+title  = "regex_traits"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/sub_match.qbk#sub_match"
+title  = "sub_match"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/syntax_perl.qbk#perl_syntax"
+title  = "Perl Regular Expression Syntax"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/regex/doc/unicode_iterators.qbk#uni_iter"
+title  = "Unicode Iterators"
+status = "todo"

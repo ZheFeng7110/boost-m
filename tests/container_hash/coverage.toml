@@ -1,0 +1,36 @@
+# tests/container_hash/coverage.toml — official examples and documentation snippets of
+# Boost.container_hash 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "container_hash"
+
+[[example]]
+path   = "libs/container_hash/examples/books.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/container_hash/examples/point.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/container_hash/examples/point2.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/container_hash/examples/portable.cpp"
+status = "todo"
+
+[[example]]
+path   = "libs/container_hash/examples/template.cpp"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/container_hash/doc/hash/notes.adoc#hash-combine"
+title  = "hash_combine"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/container_hash/doc/hash/notes.adoc#hash-range"
+title  = "hash_range"
+status = "todo"

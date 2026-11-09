@@ -4,7 +4,7 @@
 // friends export through the mcpplibs.mwrap.boost.hof module face. The module import works
 // on all three compilers — CI (gcc 16.1 linux leg, 2026-09) verified that
 // importing mcpplibs.mwrap.boost.hof does NOT trip the gcc include+import ODR conflict
-// (describe.cpp precedent does not apply here: hof's GMF carries no
+// (describe/smoke.cpp precedent does not apply here: hof's GMF carries no
 // make_void/mp_list-style collision family) — so no __GNUC__ guard is
 // needed. Macro-heavy consumption (BOOST_HOF_STATIC_FUNCTION user-side)
 // stays include-side and is covered in tests/hof_include.cpp.
