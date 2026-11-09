@@ -6,70 +6,72 @@ upstream = "1.92.0"
 library = "unordered"
 
 [[example]]
-path   = "libs/unordered/examples/case_insensitive_test.cpp"
-status = "todo"
+path = "libs/unordered/examples/case_insensitive_test.cpp"
+case = "unordered/examples:example: case_insensitive_test"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/compliance.adoc#concurrent-containers"
-title  = "Concurrent Containers"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/compliance.adoc#concurrent-containers"
+title = "Concurrent Containers"
+case  = "unordered/api:doc: compliance#concurrent-containers"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/compliance.adoc#piecewise-pair-emplacement"
-title  = "Piecewise Pair Emplacement"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/compliance.adoc#piecewise-pair-emplacement"
+title = "Piecewise Pair Emplacement"
+case  = "unordered/api:doc: compliance#piecewise-pair-emplacement"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#bulk-visitation"
-title  = "Bulk visitation"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#bulk-visitation"
+title = "Bulk visitation"
+case  = "unordered/api:doc: concurrent#bulk-visitation"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#interoperability-with-non-concurrent-containers"
-title  = "Interoperability with non-concurrent containers"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#interoperability-with-non-concurrent-containers"
+title = "Interoperability with non-concurrent containers"
+case  = "unordered/api:doc: concurrent#interoperability-with-non-concurrent-containers"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#visitation-based-api"
-title  = "Visitation-based API"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#visitation-based-api"
+title = "Visitation-based API"
+case  = "unordered/api:doc: concurrent#visitation-based-api"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#whole-table-visitation"
-title  = "Whole-Table Visitation"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/concurrent.adoc#whole-table-visitation"
+title = "Whole-Table Visitation"
+case  = "unordered/api:doc: concurrent#whole-table-visitation"
 
 [[snippet]]
 doc    = "libs/unordered/doc/modules/ROOT/pages/debuggability.adoc#using-in-your-project"
 title  = "Using in your project"
-status = "todo"
+status = "excluded"
+reason = "GDB pretty-printer setup and the printers' output layout, no C++ API use"
 
 [[snippet]]
 doc    = "libs/unordered/doc/modules/ROOT/pages/debuggability.adoc#visualization-structure"
 title  = "Visualization structure"
-status = "todo"
+status = "excluded"
+reason = "GDB pretty-printer setup and the printers' output layout, no C++ API use"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/hash_equality.adoc#hash_equality"
-title  = "Custom Types"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/hash_equality.adoc#hash_equality"
+title = "Custom Types"
+case  = "unordered/api:doc: hash_equality#hash_equality"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/hash_quality.adoc#container-statistics"
-title  = "Container Statistics"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/hash_quality.adoc#container-statistics"
+title = "Container Statistics"
+case  = "unordered/include_stats:doc: hash_quality#container-statistics"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/hash_quality.adoc#hash-post-mixing-and-the-avalanching-property"
-title  = "Hash Post-mixing and the Avalanching Property"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/hash_quality.adoc#hash-post-mixing-and-the-avalanching-property"
+title = "Hash Post-mixing and the Avalanching Property"
+case  = "unordered/api:doc: hash_quality#hash-post-mixing-and-the-avalanching-property"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/regular.adoc#iterator-invalidation"
-title  = "Iterator Invalidation"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/regular.adoc#iterator-invalidation"
+title = "Iterator Invalidation"
+case  = "unordered/api:doc: regular#iterator-invalidation"
 
 [[snippet]]
-doc    = "libs/unordered/doc/modules/ROOT/pages/structures.adoc#closed-addressing-containers"
-title  = "Closed-addressing Containers"
-status = "todo"
+doc   = "libs/unordered/doc/modules/ROOT/pages/structures.adoc#closed-addressing-containers"
+title = "Closed-addressing Containers"
+case  = "unordered/api:doc: structures#closed-addressing-containers"
