@@ -6,214 +6,234 @@ upstream = "1.92.0"
 library = "regex"
 
 [[example]]
-path   = "libs/regex/example/grep/grep.cpp"
-status = "todo"
+path = "libs/regex/example/grep/grep.cpp"
+case = "regex/examples_grep:example: grep"
 
 [[example]]
 path   = "libs/regex/example/snippets/captures_example.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs a regex library built with BOOST_REGEX_MATCH_EXTRA (a configuration that changes the compiled TUs); the package builds the default configuration"
 
 [[example]]
-path   = "libs/regex/example/snippets/credit_card_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/credit_card_example.cpp"
+case = "regex/examples:example: credit_card_example"
 
 [[example]]
 path   = "libs/regex/example/snippets/icu_example.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
 
 [[example]]
 path   = "libs/regex/example/snippets/mfc_example.cpp"
-status = "todo"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
 
 [[example]]
-path   = "libs/regex/example/snippets/partial_regex_grep.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/partial_regex_grep.cpp"
+case = "regex/examples:example: partial_regex_grep"
 
 [[example]]
-path   = "libs/regex/example/snippets/partial_regex_iterate.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/partial_regex_iterate.cpp"
+case = "regex/examples:example: partial_regex_iterate"
 
 [[example]]
-path   = "libs/regex/example/snippets/partial_regex_match.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/partial_regex_match.cpp"
+case = "regex/examples:example: partial_regex_match"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_grep_example_1.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_grep_example_1.cpp"
+case = "regex/examples:example: regex_grep_example_1"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_grep_example_2.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_grep_example_2.cpp"
+case = "regex/examples:example: regex_grep_example_2"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_grep_example_3.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_grep_example_3.cpp"
+case = "regex/examples:example: regex_grep_example_3"
 
 [[example]]
 path   = "libs/regex/example/snippets/regex_grep_example_4.cpp"
-status = "todo"
+status = "excluded"
+reason = "Borland C++Builder __closure extension"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_iterator_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_iterator_example.cpp"
+case = "regex/examples:example: regex_iterator_example"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_match_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_match_example.cpp"
+case = "regex/examples:example: regex_match_example"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_merge_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_merge_example.cpp"
+case = "regex/examples:example: regex_merge_example"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_replace_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_replace_example.cpp"
+case = "regex/examples:example: regex_replace_example"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_search_example.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_search_example.cpp"
+case = "regex/examples:example: regex_search_example"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_split_example_1.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_split_example_1.cpp"
+case = "regex/examples:example: regex_split_example_1"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_split_example_2.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_split_example_2.cpp"
+case = "regex/examples:example: regex_split_example_2"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_token_iterator_eg_1.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_token_iterator_eg_1.cpp"
+case = "regex/examples:example: regex_token_iterator_eg_1"
 
 [[example]]
-path   = "libs/regex/example/snippets/regex_token_iterator_eg_2.cpp"
-status = "todo"
+path = "libs/regex/example/snippets/regex_token_iterator_eg_2.cpp"
+case = "regex/examples:example: regex_token_iterator_eg_2"
 
 [[example]]
 path   = "libs/regex/example/timer/regex_timer.cpp"
-status = "todo"
+status = "excluded"
+reason = "interactive benchmark (times expressions typed on stdin)"
 
 [[snippet]]
-doc    = "libs/regex/doc/bad_expression.qbk#bad_expression"
-title  = "bad_expression"
-status = "todo"
+doc   = "libs/regex/doc/bad_expression.qbk#bad_expression"
+title = "bad_expression"
+case  = "regex/api:doc: bad_expression"
 
 [[snippet]]
-doc    = "libs/regex/doc/basic_regex.qbk#basic_regex"
-title  = "basic_regex"
-status = "todo"
+doc   = "libs/regex/doc/basic_regex.qbk#basic_regex"
+title = "basic_regex"
+case  = "regex/api:doc: basic_regex"
 
 [[snippet]]
 doc    = "libs/regex/doc/captures.qbk#captures"
 title  = "Understanding Marked Sub-Expressions and Captures"
-status = "todo"
+status = "excluded"
+reason = "needs a regex library built with BOOST_REGEX_MATCH_EXTRA (a configuration that changes the compiled TUs); the package builds the default configuration"
 
 [[snippet]]
 doc    = "libs/regex/doc/icu_strings.qbk#unicode_algo"
 title  = "Unicode Regular Expression Algorithms"
-status = "todo"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
 
 [[snippet]]
 doc    = "libs/regex/doc/icu_strings.qbk#unicode_iter"
 title  = "Unicode Aware Regex Iterators"
-status = "todo"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
 
 [[snippet]]
 doc    = "libs/regex/doc/icu_strings.qbk#unicode_types"
 title  = "Unicode regular expression types"
-status = "todo"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
 
 [[snippet]]
-doc    = "libs/regex/doc/introduction.qbk#intro"
-title  = "Introduction and Overview"
-status = "todo"
+doc   = "libs/regex/doc/introduction.qbk#intro"
+title = "Introduction and Overview"
+case  = "regex/api:doc: intro"
 
 [[snippet]]
-doc    = "libs/regex/doc/match_result.qbk#match_results"
-title  = "match_results"
-status = "todo"
+doc   = "libs/regex/doc/match_result.qbk#match_results"
+title = "match_results"
+case  = "regex/api:doc: match_results"
 
 [[snippet]]
 doc    = "libs/regex/doc/mfc_strings.qbk#mfc_algo"
 title  = "Overloaded Algorithms For MFC String Types"
-status = "todo"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
 
 [[snippet]]
 doc    = "libs/regex/doc/mfc_strings.qbk#mfc_iter"
 title  = "Iterating Over the Matches Within An MFC String"
-status = "todo"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
 
 [[snippet]]
 doc    = "libs/regex/doc/mfc_strings.qbk#mfc_regex_create"
 title  = "Regular Expression Creation From an MFC String"
-status = "todo"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
 
 [[snippet]]
-doc    = "libs/regex/doc/modules.qbk#modules"
-title  = "Module Support (Experimental)"
-status = "todo"
+doc   = "libs/regex/doc/modules.qbk#modules"
+title = "Module Support (Experimental)"
+case  = "regex/api:doc: modules"
 
 [[snippet]]
 doc    = "libs/regex/doc/partial_matches.qbk#partial_matches"
 title  = "Partial Matches"
-status = "todo"
+case   = "regex/examples:example: partial_regex_match"
+reason = "the section's example is example/snippets/partial_regex_match.cpp"
 
 [[snippet]]
-doc    = "libs/regex/doc/regex_format.qbk#regex_format"
-title  = "regex_format (Deprecated)"
-status = "todo"
+doc   = "libs/regex/doc/regex_format.qbk#regex_format"
+title = "regex_format (Deprecated)"
+case  = "regex/api:doc: regex_format"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_grep.qbk#regex_grep"
 title  = "regex_grep (Deprecated)"
-status = "todo"
+case   = "regex/examples:example: regex_grep_example_1"
+reason = "the section's example is example/snippets/regex_grep_example_1.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_iterator.qbk#regex_iterator"
 title  = "regex_iterator"
-status = "todo"
+case   = "regex/examples:example: regex_iterator_example"
+reason = "the section's example is example/snippets/regex_iterator_example.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_match.qbk#regex_match"
 title  = "regex_match"
-status = "todo"
+case   = "regex/examples:example: regex_match_example"
+reason = "the section's example is example/snippets/regex_match_example.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_replace.qbk#regex_replace"
 title  = "regex_replace"
-status = "todo"
+case   = "regex/examples:example: regex_replace_example"
+reason = "the section's example is example/snippets/regex_replace_example.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_search.qbk#regex_search"
 title  = "regex_search"
-status = "todo"
+case   = "regex/examples:example: regex_search_example"
+reason = "the section's example is example/snippets/regex_search_example.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_split.qbk#regex_split"
 title  = "regex_split (deprecated)"
-status = "todo"
+case   = "regex/examples:example: regex_split_example_1"
+reason = "the section's example is example/snippets/regex_split_example_1.cpp"
 
 [[snippet]]
 doc    = "libs/regex/doc/regex_token_iterator.qbk#regex_token_iterator"
 title  = "regex_token_iterator"
-status = "todo"
+case   = "regex/examples:example: regex_token_iterator_eg_1"
+reason = "the section's example is example/snippets/regex_token_iterator_eg_1.cpp"
 
 [[snippet]]
-doc    = "libs/regex/doc/regex_traits.qbk#regex_traits"
-title  = "regex_traits"
-status = "todo"
+doc   = "libs/regex/doc/regex_traits.qbk#regex_traits"
+title = "regex_traits"
+case  = "regex/custom_types:doc: regex_traits"
 
 [[snippet]]
-doc    = "libs/regex/doc/sub_match.qbk#sub_match"
-title  = "sub_match"
-status = "todo"
+doc   = "libs/regex/doc/sub_match.qbk#sub_match"
+title = "sub_match"
+case  = "regex/api:doc: sub_match"
 
 [[snippet]]
-doc    = "libs/regex/doc/syntax_perl.qbk#perl_syntax"
-title  = "Perl Regular Expression Syntax"
-status = "todo"
+doc   = "libs/regex/doc/syntax_perl.qbk#perl_syntax"
+title = "Perl Regular Expression Syntax"
+case  = "regex/api:doc: perl_syntax"
 
 [[snippet]]
-doc    = "libs/regex/doc/unicode_iterators.qbk#uni_iter"
-title  = "Unicode Iterators"
-status = "todo"
+doc   = "libs/regex/doc/unicode_iterators.qbk#uni_iter"
+title = "Unicode Iterators"
+case  = "regex/api:doc: uni_iter"

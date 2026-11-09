@@ -2074,7 +2074,7 @@
     "throw_exception",
     "type_traits"
    ],
-   "exported": 404,
+   "exported": 407,
    "gmf": [
     "boost/regex/concepts.hpp",
     "boost/regex/pending/object_cache.hpp",
