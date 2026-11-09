@@ -525,13 +525,23 @@
   "convert": {
    "deps": [
     "assert",
+    "config",
     "core",
+    "lexical_cast",
+    "math",
+    "mp11",
     "optional",
-    "type_traits"
+    "type_traits",
+    "utility"
    ],
-   "exported": 12,
+   "exported": 144,
    "gmf": [
-    "boost/convert.hpp"
+    "boost/convert.hpp",
+    "boost/convert/charconv.hpp",
+    "boost/convert/lexical_cast.hpp",
+    "boost/convert/printf.hpp",
+    "boost/convert/stream.hpp",
+    "boost/convert/strtol.hpp"
    ]
   },
   "core": {
@@ -938,7 +948,7 @@
     "utility",
     "version"
    ],
-   "exported": 3070,
+   "exported": 3069,
    "gmf": [
     "boost/graph/adj_list_serialize.hpp",
     "boost/graph/adjacency_list_io.hpp",
@@ -1084,7 +1094,7 @@
     "mp11",
     "type_traits"
    ],
-   "exported": 92,
+   "exported": 89,
    "gmf": [
     "boost/heap/binomial_heap.hpp",
     "boost/heap/d_ary_heap.hpp",

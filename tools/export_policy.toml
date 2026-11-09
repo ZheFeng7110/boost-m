@@ -155,6 +155,24 @@ gmf = [
     "boost/algorithm/string/trim_all.hpp",
 ]
 
+[convert]
+# The converter headers are not self-contained (they use uint8_t without
+# <cstdint> and boost::optional without its header, relying on
+# <boost/convert.hpp> coming first, as in every upstream example), so the
+# standalone-compile filter dropped them and the module exported convert()
+# with no converter. convert.hpp leads the GMF. boost/convert/spirit.hpp is
+# left out: it pulls Boost.Spirit, a header-only library no module owns, whose
+# whole qi surface would become convert's exports; the spirit converter is
+# consumed as headers (tests/convert/include_spirit.cpp).
+gmf = [
+    "boost/convert.hpp",
+    "boost/convert/charconv.hpp",
+    "boost/convert/lexical_cast.hpp",
+    "boost/convert/printf.hpp",
+    "boost/convert/stream.hpp",
+    "boost/convert/strtol.hpp",
+]
+
 [cobalt]
 # POSIX cobalt selects the epoll reactor; asio's reactor/hash_map details are
 # reached only through Windows-flavored chains in the MinGW snapshot. The

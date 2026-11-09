@@ -6,216 +6,216 @@ upstream = "1.92.0"
 library = "uuid"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/basic_random_generator.adoc#basic-random-generator"
-title  = "basic_random_generator"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/basic_random_generator.adoc#basic-random-generator"
+title = "basic_random_generator"
+case  = "uuid/api:doc: basic_random_generator#basic-random-generator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/constants.adoc#constants"
-title  = "Constants"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/constants.adoc#constants"
+title = "Constants"
+case  = "uuid/api:doc: constants#constants"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/examples.adoc#byte-extraction"
-title  = "Byte Extraction"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/examples.adoc#byte-extraction"
+title = "Byte Extraction"
+case  = "uuid/api:doc: examples#byte-extraction"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/examples.adoc#examples"
-title  = "Tagging"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/examples.adoc#examples"
+title = "Tagging"
+case  = "uuid/api:doc: examples#examples"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/invalid_uuid.adoc#invalid-uuid"
-title  = "invalid_uuid"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/invalid_uuid.adoc#invalid-uuid"
+title = "invalid_uuid"
+case  = "uuid/api:doc: invalid_uuid#invalid-uuid"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/name_generator_md5.adoc#name-generator-md5"
-title  = "name_generator_md5"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/name_generator_md5.adoc#name-generator-md5"
+title = "name_generator_md5"
+case  = "uuid/api:doc: name_generator_md5#name-generator-md5"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/name_generator_sha1.adoc#name-generator-sha1"
-title  = "name_generator_sha1"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/name_generator_sha1.adoc#name-generator-sha1"
+title = "name_generator_sha1"
+case  = "uuid/api:doc: name_generator_sha1#name-generator-sha1"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/namespaces.adoc#namespaces"
-title  = "Namespaces"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/namespaces.adoc#namespaces"
+title = "Namespaces"
+case  = "uuid/api:doc: namespaces#namespaces"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/nil_generator.adoc#nil-generator"
-title  = "nil_generator"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/nil_generator.adoc#nil-generator"
+title = "nil_generator"
+case  = "uuid/api:doc: nil_generator#nil-generator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/nil_generator.adoc#nil-uuid"
-title  = "nil_uuid"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/nil_generator.adoc#nil-uuid"
+title = "nil_uuid"
+case  = "uuid/api:doc: nil_generator#nil-uuid"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/random_generator.adoc#random-generator"
-title  = "random_generator"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/random_generator.adoc#random-generator"
+title = "random_generator"
+case  = "uuid/api:doc: random_generator#random-generator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/string_generator.adoc#string-generator"
-title  = "string_generator"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/string_generator.adoc#string-generator"
+title = "string_generator"
+case  = "uuid/api:doc: string_generator#string-generator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/time_generator_v1.adoc#constructors"
-title  = "Constructors"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/time_generator_v1.adoc#constructors"
+title = "Constructors"
+case  = "uuid/api:doc: time_generator_v1#constructors"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/time_generator_v1.adoc#operator"
-title  = "operator()"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/time_generator_v1.adoc#operator"
+title = "operator()"
+case  = "uuid/api:doc: time_generator_v1#operator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/time_generator_v7.adoc#assignment"
-title  = "Assignment"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/time_generator_v7.adoc#assignment"
+title = "Assignment"
+case  = "uuid/api:doc: time_generator_v7#assignment"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/time_generator_v7.adoc#constructors"
-title  = "Constructors"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/time_generator_v7.adoc#constructors"
+title = "Constructors"
+case  = "uuid/api:doc: time_generator_v7#constructors"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/time_generator_v7.adoc#operator"
-title  = "operator()"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/time_generator_v7.adoc#operator"
+title = "operator()"
+case  = "uuid/api:doc: time_generator_v7#operator"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#constructors"
-title  = "Constructors"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#constructors"
+title = "Constructors"
+case  = "uuid/api:doc: uuid#constructors"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#data"
-title  = "Data"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#data"
+title = "Data"
+case  = "uuid/api:doc: uuid#data"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#free-swap"
-title  = "Free Swap"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#free-swap"
+title = "Free Swap"
+case  = "uuid/api:doc: uuid#free-swap"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#hash-value"
-title  = "hash_value"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#hash-value"
+title = "hash_value"
+case  = "uuid/api:doc: uuid#hash-value"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#is-nil"
-title  = "is_nil"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#is-nil"
+title = "is_nil"
+case  = "uuid/api:doc: uuid#is-nil"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#iteration"
-title  = "Iteration"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#iteration"
+title = "Iteration"
+case  = "uuid/api:doc: uuid#iteration"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#operators"
-title  = "Operators"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#operators"
+title = "Operators"
+case  = "uuid/api:doc: uuid#operators"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#serialization"
-title  = "Serialization"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#serialization"
+title = "Serialization"
+case  = "uuid/api:doc: uuid#serialization"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#size"
-title  = "Size"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#size"
+title = "Size"
+case  = "uuid/api:doc: uuid#size"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#std-hash"
-title  = "std::hash"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#std-hash"
+title = "std::hash"
+case  = "uuid/api:doc: uuid#std-hash"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#swap"
-title  = "Swap"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#swap"
+title = "Swap"
+case  = "uuid/api:doc: uuid#swap"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#time-based-fields"
-title  = "Time-based Fields"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#time-based-fields"
+title = "Time-based Fields"
+case  = "uuid/api:doc: uuid#time-based-fields"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#variant"
-title  = "Variant"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#variant"
+title = "Variant"
+case  = "uuid/api:doc: uuid#variant"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid.adoc#version"
-title  = "Version"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid.adoc#version"
+title = "Version"
+case  = "uuid/api:doc: uuid#version"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_clock.adoc#from-sys"
-title  = "from_sys"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_clock.adoc#from-sys"
+title = "from_sys"
+case  = "uuid/api:doc: uuid_clock#from-sys"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_clock.adoc#from-timestamp"
-title  = "from_timestamp"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_clock.adoc#from-timestamp"
+title = "from_timestamp"
+case  = "uuid/api:doc: uuid_clock#from-timestamp"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_clock.adoc#now"
-title  = "now"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_clock.adoc#now"
+title = "now"
+case  = "uuid/api:doc: uuid_clock#now"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_clock.adoc#to-sys"
-title  = "to_sys"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_clock.adoc#to-sys"
+title = "to_sys"
+case  = "uuid/api:doc: uuid_clock#to-sys"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_clock.adoc#to-timestamp"
-title  = "to_timestamp"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_clock.adoc#to-timestamp"
+title = "to_timestamp"
+case  = "uuid/api:doc: uuid_clock#to-timestamp"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#from-chars"
-title  = "from_chars"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#from-chars"
+title = "from_chars"
+case  = "uuid/api:doc: uuid_io#from-chars"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#from-chars-result"
-title  = "from_chars_result"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#from-chars-result"
+title = "from_chars_result"
+case  = "uuid/api:doc: uuid_io#from-chars-result"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#stream-extraction"
-title  = "Stream Extraction"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#stream-extraction"
+title = "Stream Extraction"
+case  = "uuid/api:doc: uuid_io#stream-extraction"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#stream-insertion"
-title  = "Stream Insertion"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#stream-insertion"
+title = "Stream Insertion"
+case  = "uuid/api:doc: uuid_io#stream-insertion"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#to-chars"
-title  = "to_chars"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#to-chars"
+title = "to_chars"
+case  = "uuid/api:doc: uuid_io#to-chars"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#to-string"
-title  = "to_string"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#to-string"
+title = "to_string"
+case  = "uuid/api:doc: uuid_io#to-string"
 
 [[snippet]]
-doc    = "libs/uuid/doc/uuid/uuid_io.adoc#uuid-from-string"
-title  = "uuid_from_string"
-status = "todo"
+doc   = "libs/uuid/doc/uuid/uuid_io.adoc#uuid-from-string"
+title = "uuid_from_string"
+case  = "uuid/api:doc: uuid_io#uuid-from-string"

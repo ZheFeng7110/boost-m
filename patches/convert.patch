@@ -1,0 +1,16 @@
+diff --git a/upstream/boost/boost/convert.hpp b/upstream/boost/boost/convert.hpp
+index b022ccb7..a7d988dd 100644
+--- a/upstream/boost/boost/convert.hpp
++++ b/upstream/boost/boost/convert.hpp
+@@ -34,7 +34,10 @@ namespace boost
+ 
+     /// @details boost::throw_on_failure is the 'tag' object
+     /// to request the exception-throwing behavior.
+-    detail::throw_on_failure const throw_on_failure = detail::throw_on_failure(0);
++    // boost-m vendored edit: `const` gave the tag internal linkage, so the
++    // module could not export it (TU-local); `inline constexpr` has external
++    // linkage and the same value. Replay after re-running import_boost.
++    inline constexpr detail::throw_on_failure throw_on_failure = detail::throw_on_failure(0);
+ 
+     namespace cnv
+     {

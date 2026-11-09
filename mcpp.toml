@@ -424,7 +424,7 @@ all-modules = { implies = ["optional", "variant", "variant2", "any", "core", "co
   implies = ["assert", "smart-ptr", "throw-exception"]
 [features.convert]
   sources = ["src/convert.cppm"]
-  implies = ["assert", "core", "optional", "type-traits"]
+  implies = ["assert", "config", "core", "lexical-cast", "math", "mp11", "optional", "type-traits", "utility"]
 [features.crc]
   sources = ["src/crc.cppm"]
 [features.decimal]

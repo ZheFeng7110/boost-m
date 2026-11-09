@@ -6,31 +6,31 @@ upstream = "1.92.0"
 library = "container_hash"
 
 [[example]]
-path   = "libs/container_hash/examples/books.cpp"
-status = "todo"
+path = "libs/container_hash/examples/books.cpp"
+case = "container_hash/examples:example: books"
 
 [[example]]
-path   = "libs/container_hash/examples/point.cpp"
-status = "todo"
+path = "libs/container_hash/examples/point.cpp"
+case = "container_hash/examples:example: point"
 
 [[example]]
-path   = "libs/container_hash/examples/point2.cpp"
-status = "todo"
+path = "libs/container_hash/examples/point2.cpp"
+case = "container_hash/include_describe:example: point2"
 
 [[example]]
-path   = "libs/container_hash/examples/portable.cpp"
-status = "todo"
+path = "libs/container_hash/examples/portable.cpp"
+case = "container_hash/examples:example: portable"
 
 [[example]]
-path   = "libs/container_hash/examples/template.cpp"
-status = "todo"
+path = "libs/container_hash/examples/template.cpp"
+case = "container_hash/examples:example: template"
 
 [[snippet]]
-doc    = "libs/container_hash/doc/hash/notes.adoc#hash-combine"
-title  = "hash_combine"
-status = "todo"
+doc   = "libs/container_hash/doc/hash/notes.adoc#hash-combine"
+title = "hash_combine"
+case  = "container_hash/examples:doc: hash-combine"
 
 [[snippet]]
-doc    = "libs/container_hash/doc/hash/notes.adoc#hash-range"
-title  = "hash_range"
-status = "todo"
+doc   = "libs/container_hash/doc/hash/notes.adoc#hash-range"
+title = "hash_range"
+case  = "container_hash/examples:doc: hash-range"

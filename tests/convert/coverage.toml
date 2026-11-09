@@ -6,59 +6,61 @@ upstream = "1.92.0"
 library = "convert"
 
 [[example]]
-path   = "libs/convert/example/algorithms.cpp"
-status = "todo"
+path = "libs/convert/example/algorithms.cpp"
+case = "convert/examples_stream:example: algorithms"
 
 [[example]]
-path   = "libs/convert/example/default_converter.cpp"
-status = "todo"
+path = "libs/convert/example/default_converter.cpp"
+case = "convert/examples_default_converter:example: default_converter"
 
 [[example]]
 path   = "libs/convert/example/default_converter_fail.cpp"
-status = "todo"
+status = "excluded"
+reason = "compile-failure demonstration: boost::convert without a defined boost::cnv::by_default must not compile"
 
 [[example]]
-path   = "libs/convert/example/getting_serious.cpp"
-status = "todo"
+path = "libs/convert/example/getting_serious.cpp"
+case = "convert/examples_stream:example: getting_serious"
 
 [[example]]
-path   = "libs/convert/example/getting_started.cpp"
-status = "todo"
+path = "libs/convert/example/getting_started.cpp"
+case = "convert/examples_lexical_cast:example: getting_started"
 
 [[example]]
-path   = "libs/convert/example/lexical_cast.cpp"
-status = "todo"
+path = "libs/convert/example/lexical_cast.cpp"
+case = "convert/examples_lexical_cast:example: lexical_cast"
 
 [[example]]
-path   = "libs/convert/example/stream.cpp"
-status = "todo"
+path = "libs/convert/example/stream.cpp"
+case = "convert/examples_stream:example: stream"
 
 [[snippet]]
-doc    = "libs/convert/doc/design_notes.qbk#converter_signature"
-title  = "Converter Signature"
-status = "todo"
+doc   = "libs/convert/doc/design_notes.qbk#converter_signature"
+title = "Converter Signature"
+case  = "convert/examples_stream:doc: converter_signature"
 
 [[snippet]]
-doc    = "libs/convert/doc/design_notes.qbk#requirements"
-title  = "Requirements"
-status = "todo"
+doc   = "libs/convert/doc/design_notes.qbk#requirements"
+title = "Requirements"
+case  = "convert/examples_stream:doc: requirements"
 
 [[snippet]]
-doc    = "libs/convert/doc/design_notes.qbk#user-interface-signature"
-title  = "User Interface Signature"
-status = "todo"
+doc   = "libs/convert/doc/design_notes.qbk#user-interface-signature"
+title = "User Interface Signature"
+case  = "convert/examples_stream:doc: user-interface-signature"
 
 [[snippet]]
-doc    = "libs/convert/doc/introduction.qbk#introduction"
-title  = "Introduction"
-status = "todo"
+doc   = "libs/convert/doc/introduction.qbk#introduction"
+title = "Introduction"
+case  = "convert/examples_lexical_cast:doc: introduction"
 
 [[snippet]]
 doc    = "libs/convert/doc/performance.qbk#boost-convert-overhead"
 title  = "Boost.Convert Overhead"
-status = "todo"
+status = "excluded"
+reason = "benchmark (timing of convert() against direct converter calls)"
 
 [[snippet]]
-doc    = "libs/convert/doc/stream_converter.qbk#the-default-constructible-type-requirement"
-title  = "The ['Default Constructible] Type Requirement"
-status = "todo"
+doc   = "libs/convert/doc/stream_converter.qbk#the-default-constructible-type-requirement"
+title = "The ['Default Constructible] Type Requirement"
+case  = "convert/include_spirit:doc: the-default-constructible-type-requirement"

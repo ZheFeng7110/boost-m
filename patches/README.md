@@ -34,6 +34,10 @@ second one. The algorithm module's GMF includes them in that order, and
 `boost::algorithm::transform_reduce` was missing from its export list; plain
 `#include` consumers hit the same bug. The patch gives the header its own guard.
 
+`convert.patch` is the TU-local-object case: `boost::throw_on_failure` was a
+namespace-scope `const` object (internal linkage), which a module cannot
+export; it becomes `inline constexpr`.
+
 Every patch is reviewed against the 1.92.0 tag it was written for;
 `upstream/boost/SOURCE.md` records the archive and checksum the tree comes
 from. A patch that neither applies nor is already applied fails the replay.

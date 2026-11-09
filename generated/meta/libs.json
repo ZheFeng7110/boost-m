@@ -961,7 +961,12 @@
   "boost/polymorphic_pointer_cast.hpp"
  ],
  "convert": [
-  "boost/convert.hpp"
+  "boost/convert.hpp",
+  "boost/convert/charconv.hpp",
+  "boost/convert/lexical_cast.hpp",
+  "boost/convert/printf.hpp",
+  "boost/convert/stream.hpp",
+  "boost/convert/strtol.hpp"
  ],
  "core": [
   "boost/core/addressof.hpp",
