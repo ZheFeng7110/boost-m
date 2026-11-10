@@ -254,7 +254,13 @@ inline std::string ex_harness_echo() {
     }).detach();
     return port;
 }
-#if defined(BOOST_ASIO_HAS_PIPE)
+// An error_code's message: "Success" for no error. The text of no error is
+// the C library's (glibc "Success", musl "No error information", macOS
+// "Undefined error: 0", Windows "The operation completed successfully").
+inline std::string ex_message(const boost::system::error_code& ec) {
+    return ec ? ec.message() : std::string("Success");
+}
+#if defined(BOOST_ASIO_HAS_PIPE) && !defined(BOOST_ASIO_WINDOWS)
 // A descriptor reading `text` then EOF: stands in for the process's stdin
 // (STDIN_FILENO) where an example reads it through a stream_descriptor.
 inline int ex_stdin_fd(const std::string& text) {
@@ -266,6 +272,27 @@ inline int ex_stdin_fd(const std::string& text) {
     w.close();
     return r.release();
 }
+#endif
+#if defined(_WIN32)
+// Windows: each case's name goes to stderr (unbuffered) before it runs, so a
+// case that ends the process (a fast-fail such as heap corruption leaves no
+// doctest report) can be told from the log.
+struct ex_case_names : doctest::IReporter {
+    explicit ex_case_names(const doctest::ContextOptions&) {}
+    void report_query(const doctest::QueryData&) override {}
+    void test_run_start() override {}
+    void test_run_end(const doctest::TestRunStats&) override {}
+    void test_case_start(const doctest::TestCaseData& d) override { std::fprintf(stderr, "case: %s\n", d.m_name); }
+    void test_case_reenter(const doctest::TestCaseData&) override {}
+    void test_case_end(const doctest::CurrentTestCaseStats&) override {}
+    void test_case_exception(const doctest::TestCaseException&) override {}
+    void subcase_start(const doctest::SubcaseSignature&) override {}
+    void subcase_end() override {}
+    void log_assert(const doctest::AssertData&) override {}
+    void log_message(const doctest::MessageData&) override {}
+    void test_case_skipped(const doctest::TestCaseData&) override {}
+};
+DOCTEST_REGISTER_LISTENER("ex_case_names", 1, ex_case_names);
 #endif
 
 // libs/asio/example/cpp11/serialization/server.cpp

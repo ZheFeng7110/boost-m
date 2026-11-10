@@ -8,7 +8,9 @@
 // output does not depend on it). Outputs not compared: parallel_sort (completion order), the
 // parallel_group examples that write to the process's stdout/stderr
 // descriptors (bypassing the captured stream, completion order varies) and
-// priority_scheduler (std::priority_queue does not order equal priorities).
+// priority_scheduler (std::priority_queue does not order equal priorities) and
+// prioritised_handlers (whether the accept has completed when the queue is
+// first run depends on the host's timing).
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
@@ -281,6 +283,27 @@ inline int ex_stdin_fd(const std::string& text) {
     w.close();
     return r.release();
 }
+#endif
+#if defined(_WIN32)
+// Windows: each case's name goes to stderr (unbuffered) before it runs, so a
+// case that ends the process (a fast-fail such as heap corruption leaves no
+// doctest report) can be told from the log.
+struct ex_case_names : doctest::IReporter {
+    explicit ex_case_names(const doctest::ContextOptions&) {}
+    void report_query(const doctest::QueryData&) override {}
+    void test_run_start() override {}
+    void test_run_end(const doctest::TestRunStats&) override {}
+    void test_case_start(const doctest::TestCaseData& d) override { std::fprintf(stderr, "case: %s\n", d.m_name); }
+    void test_case_reenter(const doctest::TestCaseData&) override {}
+    void test_case_end(const doctest::CurrentTestCaseStats&) override {}
+    void test_case_exception(const doctest::TestCaseException&) override {}
+    void subcase_start(const doctest::SubcaseSignature&) override {}
+    void subcase_end() override {}
+    void log_assert(const doctest::AssertData&) override {}
+    void log_message(const doctest::MessageData&) override {}
+    void test_case_skipped(const doctest::TestCaseData&) override {}
+};
+DOCTEST_REGISTER_LISTENER("ex_case_names", 1, ex_case_names);
 #endif
 
 // libs/asio/example/cpp14/deferred/deferred_1.cpp
@@ -1556,7 +1579,7 @@ TEST_CASE("example: cpp14/executors/fork_join") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(sort took 24 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(sort took 29 microseconds
 )ex"));
 #endif
 }
@@ -4517,7 +4540,7 @@ TEST_CASE("example: cpp14/parallel_group/parallel_sort") {
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(starting sort
-sort took 6063332 microseconds
+sort took 6016139 microseconds
 )ex"));
 #endif
 }

@@ -8,7 +8,8 @@
 // ports (13, 55555, 54321) are replaced by the free one, "daytime"/"http"
 // service names by its number, and output that carries the time of day is
 // not compared.
-// The fd-passing pair (sendmsg/recvmsg) is compiled on POSIX systems only.
+// The local/ examples (UNIX domain sockets; the fd-passing pair also calls
+// sendmsg/recvmsg) are compiled on POSIX systems only.
 #if !defined(_WIN32)
 #include <sys/socket.h>
 #include <sys/uio.h>
@@ -279,6 +280,27 @@ inline int ex_stdin_fd(const std::string& text) {
     w.close();
     return r.release();
 }
+#endif
+#if defined(_WIN32)
+// Windows: each case's name goes to stderr (unbuffered) before it runs, so a
+// case that ends the process (a fast-fail such as heap corruption leaves no
+// doctest report) can be told from the log.
+struct ex_case_names : doctest::IReporter {
+    explicit ex_case_names(const doctest::ContextOptions&) {}
+    void report_query(const doctest::QueryData&) override {}
+    void test_run_start() override {}
+    void test_run_end(const doctest::TestRunStats&) override {}
+    void test_case_start(const doctest::TestCaseData& d) override { std::fprintf(stderr, "case: %s\n", d.m_name); }
+    void test_case_reenter(const doctest::TestCaseData&) override {}
+    void test_case_end(const doctest::CurrentTestCaseStats&) override {}
+    void test_case_exception(const doctest::TestCaseException&) override {}
+    void subcase_start(const doctest::SubcaseSignature&) override {}
+    void subcase_end() override {}
+    void log_assert(const doctest::AssertData&) override {}
+    void log_message(const doctest::MessageData&) override {}
+    void test_case_skipped(const doctest::TestCaseData&) override {}
+};
+DOCTEST_REGISTER_LISTENER("ex_case_names", 1, ex_case_names);
 #endif
 
 // libs/asio/example/cpp11/echo/async_tcp_echo_server.cpp
@@ -2759,7 +2781,7 @@ TEST_CASE("example: cpp11/tutorial/daytime1/client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:02 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 13:55:20 2026
 )ex"));
 #endif
 }
@@ -3124,7 +3146,7 @@ TEST_CASE("example: cpp11/services/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:04 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 13:55:22 2026
 )ex"));
 #endif
 }
@@ -3185,7 +3207,7 @@ TEST_CASE("example: cpp11/tutorial/daytime4/client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:06 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 13:55:23 2026
 )ex"));
 #endif
 }
@@ -3284,7 +3306,7 @@ TEST_CASE("example: cpp11/futures/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:08 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 13:55:25 2026
 )ex"));
 #endif
 }
@@ -3337,7 +3359,7 @@ TEST_CASE("example: cpp11/iostreams/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:09 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 13:55:27 2026
 )ex"));
 #endif
 }
@@ -3533,7 +3555,7 @@ TEST_CASE("example: cpp11/timeouts/blocking_tcp_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 137 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 256 microseconds
 )ex"));
 #endif
 }
@@ -3711,12 +3733,13 @@ TEST_CASE("example: cpp11/timeouts/blocking_token_tcp_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 86 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 198 microseconds
 )ex"));
 #endif
 }
 }  // namespace ex_cpp11_timeouts_blocking_token_tcp_client
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/stream_server.cpp
 namespace ex_cpp11_local_stream_server {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
@@ -3843,7 +3866,9 @@ TEST_CASE("example: cpp11/local/stream_server") {
 #endif
 }
 }  // namespace ex_cpp11_local_stream_server
+#endif
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/stream_client.cpp
 namespace ex_cpp11_local_stream_client {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
@@ -3914,7 +3939,9 @@ TEST_CASE("example: cpp11/local/stream_client") {
 #endif
 }
 }  // namespace ex_cpp11_local_stream_client
+#endif
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/iostream_client.cpp
 namespace ex_cpp11_local_iostream_client {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
@@ -3987,6 +4014,7 @@ TEST_CASE("example: cpp11/local/iostream_client") {
 #endif
 }
 }  // namespace ex_cpp11_local_iostream_client
+#endif
 
 #if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/fd_passing_stream_server.cpp
