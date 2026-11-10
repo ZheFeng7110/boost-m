@@ -602,7 +602,7 @@ TEST_CASE("example: string_to_enum") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
-#if !(defined(_MSC_VER))  // the output names types (typeid), which differ there
+#if !(defined(_MSC_VER))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(v1: 0
 v2: 1
 v3: 2
