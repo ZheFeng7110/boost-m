@@ -330,6 +330,9 @@ def cmd_scan(args):
 # ---------------------------------------------------------------------------
 
 _DOCTEST_CASE = re.compile(r'\bTEST_CASE(?:_TEMPLATE|_FIXTURE)?\s*\(\s*(?:\w+\s*,\s*)?"((?:[^"\\]|\\.)*)"')
+# tests/url/doc_test_suite.hpp turns Boost.URL's TEST_SUITE(type, "name")
+# into TEST_CASE("doc: name").
+_URL_SUITE = re.compile(r'\bTEST_SUITE\(\s*\w+\s*,\s*"((?:[^"\\]|\\.)*)"')
 _BOOST_CASE = re.compile(r"\bBOOST_(?:AUTO|DATA|FIXTURE)_TEST_CASE(?:_TEMPLATE)?\s*\(\s*(\w+)")
 
 
@@ -338,7 +341,8 @@ def test_cases(test):
     if not path.is_file():
         return None
     text = path.read_text(encoding="utf-8", errors="replace")
-    return set(_DOCTEST_CASE.findall(text)) | set(_BOOST_CASE.findall(text))
+    return (set(_DOCTEST_CASE.findall(text)) | set(_BOOST_CASE.findall(text))
+            | {"doc: " + n for n in _URL_SUITE.findall(text)})
 
 
 def check_entry(lib, entry, key, errors, cache):

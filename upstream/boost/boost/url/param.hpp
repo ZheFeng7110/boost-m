@@ -33,7 +33,9 @@ struct no_value_t
 
 /** Constant indicating no value in a param
 */
-constexpr no_value_t no_value{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR no_value_t no_value{};
 
 //------------------------------------------------
 

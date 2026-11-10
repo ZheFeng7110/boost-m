@@ -7,215 +7,256 @@ library = "url"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/file_router.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/finicky.cpp"
-status = "todo"
+case   = "url/examples:example: finicky"
+reason = "copy of example/finicky/finicky.cpp with antora tags"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/magnet.cpp"
-status = "todo"
+case   = "url/examples:example: magnet"
+reason = "copy of example/magnet/magnet.cpp with antora tags"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/mailto.cpp"
-status = "todo"
+case   = "url/examples:example: mailto"
+reason = "copy of example/mailto/mailto.cpp with antora tags"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/qrcode.cpp"
-status = "todo"
+case   = "url/examples:example: qrcode"
+reason = "copy of example/qrcode/qrcode.cpp with antora tags"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/router.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/example/sanitize.cpp"
-status = "todo"
+case   = "url/examples:example: sanitize"
+reason = "copy of example/sanitize/sanitize.cpp with antora tags"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/unit/doc_3_urls.cpp"
-status = "todo"
+case   = "url/doc_doc_3_urls:doc: boost.url.doc.3_urls"
+reason = "the documentation's unit file"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/unit/doc_grammar.cpp"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[example]]
 path   = "libs/url/doc/modules/ROOT/examples/unit/snippets.cpp"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[example]]
 path   = "libs/url/example/file_router/file_router.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
-path   = "libs/url/example/finicky/finicky.cpp"
-status = "todo"
+path = "libs/url/example/finicky/finicky.cpp"
+case = "url/examples:example: finicky"
 
 [[example]]
-path   = "libs/url/example/magnet/magnet.cpp"
-status = "todo"
+path = "libs/url/example/magnet/magnet.cpp"
+case = "url/examples:example: magnet"
 
 [[example]]
-path   = "libs/url/example/mailto/mailto.cpp"
-status = "todo"
+path = "libs/url/example/mailto/mailto.cpp"
+case = "url/examples:example: mailto"
 
 [[example]]
-path   = "libs/url/example/qrcode/qrcode.cpp"
-status = "todo"
+path = "libs/url/example/qrcode/qrcode.cpp"
+case = "url/examples:example: qrcode"
 
 [[example]]
 path   = "libs/url/example/router/detail/impl/router.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
 path   = "libs/url/example/router/impl/matches.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
 path   = "libs/url/example/router/router.cpp"
-status = "todo"
+status = "excluded"
+reason = "beast-based HTTP server (a long-running service) and its router implementation files"
 
 [[example]]
-path   = "libs/url/example/sanitize/sanitize.cpp"
-status = "todo"
+path = "libs/url/example/sanitize/sanitize.cpp"
+case = "url/examples:example: sanitize"
 
 [[example]]
-path   = "libs/url/example/suffix_list/suffix_list.cpp"
-status = "todo"
+path = "libs/url/example/suffix_list/suffix_list.cpp"
+case = "url/examples:example: suffix_list"
 
 [[snippet]]
 doc    = "libs/url/doc/README.md#instructions-for-documentation"
 title  = "Instructions for Documentation"
-status = "todo"
+status = "excluded"
+reason = "instructions for building the documentation"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/charset.adoc#the-lut-chars-type"
 title  = "The lut_chars Type"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#optional-rule"
 title  = "Optional Rule"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#tuple-rule"
 title  = "Tuple Rule"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/combinators.adoc#variant-rule"
 title  = "Variant Rule"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/index.adoc#grammar"
 title  = "Syntax Notation"
-status = "todo"
+case   = "url/custom_types:doc: grammar"
+reason = "the page's code is the include and using-directive the case uses"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/rfc3986.adoc#percent-encoding"
 title  = "Percent Encoding"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/grammar/rfc3986.adoc#url-rules"
 title  = "URL Rules"
-status = "todo"
+case   = "url/doc_doc_grammar:doc: boost.url.doc.grammar"
+reason = "the section's code is included from unit/doc_grammar.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#accessing"
 title  = "Accessing"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#compound-elements"
 title  = "Compound elements"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#integration"
 title  = "Integration"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#modifying"
 title  = "Modifying"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#parsing"
 title  = "Parsing"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/quicklook.adoc#percent-encoding"
 title  = "Percent-Encoding"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#api-reference"
 title  = "API Reference"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#authority"
 title  = "Authority"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/components.adoc#scheme"
 title  = "Scheme"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#scheme-and-protocol-based-normalization"
 title  = "Scheme and Protocol-Based Normalization"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#simple-string-comparison"
 title  = "Simple String Comparison"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#syntax-based-normalization"
 title  = "Syntax-Based Normalization"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/normalization.adoc#syntax-based-normalization-procedure"
 title  = "Syntax-Based Normalization Procedure"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#constexpr-parsing"
 title  = "Constexpr Parsing"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#parsing-urls"
 title  = "Parsing URLs"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/parsing.adoc#result-type"
 title  = "Result Type"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#decode"
 title  = "Decode"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#encoding"
 title  = "Encoding"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/url/doc/modules/ROOT/pages/urls/percent-encoding.adoc#validating"
 title  = "Validating"
-status = "todo"
+case   = "url/doc_snippets:doc: boost.url.snippets"
+reason = "the section's code is included from unit/snippets.cpp"

@@ -94,7 +94,9 @@ struct hexdig_chars_t
         @ref parse,
         @ref token_rule.
 */
-constexpr implementation_defined::hexdig_chars_t hexdig_chars{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::hexdig_chars_t hexdig_chars{};
 
 /** Return the decimal value of a hex character
 

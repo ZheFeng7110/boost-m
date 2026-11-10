@@ -59,7 +59,9 @@ struct authority_rule_t
         @ref grammar::parse,
         @ref parse_authority.
 */
-constexpr implementation_defined::authority_rule_t authority_rule{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::authority_rule_t authority_rule{};
 
 } // urls
 } // boost

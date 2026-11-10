@@ -78,7 +78,9 @@ struct alpha_chars_t
         @ref parse,
         @ref token_rule.
 */
-constexpr implementation_defined::alpha_chars_t alpha_chars{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::alpha_chars_t alpha_chars{};
 
 } // grammar
 } // urls

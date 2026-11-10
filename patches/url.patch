@@ -1,0 +1,266 @@
+diff --git a/upstream/boost/boost/url/grammar/alnum_chars.hpp b/upstream/boost/boost/url/grammar/alnum_chars.hpp
+--- a/upstream/boost/boost/url/grammar/alnum_chars.hpp
++++ b/upstream/boost/boost/url/grammar/alnum_chars.hpp
+@@ -81,7 +81,9 @@
+         @ref parse,
+         @ref token_rule.
+ */
+-constexpr implementation_defined::alnum_chars_t alnum_chars{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::alnum_chars_t alnum_chars{};
+ 
+ } // grammar
+ } // urls
+diff --git a/upstream/boost/boost/url/grammar/alpha_chars.hpp b/upstream/boost/boost/url/grammar/alpha_chars.hpp
+--- a/upstream/boost/boost/url/grammar/alpha_chars.hpp
++++ b/upstream/boost/boost/url/grammar/alpha_chars.hpp
+@@ -78,7 +78,9 @@
+         @ref parse,
+         @ref token_rule.
+ */
+-constexpr implementation_defined::alpha_chars_t alpha_chars{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::alpha_chars_t alpha_chars{};
+ 
+ } // grammar
+ } // urls
+diff --git a/upstream/boost/boost/url/grammar/dec_octet_rule.hpp b/upstream/boost/boost/url/grammar/dec_octet_rule.hpp
+--- a/upstream/boost/boost/url/grammar/dec_octet_rule.hpp
++++ b/upstream/boost/boost/url/grammar/dec_octet_rule.hpp
+@@ -65,7 +65,9 @@
+     @see
+         @ref parse.
+ */
+-constexpr implementation_defined::dec_octet_rule_t dec_octet_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::dec_octet_rule_t dec_octet_rule{};
+ 
+ } // grammar
+ } // urls
+diff --git a/upstream/boost/boost/url/grammar/digit_chars.hpp b/upstream/boost/boost/url/grammar/digit_chars.hpp
+--- a/upstream/boost/boost/url/grammar/digit_chars.hpp
++++ b/upstream/boost/boost/url/grammar/digit_chars.hpp
+@@ -73,7 +73,9 @@
+         @ref parse,
+         @ref token_rule.
+ */
+-constexpr implementation_defined::digit_chars_t digit_chars{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::digit_chars_t digit_chars{};
+ 
+ } // grammar
+ } // urls
+diff --git a/upstream/boost/boost/url/grammar/hexdig_chars.hpp b/upstream/boost/boost/url/grammar/hexdig_chars.hpp
+--- a/upstream/boost/boost/url/grammar/hexdig_chars.hpp
++++ b/upstream/boost/boost/url/grammar/hexdig_chars.hpp
+@@ -94,7 +94,9 @@
+         @ref parse,
+         @ref token_rule.
+ */
+-constexpr implementation_defined::hexdig_chars_t hexdig_chars{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::hexdig_chars_t hexdig_chars{};
+ 
+ /** Return the decimal value of a hex character
+ 
+diff --git a/upstream/boost/boost/url/grammar/vchars.hpp b/upstream/boost/boost/url/grammar/vchars.hpp
+--- a/upstream/boost/boost/url/grammar/vchars.hpp
++++ b/upstream/boost/boost/url/grammar/vchars.hpp
+@@ -73,7 +73,9 @@
+         @ref parse,
+         @ref token_rule.
+ */
+-constexpr implementation_defined::vchars_t vchars{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::vchars_t vchars{};
+ 
+ } // grammar
+ } // urls
+diff --git a/upstream/boost/boost/url/param.hpp b/upstream/boost/boost/url/param.hpp
+--- a/upstream/boost/boost/url/param.hpp
++++ b/upstream/boost/boost/url/param.hpp
+@@ -33,7 +33,9 @@
+ 
+ /** Constant indicating no value in a param
+ */
+-constexpr no_value_t no_value{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR no_value_t no_value{};
+ 
+ //------------------------------------------------
+ 
+diff --git a/upstream/boost/boost/url/rfc/authority_rule.hpp b/upstream/boost/boost/url/rfc/authority_rule.hpp
+--- a/upstream/boost/boost/url/rfc/authority_rule.hpp
++++ b/upstream/boost/boost/url/rfc/authority_rule.hpp
+@@ -59,7 +59,9 @@
+         @ref grammar::parse,
+         @ref parse_authority.
+ */
+-constexpr implementation_defined::authority_rule_t authority_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::authority_rule_t authority_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/gen_delim_chars.hpp b/upstream/boost/boost/url/rfc/gen_delim_chars.hpp
+--- a/upstream/boost/boost/url/rfc/gen_delim_chars.hpp
++++ b/upstream/boost/boost/url/rfc/gen_delim_chars.hpp
+@@ -41,7 +41,9 @@
+         @ref grammar::parse,
+         @ref pct_encoded_rule.
+ */
+-constexpr
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR
+ grammar::lut_chars
+ gen_delim_chars = ":/?#[]@";
+ 
+diff --git a/upstream/boost/boost/url/rfc/ipv4_address_rule.hpp b/upstream/boost/boost/url/rfc/ipv4_address_rule.hpp
+--- a/upstream/boost/boost/url/rfc/ipv4_address_rule.hpp
++++ b/upstream/boost/boost/url/rfc/ipv4_address_rule.hpp
+@@ -68,7 +68,9 @@
+         @ref parse_ipv4_address,
+         @ref grammar::parse.
+ */
+-constexpr implementation_defined::ipv4_address_rule_t ipv4_address_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::ipv4_address_rule_t ipv4_address_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/ipv6_address_rule.hpp b/upstream/boost/boost/url/rfc/ipv6_address_rule.hpp
+--- a/upstream/boost/boost/url/rfc/ipv6_address_rule.hpp
++++ b/upstream/boost/boost/url/rfc/ipv6_address_rule.hpp
+@@ -76,7 +76,9 @@
+         @ref parse_ipv6_address,
+         @ref grammar::parse.
+ */
+-constexpr implementation_defined::ipv6_address_rule_t ipv6_address_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::ipv6_address_rule_t ipv6_address_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/pchars.hpp b/upstream/boost/boost/url/rfc/pchars.hpp
+--- a/upstream/boost/boost/url/rfc/pchars.hpp
++++ b/upstream/boost/boost/url/rfc/pchars.hpp
+@@ -42,7 +42,9 @@
+         @ref grammar::parse,
+         @ref pct_encoded_rule.
+ */
+-constexpr auto pchars =
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR auto pchars =
+     unreserved_chars + sub_delim_chars + ':' + '@';
+ 
+ } // urls
+diff --git a/upstream/boost/boost/url/rfc/query_rule.hpp b/upstream/boost/boost/url/rfc/query_rule.hpp
+--- a/upstream/boost/boost/url/rfc/query_rule.hpp
++++ b/upstream/boost/boost/url/rfc/query_rule.hpp
+@@ -67,7 +67,9 @@
+         @ref grammar::parse,
+         @ref params_encoded_view.
+ */
+-constexpr implementation_defined::query_rule_t query_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::query_rule_t query_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/relative_ref_rule.hpp b/upstream/boost/boost/url/rfc/relative_ref_rule.hpp
+--- a/upstream/boost/boost/url/rfc/relative_ref_rule.hpp
++++ b/upstream/boost/boost/url/rfc/relative_ref_rule.hpp
+@@ -61,7 +61,9 @@
+         @ref parse_relative_ref,
+         @ref url_view.
+ */
+-constexpr implementation_defined::relative_ref_rule_t relative_ref_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::relative_ref_rule_t relative_ref_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/reserved_chars.hpp b/upstream/boost/boost/url/rfc/reserved_chars.hpp
+--- a/upstream/boost/boost/url/rfc/reserved_chars.hpp
++++ b/upstream/boost/boost/url/rfc/reserved_chars.hpp
+@@ -36,7 +36,9 @@
+         @ref grammar::parse,
+         @ref pct_encoded_rule.
+ */
+-constexpr auto reserved_chars = ~unreserved_chars;
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR auto reserved_chars = ~unreserved_chars;
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/sub_delim_chars.hpp b/upstream/boost/boost/url/rfc/sub_delim_chars.hpp
+--- a/upstream/boost/boost/url/rfc/sub_delim_chars.hpp
++++ b/upstream/boost/boost/url/rfc/sub_delim_chars.hpp
+@@ -42,7 +42,9 @@
+         @ref grammar::parse,
+         @ref pct_encoded_rule.
+ */
+-constexpr
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR
+ grammar::lut_chars
+ sub_delim_chars = "!$&()*+,;=\x27";
+ 
+diff --git a/upstream/boost/boost/url/rfc/unreserved_chars.hpp b/upstream/boost/boost/url/rfc/unreserved_chars.hpp
+--- a/upstream/boost/boost/url/rfc/unreserved_chars.hpp
++++ b/upstream/boost/boost/url/rfc/unreserved_chars.hpp
+@@ -41,7 +41,9 @@
+         @ref grammar::parse,
+         @ref pct_encoded_rule.
+ */
+-constexpr
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR
+ grammar::lut_chars
+ unreserved_chars =
+     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+diff --git a/upstream/boost/boost/url/rfc/uri_reference_rule.hpp b/upstream/boost/boost/url/rfc/uri_reference_rule.hpp
+--- a/upstream/boost/boost/url/rfc/uri_reference_rule.hpp
++++ b/upstream/boost/boost/url/rfc/uri_reference_rule.hpp
+@@ -64,7 +64,9 @@
+         @ref parse_uri_reference,
+         @ref url_view.
+ */
+-constexpr implementation_defined::uri_reference_rule_t uri_reference_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::uri_reference_rule_t uri_reference_rule{};
+ 
+ } // urls
+ } // boost
+diff --git a/upstream/boost/boost/url/rfc/uri_rule.hpp b/upstream/boost/boost/url/rfc/uri_rule.hpp
+--- a/upstream/boost/boost/url/rfc/uri_rule.hpp
++++ b/upstream/boost/boost/url/rfc/uri_rule.hpp
+@@ -61,7 +61,9 @@
+         @ref parse_uri,
+         @ref url_view.
+ */
+-constexpr implementation_defined::uri_rule_t uri_rule{};
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
++// not exportable from a module), as upstream already spells absolute_uri_rule.
++BOOST_INLINE_CONSTEXPR implementation_defined::uri_rule_t uri_rule{};
+ 
+ } // urls
+ } // boost

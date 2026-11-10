@@ -42,7 +42,9 @@ namespace urls {
         @ref grammar::parse,
         @ref pct_encoded_rule.
 */
-constexpr
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR
 grammar::lut_chars
 sub_delim_chars = "!$&()*+,;=\x27";
 

@@ -76,7 +76,9 @@ struct ipv6_address_rule_t
         @ref parse_ipv6_address,
         @ref grammar::parse.
 */
-constexpr implementation_defined::ipv6_address_rule_t ipv6_address_rule{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::ipv6_address_rule_t ipv6_address_rule{};
 
 } // urls
 } // boost

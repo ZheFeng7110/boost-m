@@ -61,7 +61,9 @@ struct uri_rule_t
         @ref parse_uri,
         @ref url_view.
 */
-constexpr implementation_defined::uri_rule_t uri_rule{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::uri_rule_t uri_rule{};
 
 } // urls
 } // boost

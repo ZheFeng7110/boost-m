@@ -47,6 +47,13 @@ export; it becomes `inline constexpr`.
 of `boost/bimap/support/lambda.hpp` were references in an anonymous
 namespace; they become `inline constexpr`, as `boost::lambda::_1` did.
 
+`url.patch` is the TU-local-object case at scale: Boost.URL's character sets
+and grammar rules (`grammar::alnum_chars`, `unreserved_chars`, `uri_rule`,
+`authority_rule`, ...) are namespace-scope `constexpr` objects, which have
+internal linkage and cannot be exported, so the url module lacked them. The
+patch spells them `BOOST_INLINE_CONSTEXPR`, as upstream already does for
+`absolute_uri_rule` and `origin_form_rule`.
+
 Every patch is reviewed against the 1.92.0 tag it was written for;
 `upstream/boost/SOURCE.md` records the archive and checksum the tree comes
 from. A patch that neither applies nor is already applied fails the replay.

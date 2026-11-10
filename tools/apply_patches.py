@@ -32,6 +32,7 @@ PATCHES = [
     "config_user", "container", "convert", "hof", "io", "lambda", "mqtt5",
     "multi_array", "parameter", "range_adaptors", "numeric", "regex",
     "safe_numerics", "serialization", "system", "test", "ublas", "units",
+    "url",
 ]
 
 # A vendored file that is an addition, not a patch of an upstream file.
