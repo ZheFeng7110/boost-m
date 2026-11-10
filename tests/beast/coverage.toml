@@ -7,307 +7,347 @@ library = "beast"
 
 [[example]]
 path   = "libs/beast/example/advanced/server-flex-awaitable/advanced_server_flex_awaitable.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/advanced/server-flex/advanced_server_flex.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/advanced/server/advanced_server.cpp"
-status = "todo"
+path = "libs/beast/example/advanced/server/advanced_server.cpp"
+case = "beast/examples_websocket:example: advanced/server/advanced_server"
 
 [[example]]
 path   = "libs/beast/example/doc/ssl/client.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/doc/ssl/server.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/echo-op/echo_op.cpp"
-status = "todo"
+path = "libs/beast/example/echo-op/echo_op.cpp"
+case = "beast/examples_websocket:example: echo-op/echo_op"
 
 [[example]]
-path   = "libs/beast/example/http/client/async-local/http_client_async_local.cpp"
-status = "todo"
+path = "libs/beast/example/http/client/async-local/http_client_async_local.cpp"
+case = "beast/examples_http:example: http/client/async-local/http_client_async_local"
 
 [[example]]
 path   = "libs/beast/example/http/client/async-ssl-system-executor/http_client_async_ssl_system_executor.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/http/client/async-ssl/http_client_async_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/client/async/http_client_async.cpp"
-status = "todo"
+path = "libs/beast/example/http/client/async/http_client_async.cpp"
+case = "beast/examples_http:example: http/client/async/http_client_async"
 
 [[example]]
 path   = "libs/beast/example/http/client/awaitable-ssl/http_client_awaitable_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/client/awaitable/http_client_awaitable.cpp"
-status = "todo"
+path = "libs/beast/example/http/client/awaitable/http_client_awaitable.cpp"
+case = "beast/examples_http:example: http/client/awaitable/http_client_awaitable"
 
 [[example]]
 path   = "libs/beast/example/http/client/body/json_client.cpp"
-status = "todo"
+status = "excluded"
+reason = "talks to a public internet service (postman-echo.com, httpbin.cpp.al); the user Body it defines is the subject of beast/custom_types"
 
 [[example]]
 path   = "libs/beast/example/http/client/coro-ssl/http_client_coro_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/http/client/coro/http_client_coro.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/beast/example/http/client/crawl/http_crawl.cpp"
-status = "todo"
+status = "excluded"
+reason = "crawls public internet sites (a list of thousands of URLs); no network peer in the tests"
 
 [[example]]
 path   = "libs/beast/example/http/client/crawl/urls_large_data.cpp"
-status = "todo"
+status = "excluded"
+reason = "crawls public internet sites (a list of thousands of URLs); no network peer in the tests"
 
 [[example]]
 path   = "libs/beast/example/http/client/methods/http_client_methods.cpp"
-status = "todo"
+status = "excluded"
+reason = "talks to a public internet service (postman-echo.com, httpbin.cpp.al); the user Body it defines is the subject of beast/custom_types"
 
 [[example]]
 path   = "libs/beast/example/http/client/sync-ssl/http_client_sync_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/client/sync/http_client_sync.cpp"
-status = "todo"
+path = "libs/beast/example/http/client/sync/http_client_sync.cpp"
+case = "beast/examples_http:example: http/client/sync/http_client_sync"
 
 [[example]]
-path   = "libs/beast/example/http/server/async-local/http_server_async_local.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/async-local/http_server_async_local.cpp"
+case = "beast/examples_http:example: http/server/async-local/http_server_async_local"
 
 [[example]]
 path   = "libs/beast/example/http/server/async-ssl/http_server_async_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/server/async/http_server_async.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/async/http_server_async.cpp"
+case = "beast/examples_http:example: http/server/async/http_server_async"
 
 [[example]]
-path   = "libs/beast/example/http/server/awaitable/http_server_awaitable.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/awaitable/http_server_awaitable.cpp"
+case = "beast/examples_http:example: http/server/awaitable/http_server_awaitable"
 
 [[example]]
 path   = "libs/beast/example/http/server/coro-ssl/http_server_coro_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/http/server/coro/http_server_coro.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
-path   = "libs/beast/example/http/server/fast/http_server_fast.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/fast/http_server_fast.cpp"
+case = "beast/examples_http:example: http/server/fast/http_server_fast"
 
 [[example]]
 path   = "libs/beast/example/http/server/flex/http_server_flex.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/server/small/http_server_small.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/small/http_server_small.cpp"
+case = "beast/examples_http:example: http/server/small/http_server_small"
 
 [[example]]
 path   = "libs/beast/example/http/server/stackless-ssl/http_server_stackless_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/server/stackless/http_server_stackless.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/stackless/http_server_stackless.cpp"
+case = "beast/examples_http:example: http/server/stackless/http_server_stackless"
 
 [[example]]
 path   = "libs/beast/example/http/server/sync-ssl/http_server_sync_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/http/server/sync/http_server_sync.cpp"
-status = "todo"
+path = "libs/beast/example/http/server/sync/http_server_sync.cpp"
+case = "beast/examples_http:example: http/server/sync/http_server_sync"
 
 [[example]]
-path   = "libs/beast/example/websocket/client/async-local/websocket_client_async_local.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/client/async-local/websocket_client_async_local.cpp"
+case = "beast/examples_websocket:example: websocket/client/async-local/websocket_client_async_local"
 
 [[example]]
 path   = "libs/beast/example/websocket/client/async-ssl-system-executor/websocket_client_async_ssl_system_executor.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/websocket/client/async-ssl/websocket_client_async_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/websocket/client/async/websocket_client_async.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/client/async/websocket_client_async.cpp"
+case = "beast/examples_websocket:example: websocket/client/async/websocket_client_async"
 
 [[example]]
-path   = "libs/beast/example/websocket/client/awaitable/websocket_client_awaitable.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/client/awaitable/websocket_client_awaitable.cpp"
+case = "beast/examples_websocket:example: websocket/client/awaitable/websocket_client_awaitable"
 
 [[example]]
 path   = "libs/beast/example/websocket/client/coro-ssl/websocket_client_coro_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/websocket/client/coro/websocket_client_coro.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/beast/example/websocket/client/sync-ssl/websocket_client_sync_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/websocket/client/sync/websocket_client_sync.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/client/sync/websocket_client_sync.cpp"
+case = "beast/examples_websocket:example: websocket/client/sync/websocket_client_sync"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/async-local/websocket_server_async_local.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/async-local/websocket_server_async_local.cpp"
+case = "beast/examples_websocket:example: websocket/server/async-local/websocket_server_async_local"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/async-ssl/websocket_server_async_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/async/websocket_server_async.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/async/websocket_server_async.cpp"
+case = "beast/examples_websocket:example: websocket/server/async/websocket_server_async"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/awaitable/websocket_server_awaitable.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/awaitable/websocket_server_awaitable.cpp"
+case = "beast/examples_websocket:example: websocket/server/awaitable/websocket_server_awaitable"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/chat-multi/http_session.cpp"
-status = "todo"
+case   = "beast/examples_websocket:example: websocket/server/chat-multi/main"
+reason = "a source file of the chat-multi program; merged into its main case"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/chat-multi/listener.cpp"
-status = "todo"
+case   = "beast/examples_websocket:example: websocket/server/chat-multi/main"
+reason = "a source file of the chat-multi program; merged into its main case"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/chat-multi/main.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/chat-multi/main.cpp"
+case = "beast/examples_websocket:example: websocket/server/chat-multi/main"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/chat-multi/shared_state.cpp"
-status = "todo"
+case   = "beast/examples_websocket:example: websocket/server/chat-multi/main"
+reason = "a source file of the chat-multi program; merged into its main case"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/chat-multi/websocket_session.cpp"
-status = "todo"
+case   = "beast/examples_websocket:example: websocket/server/chat-multi/main"
+reason = "a source file of the chat-multi program; merged into its main case"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/coro-ssl/websocket_server_coro_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/coro/websocket_server_coro.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/fast/websocket_server_fast.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/stackless-ssl/websocket_server_stackless_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/stackless/websocket_server_stackless.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/stackless/websocket_server_stackless.cpp"
+case = "beast/examples_websocket:example: websocket/server/stackless/websocket_server_stackless"
 
 [[example]]
 path   = "libs/beast/example/websocket/server/sync-ssl/websocket_server_sync_ssl.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/beast/example/websocket/server/sync/websocket_server_sync.cpp"
-status = "todo"
+path = "libs/beast/example/websocket/server/sync/websocket_server_sync.cpp"
+case = "beast/examples_websocket:example: websocket/server/sync/websocket_server_sync"
 
 [[snippet]]
 doc    = "libs/beast/doc/qbk/03_core/9_ssl_tls_certificate.qbk#ssl-tls-certificate"
 title  = "SSL/TLS Certificate"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/03_core/_core.qbk#using_io"
-title  = "Networking"
-status = "todo"
+doc   = "libs/beast/doc/qbk/03_core/_core.qbk#using_io"
+title = "Networking"
+case  = "beast/doc:doc: using_io"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/04_http/01_primer.qbk#protocol-primer"
-title  = "Protocol Primer"
-status = "todo"
+doc   = "libs/beast/doc/qbk/04_http/01_primer.qbk#protocol-primer"
+title = "Protocol Primer"
+case  = "beast/doc:doc: protocol-primer"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/04_http/02_message.qbk#message-containers"
-title  = "Message Containers"
-status = "todo"
+doc   = "libs/beast/doc/qbk/04_http/02_message.qbk#message-containers"
+title = "Message Containers"
+case  = "beast/doc:doc: message-containers"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/04_http/04_serializer_streams.qbk#serializer-stream-operations"
-title  = "Serializer Stream Operations"
-status = "todo"
+doc   = "libs/beast/doc/qbk/04_http/04_serializer_streams.qbk#serializer-stream-operations"
+title = "Serializer Stream Operations"
+case  = "beast/doc:doc: serializer-stream-operations"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/04_http/05_parser_streams.qbk#parser-stream-operations"
-title  = "Parser Stream Operations"
-status = "todo"
+doc   = "libs/beast/doc/qbk/04_http/05_parser_streams.qbk#parser-stream-operations"
+title = "Parser Stream Operations"
+case  = "beast/doc:doc: parser-stream-operations"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/04_http/08_chunked_encoding.qbk#chunked-encoding"
-title  = "Chunked Encoding"
-status = "todo"
+doc   = "libs/beast/doc/qbk/04_http/08_chunked_encoding.qbk#chunked-encoding"
+title = "Chunked Encoding"
+case  = "beast/doc:doc: chunked-encoding"
 
 [[snippet]]
 doc    = "libs/beast/doc/qbk/04_http/09_custom_body.qbk#custom-body-types"
 title  = "Custom Body Types"
-status = "todo"
+case   = "beast/custom_types:custom: Body with reader and writer"
+reason = "the page shows the Body declarations; the json body is example/http/client/body/json_body.hpp"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/06_websocket/02_handshaking.qbk#handshaking"
-title  = "Handshaking"
-status = "todo"
+doc   = "libs/beast/doc/qbk/06_websocket/02_handshaking.qbk#handshaking"
+title = "Handshaking"
+case  = "beast/doc:doc: handshaking"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/07_concepts/Body.qbk#Body"
-title  = "Body"
-status = "todo"
+doc   = "libs/beast/doc/qbk/07_concepts/Body.qbk#Body"
+title = "Body"
+case  = "beast/doc:doc: Body"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/07_concepts/BuffersGenerator.qbk#BuffersGenerator"
-title  = "BuffersGenerator"
-status = "todo"
+doc   = "libs/beast/doc/qbk/07_concepts/BuffersGenerator.qbk#BuffersGenerator"
+title = "BuffersGenerator"
+case  = "beast/doc:doc: BuffersGenerator"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/08_design/1_http_message.qbk#http_message_container"
-title  = "HTTP Message Container __video__"
-status = "todo"
+doc   = "libs/beast/doc/qbk/08_design/1_http_message.qbk#http_message_container"
+title = "HTTP Message Container __video__"
+case  = "beast/doc:doc: http_message_container"
 
 [[snippet]]
 doc    = "libs/beast/doc/qbk/08_design/2_http_comparison.qbk#http-comparison-to-other-libraries"
 title  = "HTTP Comparison to Other Libraries"
-status = "todo"
+status = "excluded"
+reason = "declarations of other HTTP libraries, compared in prose"
 
 [[snippet]]
 doc    = "libs/beast/doc/qbk/08_design/3_websocket_zaphoyd.qbk#comparison-to-zaphoyd-studios-websocket"
 title  = "Comparison to Zaphoyd Studios WebSocket++"
-status = "todo"
+status = "excluded"
+reason = "declarations of other HTTP libraries, compared in prose"
 
 [[snippet]]
 doc    = "libs/beast/doc/qbk/08_design/4_faq.qbk#faq"
 title  = "FAQ"
-status = "todo"
+status = "excluded"
+reason = "prose (questions and answers), no code"

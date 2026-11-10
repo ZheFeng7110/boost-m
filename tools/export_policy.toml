@@ -462,6 +462,18 @@ names = [  # any :: segment
     "dstream_buf",
 ]
 
+[[beast.extra]]
+namespace = "boost::beast"
+reason = '''
+boost/beast/core/error.hpp declares `namespace errc = boost::system::errc;`
+(the examples write beast::errc::not_connected). The generator collects
+entities, and a using-declaration cannot name a namespace alias, so the alias
+is re-declared here (a redeclaration denoting the same namespace).
+'''
+lines = [
+    "namespace errc = ::boost::system::errc;",
+]
+
 # --------------------------------------------------------------------------
 # bloom
 

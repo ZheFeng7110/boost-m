@@ -77,6 +77,7 @@ atomic guard boost::atomics::detail::core_operations_gcc_atomic if defined(__GNU
 atomic guard boost::atomics::detail::fence_arch_operations_gcc_x86 if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)) -- M11 platform guard: gcc_x86 backend of boost/atomic (platform.hpp); x86 only.
 atomic guard boost::atomics::detail::fence_operations_gcc_atomic if defined(__GNUC__) -- M11 platform guard: gcc-only branch of boost/atomic (snapshot = mingw flavor).
 atomic guard boost::atomics::detail::wait_operations_windows if defined(BOOST_WINDOWS) -- M11 platform guard: wait_ops_windows.hpp (wait backend = windows, platform.hpp BOOST_WINDOWS); POSIX uses futex/darwin_ulock/generic.
+beast extra boost::beast -- boost/beast/core/error.hpp declares `namespace errc = boost::system::errc;` (the examples write beast::errc::not_connected). The generator collects entities, and a using-declaration cannot name a namespace alias, so the alias is re-declared here (a redeclaration denoting the same namespace).
 beast guard boost::beast::detail::set_file_pointer_ex if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.
 beast guard boost::beast::detail::win32_unicode_path if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.
 beast guard boost::beast::file_win32 if defined(_WIN32) -- Beast's Win32 file and debug-stream helpers (file_win32.hpp, detail/ostream dstream) are Windows-only.

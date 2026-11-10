@@ -6,6 +6,11 @@ export namespace boost { namespace asio { namespace ssl {
 }}}
 
 export namespace boost { namespace beast {
+  // boost/beast/core/error.hpp declares `namespace errc = boost::system::errc;`
+  // (the examples write beast::errc::not_connected). The generator collects
+  // entities, and a using-declaration cannot name a namespace alias, so the alias
+  // is re-declared here (a redeclaration denoting the same namespace).
+  namespace errc = ::boost::system::errc;
   using boost::beast::allocate_stable;
   using boost::beast::asio_handler_is_continuation;
   using boost::beast::async_base;
