@@ -92,11 +92,6 @@ title = "Parameter taken by const reference that can be changed"
 case  = "container/api:doc: container_const_reference_parameters"
 
 [[snippet]]
-doc   = "libs/container/doc/container.qbk#devector"
-title = "['devector]"
-case  = "container/api:doc: devector"
-
-[[snippet]]
 doc   = "libs/container/doc/container.qbk#hub_capacity"
 title = "Capacity"
 case  = "container/api:doc: hub_capacity"
@@ -125,11 +120,6 @@ case  = "container/api:doc: hub_visitation"
 doc   = "libs/container/doc/container.qbk#null_iterators"
 title = "Null Forward Iterators"
 case  = "container/api:doc: null_iterators"
-
-[[snippet]]
-doc   = "libs/container/doc/container.qbk#polymorphic_memory_resources"
-title = "Polymorphic Memory Resources"
-case  = "container/api:doc: polymorphic_memory_resources"
 
 [[snippet]]
 doc   = "libs/container/doc/container.qbk#stable_vector"

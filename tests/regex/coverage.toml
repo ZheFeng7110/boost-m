@@ -115,6 +115,11 @@ status = "excluded"
 reason = "needs a regex library built with BOOST_REGEX_MATCH_EXTRA (a configuration that changes the compiled TUs); the package builds the default configuration"
 
 [[snippet]]
+doc   = "libs/regex/doc/error_type.qbk#error_type"
+title = "error_type"
+case  = "regex/api:doc: error_type"
+
+[[snippet]]
 doc    = "libs/regex/doc/icu_strings.qbk#unicode_algo"
 title  = "Unicode Regular Expression Algorithms"
 status = "excluded"
@@ -136,6 +141,18 @@ reason = "needs ICU (the package builds regex without ICU)"
 doc   = "libs/regex/doc/introduction.qbk#intro"
 title = "Introduction and Overview"
 case  = "regex/api:doc: intro"
+
+[[snippet]]
+doc    = "libs/regex/doc/locale.qbk#locale"
+title  = "Localization"
+status = "excluded"
+reason = "message catalogues: set_message_catalogue needs a POSIX catalogue installed (cpp/c traits) or a Win32 resource DLL (w32 traits); neither is part of the package or its test environment"
+
+[[snippet]]
+doc    = "libs/regex/doc/match_flag_type.qbk#match_flag_type"
+title  = "match_flag_type"
+case   = "regex/api:regex_constants and match flags"
+reason = "the page is the flag listing; the case uses match_any / match_not_bol and the default"
 
 [[snippet]]
 doc   = "libs/regex/doc/match_result.qbk#match_results"
@@ -161,6 +178,12 @@ status = "excluded"
 reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
 
 [[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_regex_types"
+title  = "Regex Types Used With MFC Strings"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[snippet]]
 doc   = "libs/regex/doc/modules.qbk#modules"
 title = "Module Support (Experimental)"
 case  = "regex/api:doc: modules"
@@ -170,6 +193,11 @@ doc    = "libs/regex/doc/partial_matches.qbk#partial_matches"
 title  = "Partial Matches"
 case   = "regex/examples:example: partial_regex_match"
 reason = "the section's example is example/snippets/partial_regex_match.cpp"
+
+[[snippet]]
+doc   = "libs/regex/doc/posix_api.qbk#posix"
+title = "POSIX Compatible C API's"
+case  = "regex/posix_api:doc: posix"
 
 [[snippet]]
 doc   = "libs/regex/doc/regex_format.qbk#regex_format"
@@ -227,6 +255,16 @@ case  = "regex/custom_types:doc: regex_traits"
 doc   = "libs/regex/doc/sub_match.qbk#sub_match"
 title = "sub_match"
 case  = "regex/api:doc: sub_match"
+
+[[snippet]]
+doc   = "libs/regex/doc/syntax_basic.qbk#basic_syntax"
+title = "POSIX Basic Regular Expression Syntax"
+case  = "regex/api:doc: basic_syntax"
+
+[[snippet]]
+doc   = "libs/regex/doc/syntax_extended.qbk#basic_extended"
+title = "POSIX Extended Regular Expression Syntax"
+case  = "regex/api:doc: basic_extended"
 
 [[snippet]]
 doc   = "libs/regex/doc/syntax_perl.qbk#perl_syntax"

@@ -291,6 +291,28 @@ add = ["macros"]
 # --------------------------------------------------------------------------
 # asio
 
+[[asio.extra]]
+namespace = "boost::asio::stream_errc"
+reason = '''
+boost/asio/error.hpp simulates the proposed stream_errc / socket_errc scoped
+enums with namespaces that hold only using-declarations of error::
+enumerators (the cpp14 blocking_tcp_echo_server example compares with
+boost::asio::stream_errc::eof). The generator collects declared entities, not
+using-declarations, so those namespaces are re-created here.
+'''
+lines = [
+    "using boost::asio::error::eof;",
+    "using boost::asio::error::not_found;",
+]
+
+[[asio.extra]]
+namespace = "boost::asio::socket_errc"
+reason = "Like boost::asio::stream_errc: boost/asio/error.hpp simulates the proposed socket_errc scoped enum with a namespace of using-declarations of error:: enumerators, re-created here."
+lines = [
+    "using boost::asio::error::already_open;",
+    "using boost::asio::error::not_found;",
+]
+
 [[asio.guard]]
 if = "defined(BOOST_ASIO_HAS_FILE)"
 reason = '''

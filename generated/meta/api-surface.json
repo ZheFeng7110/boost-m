@@ -132,7 +132,7 @@
     "system",
     "type_traits"
    ],
-   "exported": 1426,
+   "exported": 1428,
    "gmf": [
     "boost/asio.hpp",
     "boost/asio/deadline_timer.hpp",
@@ -144,6 +144,7 @@
     "boost/asio/experimental/concurrent_channel.hpp",
     "boost/asio/experimental/promise.hpp",
     "boost/asio/experimental/use_coro.hpp",
+    "boost/asio/experimental/use_promise.hpp",
     "boost/asio/fwd.hpp",
     "boost/asio/spawn.hpp",
     "boost/asio/ssl/stream_base.hpp",

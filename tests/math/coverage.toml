@@ -675,6 +675,11 @@ title  = "Additional Implementation Notes"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/background/lanczos.qbk#lanczos"
+title  = "The Lanczos Approximation"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/background/special_tut.qbk#special_tut_impl"
 title  = "Implementation"
 status = "todo"
@@ -685,6 +690,36 @@ title  = "Testing"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#acos"
+title  = "acos"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#acosh"
+title  = "acosh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#asin"
+title  = "asin"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#asinh"
+title  = "asinh"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#atan"
+title  = "atan"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/complex/complex-tr1.qbk#atanh"
+title  = "atanh"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/concepts/concepts.qbk#archetypes"
 title  = "Conceptual Archetypes for Reals and Distributions"
 status = "todo"
@@ -692,6 +727,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/concepts/concepts.qbk#use_mpfr"
 title  = "Using With MPFR or GMP - High-Precision Floating-Point Library"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/constants/constants.qbk#constants_faq"
+title  = "Math Constants FAQs"
 status = "todo"
 
 [[snippet]]
@@ -725,6 +765,11 @@ title  = "Overloading template functions with float128_t"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/cstdfloat/cstdfloat.qbk#typeinfo"
+title  = "`typeinfo`"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/differentiation/autodiff.qbk#autodiff"
 title  = "Automatic Differentiation"
 status = "todo"
@@ -747,6 +792,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/distributions/arcsine.qbk#arcine_dist"
 title  = "Arcsine Distribution"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/background.qbk#variates"
+title  = "Random Variates and Distribution Parameters"
 status = "todo"
 
 [[snippet]]
@@ -800,6 +850,11 @@ title  = "Chi-Square Test for the Standard Deviation"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/distributions/dist_algorithms.qbk#dist_algorithms"
+title  = "Distribution Algorithms"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/distributions/dist_reference.qbk#future"
 title  = "Extras/Future Directions"
 status = "todo"
@@ -807,6 +862,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/distributions/dist_tutorial.qbk#complements"
 title  = "Complements are supported too - and when to use them"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/dist_tutorial.qbk#objects"
+title  = "Distributions are Objects"
 status = "todo"
 
 [[snippet]]
@@ -890,6 +950,11 @@ title  = "Log Normal Distribution"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/distributions/nag_library.qbk#nag_library"
+title  = "Comparison with C, R, FORTRAN-style Free Functions"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/distributions/nc_beta.qbk#nc_beta_dist"
 title  = "Noncentral Beta Distribution"
 status = "todo"
@@ -917,6 +982,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/distributions/negative_binomial_example.qbk#neg_binom_size_eg"
 title  = "Estimating Sample Sizes for the Negative Binomial."
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/non_members.qbk#nmp"
+title  = "Non-Member Properties"
 status = "todo"
 
 [[snippet]]
@@ -957,6 +1027,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/distributions/students_t_examples.qbk#tut_mean_size"
 title  = "Estimating how large a sample size would have to become"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/distributions/students_t_examples.qbk#tut_mean_test"
+title  = "Testing a sample mean for difference from a \"true\" mean"
 status = "todo"
 
 [[snippet]]
@@ -1025,8 +1100,38 @@ title  = "Obtaining the Size of a Unit In the Last Place - ULP"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/fp_utilities/fp_facets.qbk#examples"
+title  = "Examples"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/fp_facets.qbk#facets_intro"
+title  = "Introduction"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/fp_utilities/fp_facets.qbk#fp_facets"
 title  = "Facets for Floating-Point Infinities and NaNs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/fpclassify.qbk#fpclass"
+title  = "Floating-Point Classification: Infinities and NaNs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/rounding_func.qbk#modf"
+title  = "Integer and Fractional Part Splitting (modf)"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/rounding_func.qbk#round"
+title  = "Rounding Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/fp_utilities/rounding_func.qbk#trunc"
+title  = "Truncation Functions"
 status = "todo"
 
 [[snippet]]
@@ -1195,6 +1300,16 @@ title  = "Whittaker-Shannon interpolation"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_create"
+title  = "Octonion Creation Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_mem_fun"
+title  = "Octonion Member Functions"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_non_mem"
 title  = "Octonion Non-Member Operators"
 status = "todo"
@@ -1202,6 +1317,21 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_specialization"
 title  = "Octonion Specializations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_trans"
+title  = "Octonions Transcendentals"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_typedefs"
+title  = "Octonion Member Typedefs"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/octonion/math-octonion.qbk#oct_value_ops"
+title  = "Octonion Value Operations"
 status = "todo"
 
 [[snippet]]
@@ -1255,8 +1385,53 @@ title  = "Random Search"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/overview/error_handling.qbk#error_handling"
+title  = "Error Handling"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/overview/gpu.qbk#gpu"
 title  = "Support for GPU programming in Boost.Math"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/overview/result_type_calc.qbk#result_type"
+title  = "Calculation of the Type of the Result"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/overview/structure.qbk#namespaces"
+title  = "Namespaces"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/performance/performance.qbk#tradoffs"
+title  = "Trading Accuracy for Performance"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#assert_undefined"
+title  = "Mathematically Undefined Function Policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#discrete_quant_ref"
+title  = "Discrete Quantile Policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#error_handling_policies"
+title  = "Error Handling Policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#iteration_pol"
+title  = "Iteration Limits Policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#namespace_pol"
+title  = "Setting Polices at Namespace Scope"
 status = "todo"
 
 [[snippet]]
@@ -1270,8 +1445,38 @@ title  = "Using Macros to Change the Policy Defaults"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/policies/policy.qbk#precision_pol"
+title  = "Precision Policies"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#ad_hoc_dist_policies"
+title  = "Setting Policies for Distributions on an Ad Hoc Basis"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/policies/policy_tutorial.qbk#ad_hoc_sf_policies"
 title  = "Changing the Policy on an Ad Hoc Basis for the Special Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#namespace_policies"
+title  = "Setting Policies at Namespace or Translation Unit Scope"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#policy_tut_defaults"
+title  = "Policies Have Sensible Defaults"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#understand_dis_quant"
+title  = "Understanding Quantiles of Discrete Distributions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/policies/policy_tutorial.qbk#what_is_a_policy"
+title  = "So Just What is a Policy Anyway?"
 status = "todo"
 
 [[snippet]]
@@ -1345,8 +1550,23 @@ title  = "Wavelet Transforms"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#create"
+title  = "Quaternion Creation Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#mem_typedef"
+title  = "Quaternion Member Typedefs"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/quaternion/math-quaternion.qbk#quat"
 title  = "Template Class quaternion"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#quat_mem_fun"
+title  = "Quaternion Member Functions"
 status = "todo"
 
 [[snippet]]
@@ -1357,6 +1577,16 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/quaternion/math-quaternion.qbk#spec"
 title  = "Quaternion Specializations"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#trans"
+title  = "Quaternion Transcendentals"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/quaternion/math-quaternion.qbk#value_op"
+title  = "Quaternion Value Operations"
 status = "todo"
 
 [[snippet]]
@@ -1372,6 +1602,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/roots/quartic_roots.qbk#quartic_roots"
 title  = "Roots of Quartic Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/roots/root_comparison.qbk#cbrt_comparison"
+title  = "Comparison of Cube Root Finding Algorithms"
 status = "todo"
 
 [[snippet]]
@@ -1415,6 +1650,11 @@ title  = "Airy Ai' Function"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/sf/airy.qbk#airy_root"
+title  = "Finding Zeros of Airy Functions"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/sf/airy.qbk#bi"
 title  = "Airy Bi Function"
 status = "todo"
@@ -1432,6 +1672,21 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/sf/bernoulli_numbers.qbk#tangent_numbers"
 title  = "Tangent Numbers"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/bessel_ik.qbk#mbessel"
+title  = "Modified Bessel Functions of the First and Second Kinds"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/bessel_jy.qbk#bessel_first"
+title  = "Bessel Functions of the First and Second Kinds"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/bessel_spherical.qbk#sph_bessel"
+title  = "Spherical Bessel Functions of the First and Second Kinds"
 status = "todo"
 
 [[snippet]]
@@ -1565,13 +1820,38 @@ title  = "Gegenbauer Polynomials"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/sf/hankel.qbk#cyl_hankel"
+title  = "Cyclic Hankel Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hankel.qbk#sph_hankel"
+title  = "Spherical Hankel Functions"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/sf/hermite.qbk#hermite"
 title  = "Hermite Polynomials"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_0f1"
+title  = "Hypergeometric [sub 0]/F/[sub 1]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_1f0"
+title  = "Hypergeometric [sub 1]/F/[sub 0]"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_1f1"
 title  = "Hypergeometric [sub 1]/F/[sub 1]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/hypergeometric.qbk#hypergeometric_2f0"
+title  = "Hypergeometric [sub 2]/F/[sub 0]"
 status = "todo"
 
 [[snippet]]
@@ -1617,6 +1897,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/sf/jacobi.qbk#jacobi"
 title  = "Jacobi Polynomials"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_elliptic.qbk#jac_over"
+title  = "Overview of the Jacobi Elliptic Functions"
 status = "todo"
 
 [[snippet]]
@@ -1702,6 +1987,11 @@ status = "todo"
 [[snippet]]
 doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta4"
 title  = "Jacobi Theta Function [theta][sub 4]"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/sf/jacobi_theta.qbk#jacobi_theta_overview"
+title  = "Overview of the Jacobi Theta Functions"
 status = "todo"
 
 [[snippet]]
@@ -1900,8 +2190,23 @@ title  = "/z/-tests"
 status = "todo"
 
 [[snippet]]
+doc    = "libs/math/doc/tr1/c99_ref.qbk#c99"
+title  = "C99 C Functions"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/doc/tr1/tr1_ref.qbk#tr1_ref"
+title  = "TR1 C Functions Quick Reference"
+status = "todo"
+
+[[snippet]]
 doc    = "libs/math/doc/vector_functionals/norms.qbk#norms"
 title  = "Norms"
+status = "todo"
+
+[[snippet]]
+doc    = "libs/math/tools/doc/cstdfloat.qbk#macros"
+title  = "Floating-Point Constant Macros"
 status = "todo"
 
 [[snippet]]

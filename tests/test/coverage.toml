@@ -644,11 +644,6 @@ title  = "`list_labels`"
 status = "todo"
 
 [[snippet]]
-doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#log_level"
-title  = "`log_level`"
-status = "todo"
-
-[[snippet]]
 doc    = "libs/test/doc/runtime_configuration/runtime_config_reference.qbk#logger"
 title  = "`logger`"
 status = "todo"
@@ -834,8 +829,8 @@ title  = "Progress display"
 status = "todo"
 
 [[snippet]]
-doc    = "libs/test/doc/test_output/report_format.qbk#report_human_readable_format"
-title  = "Human readable report format"
+doc    = "libs/test/doc/test_output/test_tools_support.qbk#test_output_macro_message"
+title  = "Custom messages"
 status = "todo"
 
 [[snippet]]
@@ -846,11 +841,6 @@ status = "todo"
 [[snippet]]
 doc    = "libs/test/doc/testing_tools/boost_test_collection_comparison.qbk#collections"
 title  = "Collections comparison"
-status = "todo"
-
-[[snippet]]
-doc    = "libs/test/doc/testing_tools/boost_test_technical_details.qbk#internal_details"
-title  = "`BOOST_TEST`: details on expressions"
 status = "todo"
 
 [[snippet]]

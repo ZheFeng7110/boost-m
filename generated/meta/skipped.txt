@@ -3,6 +3,8 @@
 # <lib> <action> <name> [if <condition>] -- <reason>
 
 align drop std::alignment_of -- boost::alignment::detail::alignment_of is `using std::alignment_of` only on some compilers; other targets (clang outside x86_64) define a template of that name, which the std re-export would conflict with.
+asio extra boost::asio::socket_errc -- Like boost::asio::stream_errc: boost/asio/error.hpp simulates the proposed socket_errc scoped enum with a namespace of using-declarations of error:: enumerators, re-created here.
+asio extra boost::asio::stream_errc -- boost/asio/error.hpp simulates the proposed stream_errc / socket_errc scoped enums with namespaces that hold only using-declarations of error:: enumerators (the cpp14 blocking_tcp_echo_server example compares with boost::asio::stream_errc::eof). The generator collects declared entities, not using-declarations, so those namespaces are re-created here.
 asio guard boost::asio::basic_file if defined(BOOST_ASIO_HAS_FILE) -- Asio's file support (basic_file and friends) is declared only where BOOST_ASIO_HAS_FILE (IOCP / io_uring); the MinGW snapshot has it.
 asio guard boost::asio::basic_random_access_file if defined(BOOST_ASIO_HAS_FILE) -- Asio's file support (basic_file and friends) is declared only where BOOST_ASIO_HAS_FILE (IOCP / io_uring); the MinGW snapshot has it.
 asio guard boost::asio::basic_stream_file if defined(BOOST_ASIO_HAS_FILE) -- Asio's file support (basic_file and friends) is declared only where BOOST_ASIO_HAS_FILE (IOCP / io_uring); the MinGW snapshot has it.

@@ -283,11 +283,6 @@ title  = "Handshaking"
 status = "todo"
 
 [[snippet]]
-doc    = "libs/beast/doc/qbk/06_websocket/_websocket.qbk#using_websocket"
-title  = "WebSocket"
-status = "todo"
-
-[[snippet]]
 doc    = "libs/beast/doc/qbk/07_concepts/Body.qbk#Body"
 title  = "Body"
 status = "todo"

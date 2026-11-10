@@ -35,14 +35,21 @@ path = "libs/convert/example/stream.cpp"
 case = "convert/examples_stream:example: stream"
 
 [[snippet]]
+doc    = "libs/convert/doc/converters.qbk#converters"
+title  = "Converters"
+case   = "convert/custom_types:user converters: class, function, lambda"
+reason = "the converter signatures the page lists, as user class/function/lambda converters"
+
+[[snippet]]
+doc    = "libs/convert/doc/default_converter.qbk#default-converter"
+title  = "Default Converter"
+case   = "convert/examples_default_converter:example: default_converter"
+reason = "the page's snippets are default_converter.cpp's"
+
+[[snippet]]
 doc   = "libs/convert/doc/design_notes.qbk#converter_signature"
 title = "Converter Signature"
 case  = "convert/examples_stream:doc: converter_signature"
-
-[[snippet]]
-doc   = "libs/convert/doc/design_notes.qbk#requirements"
-title = "Requirements"
-case  = "convert/examples_stream:doc: requirements"
 
 [[snippet]]
 doc   = "libs/convert/doc/design_notes.qbk#user-interface-signature"
@@ -50,17 +57,29 @@ title = "User Interface Signature"
 case  = "convert/examples_stream:doc: user-interface-signature"
 
 [[snippet]]
-doc   = "libs/convert/doc/introduction.qbk#introduction"
-title = "Introduction"
-case  = "convert/examples_lexical_cast:doc: introduction"
+doc    = "libs/convert/doc/getting_serious.qbk#error_detection"
+title  = "Better Error Detection"
+case   = "convert/examples_stream:example: getting_serious"
+reason = "the page's snippets are getting_serious.cpp's"
 
 [[snippet]]
-doc    = "libs/convert/doc/performance.qbk#boost-convert-overhead"
-title  = "Boost.Convert Overhead"
-status = "excluded"
-reason = "benchmark (timing of convert() against direct converter calls)"
+doc    = "libs/convert/doc/no_optional_interface.qbk#alternative-interface"
+title  = "Alternative Interface"
+case   = "convert/examples_stream:example: getting_serious"
+reason = "the page's snippets are getting_serious.cpp's"
+
+[[snippet]]
+doc   = "libs/convert/doc/other.qbk#other_conversions"
+title = "Beyond Basic Conversions"
+case  = "convert/custom_types:doc: other_conversions"
 
 [[snippet]]
 doc   = "libs/convert/doc/stream_converter.qbk#the-default-constructible-type-requirement"
 title = "The ['Default Constructible] Type Requirement"
 case  = "convert/include_spirit:doc: the-default-constructible-type-requirement"
+
+[[snippet]]
+doc    = "libs/convert/doc/user_types.qbk#integration_of_user_types"
+title  = "Integration of User-Defined Types"
+case   = "convert/custom_types:a user type through its stream operators"
+reason = "the user type and the operator signatures of the page"

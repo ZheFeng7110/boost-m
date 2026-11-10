@@ -137,8 +137,9 @@ def _code_in_qbk(body):
         return True
     if re.search(r"^\s*```", body, re.M):               # quickbook 1.7 fence
         return True
-    # preformatted: a run of lines indented by 4+ spaces that look like code
-    return re.search(r"^ {4,}\S.*[;{}()]\s*$", body, re.M) is not None
+    # preformatted: an indented line (any depth, as quickbook reads it) that
+    # looks like code; list items and markup brackets are not code
+    return re.search(r"^[ \t]+[^\s*#\[`].*[;{}]\s*$", body, re.M) is not None
 
 
 def qbk_sections(text):

@@ -6,1037 +6,1148 @@ upstream = "1.92.0"
 library = "asio"
 
 [[example]]
-path   = "libs/asio/example/cpp11/allocation/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/allocation/server.cpp"
+case = "asio/network_cpp11:example: cpp11/allocation/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/buffers/reference_counted.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/buffers/reference_counted.cpp"
+case = "asio/network_cpp11:example: cpp11/buffers/reference_counted"
 
 [[example]]
-path   = "libs/asio/example/cpp11/chat/chat_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/chat/chat_client.cpp"
+case = "asio/network_cpp11:example: cpp11/chat/chat_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/chat/chat_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/chat/chat_server.cpp"
+case = "asio/network_cpp11:example: cpp11/chat/chat_server"
 
 [[example]]
 path   = "libs/asio/example/cpp11/chat/posix_chat_client.cpp"
-status = "todo"
+status = "excluded"
+reason = "reads the process's own stdin descriptor (posix::stream_descriptor on STDIN_FILENO) until EOF; chat_client covers the same chat protocol over a captured stdin"
 
 [[example]]
-path   = "libs/asio/example/cpp11/deferred/deferred_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/deferred/deferred_1.cpp"
+case = "asio/examples_cpp11:example: cpp11/deferred/deferred_1"
 
 [[example]]
-path   = "libs/asio/example/cpp11/deferred/deferred_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/deferred/deferred_2.cpp"
+case = "asio/examples_cpp11:example: cpp11/deferred/deferred_2"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/async_tcp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/async_tcp_echo_server.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/async_tcp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/async_udp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/async_udp_echo_server.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/async_udp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/blocking_tcp_echo_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/blocking_tcp_echo_client.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/blocking_tcp_echo_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/blocking_tcp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/blocking_tcp_echo_server.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/blocking_tcp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/blocking_udp_echo_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/blocking_udp_echo_client.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/blocking_udp_echo_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/echo/blocking_udp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/echo/blocking_udp_echo_server.cpp"
+case = "asio/network_cpp11:example: cpp11/echo/blocking_udp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/actor.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/actor.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/actor"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/bank_account_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/bank_account_1.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/bank_account_1"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/bank_account_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/bank_account_2.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/bank_account_2"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/fork_join.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/fork_join.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/fork_join"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/pipeline.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/pipeline.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/pipeline"
 
 [[example]]
-path   = "libs/asio/example/cpp11/executors/priority_scheduler.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/executors/priority_scheduler.cpp"
+case = "asio/examples_cpp11:example: cpp11/executors/priority_scheduler"
 
 [[example]]
-path   = "libs/asio/example/cpp11/files/async_file_copy.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/files/async_file_copy.cpp"
+case = "asio/examples_cpp11:example: cpp11/files/async_file_copy"
 
 [[example]]
-path   = "libs/asio/example/cpp11/files/blocking_file_copy.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/files/blocking_file_copy.cpp"
+case = "asio/examples_cpp11:example: cpp11/files/blocking_file_copy"
 
 [[example]]
 path   = "libs/asio/example/cpp11/fork/daemon.cpp"
-status = "todo"
+status = "excluded"
+reason = "forks the test process (daemonises / a process per connection) and runs until killed"
 
 [[example]]
 path   = "libs/asio/example/cpp11/fork/process_per_connection.cpp"
-status = "todo"
+status = "excluded"
+reason = "forks the test process (daemonises / a process per connection) and runs until killed"
 
 [[example]]
-path   = "libs/asio/example/cpp11/futures/daytime_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/futures/daytime_client.cpp"
+case = "asio/network_cpp11:example: cpp11/futures/daytime_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/handler_tracking/async_tcp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/handler_tracking/async_tcp_echo_server.cpp"
+case = "asio/network_cpp11:example: cpp11/handler_tracking/async_tcp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/client/async_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/client/async_client.cpp"
+case = "asio/network_http:example: cpp11/http/client/async_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/client/sync_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/client/sync_client.cpp"
+case = "asio/network_http:example: cpp11/http/client/sync_client"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/connection.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/connection_manager.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/server/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/server/main.cpp"
+case = "asio/network_http:example: cpp11/http/server/main"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/mime_types.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/reply.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/request_handler.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/request_parser.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server/server.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server/main"
+reason = "another translation unit of the cpp11/http/server/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/connection.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/io_context_pool.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/server2/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/server2/main.cpp"
+case = "asio/network_http:example: cpp11/http/server2/main"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/mime_types.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/reply.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/request_handler.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/request_parser.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server2/server.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server2/main"
+reason = "another translation unit of the cpp11/http/server2/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/connection.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/server3/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/server3/main.cpp"
+case = "asio/network_http:example: cpp11/http/server3/main"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/mime_types.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/reply.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/request_handler.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/request_parser.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server3/server.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server3/main"
+reason = "another translation unit of the cpp11/http/server3/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/file_handler.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
-path   = "libs/asio/example/cpp11/http/server4/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/http/server4/main.cpp"
+case = "asio/network_http:example: cpp11/http/server4/main"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/mime_types.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/reply.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/request_handler.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/request_parser.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/http/server4/server.cpp"
-status = "todo"
+case   = "asio/network_http:example: cpp11/http/server4/main"
+reason = "another translation unit of the cpp11/http/server4/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/icmp/ping.cpp"
-status = "todo"
+status = "excluded"
+reason = "raw ICMP sockets need root (CAP_NET_RAW) and reach an external host"
 
 [[example]]
-path   = "libs/asio/example/cpp11/invocation/prioritised_handlers.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/invocation/prioritised_handlers.cpp"
+case = "asio/examples_cpp11:example: cpp11/invocation/prioritised_handlers"
 
 [[example]]
-path   = "libs/asio/example/cpp11/iostreams/daytime_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/iostreams/daytime_client.cpp"
+case = "asio/network_cpp11:example: cpp11/iostreams/daytime_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/iostreams/daytime_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/iostreams/daytime_server.cpp"
+case = "asio/network_cpp11:example: cpp11/iostreams/daytime_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/iostreams/http_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/iostreams/http_client.cpp"
+case = "asio/network_http:example: cpp11/iostreams/http_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/connect_pair.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/connect_pair.cpp"
+case = "asio/examples_cpp11:example: cpp11/local/connect_pair"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/fd_passing_stream_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/fd_passing_stream_client.cpp"
+case = "asio/network_cpp11:example: cpp11/local/fd_passing_stream_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/fd_passing_stream_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/fd_passing_stream_server.cpp"
+case = "asio/network_cpp11:example: cpp11/local/fd_passing_stream_server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/iostream_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/iostream_client.cpp"
+case = "asio/network_cpp11:example: cpp11/local/iostream_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/stream_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/stream_client.cpp"
+case = "asio/network_cpp11:example: cpp11/local/stream_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/local/stream_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/local/stream_server.cpp"
+case = "asio/network_cpp11:example: cpp11/local/stream_server"
 
 [[example]]
 path   = "libs/asio/example/cpp11/multicast/receiver.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs multicast routing on the test host (CI containers have none on loopback)"
 
 [[example]]
 path   = "libs/asio/example/cpp11/multicast/sender.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs multicast routing on the test host (CI containers have none on loopback)"
 
 [[example]]
-path   = "libs/asio/example/cpp11/nonblocking/third_party_lib.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/nonblocking/third_party_lib.cpp"
+case = "asio/network_cpp11:example: cpp11/nonblocking/third_party_lib"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_1.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_1"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_2.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_2"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_3.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_3.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_3"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_4.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_4.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_4"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_5.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_5.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_5"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_6.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_6.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_6"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_7.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_7.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_7"
 
 [[example]]
-path   = "libs/asio/example/cpp11/operations/composed_8.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/operations/composed_8.cpp"
+case = "asio/examples_cpp11:example: cpp11/operations/composed_8"
 
 [[example]]
-path   = "libs/asio/example/cpp11/parallel_group/ranged_wait_for_all.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/parallel_group/ranged_wait_for_all.cpp"
+case = "asio/examples_cpp11:example: cpp11/parallel_group/ranged_wait_for_all"
 
 [[example]]
-path   = "libs/asio/example/cpp11/parallel_group/wait_for_all.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/parallel_group/wait_for_all.cpp"
+case = "asio/examples_cpp11:example: cpp11/parallel_group/wait_for_all"
 
 [[example]]
-path   = "libs/asio/example/cpp11/parallel_group/wait_for_one.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/parallel_group/wait_for_one.cpp"
+case = "asio/examples_cpp11:example: cpp11/parallel_group/wait_for_one"
 
 [[example]]
-path   = "libs/asio/example/cpp11/parallel_group/wait_for_one_error.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/parallel_group/wait_for_one_error.cpp"
+case = "asio/examples_cpp11:example: cpp11/parallel_group/wait_for_one_error"
 
 [[example]]
-path   = "libs/asio/example/cpp11/parallel_group/wait_for_one_success.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/parallel_group/wait_for_one_success.cpp"
+case = "asio/examples_cpp11:example: cpp11/parallel_group/wait_for_one_success"
 
 [[example]]
 path   = "libs/asio/example/cpp11/porthopper/client.cpp"
-status = "todo"
+status = "excluded"
+reason = "the client renegotiates ports in an endless loop (no exit), and the server only speaks its control protocol to that client"
 
 [[example]]
 path   = "libs/asio/example/cpp11/porthopper/server.cpp"
-status = "todo"
+status = "excluded"
+reason = "the client renegotiates ports in an endless loop (no exit), and the server only speaks its control protocol to that client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/serialization/client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/serialization/client.cpp"
+case = "asio/network_serialization:example: cpp11/serialization/client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/serialization/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/serialization/server.cpp"
+case = "asio/network_serialization:example: cpp11/serialization/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/services/daytime_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/services/daytime_client.cpp"
+case = "asio/network_cpp11:example: cpp11/services/daytime_client"
 
 [[example]]
 path   = "libs/asio/example/cpp11/services/logger_service.cpp"
-status = "todo"
+case   = "asio/network_cpp11:example: cpp11/services/daytime_client"
+reason = "another translation unit of the cpp11/services/daytime_client program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/socks4/sync_client.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs a SOCKS 4 proxy and reaches www.boost.org through it"
 
 [[example]]
 path   = "libs/asio/example/cpp11/spawn/echo_server.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/asio/example/cpp11/spawn/parallel_grep.cpp"
-status = "todo"
+status = "excluded"
+reason = "asio::spawn needs Boost.Context, which the package does not support (docs/usage.md, unsupported libraries)"
 
 [[example]]
 path   = "libs/asio/example/cpp11/ssl/client.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/asio/example/cpp11/ssl/server.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
 path   = "libs/asio/example/cpp11/timeouts/async_tcp_client.cpp"
-status = "todo"
+status = "excluded"
+reason = "the timeouts server and its async client exchange heartbeats until killed (no exit), and the UDP client waits for the server's broadcasts; the blocking TCP clients of the same directory are covered"
 
 [[example]]
-path   = "libs/asio/example/cpp11/timeouts/blocking_tcp_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/timeouts/blocking_tcp_client.cpp"
+case = "asio/network_cpp11:example: cpp11/timeouts/blocking_tcp_client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/timeouts/blocking_token_tcp_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/timeouts/blocking_token_tcp_client.cpp"
+case = "asio/network_cpp11:example: cpp11/timeouts/blocking_token_tcp_client"
 
 [[example]]
 path   = "libs/asio/example/cpp11/timeouts/blocking_udp_client.cpp"
-status = "todo"
+status = "excluded"
+reason = "the timeouts server and its async client exchange heartbeats until killed (no exit), and the UDP client waits for the server's broadcasts; the blocking TCP clients of the same directory are covered"
 
 [[example]]
 path   = "libs/asio/example/cpp11/timeouts/server.cpp"
-status = "todo"
+status = "excluded"
+reason = "the timeouts server and its async client exchange heartbeats until killed (no exit), and the UDP client waits for the server's broadcasts; the blocking TCP clients of the same directory are covered"
 
 [[example]]
-path   = "libs/asio/example/cpp11/timers/time_t_timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/timers/time_t_timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/timers/time_t_timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime1/client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime1/client.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime1/client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime2/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime2/server.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime2/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime3/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime3/server.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime3/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime4/client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime4/client.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime4/client"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime5/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime5/server.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime5/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime6/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime6/server.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime6/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/daytime7/server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/daytime7/server.cpp"
+case = "asio/network_cpp11:example: cpp11/tutorial/daytime7/server"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/timer1/timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/timer1/timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/tutorial/timer1/timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/timer2/timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/timer2/timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/tutorial/timer2/timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/timer3/timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/timer3/timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/tutorial/timer3/timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/timer4/timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/timer4/timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/tutorial/timer4/timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/tutorial/timer5/timer.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/tutorial/timer5/timer.cpp"
+case = "asio/examples_cpp11:example: cpp11/tutorial/timer5/timer"
 
 [[example]]
-path   = "libs/asio/example/cpp11/type_erasure/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp11/type_erasure/main.cpp"
+case = "asio/examples_cpp11:example: cpp11/type_erasure/main"
 
 [[example]]
 path   = "libs/asio/example/cpp11/type_erasure/sleep.cpp"
-status = "todo"
+case   = "asio/examples_cpp11:example: cpp11/type_erasure/main"
+reason = "another translation unit of the cpp11/type_erasure/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/type_erasure/stdin_line_reader.cpp"
-status = "todo"
+case   = "asio/examples_cpp11:example: cpp11/type_erasure/main"
+reason = "another translation unit of the cpp11/type_erasure/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp11/windows/transmit_file.cpp"
-status = "todo"
+status = "excluded"
+reason = "Windows-only (TransmitFile over an IOCP stream handle)"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_1.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_1"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_2.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_2"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_3.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_3.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_3"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_4.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_4.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_4"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_5.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_5.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_5"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_6.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_6.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_6"
 
 [[example]]
-path   = "libs/asio/example/cpp14/deferred/deferred_7.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/deferred/deferred_7.cpp"
+case = "asio/examples_cpp14:example: cpp14/deferred/deferred_7"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/async_tcp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/async_tcp_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/async_tcp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/async_udp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/async_udp_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/async_udp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/blocking_tcp_echo_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/blocking_tcp_echo_client.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/blocking_tcp_echo_client"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/blocking_tcp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/blocking_tcp_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/blocking_tcp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/blocking_udp_echo_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/blocking_udp_echo_client.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/blocking_udp_echo_client"
 
 [[example]]
-path   = "libs/asio/example/cpp14/echo/blocking_udp_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/echo/blocking_udp_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp14/echo/blocking_udp_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/actor.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/actor.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/actor"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/async_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/async_1.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/async_1"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/async_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/async_2.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/async_2"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/bank_account_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/bank_account_1.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/bank_account_1"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/bank_account_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/bank_account_2.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/bank_account_2"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/fork_join.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/fork_join.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/fork_join"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/pipeline.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/pipeline.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/pipeline"
 
 [[example]]
-path   = "libs/asio/example/cpp14/executors/priority_scheduler.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/executors/priority_scheduler.cpp"
+case = "asio/examples_cpp14:example: cpp14/executors/priority_scheduler"
 
 [[example]]
-path   = "libs/asio/example/cpp14/iostreams/http_client.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/iostreams/http_client.cpp"
+case = "asio/network_http:example: cpp14/iostreams/http_client"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/c_callback_wrapper.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/c_callback_wrapper.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/c_callback_wrapper"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/callback_wrapper.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/callback_wrapper.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/callback_wrapper"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_1.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_1"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_2.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_2"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_3.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_3.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_3"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_4.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_4.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_4"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_5.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_5.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_5"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_6.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_6.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_6"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_7.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_7.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_7"
 
 [[example]]
-path   = "libs/asio/example/cpp14/operations/composed_8.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/operations/composed_8.cpp"
+case = "asio/examples_cpp14:example: cpp14/operations/composed_8"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/parallel_sort.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/parallel_sort.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/parallel_sort"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/ranged_wait_for_all.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/ranged_wait_for_all.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/ranged_wait_for_all"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/wait_for_all.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/wait_for_all.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/wait_for_all"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/wait_for_one.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/wait_for_one.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/wait_for_one"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/wait_for_one_error.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/wait_for_one_error.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/wait_for_one_error"
 
 [[example]]
-path   = "libs/asio/example/cpp14/parallel_group/wait_for_one_success.cpp"
-status = "todo"
+path = "libs/asio/example/cpp14/parallel_group/wait_for_one_success.cpp"
+case = "asio/examples_cpp14:example: cpp14/parallel_group/wait_for_one_success"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/chat_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/chat_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/chat_server"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_as_single_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_as_single_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/echo_server_with_as_single_default"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_as_tuple_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_as_tuple_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/echo_server_with_as_tuple_default"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/echo_server_with_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/echo_server_with_default"
 
 [[example]]
 path   = "libs/asio/example/cpp17/coroutines_ts/range_based_for.cpp"
-status = "todo"
+status = "excluded"
+reason = "`for co_await` is Coroutines TS syntax, not C++20 (no compiler of the package accepts it)"
 
 [[example]]
-path   = "libs/asio/example/cpp17/coroutines_ts/refactored_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp17/coroutines_ts/refactored_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp17/coroutines_ts/refactored_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp20/channels/mutual_exclusion_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/channels/mutual_exclusion_1.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/channels/mutual_exclusion_1"
 
 [[example]]
-path   = "libs/asio/example/cpp20/channels/mutual_exclusion_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/channels/mutual_exclusion_2.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/channels/mutual_exclusion_2"
 
 [[example]]
-path   = "libs/asio/example/cpp20/channels/throttling_proxy.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/channels/throttling_proxy.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/channels/throttling_proxy"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/chat_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/chat_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/chat_server"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server_with_as_single_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server_with_as_single_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server_with_as_single_default"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server_with_as_tuple_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server_with_as_tuple_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server_with_as_tuple_default"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server_with_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server_with_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server_with_default"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server_with_deferred.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server_with_deferred.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server_with_deferred"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/echo_server_with_deferred_default.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/echo_server_with_deferred_default.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/echo_server_with_deferred_default"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/refactored_echo_server.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/refactored_echo_server.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/refactored_echo_server"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/timeout_cancel_after.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/timeout_cancel_after.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/timeout_cancel_after"
 
 [[example]]
-path   = "libs/asio/example/cpp20/coroutines/timeout_watchdog.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/coroutines/timeout_watchdog.cpp"
+case = "asio/network_cpp14_cpp20:example: cpp20/coroutines/timeout_watchdog"
 
 [[example]]
-path   = "libs/asio/example/cpp20/invocation/completion_executor.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/invocation/completion_executor.cpp"
+case = "asio/examples_cpp20:example: cpp20/invocation/completion_executor"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/c_callback_wrapper.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/c_callback_wrapper.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/c_callback_wrapper"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/callback_wrapper.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/callback_wrapper.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/callback_wrapper"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_1.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_1.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_1"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_2.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_2.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_2"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_3.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_3.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_3"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_4.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_4.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_4"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_5.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_5.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_5"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_6.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_6.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_6"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_7.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_7.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_7"
 
 [[example]]
-path   = "libs/asio/example/cpp20/operations/composed_8.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/operations/composed_8.cpp"
+case = "asio/examples_cpp20:example: cpp20/operations/composed_8"
 
 [[example]]
-path   = "libs/asio/example/cpp20/type_erasure/main.cpp"
-status = "todo"
+path = "libs/asio/example/cpp20/type_erasure/main.cpp"
+case = "asio/examples_cpp20:example: cpp20/type_erasure/main"
 
 [[example]]
 path   = "libs/asio/example/cpp20/type_erasure/sleep.cpp"
-status = "todo"
+case   = "asio/examples_cpp20:example: cpp20/type_erasure/main"
+reason = "another translation unit of the cpp20/type_erasure/main program"
 
 [[example]]
 path   = "libs/asio/example/cpp20/type_erasure/stdin_line_reader.cpp"
-status = "todo"
+case   = "asio/examples_cpp20:example: cpp20/type_erasure/main"
+reason = "another translation unit of the cpp20/type_erasure/main program"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/allocation.qbk#allocation"
-title  = "Custom Memory Allocation"
-status = "todo"
+doc   = "libs/asio/doc/overview/allocation.qbk#allocation"
+title = "Custom Memory Allocation"
+case  = "asio/api_overview:doc: allocation#allocation"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/buffers.qbk#buffers"
-title  = "Buffers"
-status = "todo"
+doc   = "libs/asio/doc/overview/basics.qbk#basics"
+title = "Basic Boost.Asio Anatomy"
+case  = "asio/api_overview:doc: basics#basics"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/cancellation.qbk#cancellation"
-title  = "Per-Operation Cancellation"
-status = "todo"
+doc   = "libs/asio/doc/overview/buffers.qbk#buffers"
+title = "Buffers"
+case  = "asio/api_overview:doc: buffers#buffers"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/channels.qbk#channels"
-title  = "Channels"
-status = "todo"
+doc   = "libs/asio/doc/overview/cancellation.qbk#cancellation"
+title = "Per-Operation Cancellation"
+case  = "asio/api_overview:doc: cancellation#cancellation"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/compose.qbk#compose"
-title  = "Compositions as Asynchronous Operations"
-status = "todo"
+doc   = "libs/asio/doc/overview/channels.qbk#channels"
+title = "Channels"
+case  = "asio/api_overview:doc: channels#channels"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/configuration.qbk#configuration"
-title  = "Runtime Configuration and Concurrency Hints"
-status = "todo"
+doc   = "libs/asio/doc/overview/compose.qbk#compose"
+title = "Compositions as Asynchronous Operations"
+case  = "asio/api_overview:doc: compose#compose"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/coro.qbk#coro"
-title  = "Resumable C++ 20 Coroutines"
-status = "todo"
+doc   = "libs/asio/doc/overview/configuration.qbk#configuration"
+title = "Runtime Configuration and Concurrency Hints"
+case  = "asio/api_overview:doc: configuration#configuration"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/coroutine.qbk#coroutine"
-title  = "Stackless Coroutines"
-status = "todo"
+doc   = "libs/asio/doc/overview/coro.qbk#coro"
+title = "Resumable C++ 20 Coroutines"
+case  = "asio/api_overview:doc: coro#coro"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/cpp2011.qbk#move_handlers"
-title  = "Movable Handlers"
-status = "todo"
+doc   = "libs/asio/doc/overview/coroutine.qbk#coroutine"
+title = "Stackless Coroutines"
+case  = "asio/api_overview:doc: coroutine#coroutine"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/cpp2011.qbk#move_objects"
-title  = "Movable I/O Objects"
-status = "todo"
+doc   = "libs/asio/doc/overview/cpp2011.qbk#move_handlers"
+title = "Movable Handlers"
+case  = "asio/api_overview:doc: cpp2011#move_handlers"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/cpp20_coroutines.qbk#cpp20_coroutines"
-title  = "C++20 Coroutines Support"
-status = "todo"
+doc   = "libs/asio/doc/overview/cpp2011.qbk#move_objects"
+title = "Movable I/O Objects"
+case  = "asio/api_overview:doc: cpp2011#move_objects"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/deferred.qbk#deferred"
-title  = "Deferred Operations"
-status = "todo"
+doc   = "libs/asio/doc/overview/cpp20_coroutines.qbk#cpp20_coroutines"
+title = "C++20 Coroutines Support"
+case  = "asio/api_overview:doc: cpp20_coroutines#cpp20_coroutines"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/files.qbk#files"
-title  = "Files"
-status = "todo"
+doc   = "libs/asio/doc/overview/deferred.qbk#deferred"
+title = "Deferred Operations"
+case  = "asio/api_overview:doc: deferred#deferred"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/futures.qbk#futures"
-title  = "Futures"
-status = "todo"
+doc   = "libs/asio/doc/overview/files.qbk#files"
+title = "Files"
+case  = "asio/api_overview:doc: files#files"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/handler_tracking.qbk#handler_tracking"
-title  = "Handler Tracking"
-status = "todo"
+doc   = "libs/asio/doc/overview/futures.qbk#futures"
+title = "Futures"
+case  = "asio/api_overview:doc: futures#futures"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/immediate_completion.qbk#immediate_completion"
-title  = "Customising Immediate Completion"
-status = "todo"
+doc   = "libs/asio/doc/overview/handler_tracking.qbk#handler_tracking"
+title = "Handler Tracking"
+case  = "asio/api_overview:doc: handler_tracking#handler_tracking"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/implementation.qbk#implementation"
-title  = "Platform-Specific Implementation Notes"
-status = "todo"
+doc   = "libs/asio/doc/overview/immediate_completion.qbk#immediate_completion"
+title = "Customising Immediate Completion"
+case  = "asio/api_overview:doc: immediate_completion#immediate_completion"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/iostreams.qbk#iostreams"
-title  = "Socket Iostreams"
-status = "todo"
+doc   = "libs/asio/doc/overview/iostreams.qbk#iostreams"
+title = "Socket Iostreams"
+case  = "asio/api_overview:doc: iostreams#iostreams"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/line_based.qbk#line_based"
-title  = "Line-Based Operations"
-status = "todo"
+doc   = "libs/asio/doc/overview/line_based.qbk#line_based"
+title = "Line-Based Operations"
+case  = "asio/api_overview:doc: line_based#line_based"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/model/completion_tokens.qbk#completion_tokens"
-title  = "Completion Tokens"
-status = "todo"
+doc   = "libs/asio/doc/overview/model/completion_tokens.qbk#completion_tokens"
+title = "Completion Tokens"
+case  = "asio/api_overview:doc: completion_tokens#completion_tokens"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/parallel_group.qbk#parallel_group"
-title  = "Co-ordinating Parallel Operations"
-status = "todo"
+doc   = "libs/asio/doc/overview/other_protocols.qbk#other_protocols"
+title = "Support for Other Protocols"
+case  = "asio/api_overview:doc: other_protocols#other_protocols"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/pipes.qbk#pipes"
-title  = "Pipes"
-status = "todo"
+doc   = "libs/asio/doc/overview/parallel_group.qbk#parallel_group"
+title = "Co-ordinating Parallel Operations"
+case  = "asio/api_overview:doc: parallel_group#parallel_group"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/posix.qbk#fork"
-title  = "Fork"
-status = "todo"
+doc   = "libs/asio/doc/overview/pipes.qbk#pipes"
+title = "Pipes"
+case  = "asio/api_overview:doc: pipes#pipes"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/promises.qbk#promises"
-title  = "Promises"
-status = "todo"
+doc   = "libs/asio/doc/overview/posix.qbk#fork"
+title = "Fork"
+case  = "asio/api_overview:doc: posix#fork"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/protocols.qbk#protocols"
-title  = "TCP, UDP and ICMP"
-status = "todo"
+doc   = "libs/asio/doc/overview/posix.qbk#local"
+title = "UNIX Domain Sockets"
+case  = "asio/api_overview:doc: posix#local"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/reactor.qbk#reactor"
-title  = "Reactor-Style Operations"
-status = "todo"
+doc   = "libs/asio/doc/overview/posix.qbk#stream_descriptor"
+title = "Stream-Oriented File Descriptors"
+case  = "asio/api_overview:doc: posix#stream_descriptor"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/signals.qbk#signals"
-title  = "Signal Handling"
-status = "todo"
+doc   = "libs/asio/doc/overview/promises.qbk#promises"
+title = "Promises"
+case  = "asio/api_overview:doc: promises#promises"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/spawn.qbk#spawn"
-title  = "Stackful Coroutines"
-status = "todo"
+doc   = "libs/asio/doc/overview/protocols.qbk#protocols"
+title = "TCP, UDP and ICMP"
+case  = "asio/api_overview:doc: protocols#protocols"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/strands.qbk#strands"
-title  = "Strands: Use Threads Without Explicit Locking"
-status = "todo"
+doc   = "libs/asio/doc/overview/reactor.qbk#reactor"
+title = "Reactor-Style Operations"
+case  = "asio/api_overview:doc: reactor#reactor"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/token_adapters.qbk#token_adapters"
-title  = "Completion Token Adapters"
-status = "todo"
+doc    = "libs/asio/doc/overview/serial_ports.qbk#serial_ports"
+title  = "Serial Ports"
+status = "excluded"
+reason = "needs a serial device (none on the CI hosts)"
 
 [[snippet]]
-doc    = "libs/asio/doc/overview/type_erasure.qbk#type_erasure"
-title  = "Type Erasure, Separate Compilation and Virtual Functions"
-status = "todo"
+doc   = "libs/asio/doc/overview/signals.qbk#signals"
+title = "Signal Handling"
+case  = "asio/api_overview:doc: signals#signals"
+
+[[snippet]]
+doc   = "libs/asio/doc/overview/spawn.qbk#spawn"
+title = "Stackful Coroutines"
+case  = "asio/api_overview:doc: spawn#spawn"
+
+[[snippet]]
+doc    = "libs/asio/doc/overview/ssl.qbk#ssl"
+title  = "SSL"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
+
+[[snippet]]
+doc   = "libs/asio/doc/overview/strands.qbk#strands"
+title = "Strands: Use Threads Without Explicit Locking"
+case  = "asio/api_overview:doc: strands#strands"
+
+[[snippet]]
+doc   = "libs/asio/doc/overview/timers.qbk#timers"
+title = "Timers"
+case  = "asio/api_overview:doc: timers#timers"
+
+[[snippet]]
+doc   = "libs/asio/doc/overview/token_adapters.qbk#token_adapters"
+title = "Completion Token Adapters"
+case  = "asio/api_overview:doc: token_adapters#token_adapters"
+
+[[snippet]]
+doc   = "libs/asio/doc/overview/type_erasure.qbk#type_erasure"
+title = "Type Erasure, Separate Compilation and Virtual Functions"
+case  = "asio/api_overview:doc: type_erasure#type_erasure"
+
+[[snippet]]
+doc    = "libs/asio/doc/overview/windows.qbk#object_handle"
+title  = "Object HANDLEs"
+status = "excluded"
+reason = "Windows-only HANDLE wrappers; they need windows.h objects (events, overlapped files) the tests do not create"
+
+[[snippet]]
+doc    = "libs/asio/doc/overview/windows.qbk#random_access_handle"
+title  = "Random-Access HANDLEs"
+status = "excluded"
+reason = "Windows-only HANDLE wrappers; they need windows.h objects (events, overlapped files) the tests do not create"
+
+[[snippet]]
+doc    = "libs/asio/doc/overview/windows.qbk#stream_handle"
+title  = "Stream-Oriented HANDLEs"
+status = "excluded"
+reason = "Windows-only HANDLE wrappers; they need windows.h objects (events, overlapped files) the tests do not create"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/AcceptToken.qbk#AcceptToken"
 title  = "Accept token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/BufferedHandshakeToken.qbk#BufferedHandshakeToken"
 title  = "SSL buffered handshake token requirements"
-status = "todo"
+status = "excluded"
+reason = "SSL handshakes: needs OpenSSL (boost/asio/ssl is not in the module)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/CancellationHandler.qbk#CancellationHandler"
-title  = "Cancellation handler requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/CancellationHandler.qbk#CancellationHandler"
+title = "Cancellation handler requirements"
+case  = "asio/custom_types:doc: CancellationHandler#CancellationHandler"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/ConnectToken.qbk#ConnectToken"
 title  = "Connect token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/ConstBufferSequence.qbk#ConstBufferSequence"
-title  = "Constant buffer sequence requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/ConstBufferSequence.qbk#ConstBufferSequence"
+title = "Constant buffer sequence requirements"
+case  = "asio/custom_types:doc: ConstBufferSequence#ConstBufferSequence"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/Executor.qbk#Executor1"
-title  = "Executor requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/Executor.qbk#Executor1"
+title = "Executor requirements"
+case  = "asio/custom_types:doc: Executor#Executor1"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/HandshakeToken.qbk#HandshakeToken"
 title  = "SSL handshake token requirements"
-status = "todo"
+status = "excluded"
+reason = "SSL handshakes: needs OpenSSL (boost/asio/ssl is not in the module)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/IoObjectService.qbk#IoObjectService"
-title  = "I/O object service requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/IoObjectService.qbk#IoObjectService"
+title = "I/O object service requirements"
+case  = "asio/custom_types:doc: IoObjectService#IoObjectService"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/IteratorConnectToken.qbk#IteratorConnectToken"
 title  = "Iterator connect token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/MoveAcceptToken.qbk#MoveAcceptToken"
 title  = "Move accept token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/MutableBufferSequence.qbk#MutableBufferSequence"
-title  = "Mutable buffer sequence requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/MutableBufferSequence.qbk#MutableBufferSequence"
+title = "Mutable buffer sequence requirements"
+case  = "asio/custom_types:doc: MutableBufferSequence#MutableBufferSequence"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/NullaryToken.qbk#NullaryToken"
 title  = "Nullary token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/RangeConnectToken.qbk#RangeConnectToken"
 title  = "Range connect token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/ReadToken.qbk#ReadToken"
 title  = "Read token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/ResolveToken.qbk#ResolveToken"
 title  = "Resolve token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/Service.qbk#Service"
-title  = "Service requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/Service.qbk#Service"
+title = "Service requirements"
+case  = "asio/custom_types:doc: Service#Service"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/ShutdownToken.qbk#ShutdownToken"
 title  = "SSL shutdown token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/SignalToken.qbk#SignalToken"
-title  = "Signal token requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/SignalToken.qbk#SignalToken"
+title = "Signal token requirements"
+case  = "asio/custom_types:doc: SignalToken#SignalToken"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/SyncRandomAccessReadDevice.qbk#SyncRandomAccessReadDevice"
-title  = "Buffer-oriented synchronous random-access"
-status = "todo"
+doc   = "libs/asio/doc/requirements/SyncRandomAccessReadDevice.qbk#SyncRandomAccessReadDevice"
+title = "Buffer-oriented synchronous random-access"
+case  = "asio/custom_types:doc: SyncRandomAccessReadDevice#SyncRandomAccessReadDevice"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/SyncRandomAccessWriteDevice.qbk#SyncRandomAccessWriteDevice"
-title  = "Buffer-oriented synchronous random-access"
-status = "todo"
+doc   = "libs/asio/doc/requirements/SyncRandomAccessWriteDevice.qbk#SyncRandomAccessWriteDevice"
+title = "Buffer-oriented synchronous random-access"
+case  = "asio/custom_types:doc: SyncRandomAccessWriteDevice#SyncRandomAccessWriteDevice"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/WaitToken.qbk#WaitToken"
-title  = "Wait token requirements"
-status = "todo"
+doc   = "libs/asio/doc/requirements/WaitToken.qbk#WaitToken"
+title = "Wait token requirements"
+case  = "asio/custom_types:doc: WaitToken#WaitToken"
 
 [[snippet]]
 doc    = "libs/asio/doc/requirements/WriteToken.qbk#WriteToken"
 title  = "Write token requirements"
-status = "todo"
+case   = "asio/custom_types:token kinds over a loopback connection"
+reason = "one loopback case completes a handler of each token kind (accept, move-accept, resolve, range/iterator connect, read, write, nullary; shutdown is synchronous)"
 
 [[snippet]]
-doc    = "libs/asio/doc/requirements/asynchronous_operations.qbk#asynchronous_operations"
-title  = "Requirements on asynchronous operations"
-status = "todo"
+doc   = "libs/asio/doc/requirements/asynchronous_operations.qbk#asynchronous_operations"
+title = "Requirements on asynchronous operations"
+case  = "asio/custom_types:doc: asynchronous_operations#asynchronous_operations"
 
 [[snippet]]
-doc    = "libs/asio/doc/std_executors.qbk#std_executors"
-title  = "Proposed Standard Executors"
-status = "todo"
+doc   = "libs/asio/doc/std_executors.qbk#std_executors"
+title = "Proposed Standard Executors"
+case  = "asio/api_overview:doc: std_executors#std_executors"
 
 [[snippet]]
-doc    = "libs/asio/doc/using.qbk#using"
-title  = "Using, Building, and Configuring Boost.Asio"
-status = "todo"
+doc   = "libs/asio/doc/using.qbk#using"
+title = "Using, Building, and Configuring Boost.Asio"
+case  = "asio/api_overview:doc: using#using"

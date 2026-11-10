@@ -3,7 +3,8 @@
 // conversion operators of the converter signature; user converters as a
 // class, a plain function and a lambda (both documented signatures); a type
 // without a default constructor through boost::make_default; boost::cnv::apply
-// with a user converter in an algorithm.
+// with a user converter in an algorithm; a string-to-string transforming
+// converter (other.qbk "Beyond Basic Conversions").
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
@@ -104,4 +105,30 @@ TEST_CASE("apply with a user converter in an algorithm") {
     std::transform(nums.begin(), nums.end(), std::back_inserter(n),
                    boost::cnv::apply<int>(boost::cnv::strtol()).value_or(0));
     CHECK(n == std::vector<int>{1, 0, 3});
+}
+
+namespace user {
+// other.qbk: a converter that transforms instead of converting types —
+// "ABC" <-> "123" (the page's test/encryption.cpp is not in the release).
+struct cypher {
+    void operator()(std::string const& in, boost::optional<std::string>& out) const {
+        std::string r;
+        for (char c : in) {
+            if (c >= 'A' && c <= 'I') r += char('1' + (c - 'A'));
+            else if (c >= '1' && c <= '9') r += char('A' + (c - '1'));
+            else return;  // not encodable: conversion fails
+        }
+        out = r;
+    }
+};
+}  // namespace user
+
+TEST_CASE("doc: other_conversions") {
+    using std::string;
+    user::cypher my_cypher;
+    string encrypted = boost::convert<string>("ABC", my_cypher).value();
+    string decrypted = boost::convert<string>(encrypted, my_cypher).value();
+    CHECK(encrypted == "123");
+    CHECK(decrypted == "ABC");
+    CHECK(!boost::convert<string>("abc", my_cypher));
 }

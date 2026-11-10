@@ -1,7 +1,8 @@
 // mcpplibs.mwrap.boost.regex — the reference pages whose examples are inline
 // (libs/regex/doc/*.qbk): basic_regex construction and flags, bad_expression,
 // match_results and sub_match, the format string syntax, the perl syntax
-// features, the Unicode iterators, and the "C++20 module" page (upstream's
+// features, the POSIX basic / extended syntax options, the error_type codes,
+// the Unicode iterators, and the "C++20 module" page (upstream's
 // `import boost.regex;`, here this package's module).
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
@@ -143,4 +144,50 @@ TEST_CASE("regex_constants and match flags") {
     CHECK(m.length(0) == 1);
     CHECK_FALSE(boost::regex_search(s.cbegin() + 1, s.cend(), boost::regex("^a"), boost::match_not_bol));
     CHECK(boost::regex_match(s, boost::regex("a*"), boost::match_any));
+}
+
+TEST_CASE("doc: basic_syntax") {
+    std::string my_expression = "a\\(b\\)*c";
+    boost::regex e1(my_expression, boost::regex::basic);
+    boost::regex e2(my_expression, boost::regex::basic | boost::regex::icase);
+    CHECK(boost::regex_match("abbc", e1));
+    CHECK(boost::regex_match("ABBC", e2));
+    CHECK_FALSE(boost::regex_match("ABBC", e1));
+    boost::regex g("abc\ndef", boost::regex::grep);  // newline-separated alternatives
+    CHECK(boost::regex_match("def", g));
+    CHECK(boost::regex_match("abc", g));
+}
+
+TEST_CASE("doc: basic_extended") {
+    std::string my_expression = "a(b|c)+d";
+    boost::regex e1(my_expression, boost::regex::extended);
+    boost::regex e2(my_expression, boost::regex::extended | boost::regex::icase);
+    CHECK(boost::regex_match("abcbd", e1));
+    CHECK(boost::regex_match("ABCD", e2));
+    boost::regex g("abc\ndef", boost::regex::egrep);
+    CHECK(boost::regex_match("def", g));
+    // leftmost-longest: POSIX extended takes the longest alternative
+    boost::smatch m;
+    std::string s = "abcd";
+    CHECK(boost::regex_search(s, m, boost::regex("a|ab|abc", boost::regex::extended)));
+    CHECK(m.str() == "abc");
+}
+
+TEST_CASE("doc: error_type") {
+    auto code_of = [](const char* expr) {
+        try {
+            boost::regex r(expr);
+        } catch (const boost::regex_error& e) {
+            return e.code();
+        }
+        return boost::regex_constants::error_type(-1);
+    };
+    CHECK(code_of("(a") == boost::regex_constants::error_paren);
+    CHECK(code_of("[a") == boost::regex_constants::error_brack);
+    CHECK(code_of("a{2,1}") == boost::regex_constants::error_badbrace);
+    CHECK(code_of("a{1") == boost::regex_constants::error_type(-1));  // perl: an unclosed brace is literal
+    CHECK(code_of("\\") == boost::regex_constants::error_escape);
+    CHECK(code_of("*") == boost::regex_constants::error_badrepeat);
+    CHECK(code_of("[[:nope:]]") == boost::regex_constants::error_ctype);
+    CHECK(code_of("(a)\\2") == boost::regex_constants::error_backref);
 }
