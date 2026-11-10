@@ -2,11 +2,12 @@
 // ported mechanically: each program runs as a case and its output must equal
 // what the same code printed when built from upstream/boost headers alone.
 // md5sum and hash2sum (command-line tools) run on two files written to the
-// temporary directory; json_value hashes a boost::json::value through the
+// temporary directory, named relative to it (the output prints them); json_value hashes a boost::json::value through the
 // json module and adds its hash_append overload to namespace boost.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
+#include <cassert>
 #include <boost/config.hpp>
 #include <cerrno>
 import std;
@@ -304,10 +305,10 @@ int example_main( int argc, char const* argv[] )
 TEST_CASE("example: hash2sum") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt", std::ios::binary) << "The quick brown fox jumps over the lazy dog"; std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt", std::ios::binary) << ""; }
+    { std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt", std::ios::binary) << "The quick brown fox jumps over the lazy dog"; std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt", std::ios::binary) << ""; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
     ex_args.push_back(std::string("md5_128"));
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt").string());
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt").string());
+    ex_args.push_back(std::string("boost-m-hash2-a.txt"));
+    ex_args.push_back(std::string("boost-m-hash2-b.txt"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -315,8 +316,8 @@ TEST_CASE("example: hash2sum") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(9e107d9d372bb6826bd81d3542a419d6 */tmp/boost-m-hash2-a.txt
-d41d8cd98f00b204e9800998ecf8427e */tmp/boost-m-hash2-b.txt
+    CHECK(ex_out.str() == std::string_view(R"ex(9e107d9d372bb6826bd81d3542a419d6 *boost-m-hash2-a.txt
+d41d8cd98f00b204e9800998ecf8427e *boost-m-hash2-b.txt
 )ex"));
 }
 }  // namespace ex_hash2sum
@@ -698,9 +699,9 @@ int example_main( int argc, char const* argv[] )
 TEST_CASE("example: md5sum") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt", std::ios::binary) << "The quick brown fox jumps over the lazy dog"; std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt", std::ios::binary) << ""; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt").string());
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt").string());
+    { std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-a.txt", std::ios::binary) << "The quick brown fox jumps over the lazy dog"; std::ofstream(std::filesystem::temp_directory_path() / "boost-m-hash2-b.txt", std::ios::binary) << ""; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-hash2-a.txt"));
+    ex_args.push_back(std::string("boost-m-hash2-b.txt"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -708,8 +709,8 @@ TEST_CASE("example: md5sum") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(9e107d9d372bb6826bd81d3542a419d6 */tmp/boost-m-hash2-a.txt
-d41d8cd98f00b204e9800998ecf8427e */tmp/boost-m-hash2-b.txt
+    CHECK(ex_out.str() == std::string_view(R"ex(9e107d9d372bb6826bd81d3542a419d6 *boost-m-hash2-a.txt
+d41d8cd98f00b204e9800998ecf8427e *boost-m-hash2-b.txt
 )ex"));
 }
 }  // namespace ex_md5sum

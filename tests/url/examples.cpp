@@ -11,6 +11,8 @@
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/assert.hpp>
+#include <cassert>
+#include <boost/config.hpp>
 import std;
 import mcpplibs.mwrap.boost.url;
 import mcpplibs.mwrap.boost.json;
@@ -47,6 +49,7 @@ inline int ex_puts(const char* s) {
 // libs/url/example/mailto/mailto.cpp
 namespace ex_mailto {
 // ---- inlined rfc.hpp ----
+#undef BOOST_URL_EXAMPLE_MAILTO_MAILTO_GRAMMAR_HPP
 //
 // Copyright (c) 2022 alandefreitas (alandefreitas@gmail.com)
 //
@@ -831,6 +834,7 @@ body: Hi!
 // libs/url/example/magnet/magnet.cpp
 namespace ex_magnet {
 // ---- inlined filter_view.hpp ----
+#undef BOOST_URL_EXAMPLE_GRAMMAR_MAGNER_FILTERED_VIEW_HPP
 //
 // Copyright (c) 2022 alandefreitas (alandefreitas@gmail.com)
 //

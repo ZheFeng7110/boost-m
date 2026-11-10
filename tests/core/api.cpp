@@ -172,7 +172,9 @@ private:
 
 TEST_CASE("doc: empty_value#examples") {
     using S = storage<int*, std::less<int>, std::allocator<int>>;
+#if !defined(_MSC_VER)  // the MSVC ABI compresses one empty base only (no __declspec(empty_bases))
     static_assert(sizeof(S) == sizeof(int*));  // both empty bases are compressed
+#endif
     S s;
     CHECK(s.pointer() == nullptr);
     CHECK(s.compare()(1, 2));
@@ -477,7 +479,7 @@ TEST_CASE("doc: span#examples") {
 TEST_CASE("doc: typeinfo#example") {
     using T = X<void const*>;
     boost::core::typeinfo const& ti = typeid(T);  // BOOST_CORE_TYPEID: include_macros.cpp
-    CHECK(boost::core::demangled_name(ti).find("X<void const*>") != std::string::npos);
+    CHECK(boost::core::demangled_name(ti).find("X<void const") != std::string::npos);  // MSVC: "void const *"
 }
 
 namespace {

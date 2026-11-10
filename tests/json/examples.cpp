@@ -500,8 +500,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: cbor") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-json-sample.json").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-json-sample.json"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -880,8 +880,8 @@ int example_main(int argc, char** argv)
 TEST_CASE("example: pretty") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-json-sample.json").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-json-sample.json"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -1351,8 +1351,8 @@ int example_main(int argc, char** argv)
 TEST_CASE("example: validate") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-json-sample.json").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-json-sample.json"); f << R"j({"name":"boost","version":[1,92,0],"modules":true,"ratio":0.25,"tags":["a","b"],"nested":{"k":null}})j"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-json-sample.json"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -1360,7 +1360,7 @@ TEST_CASE("example: validate") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(/tmp/boost-m-json-sample.json contains a valid JSON
+    CHECK(ex_out.str() == std::string_view(R"ex(boost-m-json-sample.json contains a valid JSON
 )ex"));
 }
 }  // namespace ex_validate

@@ -6,6 +6,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
+#include <cassert>
+#include <boost/config.hpp>
 import std;
 import mcpplibs.mwrap.boost.regex;
 import mcpplibs.mwrap.boost.program_options;
@@ -242,11 +244,11 @@ int example_main(int argc, char * argv[])
 TEST_CASE("example: grep") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-grep.txt"); f << "alpha line\nclass widget\nBeta Line\nclass gadget\nomega\n"; }
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-grep.txt"); f << "alpha line\nclass widget\nBeta Line\nclass gadget\nomega\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
     ex_args.push_back(std::string("-n"));
     ex_args.push_back(std::string("-i"));
     ex_args.push_back(std::string("class|line"));
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-grep.txt").string());
+    ex_args.push_back(std::string("boost-m-regex-grep.txt"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);

@@ -11,8 +11,9 @@
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/describe.hpp>
-#include <boost/version.hpp>
+#include <cassert>
 #include <boost/config.hpp>
+#include <boost/version.hpp>
 import std;
 import mcpplibs.mwrap.boost.json;
 import mcpplibs.mwrap.boost.mp11;

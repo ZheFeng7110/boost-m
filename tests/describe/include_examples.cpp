@@ -27,6 +27,8 @@
 #include <typeinfo>
 #include <cstring>
 #include <tuple>
+#include <filesystem>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -600,11 +602,13 @@ TEST_CASE("example: string_to_enum") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if !(defined(_MSC_VER))  // the output names types (typeid), which differ there
     CHECK(ex_out.str() == std::string_view(R"ex(v1: 0
 v2: 1
 v3: 2
 v4: Invalid enumerator name 'v4' for enum type 'N17ex_string_to_enum1EE'
 )ex"));
+#endif
 }
 }  // namespace ex_string_to_enum
 

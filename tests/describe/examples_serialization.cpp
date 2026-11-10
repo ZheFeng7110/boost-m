@@ -6,6 +6,8 @@
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/describe.hpp>
+#include <cassert>
+#include <boost/config.hpp>
 import std;
 import mcpplibs.mwrap.boost.serialization;
 import mcpplibs.mwrap.boost.mp11;

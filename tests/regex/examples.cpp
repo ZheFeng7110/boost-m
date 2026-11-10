@@ -18,6 +18,7 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <cassert>
 #include <functional>
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
@@ -172,8 +173,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: regex_search_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -181,7 +182,7 @@ TEST_CASE("example: regex_search_example") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 3 matches found
 class "holder" found at index: 80
 class "thing" found at index: 140
@@ -292,8 +293,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: regex_iterator_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -301,7 +302,7 @@ TEST_CASE("example: regex_iterator_example") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 3 matches found
 class "holder" found at index: 80
 class "thing" found at index: 140
@@ -425,8 +426,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: regex_grep_example_1") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -434,7 +435,7 @@ TEST_CASE("example: regex_grep_example_1") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 3 matches found
 class "holder" found at index: 80
 class "thing" found at index: 140
@@ -553,8 +554,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: regex_grep_example_2") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -562,7 +563,7 @@ TEST_CASE("example: regex_grep_example_2") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 3 matches found
 class "holder" found at index: 80
 class "thing" found at index: 140
@@ -707,8 +708,8 @@ int example_main(int argc, const char** argv)
 TEST_CASE("example: regex_grep_example_3") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -716,7 +717,7 @@ TEST_CASE("example: regex_grep_example_3") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 3 matches found
 class "holder" found at index: 80
 class "thing" found at index: 140
@@ -839,8 +840,8 @@ const char* footer_text = "</PRE>\n</BODY>\n\n";
 TEST_CASE("example: regex_merge_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -848,7 +849,7 @@ TEST_CASE("example: regex_merge_example") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 )ex"));
 }
 }  // namespace ex_regex_merge_example
@@ -967,8 +968,8 @@ const char* footer_text = "</PRE>\n</BODY>\n\n";
 TEST_CASE("example: regex_replace_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -976,7 +977,7 @@ TEST_CASE("example: regex_replace_example") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Processing file /tmp/boost-m-regex-fixture.cpp
+    CHECK(ex_out.str() == std::string_view(R"ex(Processing file boost-m-regex-fixture.cpp
 )ex"));
 }
 }  // namespace ex_regex_replace_example
@@ -1056,8 +1057,8 @@ int example_main(int argc, char** argv)
 TEST_CASE("example: regex_split_example_2") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -1065,8 +1066,8 @@ TEST_CASE("example: regex_split_example_2") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Findings URL's in /tmp/boost-m-regex-fixture.cpp:
-Findings URL's in /tmp/boost-m-regex-fixture.cpp:
+    CHECK(ex_out.str() == std::string_view(R"ex(Findings URL's in boost-m-regex-fixture.cpp:
+Findings URL's in boost-m-regex-fixture.cpp:
 )ex"));
 }
 }  // namespace ex_regex_split_example_2
@@ -1150,8 +1151,8 @@ int example_main(int argc, char** argv)
 TEST_CASE("example: regex_token_iterator_eg_2") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -1159,8 +1160,8 @@ TEST_CASE("example: regex_token_iterator_eg_2") {
     ex_argc = int(ex_args.size());
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
-    CHECK(ex_out.str() == std::string_view(R"ex(Findings URL's in /tmp/boost-m-regex-fixture.cpp:
-Findings URL's in /tmp/boost-m-regex-fixture.cpp:
+    CHECK(ex_out.str() == std::string_view(R"ex(Findings URL's in boost-m-regex-fixture.cpp:
+Findings URL's in boost-m-regex-fixture.cpp:
 )ex"));
 }
 }  // namespace ex_regex_token_iterator_eg_2
@@ -1262,8 +1263,8 @@ int example_main(int argc, char* argv[])
 TEST_CASE("example: partial_regex_grep") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);
@@ -1382,8 +1383,8 @@ int example_main(int argc, char* argv[])
 TEST_CASE("example: partial_regex_iterate") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     ex_args = {"example"};
-    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; }
-    ex_args.push_back((std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp").string());
+    { std::ofstream f(std::filesystem::temp_directory_path() / "boost-m-regex-fixture.cpp"); f << "#include <vector>\nclass widget\n{\npublic:\n   int x;\n};\ntemplate <class T>\nstruct holder : public widget\n{\n   T value;\n};\nclass gadget;\nclass thing { };\n// trailing comment\nint main() { return 0; }\n"; std::filesystem::current_path(std::filesystem::temp_directory_path()); }
+    ex_args.push_back(std::string("boost-m-regex-fixture.cpp"));
     ex_argv_store.clear();
     for (auto& a : ex_args) ex_argv_store.push_back(a.data());
     ex_argv_store.push_back(nullptr);

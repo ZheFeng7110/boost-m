@@ -115,7 +115,9 @@ TEST_CASE("empty_value compresses user empty types") {
         holder() : boost::empty_value<user::empty_hasher, 0>(boost::empty_init),
                    boost::empty_value<std::equal_to<int>, 1>(boost::empty_init) {}
     };
+#if !defined(_MSC_VER)  // the MSVC ABI compresses one empty base only
     static_assert(sizeof(holder) == sizeof(int*));
+#endif
     holder h;
     CHECK(h.boost::empty_value<user::empty_hasher, 0>::get()(2) == 62);
     static_assert(boost::use_empty_value_base<user::empty_hasher>::value);
@@ -161,6 +163,6 @@ TEST_CASE("functor<> over a user function") {
 
 TEST_CASE("demangle and type_name of user templates") {
     std::string d = boost::core::demangle(typeid(user::tagged<int, 3>).name());
-    CHECK(d.find("user::tagged<int, 3>") != std::string::npos);
+    CHECK(d.find("user::tagged<int,") != std::string::npos);  // MSVC writes <int,3>
     CHECK(boost::core::type_name<user::tagged<long, 1>>().find("tagged") != std::string::npos);
 }
