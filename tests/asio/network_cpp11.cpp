@@ -8,6 +8,7 @@
 // ports (13, 55555, 54321) are replaced by the free one, "daytime"/"http"
 // service names by its number, and output that carries the time of day is
 // not compared.
+// The fd-passing pair (sendmsg/recvmsg) is compiled on POSIX systems only.
 #if !defined(_WIN32)
 #include <sys/socket.h>
 #include <sys/uio.h>
@@ -260,7 +261,13 @@ inline std::string ex_harness_echo() {
     }).detach();
     return port;
 }
-#if defined(BOOST_ASIO_HAS_PIPE)
+// An error_code's message: "Success" for no error. The text of no error is
+// the C library's (glibc "Success", musl "No error information", macOS
+// "Undefined error: 0", Windows "The operation completed successfully").
+inline std::string ex_message(const boost::system::error_code& ec) {
+    return ec ? ec.message() : std::string("Success");
+}
+#if defined(BOOST_ASIO_HAS_PIPE) && !defined(BOOST_ASIO_WINDOWS)
 // A descriptor reading `text` then EOF: stands in for the process's stdin
 // (STDIN_FILENO) where an example reads it through a stream_descriptor.
 inline int ex_stdin_fd(const std::string& text) {
@@ -2752,7 +2759,7 @@ TEST_CASE("example: cpp11/tutorial/daytime1/client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 07:38:30 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:02 2026
 )ex"));
 #endif
 }
@@ -3117,7 +3124,7 @@ TEST_CASE("example: cpp11/services/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 07:38:32 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:04 2026
 )ex"));
 #endif
 }
@@ -3178,7 +3185,7 @@ TEST_CASE("example: cpp11/tutorial/daytime4/client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 07:38:34 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:06 2026
 )ex"));
 #endif
 }
@@ -3277,7 +3284,7 @@ TEST_CASE("example: cpp11/futures/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 07:38:36 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:08 2026
 )ex"));
 #endif
 }
@@ -3330,7 +3337,7 @@ TEST_CASE("example: cpp11/iostreams/daytime_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 07:38:38 2026
+    CHECK(ex_out.str() == std::string_view(R"ex(Tue Nov 10 12:57:09 2026
 )ex"));
 #endif
 }
@@ -3526,7 +3533,7 @@ TEST_CASE("example: cpp11/timeouts/blocking_tcp_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 61 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 137 microseconds
 )ex"));
 #endif
 }
@@ -3704,7 +3711,7 @@ TEST_CASE("example: cpp11/timeouts/blocking_token_tcp_client") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 138 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(Round trip time: 86 microseconds
 )ex"));
 #endif
 }
@@ -3981,6 +3988,7 @@ TEST_CASE("example: cpp11/local/iostream_client") {
 }
 }  // namespace ex_cpp11_local_iostream_client
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/fd_passing_stream_server.cpp
 namespace ex_cpp11_local_fd_passing_stream_server {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
@@ -4141,7 +4149,9 @@ TEST_CASE("example: cpp11/local/fd_passing_stream_server") {
 #endif
 }
 }  // namespace ex_cpp11_local_fd_passing_stream_server
+#endif
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp11/local/fd_passing_stream_client.cpp
 namespace ex_cpp11_local_fd_passing_stream_client {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
@@ -4247,3 +4257,4 @@ TEST_CASE("example: cpp11/local/fd_passing_stream_client") {
 #endif
 }
 }  // namespace ex_cpp11_local_fd_passing_stream_client
+#endif

@@ -511,7 +511,9 @@ TEST_CASE("doc: posix#stream_descriptor") {
 }
 
 TEST_CASE("doc: posix#local") {
-#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
+// Windows has AF_UNIX stream sockets but no socketpair: connect_pair fails
+// there with WSAEOPNOTSUPP.
+#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS) && !defined(BOOST_ASIO_WINDOWS)
     asio::io_context ctx;
     asio::local::stream_protocol::socket a(ctx), b(ctx);
     asio::local::connect_pair(a, b);

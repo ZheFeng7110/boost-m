@@ -13,7 +13,8 @@ using namespace boost::decimal;
 using d64 = decimal64_t;
 
 namespace {
-bool near(d64 a, double b, double tol = 1e-12) { return std::abs(static_cast<double>(a) - b) <= tol * std::max(1.0, std::abs(b)); }
+// (not `near`: <windows.h>, which doctest includes there, defines it as a macro)
+bool close_to(d64 a, double b, double tol = 1e-12) { return std::abs(static_cast<double>(a) - b) <= tol * std::max(1.0, std::abs(b)); }
 }  // namespace
 
 TEST_CASE("doc: cmath#cmath") {
@@ -27,44 +28,44 @@ TEST_CASE("doc: cmath#cmath") {
     CHECK(fma(d64(2), d64(3), d64(4)) == d64(10));
 }
 TEST_CASE("doc: cmath#cmath_exp") {
-    CHECK(near(exp(d64(1)), std::exp(1.0)));
-    CHECK(near(exp2(d64(10)), 1024.0));
-    CHECK(near(log(d64(10)), std::log(10.0)));
-    CHECK(near(log10(d64(1000)), 3.0));
-    CHECK(near(log2(d64(8)), 3.0));
-    CHECK(near(log1p(d64(0)), 0.0));
-    CHECK(near(expm1(d64(0)), 0.0));
+    CHECK(close_to(exp(d64(1)), std::exp(1.0)));
+    CHECK(close_to(exp2(d64(10)), 1024.0));
+    CHECK(close_to(log(d64(10)), std::log(10.0)));
+    CHECK(close_to(log10(d64(1000)), 3.0));
+    CHECK(close_to(log2(d64(8)), 3.0));
+    CHECK(close_to(log1p(d64(0)), 0.0));
+    CHECK(close_to(expm1(d64(0)), 0.0));
 }
 TEST_CASE("doc: cmath#cmath_power_funcs") {
     CHECK(pow(d64(2), d64(10)) == d64(1024));
     CHECK(pow(d64(2), 3) == d64(8));
     CHECK(sqrt(d64(144)) == d64(12));
-    CHECK(near(cbrt(d64(27)), 3.0));
-    CHECK(near(hypot(d64(3), d64(4)), 5.0));
+    CHECK(close_to(cbrt(d64(27)), 3.0));
+    CHECK(close_to(hypot(d64(3), d64(4)), 5.0));
 }
 TEST_CASE("doc: cmath#cmath_trig_funcs") {
     // decimal64's trigonometric functions are accurate to about 1e-11 here
-    CHECK(near(sin(d64(0.5)), std::sin(0.5), 1e-10));
-    CHECK(near(cos(d64(0.5)), std::cos(0.5), 1e-10));
-    CHECK(near(tan(d64(0.5)), std::tan(0.5), 1e-10));
-    CHECK(near(asin(d64(0.5)), std::asin(0.5)));
-    CHECK(near(acos(d64(0.5)), std::acos(0.5)));
-    CHECK(near(atan(d64(0.5)), std::atan(0.5)));
-    CHECK(near(atan2(d64(1), d64(2)), std::atan2(1.0, 2.0)));
+    CHECK(close_to(sin(d64(0.5)), std::sin(0.5), 1e-10));
+    CHECK(close_to(cos(d64(0.5)), std::cos(0.5), 1e-10));
+    CHECK(close_to(tan(d64(0.5)), std::tan(0.5), 1e-10));
+    CHECK(close_to(asin(d64(0.5)), std::asin(0.5)));
+    CHECK(close_to(acos(d64(0.5)), std::acos(0.5)));
+    CHECK(close_to(atan(d64(0.5)), std::atan(0.5)));
+    CHECK(close_to(atan2(d64(1), d64(2)), std::atan2(1.0, 2.0)));
 }
 TEST_CASE("doc: cmath#cmath_hyperbolic_funcs") {
-    CHECK(near(sinh(d64(0.5)), std::sinh(0.5)));
-    CHECK(near(cosh(d64(0.5)), std::cosh(0.5)));
-    CHECK(near(tanh(d64(0.5)), std::tanh(0.5)));
-    CHECK(near(asinh(d64(0.5)), std::asinh(0.5)));
-    CHECK(near(acosh(d64(1.5)), std::acosh(1.5)));
-    CHECK(near(atanh(d64(0.5)), std::atanh(0.5)));
+    CHECK(close_to(sinh(d64(0.5)), std::sinh(0.5)));
+    CHECK(close_to(cosh(d64(0.5)), std::cosh(0.5)));
+    CHECK(close_to(tanh(d64(0.5)), std::tanh(0.5)));
+    CHECK(close_to(asinh(d64(0.5)), std::asinh(0.5)));
+    CHECK(close_to(acosh(d64(1.5)), std::acosh(1.5)));
+    CHECK(close_to(atanh(d64(0.5)), std::atanh(0.5)));
 }
 TEST_CASE("doc: cmath#cmath_error_funcs") {
-    CHECK(near(erf(d64(0.5)), std::erf(0.5), 1e-10));
-    CHECK(near(erfc(d64(0.5)), std::erfc(0.5), 1e-10));
-    CHECK(near(tgamma(d64(5)), 24.0, 1e-10));
-    CHECK(near(lgamma(d64(5)), std::lgamma(5.0), 1e-10));
+    CHECK(close_to(erf(d64(0.5)), std::erf(0.5), 1e-10));
+    CHECK(close_to(erfc(d64(0.5)), std::erfc(0.5), 1e-10));
+    CHECK(close_to(tgamma(d64(5)), 24.0, 1e-10));
+    CHECK(close_to(lgamma(d64(5)), std::lgamma(5.0), 1e-10));
 }
 TEST_CASE("doc: cmath#cmath_nearest_int") {
     CHECK(ceil(d64(1.2)) == d64(2));
@@ -105,11 +106,11 @@ TEST_CASE("doc: cmath#cmath_classification") {
     CHECK(isunordered(qnan, d64(1)));
 }
 TEST_CASE("doc: cmath#cmath_spec_fun") {
-    CHECK(near(assoc_legendre(2, 0, d64(0.5)), -0.125, 1e-10));
-    CHECK(near(legendre(2, d64(0.5)), -0.125, 1e-10));
-    CHECK(near(hermite(2, d64(1)), 2.0, 1e-10));
-    CHECK(near(laguerre(1, d64(0.5)), 0.5, 1e-10));
-    CHECK(near(riemann_zeta(d64(2)), 1.6449340668482264, 1e-10));
+    CHECK(close_to(assoc_legendre(2, 0, d64(0.5)), -0.125, 1e-10));
+    CHECK(close_to(legendre(2, d64(0.5)), -0.125, 1e-10));
+    CHECK(close_to(hermite(2, d64(1)), 2.0, 1e-10));
+    CHECK(close_to(laguerre(1, d64(0.5)), 0.5, 1e-10));
+    CHECK(close_to(riemann_zeta(d64(2)), 1.6449340668482264, 1e-10));
 }
 TEST_CASE("doc: cmath#comparetotal") {
     CHECK(comparetotal(d64(1), d64(2)));
@@ -241,7 +242,7 @@ TEST_CASE("doc: basics#construction-from-integer") {
 }
 TEST_CASE("doc: basics#construction-from-binary-floating-point") {
     decimal128_t pi{3.14};
-    CHECK(near(static_cast<d64>(pi), 3.14));
+    CHECK(close_to(static_cast<d64>(pi), 3.14));
 }
 TEST_CASE("doc: cfenv#cfenv") {
     CHECK(fegetround() == rounding_mode::fe_dec_default);

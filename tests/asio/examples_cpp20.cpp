@@ -12,7 +12,11 @@
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
-// so those in-place includes add only the macros.
+// so those in-place includes add only the macros. The deferred examples print
+// ec.message() through ex_message(), which spells no error "Success" (the
+// C library's own text for it differs between platforms); programs that need
+// a POSIX stream_descriptor or socketpair are compiled only where asio has them.
+// The actor benchmark passes its token 500 thousand times, not 50 million.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
@@ -258,7 +262,13 @@ inline std::string ex_harness_echo() {
     }).detach();
     return port;
 }
-#if defined(BOOST_ASIO_HAS_PIPE)
+// An error_code's message: "Success" for no error. The text of no error is
+// the C library's (glibc "Success", musl "No error information", macOS
+// "Undefined error: 0", Windows "The operation completed successfully").
+inline std::string ex_message(const boost::system::error_code& ec) {
+    return ec ? ec.message() : std::string("Success");
+}
+#if defined(BOOST_ASIO_HAS_PIPE) && !defined(BOOST_ASIO_WINDOWS)
 // A descriptor reading `text` then EOF: stands in for the process's stdin
 // (STDIN_FILENO) where an example reads it through a stream_descriptor.
 inline int ex_stdin_fd(const std::string& text) {
@@ -2743,6 +2753,7 @@ Messages sent
 }
 }  // namespace ex_cpp20_operations_composed_8
 
+#if defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp20/type_erasure/main.cpp
 namespace ex_cpp20_type_erasure_main {
 #undef LINE_READER_HPP
@@ -2935,3 +2946,4 @@ Enter something: line two
 Enter something: )ex"));
 }
 }  // namespace ex_cpp20_type_erasure_main
+#endif

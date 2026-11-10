@@ -43,7 +43,8 @@ import mcpplibs.mwrap.boost.container;
 # pragma clang diagnostic ignored "-Wmismatched-tags"
 #endif
 
-#include <array>
+// #include <array>: import std provides it (MSVC STL headers cannot be
+// included again after an import that reached them)
 
 // tag::snippet_conv_spec_trait1[]
 namespace user_ns
