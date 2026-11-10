@@ -6,80 +6,82 @@ upstream = "1.92.0"
 library = "mqtt5"
 
 [[example]]
-path   = "libs/mqtt5/example/hello_world_in_coro_multithreaded_env.cpp"
-status = "todo"
+path = "libs/mqtt5/example/hello_world_in_coro_multithreaded_env.cpp"
+case = "mqtt5/examples:example: hello_world_in_coro_multithreaded_env"
 
 [[example]]
-path   = "libs/mqtt5/example/hello_world_in_multithreaded_env.cpp"
-status = "todo"
+path = "libs/mqtt5/example/hello_world_in_multithreaded_env.cpp"
+case = "mqtt5/examples:example: hello_world_in_multithreaded_env"
 
 [[example]]
-path   = "libs/mqtt5/example/hello_world_over_tcp.cpp"
-status = "todo"
+path = "libs/mqtt5/example/hello_world_over_tcp.cpp"
+case = "mqtt5/examples:example: hello_world_over_tcp"
 
 [[example]]
 path   = "libs/mqtt5/example/hello_world_over_tls.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/mqtt5/example/hello_world_over_websocket_tcp.cpp"
-status = "todo"
+path = "libs/mqtt5/example/hello_world_over_websocket_tcp.cpp"
+case = "mqtt5/examples:example: hello_world_over_websocket_tcp"
 
 [[example]]
 path   = "libs/mqtt5/example/hello_world_over_websocket_tls.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module)"
 
 [[example]]
-path   = "libs/mqtt5/example/multiflight_client.cpp"
-status = "todo"
+path = "libs/mqtt5/example/multiflight_client.cpp"
+case = "mqtt5/examples:example: multiflight_client"
 
 [[example]]
-path   = "libs/mqtt5/example/publisher.cpp"
-status = "todo"
+path = "libs/mqtt5/example/publisher.cpp"
+case = "mqtt5/examples:example: publisher"
 
 [[example]]
-path   = "libs/mqtt5/example/receiver.cpp"
-status = "todo"
+path = "libs/mqtt5/example/receiver.cpp"
+case = "mqtt5/examples:example: receiver"
 
 [[example]]
-path   = "libs/mqtt5/example/timeout_with_awaitable_operators.cpp"
-status = "todo"
+path = "libs/mqtt5/example/timeout_with_awaitable_operators.cpp"
+case = "mqtt5/examples:example: timeout_with_awaitable_operators"
 
 [[example]]
-path   = "libs/mqtt5/example/timeout_with_parallel_group.cpp"
-status = "todo"
+path = "libs/mqtt5/example/timeout_with_parallel_group.cpp"
+case = "mqtt5/examples:example: timeout_with_parallel_group"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/01_intro.qbk#intro"
-title  = "Introduction"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/01_intro.qbk#intro"
+title = "Introduction"
+case  = "mqtt5/doc:doc: intro"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/02_getting_started.qbk#transport_protocol"
-title  = "Choosing a Suitable Transport Protocol"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/02_getting_started.qbk#transport_protocol"
+title = "Choosing a Suitable Transport Protocol"
+case  = "mqtt5/doc:doc: transport_protocol"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/03_auto_reconnect.qbk#auto_reconnect"
-title  = "Built-in Auto-Reconnect and Retry Mechanism"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/03_auto_reconnect.qbk#auto_reconnect"
+title = "Built-in Auto-Reconnect and Retry Mechanism"
+case  = "mqtt5/doc:doc: auto_reconnect"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#disconnecting_the_client"
-title  = "Disconnecting the Client"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#disconnecting_the_client"
+title = "Disconnecting the Client"
+case  = "mqtt5/doc:doc: disconnecting_the_client"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#reusing_the_client"
-title  = "Restarting the Client After Disconnection"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/06_disconnecting_the_client.qbk#reusing_the_client"
+title = "Restarting the Client After Disconnection"
+case  = "mqtt5/doc:doc: reusing_the_client"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/09_per_op_cancellation.qbk#per_op_cancellation"
-title  = "Per-Operation Cancellation"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/09_per_op_cancellation.qbk#per_op_cancellation"
+title = "Per-Operation Cancellation"
+case  = "mqtt5/doc:doc: per_op_cancellation"
 
 [[snippet]]
-doc    = "libs/mqtt5/doc/qbk/10_executors.qbk#executors"
-title  = "Executors"
-status = "todo"
+doc   = "libs/mqtt5/doc/qbk/10_executors.qbk#executors"
+title = "Executors"
+case  = "mqtt5/doc:doc: executors"
