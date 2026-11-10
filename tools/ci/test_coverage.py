@@ -330,8 +330,8 @@ def cmd_scan(args):
 # ---------------------------------------------------------------------------
 
 _DOCTEST_CASE = re.compile(r'\bTEST_CASE(?:_TEMPLATE|_FIXTURE)?\s*\(\s*(?:\w+\s*,\s*)?"((?:[^"\\]|\\.)*)"')
-# tests/url/doc_test_suite.hpp turns Boost.URL's TEST_SUITE(type, "name")
-# into TEST_CASE("doc: name").
+# tests/{url,json}/doc_test_suite.hpp turn the libraries' own
+# TEST_SUITE(type, "name") into TEST_CASE("doc: name").
 _URL_SUITE = re.compile(r'\bTEST_SUITE\(\s*\w+\s*,\s*"((?:[^"\\]|\\.)*)"')
 _BOOST_CASE = re.compile(r"\bBOOST_(?:AUTO|DATA|FIXTURE)_TEST_CASE(?:_TEMPLATE)?\s*\(\s*(\w+)")
 

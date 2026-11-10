@@ -6,207 +6,244 @@ upstream = "1.92.0"
 library = "json"
 
 [[example]]
-path   = "libs/json/example/cbor.cpp"
-status = "todo"
+path = "libs/json/example/cbor.cpp"
+case = "json/examples:example: cbor"
 
 [[example]]
 path   = "libs/json/example/parse_into.cpp"
-status = "todo"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
 
 [[example]]
 path   = "libs/json/example/parse_into_canada.cpp"
-status = "todo"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
 
 [[example]]
 path   = "libs/json/example/parse_into_citm_catalog.cpp"
-status = "todo"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
 
 [[example]]
-path   = "libs/json/example/path.cpp"
-status = "todo"
+path = "libs/json/example/path.cpp"
+case = "json/examples:example: path"
 
 [[example]]
-path   = "libs/json/example/pretty.cpp"
-status = "todo"
+path = "libs/json/example/pretty.cpp"
+case = "json/examples:example: pretty"
 
 [[example]]
-path   = "libs/json/example/proxy.cpp"
-status = "todo"
+path = "libs/json/example/proxy.cpp"
+case = "json/examples:example: proxy"
 
 [[example]]
-path   = "libs/json/example/use_allocator.cpp"
-status = "todo"
+path = "libs/json/example/use_allocator.cpp"
+case = "json/examples:example: use_allocator"
 
 [[example]]
-path   = "libs/json/example/validate.cpp"
-status = "todo"
+path = "libs/json/example/validate.cpp"
+case = "json/examples:example: validate"
 
 [[snippet]]
 doc    = "libs/json/doc/README.md#instructions-for-documentation"
 title  = "Instructions for Documentation"
-status = "todo"
+status = "excluded"
+reason = "instructions for building the documentation"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/background.adoc#polymorphic-allocators"
 title  = "Polymorphic Allocators"
-status = "todo"
+case   = "json/doc_background:doc: boost.json.doc_background"
+reason = "the page's code is included from test/doc_background.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#allocator-propagation"
 title  = "Allocator Propagation"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#default-memory-resource"
 title  = "Default Memory Resource"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#monotonic-resource"
 title  = "Monotonic Resource"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#resource-lifetime"
 title  = "Resource Lifetime"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#static-resource"
 title  = "Static Resource"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#user-defined-resource"
 title  = "User-Defined Resource"
-status = "todo"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-nlohmann-json"
 title  = "Comparison to nlohmann JSON"
-status = "todo"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-rapidjson"
 title  = "Comparison to RapidJSON"
-status = "todo"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-simd-json"
 title  = "Comparison to SIMD JSON"
-status = "todo"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/context.adoc#combining-contexts"
 title  = "Combining Contexts"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/context.adoc#contexts-and-composite-types"
 title  = "Contexts and Composite Types"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/context.adoc#conversions-for-third-party-types"
 title  = "Conversions for Third-Party Types"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/context.adoc#passing-data-to-conversion-functions"
 title  = "Passing Data to Conversion Functions"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/custom.adoc#conversion-traits"
 title  = "Conversion Traits"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/conversion/custom.adoc#tag-invoke-overloads"
 title  = "`tag_invoke` Overloads"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/dom/string.adoc#accessing-storage-beyond-size"
 title  = "Accessing Storage Beyond `size()`"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/dom/value.adoc#dom_value"
 title  = "Working With Values"
-status = "todo"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/examples.adoc#allocator-aware-conversion"
 title  = "Allocator-Aware Conversion"
-status = "todo"
+case   = "json/examples:example: use_allocator"
+reason = "the section shows example/use_allocator.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/examples.adoc#cbor"
 title  = "CBOR"
-status = "todo"
+case   = "json/examples:example: cbor"
+reason = "the section shows example/cbor.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/examples.adoc#examples_validate"
 title  = "Validate"
-status = "todo"
+case   = "json/examples:example: validate"
+reason = "the section shows example/validate.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/examples.adoc#pretty"
 title  = "Pretty"
-status = "todo"
+case   = "json/examples:example: pretty"
+reason = "the section shows example/pretty.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#avoiding-dynamic-allocations"
 title  = "Avoiding Dynamic Allocations"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#controlling-memory"
 title  = "Controlling Memory"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#full-precision-number-parsing"
 title  = "Full Precision Number Parsing"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#non-standard-json"
 title  = "Non-Standard JSON"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#parser"
 title  = "Parser"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/io/parsing.adoc#streaming-parser"
 title  = "Streaming Parser"
-status = "todo"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_allocators"
 title  = "Allocators"
-status = "todo"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_conversion"
 title  = "Value Conversion"
-status = "todo"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_parsing"
 title  = "Parsing"
-status = "todo"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_serializing"
 title  = "Serializing"
-status = "todo"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
 
 [[snippet]]
 doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_values"
 title  = "Values"
-status = "todo"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"

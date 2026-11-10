@@ -47,6 +47,10 @@ export; it becomes `inline constexpr`.
 of `boost/bimap/support/lambda.hpp` were references in an anonymous
 namespace; they become `inline constexpr`, as `boost::lambda::_1` did.
 
+`json.patch` is the same case: `BOOST_JSON_INLINE_VARIABLE` declared
+`object_kind`, `array_kind` and `string_kind` as references in an anonymous
+namespace; the macro now declares them `inline constexpr`.
+
 `url.patch` is the TU-local-object case at scale: Boost.URL's character sets
 and grammar rules (`grammar::alnum_chars`, `unreserved_chars`, `uri_rule`,
 `authority_rule`, ...) are namespace-scope `constexpr` objects, which have

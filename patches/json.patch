@@ -1,0 +1,22 @@
+diff --git a/upstream/boost/boost/json/detail/config.hpp b/upstream/boost/boost/json/detail/config.hpp
+index a11cc056..eb0c203b 100644
+--- a/upstream/boost/boost/json/detail/config.hpp
++++ b/upstream/boost/boost/json/detail/config.hpp
+@@ -207,10 +207,15 @@ struct static_const
+ template<typename T>
+ constexpr T static_const<T>::value;
+ 
++// boost-m vendored edit: the reference was declared in an anonymous namespace
++// (internal linkage), so object_kind / array_kind / string_kind could not be
++// exported from the json module; inline constexpr gives it external linkage
++// and still refers to the one static_const<type>::value. Replay after
++// re-running import_boost.
+ #define BOOST_JSON_INLINE_VARIABLE(name, type) \
+-    namespace { constexpr auto& name = \
++    inline constexpr auto& name = \
+         ::boost::json::detail::static_const<type>::value; \
+-    } struct _unused_ ## name ## _semicolon_bait_
++    struct _unused_ ## name ## _semicolon_bait_
+ 
+ } // detail
+ } // namespace json

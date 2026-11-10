@@ -17,6 +17,7 @@
 #                     reason = "...", else = ["<line>", ...] (optional)
 #   [[<lib>.drop]]    names = [...], reason = "..."
 #   [[<lib>.extra]]   namespace = "boost", lines = [...], reason = "..."
+#                     (namespace = "" exports into the global namespace)
 #   [<lib>.deps]      add = [...], remove = [...], reason = "..."
 #
 # A `names` entry with `::` matches one qualified name exactly; a bare
@@ -153,6 +154,23 @@ gmf = [
     "boost/algorithm/sort_subrange.hpp",
     "boost/algorithm/string.hpp",
     "boost/algorithm/string/trim_all.hpp",
+]
+
+[[container.extra]]
+namespace = ""
+reason = '''
+allocator_traits::construct places elements with the global
+operator new(std::size_t, void*, boost_container_new_t) of
+boost/container/detail/placement_new.hpp. A consumer TU that instantiates it
+(pmr::vector<json::value>::resize, in the json documentation) looks the
+operator up at the point of instantiation, where only exported declarations
+are visible; the generator exports boost:: names only, so the tag type and
+its placement operators are exported here.
+'''
+lines = [
+    "using ::boost_container_new_t;",
+    "using ::operator new;",
+    "using ::operator delete;",
 ]
 
 [convert]
