@@ -5,7 +5,7 @@ status: active
 
 # 模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件
 
-> 日期：2026-11-09 · 状态：设计；§9 的问题均已答复
+> 日期：2026-11-09 · 状态：实施中（进度与过程见 §11，截至 2026-11-10）；§9 的问题均已答复
 >
 > 输入：按 boost.org「most popular」排序选出的 34 个库；要求补全被测 API，至少覆盖官方
 > 使用示例；凡支持自定义类型的库，必须带自定义类型的测试套件；按
@@ -515,3 +515,119 @@ CI 在 `Test libraries` 之后加一步，遍历 `tests/*/mcpp.toml`，进入每
   基础源文件列表已经覆盖了所有库，子工程只在根工程无法表达时才有必要。
 - **把官方示例目录 vendor 进仓库。** 这会违背 `upstream/` 只放裁剪后上游树的约定，
   并使仓库增大；`coverage.toml` 只记路径，归档按需下载并校验。
+
+## 11. 实施记录（截至 2026-11-10）
+
+分支 `test/module-test-hardening`（fork `ZheFeng7110/boost-m`），上游草稿 PR
+[mcpplibs/boost-m#5](https://github.com/mcpplibs/boost-m/pull/5)。本节记录做到哪里、实际怎么做的、
+与上文设计不一致的地方，以及测试中发现的封装层问题。
+
+### 11.1 进度
+
+`python3 tools/ci/test_coverage.py check` 的统计（covered：映射到用例；excluded：写明理由的排除；
+gap：已知的封装层缺口）：
+
+| 状态 | 库 |
+|---|---|
+| 完成（`todo` 为零，本地 gcc 16 全绿） | algorithm 36、any 2、bimap 40、bloom 11+1、callable_traits 36+4、charconv 18+1、circular_buffer 5、compat 75、container 27+gap 1、container_hash 7、conversion 2、convert 15+1、core 67、crc 7、decimal 155+19、describe 33+4、dynamic_bitset 3、hash2 30、json 36+7、regex 40+14、unordered 12+2、url 40+7、uuid 43、variant2 5、**asio 229+25** |
+| 记为不支持（§9 Q2） | context 39、coroutine2 16 |
+| 未完成 | beast 73、cobalt 46、mqtt5 18、geometry 318、math 475、dll 28、test 229（共 1187 条 `todo`） |
+
+提交（按时间）：设计记录 → conversion 模块化、`core::string_view` 导出、transform_reduce 的 include
+guard（P1）→ 34 个 smoke 迁入 `tests/<lib>/` 并接入 doctest → convert、bimap、bloom/describe/
+container_hash、hash2、unordered、container、regex、url、json、decimal 各库套件 → 平台无关的期望值
+（MSVC 空基类 ABI、反修饰名、临时路径）→ asio。本地（Linux x86_64、gcc 16）全部通过；CI 并未全绿。
+最近一次跑完的 CI（`6b351f3b`，decimal 之后、asio 之前）只有 linux-gcc-x86_64 两组通过，其余 8 条腿失败：
+
+| 腿 | 失败的测试 | 现象 |
+|---|---|---|
+| linux-llvm-x86_64、macos-llvm-arm64（A/B 组） | `statechart`（既有的平铺测试） | 编译 libc++ 的 `__new/allocate.h` 时 `call to 'operator new' is ambiguous`。很可能是 f62e1725 在 container 中导出全局 `::operator new` / `::operator delete`（§11.4）造成的回归，需优先确认 |
+| linux-gcc-arm64（A/B） | `decimal/api_types` | `static_cast<long double>(T(1.5)) == 1.5L` 不成立（aarch64 的 `long double` 是 128 位） |
+| windows-llvm-msvc-x86_64（A/B） | `decimal/api_cmath_io`、`json/doc_forward_conversion`、`json/doc_snippets` | 编译失败；decimal 的 `d64` 有歧义，`near(...)` 的声明在第 16 行就解析失败（疑与 Windows 头文件的宏 `near` 冲突） |
+
+asio 的提交（`e02d285d`）已推送，CI 运行中。
+
+beast 已开工但未提交：回环 harness（`ex_http_get` / `ex_ws_exchange`，本身用 Beast 写）和生成脚本已有，
+生成的 `examples_http.cpp` / `examples_websocket.cpp` 放在本地 `.tmp/wip-beast/`。剩下的问题是
+oracle 需要链接 Boost.System 的 `error_category → std::error_category` 转换（已用
+`libsystem_extras.a` 解决），以及 `http_server_fast` 的 worker 数（见 §11.3 的探测连接）。
+
+### 11.2 与设计不一致之处
+
+- **工具名与子命令。** §0、§4.6 写的 `gen_test_coverage.py` / `check_test_coverage.py` 合并为
+  `tools/ci/test_coverage.py`，子命令 `scan`（从发布包重建清单，校验归档 SHA）、`link`（按命名约定把
+  `todo` 连到用例）、`check`（CI 用）。用例命名约定：`example: <stem>`、`doc: <page>#<section>`，
+  section 在库内唯一时也可写 `doc: <section>`；doctest 的 `TEST_SUITE(type, "name")` 视为
+  `doc: name`。清单里 `case` 的写法是 `<lib>/<file>:<用例名>`。
+- **文件布局。** 没有严格按 `api_<topic>` / `examples_<group>` 拆分：示例移植按目录或语言版本成组
+  （asio 的 `examples_cpp11/14/20.cpp`、`network_cpp11.cpp`、`network_http.cpp`……），文档页的用例
+  放在 `api.cpp` / `api_overview.cpp` 等少数文件中，宁可单文件大一些（§7 的 CI 时长对策）。
+- **子工程。** 只有 `tests/dll/` 与 `tests/test/utf/` 是独立工程；`tests/test/included/`
+  （Boost.Test 的 header-only 形态）留在根工程。根清单为
+  `discover = ["tests/**/*.cpp", "!tests/dll/**", "!tests/test/utf/**"]`。
+- **conversion 之外的封装层改动** 比 §5.3 预期的多，见 §11.4；每一项都在对应提交里重新生成并通过
+  `gen_exports.py --check`。
+
+### 11.3 方法
+
+**示例移植与输出 oracle。** 官方示例不改逻辑，由本地脚本机械移植成用例：`#include` 换成
+`import std;` 与模块 import（宏所在的头文件保留 include，§4.4 的混用在 gcc 16 / clang 上实测可行），
+`main` 改名为 `example_main`，`std::cout/cerr` 重定向到捕获流，argv / stdin 由用例提供。期望输出
+不手写：同一份移植后的代码只用 `upstream/boost` 头文件、以 clang++ / libc++ 编译运行一次（oracle），
+其输出写进用例逐字比对；oracle 跑两次，结果不同就不比对输出并在文件头说明原因（时间、线程完成顺序、
+`priority_queue` 的同优先级顺序等）。需要编译库的示例给 oracle 链接本地编出的上游库
+（serialization、json、regex、url、container、program_options、thread、system 的补充）。
+oracle 的输出按字节读取：raw 字符串字面量无法保存 `\r`，含控制字符的输出改用转义字面量。
+对示例做的改动只有几类，并都写在生成文件的头注释里：固定端口改为空闲端口、`"daytime"`/`"http"`
+服务名改为端口号、秒级延时缩短、无限循环在输入结束时退出、读取进程 stdin 描述符的地方换成预先
+写好内容的管道、写入 cwd 的文件改到临时目录。
+
+**回环网络（asio，beast 同法）。** 不起子进程，全部在一个测试进程内：服务端示例在后台线程运行
+（`ex_serve_async`，进程退出时结束），harness 客户端发一次请求并打印收到的内容；客户端示例连接
+同一文件中已移植的、与它配对的服务端示例。harness 的连接（包括探测服务端是否已监听的那次连接）
+一律保持打开：服务端看到客户端断开会从自己的线程打印异常，与主线程的输出竞争，有的协程版本还会因此
+终止。只接受一个连接的服务端（beast `echo-op`）不探测，由客户端重试连接。UDP 无法探测，短暂等待后
+由客户端重发。
+
+**文档片段。** 以章节为粒度：每个带代码块的章节（qbk 的 `[section]`、adoc/md 的标题）一个用例，
+或一条排除。扫描规则修正过一次：Quickbook 的代码块按任意缩进识别（asio 的文档缩进两格），
+最初只认 4 格以上，漏掉了 asio、regex、convert 的若干章节；修正后这些章节都已补上用例。
+
+**脚本。** 移植与生成脚本（`port_examples.py`、各库的 `regen_*.py`、asio/beast 的 harness 头文件）目前
+只在本地 `.tmp/scripts/`，未提交；提交的是生成结果，每个生成文件的头注释说明了来源与改动。是否把它们
+整理进 `tools/` 以便升级 Boost 时重跑，待定（§11.6）。
+
+### 11.4 测试发现的封装层问题
+
+都在对应提交中修复，并重新生成导出：
+
+| 库 | 问题 | 修复 |
+|---|---|---|
+| algorithm、container | 上游 include guard 冲突，`transform_reduce`、`pmr::devector` 在模块里不存在 | `patches/algorithm.patch`、`container.patch` |
+| convert、bimap、url、json | 命名空间作用域的 `constexpr` 对象是 TU-local，无法导出（`throw_on_failure`、`_key`/`_data`、url 的字符集与语法规则、json 的 kind 标签） | 补丁改为 `inline constexpr` / `BOOST_INLINE_CONSTEXPR` |
+| regex | GMF 中内部链接的消息表在使用方看来是空串 | `regex.patch` 改为 `inline constexpr` |
+| container | 全局的 placement `operator new(…, boost_container_new_t)` 在实例化点不可见 | `export_policy.toml` 以空命名空间导出 |
+| convert | converter 头文件不能单独编译，被过滤掉 | policy 的 `gmf` 补上 |
+| decimal | GMF 里的 `std::formatter` 偏特化对使用方不可达 | `#include <version>` 并在 purview 中具名引用 |
+| asio | `experimental::use_promise` 缺失（`use_promise.hpp` 不能单独编译，被过滤掉）；`stream_errc` / `socket_errc` 只含 using 声明，生成器不收 | `libs.json` 补头文件；policy 的 `extra` |
+| core | `boost::core::string_view` 没有任何模块导出 | `core.cppm` 包含 `core/detail/string_view.hpp` |
+
+另有一处记为 `gap` 而不绕开：container 的 `doc_extended_allocators`（dlmalloc 分配器需要
+`alloc_lib.c`，包没有构建它）。上游文档与实现不一致的地方（charconv 十六进制解析、hash2 文档里两次
+`result()`、decimal 的若干名字等）在用例注释中写明，以实现为准。
+
+### 11.5 CI 时长（§9 Q3）
+
+尚未在 CI 上正式测量，只有本地数据：全量构建约 5 分钟，全量测试约 4 分钟（MCPP_JOBS=4；6 会 OOM）。
+asio 最慢的两个程序是 `examples_cpp11`（约 60 秒）与 `examples_cpp14`（约 40 秒），时间花在示例自带的
+定时器上（教程的 1 秒定时器 ×5、`time_t_timer`），不是等待；它们与其他程序并行运行。
+
+### 11.6 剩余工作
+
+1. 先修 §11.1 表中的 CI 失败，尤其是 clang 上 `operator new` 的歧义（封装层回归）。
+1. beast（§11.1）、cobalt、mqtt5、geometry、math（P4）。
+2. P5：`tests/dll` 的共享库插件（`kind = "shared"`）与 dll 示例；`tests/test/utf` 的 Boost.Test 示例。
+3. CI：增加进入 `tests/dll`、`tests/test/utf` 运行 `mcpp test` 的步骤，以及
+   `tools/ci/test_coverage.py check`；在 CI 上测量时长并按 §9 Q3 决定是否分组。
+4. 更新 `docs/architecture*.md` 的 `tests/` 描述；全部完成后把本记录标为 `landed`。
+5. 待定：是否把移植脚本整理进 `tools/`（§11.3）。
