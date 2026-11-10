@@ -10,7 +10,9 @@
 // descriptors (bypassing the captured stream, completion order varies) and
 // priority_scheduler (std::priority_queue does not order equal priorities) and
 // prioritised_handlers (whether the accept has completed when the queue is
-// first run depends on the host's timing).
+// first run depends on the host's timing) and tutorial/timer5 (two threads,
+// both timers due at the same instant). composed_4 is not compiled on Windows
+// (it ends the process there; see the design record).
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
@@ -115,12 +117,16 @@ inline std::string ex_free_udp_port() {
     ex_local = false;
     return std::to_string(u.local_endpoint().port());
 }
+// The probe stays open like the TCP one: on macOS a server's accept reports
+// a connection the peer already closed (EINVAL) and the beast servers stop.
 inline bool ex_try_connect_local(const std::string& path) {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
-    boost::asio::io_context c;
-    boost::asio::local::stream_protocol::socket s(c);
+    static auto& c = *new boost::asio::io_context;
+    auto* s = new boost::asio::local::stream_protocol::socket(c);
     boost::system::error_code ec;
-    s.connect(boost::asio::local::stream_protocol::endpoint(path), ec);
+    s->connect(boost::asio::local::stream_protocol::endpoint(path), ec);
+    if (ec)
+        delete s;
     return !ec;
 #else
     (void)path;
@@ -134,7 +140,7 @@ inline void ex_serve_async(std::function<void()> server, std::string port) {
     if (ex_udp || ex_no_probe) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     } else if (ex_local) {
-        for (int i = 0; i < 500 && !ex_try_connect_local(port); ++i)  // (a probe that closes: the local servers do not report it)
+        for (int i = 0; i < 500 && !ex_try_connect_local(port); ++i)
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
     } else {
         ex_wait_listening(port);
@@ -240,7 +246,8 @@ inline std::string ex_local_path(const std::string& name) {
 inline std::string ex_doc_root() {
     auto d = ex_temp_path("www");
     std::filesystem::create_directories(d);
-    std::ofstream(std::filesystem::path(d) / "index.html") << "<html><body>boost-m</body></html>\n";
+    // binary: the served file is the same octets everywhere (no \r\n on Windows)
+    std::ofstream(std::filesystem::path(d) / "index.html", std::ios::binary) << "<html><body>boost-m</body></html>\n";
     return d;
 }
 // A background TCP echo server of the harness (the upstream of a proxy).
@@ -1579,7 +1586,7 @@ TEST_CASE("example: cpp14/executors/fork_join") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(sort took 29 microseconds
+    CHECK(ex_out.str() == std::string_view(R"ex(sort took 28 microseconds
 )ex"));
 #endif
 }
@@ -3049,6 +3056,7 @@ Message sent
 }
 }  // namespace ex_cpp14_operations_composed_3
 
+#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp14/operations/composed_4.cpp
 namespace ex_cpp14_operations_composed_4 {
 using boost::asio::ip::tcp;
@@ -3289,6 +3297,7 @@ Exception: Invalid argument [system:22]
 )ex"));
 }
 }  // namespace ex_cpp14_operations_composed_4
+#endif
 
 // libs/asio/example/cpp14/operations/composed_5.cpp
 namespace ex_cpp14_operations_composed_5 {
@@ -4540,7 +4549,7 @@ TEST_CASE("example: cpp14/parallel_group/parallel_sort") {
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(starting sort
-sort took 6016139 microseconds
+sort took 6023026 microseconds
 )ex"));
 #endif
 }

@@ -110,12 +110,16 @@ inline std::string ex_free_udp_port() {
     ex_local = false;
     return std::to_string(u.local_endpoint().port());
 }
+// The probe stays open like the TCP one: on macOS a server's accept reports
+// a connection the peer already closed (EINVAL) and the beast servers stop.
 inline bool ex_try_connect_local(const std::string& path) {
 #if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
-    boost::asio::io_context c;
-    boost::asio::local::stream_protocol::socket s(c);
+    static auto& c = *new boost::asio::io_context;
+    auto* s = new boost::asio::local::stream_protocol::socket(c);
     boost::system::error_code ec;
-    s.connect(boost::asio::local::stream_protocol::endpoint(path), ec);
+    s->connect(boost::asio::local::stream_protocol::endpoint(path), ec);
+    if (ec)
+        delete s;
     return !ec;
 #else
     (void)path;
@@ -129,7 +133,7 @@ inline void ex_serve_async(std::function<void()> server, std::string port) {
     if (ex_udp || ex_no_probe) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     } else if (ex_local) {
-        for (int i = 0; i < 500 && !ex_try_connect_local(port); ++i)  // (a probe that closes: the local servers do not report it)
+        for (int i = 0; i < 500 && !ex_try_connect_local(port); ++i)
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
     } else {
         ex_wait_listening(port);
@@ -235,7 +239,8 @@ inline std::string ex_local_path(const std::string& name) {
 inline std::string ex_doc_root() {
     auto d = ex_temp_path("www");
     std::filesystem::create_directories(d);
-    std::ofstream(std::filesystem::path(d) / "index.html") << "<html><body>boost-m</body></html>\n";
+    // binary: the served file is the same octets everywhere (no \r\n on Windows)
+    std::ofstream(std::filesystem::path(d) / "index.html", std::ios::binary) << "<html><body>boost-m</body></html>\n";
     return d;
 }
 // A background TCP echo server of the harness (the upstream of a proxy).
@@ -1456,8 +1461,7 @@ TEST_CASE("example: websocket/server/async-local/websocket_server_async_local") 
     int rc = (ex_serve_async([a = ex_args] { (void)ex_call_main(&example_main, a); }, ex_port), (ex_ws_exchange_local(ex_port, "hello beast")));
     CHECK(rc == 0);
 #if !(!defined(BOOST_ASIO_HAS_LOCAL_SOCKETS))  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(accept: The WebSocket stream was gracefully closed at both endpoints
-received: hello beast
+    CHECK(ex_out.str() == std::string_view(R"ex(received: hello beast
 )ex"));
 #endif
 }
@@ -2139,8 +2143,7 @@ TEST_CASE("example: websocket/client/async-local/websocket_client_async_local") 
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(!defined(BOOST_ASIO_HAS_LOCAL_SOCKETS))  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(accept: The WebSocket stream was gracefully closed at both endpoints
-hello beast
+    CHECK(ex_out.str() == std::string_view(R"ex(hello beast
 )ex"));
 #endif
 }
