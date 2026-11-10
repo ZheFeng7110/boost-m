@@ -61,15 +61,21 @@ using namespace asio::this_coro;
 
 // get the allocator the promise
 struct allocator_t {};
-constexpr allocator_t allocator;
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr allocator_t allocator;
 
 // get the current cancellation state-type
 struct cancelled_t {};
-constexpr cancelled_t cancelled;
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr cancelled_t cancelled;
 
 // set the over-eager mode of a generator
 struct initial_t {};
-constexpr initial_t initial;
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr initial_t initial;
 //end::outline[]
 
 template<typename CancellationSlot = asio::cancellation_slot>

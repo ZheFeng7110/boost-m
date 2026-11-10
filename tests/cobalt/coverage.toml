@@ -6,219 +6,226 @@ upstream = "1.92.0"
 library = "cobalt"
 
 [[example]]
-path   = "libs/cobalt/example/channel.cpp"
-status = "todo"
+path = "libs/cobalt/example/channel.cpp"
+case = "cobalt/examples:example: channel"
 
 [[example]]
-path   = "libs/cobalt/example/delay.cpp"
-status = "todo"
+path = "libs/cobalt/example/delay.cpp"
+case = "cobalt/examples:example: delay"
 
 [[example]]
-path   = "libs/cobalt/example/delay_op.cpp"
-status = "todo"
+path = "libs/cobalt/example/delay_op.cpp"
+case = "cobalt/examples:example: delay_op"
 
 [[example]]
-path   = "libs/cobalt/example/echo_server.cpp"
-status = "todo"
+path = "libs/cobalt/example/echo_server.cpp"
+case = "cobalt/examples:example: echo_server"
 
 [[example]]
 path   = "libs/cobalt/example/http.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module) and talks to a public internet service"
 
 [[example]]
-path   = "libs/cobalt/example/outcome.cpp"
-status = "todo"
+path = "libs/cobalt/example/outcome.cpp"
+case = "cobalt/examples:example: outcome"
 
 [[example]]
 path   = "libs/cobalt/example/python.cpp"
-status = "todo"
+status = "excluded"
+reason = "a CPython extension module (needs Python.h and the interpreter)"
 
 [[example]]
-path   = "libs/cobalt/example/signals.cpp"
-status = "todo"
+path = "libs/cobalt/example/signals.cpp"
+case = "cobalt/examples:example: signals"
 
 [[example]]
-path   = "libs/cobalt/example/spsc.cpp"
-status = "todo"
+path = "libs/cobalt/example/spsc.cpp"
+case = "cobalt/examples:example: spsc"
 
 [[example]]
-path   = "libs/cobalt/example/thread.cpp"
-status = "todo"
+path = "libs/cobalt/example/thread.cpp"
+case = "cobalt/examples:example: thread"
 
 [[example]]
-path   = "libs/cobalt/example/thread_pool.cpp"
-status = "todo"
+path = "libs/cobalt/example/thread_pool.cpp"
+case = "cobalt/examples:example: thread_pool"
 
 [[example]]
 path   = "libs/cobalt/example/ticker.cpp"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module) and talks to a public internet service"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/asio_awaitable.adoc#asio-awaitable"
-title  = "`asio::awaitable`"
-status = "todo"
+doc   = "libs/cobalt/doc/background/asio_awaitable.adoc#asio-awaitable"
+title = "`asio::awaitable`"
+case  = "cobalt/doc:doc: asio-awaitable"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/custom_executors.adoc#a-minimal-executor"
-title  = "A minimal executor"
-status = "todo"
+doc   = "libs/cobalt/doc/background/custom_executors.adoc#a-minimal-executor"
+title = "A minimal executor"
+case  = "cobalt/doc:doc: a-minimal-executor"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/custom_executors.adoc#adding-a-work-guard"
-title  = "Adding a work guard."
-status = "todo"
+doc   = "libs/cobalt/doc/background/custom_executors.adoc#adding-a-work-guard"
+title = "Adding a work guard."
+case  = "cobalt/doc:doc: adding-a-work-guard"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/custom_executors.adoc#execute"
-title  = "`execute`"
-status = "todo"
+doc   = "libs/cobalt/doc/background/custom_executors.adoc#execute"
+title = "`execute`"
+case  = "cobalt/doc:doc: execute"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/custom_executors.adoc#properties"
-title  = "Properties"
-status = "todo"
+doc   = "libs/cobalt/doc/background/custom_executors.adoc#properties"
+title = "Properties"
+case  = "cobalt/doc:doc: properties"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/custom_executors.adoc#properties-of-the-asio-any-io-executor"
-title  = "Properties of the `asio::any_io_executor`"
-status = "todo"
+doc   = "libs/cobalt/doc/background/custom_executors.adoc#properties-of-the-asio-any-io-executor"
+title = "Properties of the `asio::any_io_executor`"
+case  = "cobalt/doc:doc: properties-of-the-asio-any-io-executor"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/lazy_eager.adoc#lazy-eager"
-title  = "Lazy & eager"
-status = "todo"
+doc   = "libs/cobalt/doc/background/lazy_eager.adoc#lazy-eager"
+title = "Lazy & eager"
+case  = "cobalt/doc:doc: lazy-eager"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/background/stackless.adoc#stackless"
-title  = "Stackless"
-status = "todo"
+doc   = "libs/cobalt/doc/background/stackless.adoc#stackless"
+title = "Stackless"
+case  = "cobalt/doc:doc: stackless"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/benchmarks.adoc#immediate"
-title  = "Immediate"
-status = "todo"
+doc   = "libs/cobalt/doc/benchmarks.adoc#immediate"
+title = "Immediate"
+case  = "cobalt/doc:doc: immediate"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/benchmarks.adoc#posting-to-an-executor"
-title  = "Posting to an executor"
-status = "todo"
+doc   = "libs/cobalt/doc/benchmarks.adoc#posting-to-an-executor"
+title = "Posting to an executor"
+case  = "cobalt/doc:doc: posting-to-an-executor"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/benchmarks.adoc#running-noop-coroutine-in-parallel"
-title  = "Running noop coroutine in parallel"
-status = "todo"
+doc   = "libs/cobalt/doc/benchmarks.adoc#running-noop-coroutine-in-parallel"
+title = "Running noop coroutine in parallel"
+case  = "cobalt/doc:doc: running-noop-coroutine-in-parallel"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/compiler.adoc#compiler"
-title  = "Compiler"
-status = "todo"
+doc   = "libs/cobalt/doc/compiler.adoc#compiler"
+title = "Compiler"
+case  = "cobalt/doc:doc: compiler"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/associators.adoc#associators"
-title  = "Associators"
-status = "todo"
+doc   = "libs/cobalt/doc/design/associators.adoc#associators"
+title = "Associators"
+case  = "cobalt/doc:doc: associators"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/concepts.adoc#concepts"
-title  = "Concepts"
-status = "todo"
+doc   = "libs/cobalt/doc/design/concepts.adoc#concepts"
+title = "Concepts"
+case  = "cobalt/doc:doc: concepts"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/promise.adoc#promise"
-title  = "Promise"
-status = "todo"
+doc   = "libs/cobalt/doc/design/promise.adoc#promise"
+title = "Promise"
+case  = "cobalt/doc:doc: promise"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/race.adoc#interrupt-await"
-title  = "interrupt_await"
-status = "todo"
+doc   = "libs/cobalt/doc/design/race.adoc#interrupt-await"
+title = "interrupt_await"
+case  = "cobalt/doc:doc: interrupt-await"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/race.adoc#race"
-title  = "Race"
-status = "todo"
+doc   = "libs/cobalt/doc/design/race.adoc#race"
+title = "Race"
+case  = "cobalt/doc:doc: race"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/thread.adoc#threading"
-title  = "Threading"
-status = "todo"
+doc   = "libs/cobalt/doc/design/thread.adoc#threading"
+title = "Threading"
+case  = "cobalt/doc:doc: threading"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/design/thread_local.adoc#using-strands"
-title  = "Using Strands"
-status = "todo"
+doc   = "libs/cobalt/doc/design/thread_local.adoc#using-strands"
+title = "Using Strands"
+case  = "cobalt/doc:doc: using-strands"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/primer/async.adoc#async-programming"
-title  = "Async programming"
-status = "todo"
+doc   = "libs/cobalt/doc/primer/async.adoc#async-programming"
+title = "Async programming"
+case  = "cobalt/doc:doc: async-programming"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/primer/awaitables.adoc#awaitables"
-title  = "Awaitables"
-status = "todo"
+doc   = "libs/cobalt/doc/primer/awaitables.adoc#awaitables"
+title = "Awaitables"
+case  = "cobalt/doc:doc: awaitables"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/primer/coroutines.adoc#co-await"
-title  = "`co_await`"
-status = "todo"
+doc   = "libs/cobalt/doc/primer/coroutines.adoc#co-await"
+title = "`co_await`"
+case  = "cobalt/doc:doc: co-await"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/primer/coroutines.adoc#co-yield"
-title  = "`co_yield`"
-status = "todo"
+doc   = "libs/cobalt/doc/primer/coroutines.adoc#co-yield"
+title = "`co_yield`"
+case  = "cobalt/doc:doc: co-yield"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/entry.adoc#entry-into-a-cobalt-environment"
-title  = "Entry into a cobalt environment"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/entry.adoc#entry-into-a-cobalt-environment"
+title = "Entry into a cobalt environment"
+case  = "cobalt/doc:doc: entry-into-a-cobalt-environment"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/generator.adoc#tour-generator"
-title  = "Generator"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/generator.adoc#tour-generator"
+title = "Generator"
+case  = "cobalt/doc:doc: tour-generator"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/join.adoc#tour-join"
-title  = "join"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/join.adoc#tour-join"
+title = "join"
+case  = "cobalt/doc:doc: tour-join"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/promise.adoc#promises"
-title  = "Promises"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/promise.adoc#promises"
+title = "Promises"
+case  = "cobalt/doc:doc: promises"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/race.adoc#tour-race"
-title  = "race"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/race.adoc#tour-race"
+title = "race"
+case  = "cobalt/doc:doc: tour-race"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tour/task.adoc#tasks"
-title  = "Tasks"
-status = "todo"
+doc   = "libs/cobalt/doc/tour/task.adoc#tasks"
+title = "Tasks"
+case  = "cobalt/doc:doc: tasks"
 
 [[snippet]]
 doc    = "libs/cobalt/doc/tutorial/delay.adoc#delay"
 title  = "delay"
-status = "todo"
+case   = "cobalt/examples:example: delay"
+reason = "the page includes example/delay.cpp"
 
 [[snippet]]
 doc    = "libs/cobalt/doc/tutorial/delay_op.adoc#delay-op"
 title  = "delay op"
-status = "todo"
+case   = "cobalt/examples:example: delay_op"
+reason = "the page includes example/delay_op.cpp"
 
 [[snippet]]
 doc    = "libs/cobalt/doc/tutorial/echo_server.adoc#echo-server"
 title  = "echo server"
-status = "todo"
+case   = "cobalt/examples:example: echo_server"
+reason = "the page includes example/echo_server.cpp"
 
 [[snippet]]
-doc    = "libs/cobalt/doc/tutorial/push_generator.adoc#generator-with-push-value"
-title  = "Generator with push value"
-status = "todo"
+doc   = "libs/cobalt/doc/tutorial/push_generator.adoc#generator-with-push-value"
+title = "Generator with push value"
+case  = "cobalt/doc:doc: generator-with-push-value"
 
 [[snippet]]
 doc    = "libs/cobalt/doc/tutorial/ticker.adoc#price-ticker"
 title  = "price ticker"
-status = "todo"
+status = "excluded"
+reason = "needs OpenSSL (the package builds asio without SSL; boost/asio/ssl is not in the module) and talks to a public internet service"

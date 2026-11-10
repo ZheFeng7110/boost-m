@@ -108,25 +108,27 @@ struct static_protocol
 };
 
 
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip    {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v4 {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v6 {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp   {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v4{};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v6{};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp   {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp_v4{};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> udp_v6{};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> icmp  {};
-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_STREAM)>    local_stream   {};
-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_DGRAM)>     local_datagram {};
-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_SEQPACKET)> local_seqpacket{};
-constexpr static_protocol<AF_UNIX>                                                         local_protocol {};
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip    {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v4 {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v6 {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp   {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v4{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v6{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp   {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp_v4{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> udp_v6{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> icmp  {};
+inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_STREAM)>    local_stream   {};
+inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_DGRAM)>     local_datagram {};
+inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_SEQPACKET)> local_seqpacket{};
+inline constexpr static_protocol<AF_UNIX>                                                         local_protocol {};
 
 #if defined(IPPROTO_SCTP)
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp   {};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v4{};
-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v6{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp   {};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v4{};
+inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v6{};
 #endif
 
 template<protocol_type::family_t Family>

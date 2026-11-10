@@ -47,6 +47,12 @@ export; it becomes `inline constexpr`.
 of `boost/bimap/support/lambda.hpp` were references in an anonymous
 namespace; they become `inline constexpr`, as `boost::lambda::_1` did.
 
+`cobalt.patch` is the same case: the completion tokens `use_op` and
+`use_task` and the awaitable tags `this_coro::allocator`, `cancelled` and
+`initial`, and the protocol constants of `cobalt::io` (`tcp_v4`, `udp`,
+`local_stream`, ...) are namespace-scope `constexpr` objects; they become
+`inline constexpr`.
+
 `json.patch` is the same case: `BOOST_JSON_INLINE_VARIABLE` declared
 `object_kind`, `array_kind` and `string_kind` as references in an anonymous
 namespace; the macro now declares them `inline constexpr`.

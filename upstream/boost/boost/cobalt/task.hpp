@@ -106,7 +106,9 @@ struct use_task_t
 
 };
 
-constexpr use_task_t use_task{};
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr use_task_t use_task{};
 
 template<typename T>
 inline auto task<T>::operator co_await () {return receiver_.get_awaitable();}

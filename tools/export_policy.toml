@@ -198,6 +198,38 @@ gmf = [
 ]
 
 [cobalt]
+# boost/cobalt.hpp includes boost/cobalt/main.hpp, which defines the program's
+# main (as a friend of main_promise) to run the user's co_main. In a module's
+# GMF that definition reaches every importer: clang rejects a consumer's own
+# `int main(int, char**)` ("definition with same mangled name 'main'"). The
+# module therefore has cobalt.hpp's headers except main.hpp; a program written
+# with co_main includes <boost/cobalt/main.hpp> itself.
+gmf = [
+    "boost/cobalt/async_for.hpp",
+    "boost/cobalt/channel.hpp",
+    "boost/cobalt/composition.hpp",
+    "boost/cobalt/concepts.hpp",
+    "boost/cobalt/config.hpp",
+    "boost/cobalt/detached.hpp",
+    "boost/cobalt/error.hpp",
+    "boost/cobalt/experimental/context.hpp",
+    "boost/cobalt/experimental/yield_context.hpp",
+    "boost/cobalt/gather.hpp",
+    "boost/cobalt/generator.hpp",
+    "boost/cobalt/io.hpp",
+    "boost/cobalt/join.hpp",
+    "boost/cobalt/op.hpp",
+    "boost/cobalt/promise.hpp",
+    "boost/cobalt/race.hpp",
+    "boost/cobalt/run.hpp",
+    "boost/cobalt/spawn.hpp",
+    "boost/cobalt/task.hpp",
+    "boost/cobalt/this_coro.hpp",
+    "boost/cobalt/this_thread.hpp",
+    "boost/cobalt/thread.hpp",
+    "boost/cobalt/wait_group.hpp",
+    "boost/cobalt/with.hpp",
+]
 # POSIX cobalt selects the epoll reactor; asio's reactor/hash_map details are
 # reached only through Windows-flavored chains in the MinGW snapshot. The
 # facade includes them so the shared-surface using-declarations resolve on
@@ -512,6 +544,24 @@ names = [
 
 # --------------------------------------------------------------------------
 # cobalt
+
+[[cobalt.extra]]
+namespace = "boost::cobalt::this_coro"
+reason = '''
+boost/cobalt/this_coro.hpp brings asio's awaitable tags into
+cobalt::this_coro with `using namespace asio::this_coro;` (the examples and
+the documentation write cobalt::this_coro::executor). A using-directive is not
+an entity the generator collects, so the names it makes visible are
+re-declared in the module.
+'''
+lines = [
+    "using boost::asio::this_coro::cancellation_state;",
+    "using boost::asio::this_coro::cancellation_state_t;",
+    "using boost::asio::this_coro::executor;",
+    "using boost::asio::this_coro::executor_t;",
+    "using boost::asio::this_coro::reset_cancellation_state;",
+    "using boost::asio::this_coro::throw_if_cancelled;",
+]
 
 [[cobalt.guard]]
 if = "defined(BOOST_ASIO_HAS_FILE)"

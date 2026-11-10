@@ -1,0 +1,108 @@
+diff --git a/upstream/boost/boost/cobalt/io/endpoint.hpp b/upstream/boost/boost/cobalt/io/endpoint.hpp
+index c37d3718..9e618146 100644
+--- a/upstream/boost/boost/cobalt/io/endpoint.hpp
++++ b/upstream/boost/boost/cobalt/io/endpoint.hpp
+@@ -108,25 +108,27 @@ struct static_protocol
+ };
+ 
+ 
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip    {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v4 {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v6 {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp   {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v4{};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v6{};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp   {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp_v4{};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> udp_v6{};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> icmp  {};
+-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_STREAM)>    local_stream   {};
+-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_DGRAM)>     local_datagram {};
+-constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_SEQPACKET)> local_seqpacket{};
+-constexpr static_protocol<AF_UNIX>                                                         local_protocol {};
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip    {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v4 {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  static_cast<protocol_type::type_t>(0), BOOST_ASIO_OS_DEF(IPPROTO_IP)>   ip_v6 {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp   {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v4{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_STREAM), BOOST_ASIO_OS_DEF(IPPROTO_TCP)>  tcp_v6{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp   {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_UDP)>  udp_v4{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> udp_v6{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_DGRAM),  BOOST_ASIO_OS_DEF(IPPROTO_ICMP)> icmp  {};
++inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_STREAM)>    local_stream   {};
++inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_DGRAM)>     local_datagram {};
++inline constexpr static_protocol<AF_UNIX,                      BOOST_ASIO_OS_DEF(SOCK_SEQPACKET)> local_seqpacket{};
++inline constexpr static_protocol<AF_UNIX>                                                         local_protocol {};
+ 
+ #if defined(IPPROTO_SCTP)
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp   {};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v4{};
+-constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v6{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_UNSPEC), BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp   {};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET),   BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v4{};
++inline constexpr static_protocol<BOOST_ASIO_OS_DEF(AF_INET6),  BOOST_ASIO_OS_DEF(SOCK_SEQPACKET), IPPROTO_SCTP>  sctp_v6{};
+ #endif
+ 
+ template<protocol_type::family_t Family>
+diff --git a/upstream/boost/boost/cobalt/op.hpp b/upstream/boost/boost/cobalt/op.hpp
+index 1de3d331..902d33b7 100644
+--- a/upstream/boost/boost/cobalt/op.hpp
++++ b/upstream/boost/boost/cobalt/op.hpp
+@@ -186,7 +186,9 @@ struct use_op_t
+ 
+ };
+ 
+-constexpr use_op_t use_op{};
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr use_op_t use_op{};
+ 
+ struct enable_await_deferred
+ {
+diff --git a/upstream/boost/boost/cobalt/task.hpp b/upstream/boost/boost/cobalt/task.hpp
+index 3e8105a9..69939eeb 100644
+--- a/upstream/boost/boost/cobalt/task.hpp
++++ b/upstream/boost/boost/cobalt/task.hpp
+@@ -106,7 +106,9 @@ struct use_task_t
+ 
+ };
+ 
+-constexpr use_task_t use_task{};
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr use_task_t use_task{};
+ 
+ template<typename T>
+ inline auto task<T>::operator co_await () {return receiver_.get_awaitable();}
+diff --git a/upstream/boost/boost/cobalt/this_coro.hpp b/upstream/boost/boost/cobalt/this_coro.hpp
+index 2aba8c52..4729cb93 100644
+--- a/upstream/boost/boost/cobalt/this_coro.hpp
++++ b/upstream/boost/boost/cobalt/this_coro.hpp
+@@ -61,15 +61,21 @@ using namespace asio::this_coro;
+ 
+ // get the allocator the promise
+ struct allocator_t {};
+-constexpr allocator_t allocator;
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr allocator_t allocator;
+ 
+ // get the current cancellation state-type
+ struct cancelled_t {};
+-constexpr cancelled_t cancelled;
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr cancelled_t cancelled;
+ 
+ // set the over-eager mode of a generator
+ struct initial_t {};
+-constexpr initial_t initial;
++// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
++// not exportable from a module).
++inline constexpr initial_t initial;
+ //end::outline[]
+ 
+ template<typename CancellationSlot = asio::cancellation_slot>

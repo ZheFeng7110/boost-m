@@ -3,11 +3,13 @@ mcpplibs.mwrap.boost.assert
 mcpplibs.mwrap.boost.callable_traits
 mcpplibs.mwrap.boost.circular_buffer
 mcpplibs.mwrap.boost.config
+mcpplibs.mwrap.boost.container
 mcpplibs.mwrap.boost.core
 mcpplibs.mwrap.boost.endian
 mcpplibs.mwrap.boost.intrusive
 mcpplibs.mwrap.boost.mp11
 mcpplibs.mwrap.boost.smart_ptr
 mcpplibs.mwrap.boost.system
+mcpplibs.mwrap.boost.throw_exception
 mcpplibs.mwrap.boost.utility
 mcpplibs.mwrap.boost.variant2
