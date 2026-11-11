@@ -24,7 +24,7 @@ namespace bdata = boost::unit_test::data;
 namespace tt = boost::test_tools;
 namespace utf = boost::unit_test;
 
-namespace user {
+namespace app {
 struct point {
     int x, y;
     bool operator==(point const& o) const { return x == o.x && y == o.y; }
@@ -52,24 +52,24 @@ struct odd_numbers {
     bdata::size_t size() const { return n; }
     iterator begin() const { return {0}; }
 };
-}  // namespace user
+}  // namespace app
 namespace boost { namespace unit_test { namespace data { namespace monomorphic {
-template <> struct is_dataset<user::odd_numbers> : std::true_type {};
+template <> struct is_dataset<app::odd_numbers> : std::true_type {};
 }}}}  // namespace boost::unit_test::data::monomorphic
 
 BOOST_AUTO_TEST_CASE(print_type) {
     tt::output_test_stream os;
-    tt::tt_detail::print_log_value<user::point>()(os, user::point{1, 2});
+    tt::tt_detail::print_log_value<app::point>()(os, app::point{1, 2});
     BOOST_TEST(os.is_equal("point(1, 2)"));
-    tt::tt_detail::print_log_value<user::tag>()(os, user::tag{"t"});
+    tt::tt_detail::print_log_value<app::tag>()(os, app::tag{"t"});
     BOOST_TEST(os.is_equal("#t"));
-    BOOST_TEST((user::point{1, 2} == user::point{1, 2}));
+    BOOST_TEST((app::point{1, 2} == app::point{1, 2}));
 }
 
-BOOST_DATA_TEST_CASE(user_dataset, user::odd_numbers(4), v) { BOOST_TEST(v % 2 == 1); }
-BOOST_DATA_TEST_CASE(user_dataset_zipped, user::odd_numbers(3) ^ bdata::xrange(3), odd, i) { BOOST_TEST(odd == 2 * i + 1); }
+BOOST_DATA_TEST_CASE(user_dataset, app::odd_numbers(4), v) { BOOST_TEST(v % 2 == 1); }
+BOOST_DATA_TEST_CASE(user_dataset_zipped, app::odd_numbers(3) ^ bdata::xrange(3), odd, i) { BOOST_TEST(odd == 2 * i + 1); }
 
-namespace user {
+namespace app {
 struct counted {
     static inline int setups = 0, teardowns = 0;
     counted() = default;
@@ -86,30 +86,30 @@ struct global_state {
     global_state() { up = true; }
     ~global_state() { up = false; }
 };
-}  // namespace user
-using user_global_state = user::global_state;
+}  // namespace app
+using user_global_state = app::global_state;
 BOOST_TEST_GLOBAL_FIXTURE(user_global_state);
 
-BOOST_FIXTURE_TEST_CASE(case_fixture, user::counted) {
+BOOST_FIXTURE_TEST_CASE(case_fixture, app::counted) {
     BOOST_TEST(value == 7);
-    BOOST_TEST(user::counted::setups >= 1);
+    BOOST_TEST(app::counted::setups >= 1);
 }
-BOOST_AUTO_TEST_SUITE(with_suite_fixture, *utf::fixture<user::suite_state>())
-BOOST_AUTO_TEST_CASE(first) { BOOST_TEST(user::suite_state::constructed == 1); }
-BOOST_AUTO_TEST_CASE(second) { BOOST_TEST(user::suite_state::constructed == 1); }  // once per suite
+BOOST_AUTO_TEST_SUITE(with_suite_fixture, *utf::fixture<app::suite_state>())
+BOOST_AUTO_TEST_CASE(first) { BOOST_TEST(app::suite_state::constructed == 1); }
+BOOST_AUTO_TEST_CASE(second) { BOOST_TEST(app::suite_state::constructed == 1); }  // once per suite
 BOOST_AUTO_TEST_SUITE_END()
-BOOST_AUTO_TEST_CASE(global_fixture) { BOOST_TEST(user::global_state::up); }
+BOOST_AUTO_TEST_CASE(global_fixture) { BOOST_TEST(app::global_state::up); }
 
-namespace user {
+namespace app {
 tt::assertion_result global_is_up(utf::test_unit_id) {
     tt::assertion_result r(global_state::up);
     r.message() << "the global fixture is not up";
     return r;
 }
-}  // namespace user
-BOOST_AUTO_TEST_CASE(user_precondition, *utf::precondition(user::global_is_up)) { BOOST_TEST(true); }
+}  // namespace app
+BOOST_AUTO_TEST_CASE(user_precondition, *utf::precondition(app::global_is_up)) { BOOST_TEST(true); }
 
-namespace user {
+namespace app {
 // a log formatter that counts what it is told
 struct counting_formatter : utf::output::compiler_log_formatter {
     static inline int assertions = 0;
@@ -118,22 +118,22 @@ struct counting_formatter : utf::output::compiler_log_formatter {
         compiler_log_formatter::log_entry_start(os, d, t);
     }
 };
-}  // namespace user
+}  // namespace app
 BOOST_AUTO_TEST_CASE(user_log_formatter) {
     std::ostringstream os;
     utf::unit_test_log.set_stream(os);
     utf::unit_test_log.set_threshold_level(utf::log_successful_tests);
-    utf::unit_test_log.set_formatter(new user::counting_formatter);
+    utf::unit_test_log.set_formatter(new app::counting_formatter);
     BOOST_TEST(1 + 1 == 2);
     BOOST_TEST_MESSAGE("a message");
     utf::unit_test_log.set_formatter(new utf::output::compiler_log_formatter);
     utf::unit_test_log.set_threshold_level(utf::log_all_errors);
     utf::unit_test_log.set_stream(std::cout);
-    BOOST_TEST(user::counting_formatter::assertions >= 2);
+    BOOST_TEST(app::counting_formatter::assertions >= 2);
     BOOST_TEST(os.str().find("a message") != std::string::npos);
 }
 
-namespace user {
+namespace app {
 struct meters {
     double v;
     meters(double d = 0) : v(d) {}
@@ -150,19 +150,19 @@ struct meters {
     friend std::ostream& operator<<(std::ostream& os, meters m) { return os << m.v << " m"; }
 };
 inline meters fabs(meters m) { return std::fabs(m.v); }
-}  // namespace user
+}  // namespace app
 namespace boost { namespace math { namespace fpc {
-template <> struct tolerance_based<user::meters> : std::true_type {};
+template <> struct tolerance_based<app::meters> : std::true_type {};
 }}}  // namespace boost::math::fpc
 namespace std {
-template <> class numeric_limits<user::meters> : public numeric_limits<double> {
+template <> class numeric_limits<app::meters> : public numeric_limits<double> {
 public:
-    static user::meters max() { return numeric_limits<double>::max(); }
-    static user::meters min() { return numeric_limits<double>::min(); }
-    static user::meters epsilon() { return numeric_limits<double>::epsilon(); }
+    static app::meters (max)() { return (numeric_limits<double>::max)(); }
+    static app::meters (min)() { return (numeric_limits<double>::min)(); }
+    static app::meters epsilon() { return numeric_limits<double>::epsilon(); }
 };
 }  // namespace std
-BOOST_AUTO_TEST_CASE(user_tolerance_type, *utf::tolerance(user::meters(1e-6))) {
-    BOOST_TEST(user::meters(10.0) == user::meters(10.0 + 1e-9));
+BOOST_AUTO_TEST_CASE(user_tolerance_type, *utf::tolerance(app::meters(1e-6))) {
+    BOOST_TEST(app::meters(10.0) == app::meters(10.0 + 1e-9));
 }
 #endif

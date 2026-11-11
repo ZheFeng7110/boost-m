@@ -75,8 +75,17 @@ inline std::string normalize(std::string s) {
     s = std::regex_replace(s, time, "testing time: <t>");
     // the source location: file(line) or file:line by platform, and the line
     // of a macro spanning lines differs between compilers
-    static const std::regex loc(R"([A-Za-z0-9_./\-]+\.(cpp|hpp|ipp)(\(([0-9]+)\)|:([0-9]+)):)");
+    static const std::regex ansi("\x1b\\[[0-9;]*m");  // colour codes some programs turn on
+    s = std::regex_replace(s, ansi, "");
+    static const std::regex loc(R"(([A-Za-z0-9_./\-]+\.(cpp|hpp|ipp)|unknown location)(\(([0-9]+)\)|:([0-9]+)):)");
     s = std::regex_replace(s, loc, "<src>:");
+    // the system's description of a memory fault (POSIX: "at address: A: no
+    // mapping ..." / "invalid permissions"; Windows: "occurred at address A, while ...")
+    static const std::regex fault(R"(memory access violation (?:occurred )?at address:? (0x[0-9a-fA-F]+)[,:][^\n]*)");
+    s = std::regex_replace(s, fault, "memory access violation at address $1: <fault>");
+    // MSVC's type names carry the class-key ("class std::runtime_error")
+    static const std::regex key(R"((: |error: )(?:class|struct) )");
+    s = std::regex_replace(s, key, "$1");
     // trailing blanks and blank lines are not part of what is compared
     static const std::regex trailing(R"([ \t]+\n)");
     s = std::regex_replace(s, trailing, "\n");
@@ -96,7 +105,7 @@ int main() {
     int rc = ex_original_main(int(args.size()), argv.data());
     std::cout.rdbuf(out);
     std::cerr.rdbuf(err);
-    bool ok = true ? rc != 0 : rc == 0;
+    bool ok = rc != 0;
     if (!ok)
         std::printf("unexpected exit status %d\n", rc);
     if (std::getenv("EX_PRINT")) {  // the oracle run

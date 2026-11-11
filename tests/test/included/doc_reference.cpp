@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(floating_points_comparison_theory) {
     BOOST_TEST(weak(1.0, 1.105));
     BOOST_TEST(!strong(1.0, 1.15));
 }
-namespace user {
+namespace app {
 struct fixed {
     double v;
     fixed(double d = 0) : v(d) {}
@@ -132,21 +132,21 @@ struct fixed {
     friend std::ostream& operator<<(std::ostream& os, fixed f) { return os << f.v; }
 };
 inline fixed fabs(fixed f) { return std::fabs(f.v); }
-}  // namespace user
+}  // namespace app
 namespace boost { namespace math { namespace fpc {
-template <> struct tolerance_based<user::fixed> : std::true_type {};
+template <> struct tolerance_based<app::fixed> : std::true_type {};
 }}}  // namespace boost::math::fpc
 namespace std {
-template <> class numeric_limits<user::fixed> : public numeric_limits<double> {
+template <> class numeric_limits<app::fixed> : public numeric_limits<double> {
 public:
-    static user::fixed max() { return numeric_limits<double>::max(); }
-    static user::fixed min() { return numeric_limits<double>::min(); }
-    static user::fixed epsilon() { return numeric_limits<double>::epsilon(); }
+    static app::fixed (max)() { return (numeric_limits<double>::max)(); }
+    static app::fixed (min)() { return (numeric_limits<double>::min)(); }
+    static app::fixed epsilon() { return numeric_limits<double>::epsilon(); }
 };
 }  // namespace std
 BOOST_AUTO_TEST_CASE(customizing_for_tolerance) {
-    user::fixed a{1.0}, b{1.0 + 1e-10};
-    BOOST_TEST(a == b, tt::tolerance(user::fixed{1e-6}));
+    app::fixed a{1.0}, b{1.0 + 1e-10};
+    BOOST_TEST(a == b, tt::tolerance(app::fixed{1e-6}));
 }
 
 // ---- decorators (testorg_reference.qbk, decorators.qbk) ----

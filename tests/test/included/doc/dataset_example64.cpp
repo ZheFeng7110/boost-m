@@ -71,8 +71,17 @@ inline std::string normalize(std::string s) {
     s = std::regex_replace(s, time, "testing time: <t>");
     // the source location: file(line) or file:line by platform, and the line
     // of a macro spanning lines differs between compilers
-    static const std::regex loc(R"([A-Za-z0-9_./\-]+\.(cpp|hpp|ipp)(\(([0-9]+)\)|:([0-9]+)):)");
+    static const std::regex ansi("\x1b\\[[0-9;]*m");  // colour codes some programs turn on
+    s = std::regex_replace(s, ansi, "");
+    static const std::regex loc(R"(([A-Za-z0-9_./\-]+\.(cpp|hpp|ipp)|unknown location)(\(([0-9]+)\)|:([0-9]+)):)");
     s = std::regex_replace(s, loc, "<src>:");
+    // the system's description of a memory fault (POSIX: "at address: A: no
+    // mapping ..." / "invalid permissions"; Windows: "occurred at address A, while ...")
+    static const std::regex fault(R"(memory access violation (?:occurred )?at address:? (0x[0-9a-fA-F]+)[,:][^\n]*)");
+    s = std::regex_replace(s, fault, "memory access violation at address $1: <fault>");
+    // MSVC's type names carry the class-key ("class std::runtime_error")
+    static const std::regex key(R"((: |error: )(?:class|struct) )");
+    s = std::regex_replace(s, key, "$1");
     // trailing blanks and blank lines are not part of what is compared
     static const std::regex trailing(R"([ \t]+\n)");
     s = std::regex_replace(s, trailing, "\n");
@@ -92,7 +101,7 @@ int main() {
     int rc = ex_original_main(int(args.size()), argv.data());
     std::cout.rdbuf(out);
     std::cerr.rdbuf(err);
-    bool ok = true ? rc != 0 : rc == 0;
+    bool ok = rc != 0;
     if (!ok)
         std::printf("unexpected exit status %d\n", rc);
     if (std::getenv("EX_PRINT")) {  // the oracle run
@@ -100,28 +109,7 @@ int main() {
         return rc;
     }
 #if 0
-    const std::string want = ex_harness::normalize(R"ex(Running 12 test cases...
-test 1: 0, 0
-test 1: 0, 1
-test 1: 0, 2
-test 1: 1, 0
-test 1: 1, 1
-test 1: 1, 2
-test 2: 0 / 1.00002, 0
-test 2: 0 / 1.08503, 1
-test 2: 1 / 1.60135, 0
-test 2: 1 / 1.89161, 1
-<src>: error: in "test2/_3": check random_sample < 1.7 has failed [1.89161134 >= 1.7]
-Failure occurred in a following context:
-    xr = 1; random_sample = 1.89161134; index = 1;
-test 2: 2 / 1.96796, 0
-<src>: error: in "test2/_4": check random_sample < 1.7 has failed [1.96795571 >= 1.7]
-Failure occurred in a following context:
-    xr = 2; random_sample = 1.96795571; index = 0;
-test 2: 2 / 1.18969, 1
-
-*** 2 failures are detected in the test module "dataset_example64"
-)ex"), got = ex_harness::normalize(captured.str());
+    const std::string want = ex_harness::normalize(""), got = ex_harness::normalize(captured.str());
     if (want != got) {
         std::printf("output differs\n--- expected\n%s\n--- got\n%s\n", want.c_str(), got.c_str());
         ok = false;

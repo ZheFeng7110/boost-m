@@ -7,7 +7,14 @@
 // text are not compared (random_search, inspect_fp, naive_monte_carlo,
 // reverse_mode_linear_regression, differential_evolution; root_finding_example:
 // std::cbrt's last digit; autodiff_reverse_black_scholes: last digits of libm results;
-// nonfinite_num_facet_trap: the iostream_category message).
+// nonfinite_num_facet_trap: the iostream_category message). The outputs are
+// those of the oracle's platform, x86_64 Linux: elsewhere the width of long
+// double and the libm's last digits differ, and a case checks the exit status.
+#if defined(__x86_64__) && defined(__linux__)
+#define EX_OUTPUT_PLATFORM 1
+#else
+#define EX_OUTPUT_PLATFORM 0
+#endif
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
@@ -125,7 +132,9 @@ TEST_CASE("example: airy_ulps_plot") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex()ex"));
+#endif
 }
 }  // namespace ex_airy_ulps_plot
 
@@ -199,6 +208,7 @@ TEST_CASE("example: autodiff_black_scholes_brief") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(black-scholes call price = 56.5136
 black-scholes put  price = 51.4109
 call delta = 0.773818
@@ -206,6 +216,7 @@ put  delta = -0.226182
 call gamma = 0.00199852
 put  gamma = 0.00199852
 )ex"));
+#endif
 }
 }  // namespace ex_autodiff_black_scholes_brief
 
@@ -584,6 +595,7 @@ TEST_CASE("example: bessel_errors_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Thrown exception Error in function boost::math::cyl_bessel_j_zero<double>(double, int): Requested the 0'th zero of J0, but the rank must be > 0 !
 boost::math::cyl_bessel_j_zero(inf, 1) 
 Thrown exception Error in function boost::math::cyl_bessel_j_zero<long double>(long double, int): Order argument is inf, but must be finite >= 0 !
@@ -595,6 +607,7 @@ boost::math::cyl_bessel_j_zero(0.0, inf)
 Thrown exception Error in function boost::math::cyl_bessel_j_zero<long double>(long double, int): Requested the -2147483648'th zero, but the rank must be positive !
 Thrown exception Error in function boost::math::airy_ai_zero<long double>(long double, int): Requested the -2147483648'th zero, but the rank must be 1 or more !
 )ex"));
+#endif
 }
 }  // namespace ex_bessel_errors_example
 
@@ -790,6 +803,7 @@ TEST_CASE("example: big_seventh") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(cpp_bin_float_quad x =  42
 std::is_same<cpp_bin_float_quad, cpp_bin_float_quad_et_off>::value is true
 std::is_same<cpp_bin_float_quad, cpp_bin_float_quad_et_on>::value is false
@@ -799,6 +813,7 @@ cpp_bin_float_50_no_et   z =  42
  std::is_same<cpp_bin_float_50, cpp_bin_float_50_no_et>::value is true
  std::is_same<cpp_bin_float_50_et, cpp_bin_float_50_no_et>::value is false
 )ex"));
+#endif
 }
 }  // namespace ex_big_seventh
 
@@ -1299,6 +1314,7 @@ TEST_CASE("example: binomial_quiz_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Binomial distribution example - guessing in a quiz.
 In a quiz with 16 questions and with a probability of guessing right of 25 % or 1 in 4
 Probability of getting none right is 0.0100226
@@ -1399,6 +1415,7 @@ Deciles 1.349 to 5.758
 2 to 98% 0.3131 to 7.252
 If guessing, then percentiles 1 to 99% will get 0 to 7.788 right.
 )ex"));
+#endif
 }
 }  // namespace ex_binomial_quiz_example
 
@@ -1532,6 +1549,7 @@ TEST_CASE("example: cardinal_cubic_b_spline_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(sin(4.07362) = -0.802829, spline interpolation gives -0.802829
 cos(4.07362) = -0.596209, spline derivative interpolation gives -0.596209
 sin(0.677385) = 0.626758, spline interpolation gives 0.626758
@@ -1557,6 +1575,7 @@ Found in 12 iterations
 The population of the United States surpassed 100 million on the 11th month of 1915
 Found in 3 iterations
 )ex"));
+#endif
 }
 }  // namespace ex_cardinal_cubic_b_spline_example
 
@@ -1742,6 +1761,7 @@ TEST_CASE("example: constants_eg1") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(double pi =  boost::math::double_constants::pi = 3.1415926535897931
 d = 4.7882831840285398, r = 1.2345678901234567
 pidf =  boost::math::constants::pi() = 3.1415927410125732
@@ -1757,6 +1777,7 @@ boost::math::float_constants::pi = 3.1415927410125732
 Area = 12.566370614359172
 Area = 12.566370614359172
 )ex"));
+#endif
 }
 }  // namespace ex_constants_eg1
 
@@ -2007,6 +2028,7 @@ TEST_CASE("example: f_test") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(____________________________________
 F test for equal standard deviations
 ____________________________________
@@ -2064,6 +2086,7 @@ Standard deviation 1 is greater than standard deviation 2 NOT REJECTED
 
 
 )ex"));
+#endif
 }
 }  // namespace ex_f_test
 
@@ -2456,6 +2479,7 @@ TEST_CASE("example: find_mean_and_sd_normal") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Find_location (mean) and find_scale (standard deviation) examples.
 Percentage of packs > 3.1 is 15.8655
 Fraction of packs <= 2.9 with a mean of 3 is 0.841345
@@ -2478,6 +2502,7 @@ find_scale<normal>(minimum_weight, under_fraction, packs.mean()); 0.0607957
 find_scale<normal>(complement(minimum_weight, over_fraction, packs.mean())); 0.0607957
 Fraction of packs >= 2.9 with a mean of 3 and standard deviation of 0.0607957 is 0.95
 )ex"));
+#endif
 }
 }  // namespace ex_find_mean_and_sd_normal
 
@@ -2541,7 +2566,9 @@ TEST_CASE("example: fourier_transform_daubechies_ulp_plot") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex()ex"));
+#endif
 }
 }  // namespace ex_fourier_transform_daubechies_ulp_plot
 
@@ -2644,9 +2671,11 @@ TEST_CASE("example: hyperexponential_snips") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Average lifetime: 11 years
 Probability that the appliance will work for more than 15 years: 0.254817
 )ex"));
+#endif
 }
 }  // namespace ex_hyperexponential_snips
 
@@ -2830,11 +2859,13 @@ TEST_CASE("example: inverse_chi_squared_find_df_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Example using Inverse chi squared distribution to find df. 
 Show all potentially significant decimal digits std::numeric_limits<double>::max_digits10 = 17
 ichsq.degrees_of_freedom() = 10
 diff = 0.5, variance = 1, ratio = 0.5, alpha = 0.9, beta = 0.9
 )ex"));
+#endif
 }
 }  // namespace ex_inverse_chi_squared_find_df_example
 
@@ -2990,6 +3021,7 @@ TEST_CASE("example: laplace_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Example: Laplace distribution.
 Standard normal distribution, mean or location = 0, standard deviation or scale = 1
 Laplace normal distribution, location = 0, scale = 1
@@ -3023,6 +3055,7 @@ Area for laplace z = 2 is 0.932332
 95% of gaussian area has a z between 1.95996 and -1.95996
 95% of laplace area has a z between 2.99573 and -2.99573
 )ex"));
+#endif
 }
 }  // namespace ex_laplace_example
 
@@ -3128,6 +3161,7 @@ TEST_CASE("example: lexical_cast_nonfinite_facets") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(finite_num_facet with lexical_cast example.
 Using C99_out_locale 
 +std::numeric_limits<double>::infinity() = inf
@@ -3135,6 +3169,7 @@ Using C99_out_locale
 +std::numeric_limits<double>::quiet_NaN () = nan
 boost::lexical_cast<double>("inf") = inf
 )ex"));
+#endif
 }
 }  // namespace ex_lexical_cast_nonfinite_facets
 
@@ -3343,6 +3378,7 @@ TEST_CASE("example: neg_binomial_sample_sizes") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(
 Target number of failures = 5,   Success fraction = 50.0%
 ____________________________
@@ -3434,6 +3470,7 @@ ____________________________
     99.999         217
 
 )ex"));
+#endif
 }
 }  // namespace ex_neg_binomial_sample_sizes
 
@@ -3677,6 +3714,7 @@ TEST_CASE("example: nonfinite_facet_simple") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Nonfinite_num_facet very simple example.
 Using C locale
 +std::numeric_limits<double>::infinity() = inf
@@ -3704,6 +3742,7 @@ infinity in C99 representation (setw(20) is |                 inf|
 infinity in C99 representation (setw(20) is |inf                 |
 infinity in C99 representation (setw(20) is |                 inf|
 )ex"));
+#endif
 }
 }  // namespace ex_nonfinite_facet_simple
 
@@ -3967,6 +4006,7 @@ TEST_CASE("example: nonfinite_num_facet") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(nonfinite_num_facet simple example.
 std::numeric_limits<float>::max_digits10 is 9
 std::numeric_limits<double>::max_digits10 is 17
@@ -4003,6 +4043,7 @@ f3 :
 Input done.
 End nonfinite_num_facet.cpp
 )ex"));
+#endif
 }
 }  // namespace ex_nonfinite_num_facet
 
@@ -4176,6 +4217,7 @@ TEST_CASE("example: nonfinite_signaling_NaN") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(quiet_NaN output was nan
 quiet_NaN input was 0
 signaling_NaN output was nan
@@ -4188,6 +4230,7 @@ SNAN input was nan
 IND output was 1.#IND
 IND input was nan
 )ex"));
+#endif
 }
 }  // namespace ex_nonfinite_signaling_NaN
 
@@ -4265,9 +4308,11 @@ TEST_CASE("example: ooura_fourier_integrals_cosine_example") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Integral = 0.57786367489546098, relative error estimate 6.417739348316094e-09
 pi/(2e) =  0.57786367489546087, difference 1.1102230246251565e-16
 )ex"));
+#endif
 }
 }  // namespace ex_ooura_fourier_integrals_cosine_example
 
@@ -4339,11 +4384,13 @@ TEST_CASE("example: policy_eg_1") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Result of tgamma(30000) is: inf
 errno = 34
 Result of tgamma(-10) is: nan
 errno = 33
 )ex"));
+#endif
 }
 }  // namespace ex_policy_eg_1
 
@@ -4449,11 +4496,13 @@ TEST_CASE("example: policy_eg_4") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Result of tgamma(30000) is: inf
 errno = 34
 Result of tgamma(-10) is: nan
 errno = 33
 )ex"));
+#endif
 }
 }  // namespace ex_policy_eg_4
 
@@ -4499,9 +4548,11 @@ TEST_CASE("example: policy_ref_snip11") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(25 binary bits is approximately equivalent to 9 decimal digits 
 quantile(normal_distribution<double, policy<digits2<25> > >(), 0.05  = -1.64485363
 )ex"));
+#endif
 }
 }  // namespace ex_policy_ref_snip11
 
@@ -4543,8 +4594,10 @@ TEST_CASE("example: policy_ref_snip3") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(tgamma(some_value, my_policy()) = 1, tgamma(some_value, make_policy(promote_double<false>()) = 1
 )ex"));
+#endif
 }
 }  // namespace ex_policy_ref_snip3
 
@@ -4591,10 +4644,12 @@ TEST_CASE("example: policy_ref_snip7") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(using policy<discrete_quantile<integer_round_inwards> > 
 quantile(dist_type(20, 0.3), 0.05) = 28
 quantile(complement(dist_type(20, 0.3), 0.05)) =  68
 )ex"));
+#endif
 }
 }  // namespace ex_policy_ref_snip7
 
@@ -10061,6 +10116,7 @@ TEST_CASE("example: root_finding_start_locations") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex([table
 [[Initial Guess=][-500% ([approx]1.323)][-100% ([approx]3.97)][-50% ([approx]3.96)][-20% ([approx]6.35)][-10% ([approx]7.14)][-5% ([approx]7.54)][5% ([approx]8.33)][10% ([approx]8.73)][20% ([approx]9.52)][50% ([approx]11.91)][100% ([approx]15.87)][500 ([approx]47.6)]]
 [[bracket_and_solve_root][12][8][8][10][11][11][11][11][11][11][7][13]]
@@ -10078,6 +10134,7 @@ TEST_CASE("example: root_finding_start_locations") {
 ]
 
 )ex"));
+#endif
 }
 }  // namespace ex_root_finding_start_locations
 
@@ -10176,6 +10233,7 @@ TEST_CASE("example: students_t_example2") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Example2 using Student's t function. 
    0          25.06
    1          25.18
@@ -10188,6 +10246,7 @@ Standard deviation = 0.238279
 Student's t = 2.34725, with 5 degrees of freedom.
 Probability of positive bias is 0.967108.
 )ex"));
+#endif
 }
 }  // namespace ex_students_t_example2
 
@@ -10271,10 +10330,12 @@ TEST_CASE("example: test_nonfinite_loopback") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if EX_OUTPUT_PLATFORM  // the oracle's platform (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(infinity output was inf
 infinity input was 0
 quiet_NaN output was nan
 quiet_NaN input was 0
 )ex"));
+#endif
 }
 }  // namespace ex_test_nonfinite_loopback

@@ -4645,9 +4645,11 @@ TEST_CASE("example: cpp14/parallel_group/ranged_wait_for_all") {
     int rc = example_main();
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
+#if !(!defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(std::string_view("first\r\n"
         "operation 0 finished: system:0, 7\n"
         "operation 1 finished: system:0, 8\n", 75)));
+#endif
 #endif
 }
 }  // namespace ex_cpp14_parallel_group_ranged_wait_for_all
@@ -4712,8 +4714,10 @@ TEST_CASE("example: cpp14/parallel_group/wait_for_all") {
     int rc = example_main();
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
+#if !(!defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(descriptor finished: asio.misc:2, 0
 )ex"));
+#endif
 #endif
 }
 }  // namespace ex_cpp14_parallel_group_wait_for_all
@@ -4777,8 +4781,10 @@ TEST_CASE("example: cpp14/parallel_group/wait_for_one") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if !(!defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(descriptor finished: asio.misc:2, 0
 )ex"));
+#endif
 }
 }  // namespace ex_cpp14_parallel_group_wait_for_one
 
@@ -4841,8 +4847,10 @@ TEST_CASE("example: cpp14/parallel_group/wait_for_one_error") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if !(!defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(descriptor finished: asio.misc:2, 0
 )ex"));
+#endif
 }
 }  // namespace ex_cpp14_parallel_group_wait_for_one_error
 
@@ -4905,7 +4913,9 @@ TEST_CASE("example: cpp14/parallel_group/wait_for_one_success") {
     ex_out = std::ostringstream();  // fresh state: no flags left by another example
     int rc = example_main();
     CHECK(rc == 0);
+#if !(!defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(descriptor finished: asio.misc:2, 0
 )ex"));
+#endif
 }
 }  // namespace ex_cpp14_parallel_group_wait_for_one_success

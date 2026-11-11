@@ -120,7 +120,8 @@ TEST_CASE("doc: error_handling") {
     } catch (std::domain_error const& e) {
         CHECK(std::string(e.what()).find("tgamma") != std::string::npos);
     }
-    CHECK_THROWS_AS(bm::tgamma(1000.0), std::overflow_error);
+    // past the range of every floating type (aarch64 promotes double to a 113-bit long double)
+    CHECK_THROWS_AS(bm::tgamma(5000.0), std::overflow_error);
     CHECK_THROWS_AS(bm::cyl_bessel_j(2.5, -1.0), std::domain_error);  // non-integer order, negative x
 }
 TEST_CASE("doc: result_type") {

@@ -25,7 +25,7 @@ G wkt(const char* s) {
     bg::read_wkt(s, g);
     return g;
 }
-bool near(double a, double b, double eps = 1e-6) { return std::abs(a - b) <= eps * std::max(1.0, std::abs(b)); }
+bool close_to(double a, double b, double eps = 1e-6) { return std::abs(a - b) <= eps * std::max(1.0, std::abs(b)); }
 }  // namespace
 
 // ---- models ----
@@ -107,11 +107,11 @@ TEST_CASE("doc: cs_spherical") {
 }
 TEST_CASE("doc: cs_spherical_equatorial") {
     static_assert(std::is_same_v<bg::cs_tag_t<spoint>, bg::spherical_equatorial_tag>);
-    CHECK(near(bg::distance(spoint(0, 0), spoint(0, 90)), bg::math::pi<double>() / 2));
+    CHECK(close_to(bg::distance(spoint(0, 0), spoint(0, 90)), bg::math::pi<double>() / 2));
 }
 TEST_CASE("doc: cs_geographic") {
     static_assert(std::is_same_v<bg::cs_tag_t<gpoint>, bg::geographic_tag>);
-    CHECK(near(bg::distance(gpoint(0, 0), gpoint(0, 1)), 110574.3886, 1e-4));
+    CHECK(close_to(bg::distance(gpoint(0, 0), gpoint(0, 1)), 110574.3886, 1e-4));
 }
 TEST_CASE("doc: cs_polar") {
     using p = bg::model::point<double, 2, bg::cs::polar<bg::radian>>;
@@ -122,7 +122,7 @@ TEST_CASE("doc: degree") {
 }
 TEST_CASE("doc: radian") {
     using p = bg::model::point<double, 2, bg::cs::spherical_equatorial<bg::radian>>;
-    CHECK(near(bg::distance(p(0, 0), p(bg::math::pi<double>() / 2, 0)), bg::math::pi<double>() / 2));
+    CHECK(close_to(bg::distance(p(0, 0), p(bg::math::pi<double>() / 2, 0)), bg::math::pi<double>() / 2));
 }
 
 // ---- core metafunctions ----
@@ -275,14 +275,14 @@ TEST_CASE("doc: strategy_area_spherical") {
     bg::strategy::area::spherical<> earth(6371.0);  // km
     sp p = wkt<sp>("POLYGON((0 0,0 45,45 0,0 0))");
     double a1 = bg::area(p, unit), a2 = bg::area(p, earth);
-    CHECK(near(a2 / a1, 6371.0 * 6371.0));
+    CHECK(close_to(a2 / a1, 6371.0 * 6371.0));
 }
 TEST_CASE("doc: strategy_area_geographic") {
     using gp = bg::model::polygon<gpoint>;
     gp p = wkt<gp>("POLYGON((0 0,0 1,1 1,1 0,0 0))");
     bg::strategy::area::geographic<> s;
     bg::strategy::area::geographic<bg::strategy::andoyer> s2(bg::srs::spheroid<double>(6378137.0, 6356752.3142451793));
-    CHECK(near(bg::area(p, s), bg::area(p, s2), 1e-3));
+    CHECK(close_to(bg::area(p, s), bg::area(p, s2), 1e-3));
     CHECK(bg::area(p, s) > 1.2e10);
 }
 TEST_CASE("doc: strategy_buffer_distance_asymmetric") {
@@ -290,14 +290,14 @@ TEST_CASE("doc: strategy_buffer_distance_asymmetric") {
     bg::model::multi_polygon<polygon> out;
     bg::buffer(linestring{{0, 0}, {4, 0}}, out, d, bg::strategy::buffer::side_straight(),
                bg::strategy::buffer::join_round(), bg::strategy::buffer::end_flat(), bg::strategy::buffer::point_circle());
-    CHECK(near(bg::area(out), 4 * 1.5, 1e-9));
+    CHECK(close_to(bg::area(out), 4 * 1.5, 1e-9));
 }
 TEST_CASE("doc: strategy_buffer_distance_symmetric") {
     bg::strategy::buffer::distance_symmetric<double> d(1.0);
     bg::model::multi_polygon<polygon> out;
     bg::buffer(linestring{{0, 0}, {4, 0}}, out, d, bg::strategy::buffer::side_straight(),
                bg::strategy::buffer::join_round(), bg::strategy::buffer::end_flat(), bg::strategy::buffer::point_circle());
-    CHECK(near(bg::area(out), 8, 1e-9));
+    CHECK(close_to(bg::area(out), 8, 1e-9));
 }
 namespace {
 double buffered_area(auto const& geometry, auto join, auto end, auto pt) {
@@ -308,37 +308,37 @@ double buffered_area(auto const& geometry, auto join, auto end, auto pt) {
 }
 }  // namespace
 TEST_CASE("doc: strategy_buffer_end_flat") {
-    CHECK(near(buffered_area(linestring{{0, 0}, {2, 0}}, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
+    CHECK(close_to(buffered_area(linestring{{0, 0}, {2, 0}}, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
                              bg::strategy::buffer::point_square()), 4));
 }
 TEST_CASE("doc: strategy_buffer_end_round") {
     double a = buffered_area(linestring{{0, 0}, {2, 0}}, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_round(360),
                              bg::strategy::buffer::point_square());
-    CHECK(near(a, 4 + bg::math::pi<double>(), 1e-3));
+    CHECK(close_to(a, 4 + bg::math::pi<double>(), 1e-3));
 }
 TEST_CASE("doc: strategy_buffer_join_miter") {
     polygon sq = wkt<polygon>("POLYGON((0 0,0 2,2 2,2 0,0 0))");
-    CHECK(near(buffered_area(sq, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
+    CHECK(close_to(buffered_area(sq, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
                              bg::strategy::buffer::point_square()), 16));
 }
 TEST_CASE("doc: strategy_buffer_join_round") {
     polygon sq = wkt<polygon>("POLYGON((0 0,0 2,2 2,2 0,0 0))");
     double a = buffered_area(sq, bg::strategy::buffer::join_round(360), bg::strategy::buffer::end_flat(),
                              bg::strategy::buffer::point_square());
-    CHECK(near(a, 4 + 8 + bg::math::pi<double>(), 1e-3));
+    CHECK(close_to(a, 4 + 8 + bg::math::pi<double>(), 1e-3));
 }
 TEST_CASE("doc: strategy_buffer_point_circle") {
     double a = buffered_area(point(0, 0), bg::strategy::buffer::join_round(), bg::strategy::buffer::end_round(),
                              bg::strategy::buffer::point_circle(360));
-    CHECK(near(a, bg::math::pi<double>(), 1e-3));
+    CHECK(close_to(a, bg::math::pi<double>(), 1e-3));
 }
 TEST_CASE("doc: strategy_buffer_point_square") {
     double a = buffered_area(point(0, 0), bg::strategy::buffer::join_round(), bg::strategy::buffer::end_round(),
                              bg::strategy::buffer::point_square());
-    CHECK(near(a, 4));
+    CHECK(close_to(a, 4));
 }
 TEST_CASE("doc: strategy_buffer_side_straight") {
-    CHECK(near(buffered_area(linestring{{0, 0}, {3, 0}}, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
+    CHECK(close_to(buffered_area(linestring{{0, 0}, {3, 0}}, bg::strategy::buffer::join_miter(), bg::strategy::buffer::end_flat(),
                              bg::strategy::buffer::point_square()), 6));
 }
 TEST_CASE("doc: strategy_buffer_geographic_point_circle") {
@@ -347,7 +347,7 @@ TEST_CASE("doc: strategy_buffer_geographic_point_circle") {
     bg::buffer(gpoint(4.9, 52.1), out, bg::strategy::buffer::distance_symmetric<double>(1000.0),
                bg::strategy::buffer::side_straight(), bg::strategy::buffer::join_round(),
                bg::strategy::buffer::end_round(), circle);
-    CHECK(near(bg::area(out), bg::math::pi<double>() * 1000 * 1000, 1e-2));
+    CHECK(close_to(bg::area(out), bg::math::pi<double>() * 1000 * 1000, 1e-2));
 }
 TEST_CASE("doc: strategy_centroid_average") {
     bg::model::multi_point<point> mp{{0, 0}, {2, 0}, {2, 2}, {0, 2}};
@@ -359,7 +359,7 @@ TEST_CASE("doc: strategy_centroid_average") {
 TEST_CASE("doc: strategy_centroid_bashein_detmer") {
     point c;
     bg::centroid(wkt<polygon>("POLYGON((0 0,0 4,4 4,4 0,0 0))"), c, bg::strategy::centroid::bashein_detmer<point, point>());
-    CHECK(near(bg::get<0>(c), 2));
+    CHECK(close_to(bg::get<0>(c), 2));
 }
 TEST_CASE("doc: strategy_densify_cartesian") {
     linestring out;
@@ -394,17 +394,17 @@ TEST_CASE("doc: strategy_distance_projected_point") {
 }
 TEST_CASE("doc: strategy_distance_haversine") {
     bg::strategy::distance::haversine<double> earth(6371.0);
-    CHECK(near(bg::distance(spoint(0, 0), spoint(0, 90), earth), 6371.0 * bg::math::pi<double>() / 2));
+    CHECK(close_to(bg::distance(spoint(0, 0), spoint(0, 90), earth), 6371.0 * bg::math::pi<double>() / 2));
 }
 TEST_CASE("doc: strategy_distance_cross_track") {
     bg::strategy::distance::cross_track<> unit;
-    CHECK(near(bg::distance(spoint(0, 10), bg::model::linestring<spoint>{{-10, 0}, {10, 0}}, unit),
+    CHECK(close_to(bg::distance(spoint(0, 10), bg::model::linestring<spoint>{{-10, 0}, {10, 0}}, unit),
                10 * bg::math::d2r<double>(), 1e-9));
 }
 TEST_CASE("doc: strategy_distance_cross_track_point_box") {
     bg::model::box<spoint> b(spoint(0, 0), spoint(10, 10));
     double d = bg::distance(spoint(5, 20), b, bg::strategy::distance::cross_track_point_box<>());
-    CHECK(near(d, 10 * bg::math::d2r<double>(), 1e-9));
+    CHECK(close_to(d, 10 * bg::math::d2r<double>(), 1e-9));
 }
 TEST_CASE("doc: strategy_line_interpolate_cartesian") {
     point p;
@@ -415,13 +415,13 @@ TEST_CASE("doc: strategy_line_interpolate_spherical") {
     spoint p;
     bg::line_interpolate(bg::model::linestring<spoint>{{0, 0}, {90, 0}}, bg::math::pi<double>() / 4, p,
                          bg::strategy::line_interpolate::spherical<>());
-    CHECK(near(bg::get<0>(p), 45));
+    CHECK(close_to(bg::get<0>(p), 45));
 }
 TEST_CASE("doc: strategy_line_interpolate_geographic") {
     gpoint p;
     bg::line_interpolate(bg::model::linestring<gpoint>{{0, 0}, {0, 1}}, 110574.3886 / 2, p,
                          bg::strategy::line_interpolate::geographic<>());
-    CHECK(near(bg::get<1>(p), 0.5, 1e-4));
+    CHECK(close_to(bg::get<1>(p), 0.5, 1e-4));
 }
 TEST_CASE("doc: strategy_side_side_by_triangle") {
     using side = bg::strategy::side::side_by_triangle<>;
@@ -463,8 +463,8 @@ TEST_CASE("doc: strategy_transform_scale_transformer") {
 TEST_CASE("doc: strategy_transform_rotate_transformer") {
     point out;
     bg::transform(point(1, 0), out, bg::strategy::transform::rotate_transformer<bg::degree, double, 2, 2>(90.0));
-    CHECK(near(out.x(), 0, 1e-12));
-    CHECK(near(out.y(), -1));  // clockwise
+    CHECK(close_to(out.x(), 0, 1e-12));
+    CHECK(close_to(out.y(), -1));  // clockwise
 }
 TEST_CASE("doc: strategy_transform_matrix_transformer") {
     bg::strategy::transform::matrix_transformer<double, 2, 2> m(2, 0, 1, 0, 3, 2, 0, 0, 1);  // scale, then translate
@@ -478,8 +478,8 @@ TEST_CASE("doc: strategy_transform_inverse_transformer") {
     bg::strategy::transform::inverse_transformer<double, 2, 2> inv(t);
     point out;
     bg::transform(point(1, 2), out, inv);
-    CHECK(near(out.x(), 0, 1e-12));
-    CHECK(near(out.y(), 0, 1e-12));
+    CHECK(close_to(out.x(), 0, 1e-12));
+    CHECK(close_to(out.y(), 0, 1e-12));
 }
 TEST_CASE("doc: strategy_transform_map_transformer") {
     // a world box onto a 100 x 100 device, y mirrored
@@ -487,8 +487,8 @@ TEST_CASE("doc: strategy_transform_map_transformer") {
     bg::strategy::transform::map_transformer<double, 2, 2, true, false> m(world, 100, 100);
     point out;
     bg::transform(point(10, 10), out, m);
-    CHECK(near(out.x(), 100));
-    CHECK(near(out.y(), 0, 1e-12));
+    CHECK(close_to(out.x(), 100));
+    CHECK(close_to(out.y(), 0, 1e-12));
 }
 TEST_CASE("doc: strategy_within_winding") {
     // The page's member functions: apply per segment, then result. (bg::within
@@ -519,7 +519,7 @@ TEST_CASE("doc: strategy_within_crossings_multiply") {
 TEST_CASE("doc: srs_spheroid") {
     bg::srs::spheroid<double> wgs84(6378137.0, 6356752.3142451793);
     CHECK(bg::get_radius<0>(wgs84) == 6378137.0);
-    CHECK(near(bg::get_radius<2>(wgs84), 6356752.3142451793));
+    CHECK(close_to(bg::get_radius<2>(wgs84), 6356752.3142451793));
     bg::strategy::distance::andoyer<bg::srs::spheroid<double>> andoyer(wgs84);
-    CHECK(near(bg::distance(gpoint(0, 0), gpoint(0, 1), andoyer), 110574.3886, 1e-3));
+    CHECK(close_to(bg::distance(gpoint(0, 0), gpoint(0, 1), andoyer), 110574.3886, 1e-3));
 }

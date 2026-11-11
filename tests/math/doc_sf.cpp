@@ -153,7 +153,7 @@ TEST_CASE("doc: daubechies") {
     for (double x : h)
         sum += x;
     CHECK(close(sum, std::sqrt(2.0), 1e-14));
-    bm::daubechies_scaling<double, 2> phi;
+    bm::daubechies_scaling<double, 2> phi(10);  // 2^10 grid refinements (x = 1 is a grid point)
     CHECK(close(phi(1.0), (1 + std::sqrt(3.0)) / 2, 1e-12));
 }
 TEST_CASE("doc: sph_harm") {
