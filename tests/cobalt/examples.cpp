@@ -6,7 +6,7 @@
 // co_main becomes a task<int> (ex_co_main) that ex_cobalt_main runs with
 // cobalt::run. echo_server listens on a free port instead of 55555 and
 // a harness client exchanges one message with it; delay / delay_op get a
-// 10 ms delay as argv[1]. The output of thread and thread_pool (worker
+// 10 ms delay as argv[1]; spsc passes 100 thousand values, not 100 million. The output of thread and thread_pool (worker
 // threads) is not compared.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
@@ -97,7 +97,11 @@ inline void ex_peer_async(std::string port, int n, std::string send = {}) {
             boost::system::error_code ec;
             if (!send.empty()) boost::asio::write(s, boost::asio::buffer(send), ec);
             char buf[4096];
-            while (!ec) s.read_some(boost::asio::buffer(buf), ec);
+            std::size_t got = 0;
+            while (!ec) got += s.read_some(boost::asio::buffer(buf), ec);
+            // reset before any data: the connection landed in the backlog of
+            // the previous server's acceptor as it closed; it does not count
+            if (got == 0 && ec == boost::asio::error::connection_reset) --k;
         }
     }).detach();
 }
@@ -282,18 +286,48 @@ inline int ex_stdin_fd(const std::string& text) {
     return r.release();
 }
 #endif
-#if defined(_WIN32)
-// Windows: each case's name goes to stderr (unbuffered) before it runs, so a
-// case that ends the process (a fast-fail such as heap corruption leaves no
-// doctest report) can be told from the log.
+#if defined(DOCTEST_VERSION_MAJOR)  // (not in the oracle)
+// Diagnostics for a case that hangs or ends the process (neither leaves a
+// doctest report): a case still running after 60 s is named on stderr, and
+// on Windows (where a fast-fail such as heap corruption kills the process)
+// every case is named before it runs.
 struct ex_case_names : doctest::IReporter {
-    explicit ex_case_names(const doctest::ContextOptions&) {}
+    inline static std::mutex m;
+    inline static std::string current;
+    inline static std::chrono::steady_clock::time_point since;
+    inline static bool reported = false;
+    explicit ex_case_names(const doctest::ContextOptions&) {
+        static bool started = false;
+        if (std::exchange(started, true))
+            return;
+        std::thread([] {
+            for (;;) {
+                std::this_thread::sleep_for(std::chrono::seconds(5));
+                std::lock_guard<std::mutex> l(m);
+                if (!current.empty() && !reported && std::chrono::steady_clock::now() - since > std::chrono::seconds(60)) {
+                    std::fprintf(stderr, "case still running after 60 s: %s\n", current.c_str());
+                    reported = true;
+                }
+            }
+        }).detach();
+    }
     void report_query(const doctest::QueryData&) override {}
     void test_run_start() override {}
     void test_run_end(const doctest::TestRunStats&) override {}
-    void test_case_start(const doctest::TestCaseData& d) override { std::fprintf(stderr, "case: %s\n", d.m_name); }
+    void test_case_start(const doctest::TestCaseData& d) override {
+#if defined(_WIN32)
+        std::fprintf(stderr, "case: %s\n", d.m_name);
+#endif
+        std::lock_guard<std::mutex> l(m);
+        current = d.m_name;
+        since = std::chrono::steady_clock::now();
+        reported = false;
+    }
     void test_case_reenter(const doctest::TestCaseData&) override {}
-    void test_case_end(const doctest::CurrentTestCaseStats&) override {}
+    void test_case_end(const doctest::CurrentTestCaseStats&) override {
+        std::lock_guard<std::mutex> l(m);
+        current.clear();
+    }
     void test_case_exception(const doctest::TestCaseException&) override {}
     void subcase_start(const doctest::SubcaseSignature&) override {}
     void subcase_end() override {}
@@ -525,7 +559,7 @@ struct awaitable_spsc_queue
 // Dummy thread blasting out values.
 cobalt::thread thr(awaitable_spsc_queue<int> & q)
 {
-  for (int i = 0; i <= 100000000; i++)
+  for (int i = 0; i <= 100000; i++)
     co_await q.write(i);
 
   co_await q.write(-1);
@@ -660,37 +694,37 @@ TEST_CASE("example: thread") {
 #if !(1)  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(The CPU intensive result of adding 0 to 32, is 32
 The CPU intensive result of adding 10 to 22, is 32
-The CPU intensive result of adding 1 to 32, is 33
 The CPU intensive result of adding 50 to -18, is 32
-The CPU intensive result of adding 2 to 32, is 34
 The CPU intensive result of adding 11 to 22, is 33
 The CPU intensive result of adding 51 to -18, is 33
-The CPU intensive result of adding 3 to 32, is 35
+The CPU intensive result of adding 1 to 32, is 33
 The CPU intensive result of adding 12 to 22, is 34
 The CPU intensive result of adding 52 to -18, is 34
+The CPU intensive result of adding 2 to 32, is 34
 The CPU intensive result of adding 13 to 22, is 35
-The CPU intensive result of adding 4 to 32, is 36
 The CPU intensive result of adding 53 to -18, is 35
+The CPU intensive result of adding 3 to 32, is 35
 The CPU intensive result of adding 14 to 22, is 36
 The CPU intensive result of adding 54 to -18, is 36
+The CPU intensive result of adding 4 to 32, is 36
+The CPU intensive result of adding 55 to -18, is 37
 The CPU intensive result of adding 15 to 22, is 37
 The CPU intensive result of adding 5 to 32, is 37
-The CPU intensive result of adding 55 to -18, is 37
-The CPU intensive result of adding 16 to 22, is 38
 The CPU intensive result of adding 56 to -18, is 38
+The CPU intensive result of adding 16 to 22, is 38
 The CPU intensive result of adding 6 to 32, is 38
-The CPU intensive result of adding 17 to 22, is 39
 The CPU intensive result of adding 57 to -18, is 39
+The CPU intensive result of adding 17 to 22, is 39
 The CPU intensive result of adding 7 to 32, is 39
+The CPU intensive result of adding 58 to -18, is 40
 The CPU intensive result of adding 18 to 22, is 40
 The CPU intensive result of adding 8 to 32, is 40
-The CPU intensive result of adding 58 to -18, is 40
+The CPU intensive result of adding 59 to -18, is 41
 The CPU intensive result of adding 19 to 22, is 41
 The CPU intensive result of adding 9 to 32, is 41
-The CPU intensive result of adding 59 to -18, is 41
+The CPU intensive result of adding 60 to -18, is 42
 The CPU intensive result of adding 20 to 22, is 42
 The CPU intensive result of adding 10 to 32, is 42
-The CPU intensive result of adding 60 to -18, is 42
 )ex"));
 #endif
 }
@@ -762,39 +796,39 @@ TEST_CASE("example: thread_pool") {
     int rc = example_main(ex_argc, ex_argv_t{ex_argv});
     CHECK(rc == 0);
 #if !(1)  // this output is not portable there (see the file header)
-    CHECK(ex_out.str() == std::string_view(R"ex(The CPU intensive result of adding 10 to 22, is 32
-The CPU intensive result of adding 50 to -18, is 32
-The CPU intensive result of adding 11 to 22, is 33
+    CHECK(ex_out.str() == std::string_view(R"ex(The CPU intensive result of adding 50 to -18, is 32
 The CPU intensive result of adding 51 to -18, is 33
-The CPU intensive result of adding 12 to 22, is 34
 The CPU intensive result of adding 52 to -18, is 34
-The CPU intensive result of adding 13 to 22, is 35
-The CPU intensive result of adding 14 to 22, is 36
 The CPU intensive result of adding 53 to -18, is 35
-The CPU intensive result of adding 0 to 32, is 32
-The CPU intensive result of adding 1 to 32, is 33
-The CPU intensive result of adding 15 to 22, is 37
-The CPU intensive result of adding 16 to 22, is 38
-The CPU intensive result of adding 2 to 32, is 34
-The CPU intensive result of adding 3 to 32, is 35
-The CPU intensive result of adding 17 to 22, is 39
-The CPU intensive result of adding 18 to 22, is 40
-The CPU intensive result of adding 19 to 22, is 41
-The CPU intensive result of adding 20 to 22, is 42
-The CPU intensive result of adding 4 to 32, is 36
-The CPU intensive result of adding 5 to 32, is 37
-The CPU intensive result of adding 6 to 32, is 38
-The CPU intensive result of adding 7 to 32, is 39
 The CPU intensive result of adding 54 to -18, is 36
-The CPU intensive result of adding 8 to 32, is 40
-The CPU intensive result of adding 9 to 32, is 41
 The CPU intensive result of adding 55 to -18, is 37
-The CPU intensive result of adding 10 to 32, is 42
 The CPU intensive result of adding 56 to -18, is 38
 The CPU intensive result of adding 57 to -18, is 39
 The CPU intensive result of adding 58 to -18, is 40
 The CPU intensive result of adding 59 to -18, is 41
 The CPU intensive result of adding 60 to -18, is 42
+The CPU intensive result of adding 10 to 22, is 32
+The CPU intensive result of adding 11 to 22, is 33
+The CPU intensive result of adding 12 to 22, is 34
+The CPU intensive result of adding 13 to 22, is 35
+The CPU intensive result of adding 14 to 22, is 36
+The CPU intensive result of adding 15 to 22, is 37
+The CPU intensive result of adding 16 to 22, is 38
+The CPU intensive result of adding 0 to 32, is 32
+The CPU intensive result of adding 17 to 22, is 39
+The CPU intensive result of adding 1 to 32, is 33
+The CPU intensive result of adding 18 to 22, is 40
+The CPU intensive result of adding 19 to 22, is 41
+The CPU intensive result of adding 20 to 22, is 42
+The CPU intensive result of adding 2 to 32, is 34
+The CPU intensive result of adding 3 to 32, is 35
+The CPU intensive result of adding 4 to 32, is 36
+The CPU intensive result of adding 5 to 32, is 37
+The CPU intensive result of adding 6 to 32, is 38
+The CPU intensive result of adding 7 to 32, is 39
+The CPU intensive result of adding 8 to 32, is 40
+The CPU intensive result of adding 9 to 32, is 41
+The CPU intensive result of adding 10 to 32, is 42
 )ex"));
 #endif
 }

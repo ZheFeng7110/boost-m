@@ -92,7 +92,11 @@ inline void ex_peer_async(std::string port, int n, std::string send = {}) {
             boost::system::error_code ec;
             if (!send.empty()) boost::asio::write(s, boost::asio::buffer(send), ec);
             char buf[4096];
-            while (!ec) s.read_some(boost::asio::buffer(buf), ec);
+            std::size_t got = 0;
+            while (!ec) got += s.read_some(boost::asio::buffer(buf), ec);
+            // reset before any data: the connection landed in the backlog of
+            // the previous server's acceptor as it closed; it does not count
+            if (got == 0 && ec == boost::asio::error::connection_reset) --k;
         }
     }).detach();
 }
@@ -277,18 +281,48 @@ inline int ex_stdin_fd(const std::string& text) {
     return r.release();
 }
 #endif
-#if defined(_WIN32)
-// Windows: each case's name goes to stderr (unbuffered) before it runs, so a
-// case that ends the process (a fast-fail such as heap corruption leaves no
-// doctest report) can be told from the log.
+#if defined(DOCTEST_VERSION_MAJOR)  // (not in the oracle)
+// Diagnostics for a case that hangs or ends the process (neither leaves a
+// doctest report): a case still running after 60 s is named on stderr, and
+// on Windows (where a fast-fail such as heap corruption kills the process)
+// every case is named before it runs.
 struct ex_case_names : doctest::IReporter {
-    explicit ex_case_names(const doctest::ContextOptions&) {}
+    inline static std::mutex m;
+    inline static std::string current;
+    inline static std::chrono::steady_clock::time_point since;
+    inline static bool reported = false;
+    explicit ex_case_names(const doctest::ContextOptions&) {
+        static bool started = false;
+        if (std::exchange(started, true))
+            return;
+        std::thread([] {
+            for (;;) {
+                std::this_thread::sleep_for(std::chrono::seconds(5));
+                std::lock_guard<std::mutex> l(m);
+                if (!current.empty() && !reported && std::chrono::steady_clock::now() - since > std::chrono::seconds(60)) {
+                    std::fprintf(stderr, "case still running after 60 s: %s\n", current.c_str());
+                    reported = true;
+                }
+            }
+        }).detach();
+    }
     void report_query(const doctest::QueryData&) override {}
     void test_run_start() override {}
     void test_run_end(const doctest::TestRunStats&) override {}
-    void test_case_start(const doctest::TestCaseData& d) override { std::fprintf(stderr, "case: %s\n", d.m_name); }
+    void test_case_start(const doctest::TestCaseData& d) override {
+#if defined(_WIN32)
+        std::fprintf(stderr, "case: %s\n", d.m_name);
+#endif
+        std::lock_guard<std::mutex> l(m);
+        current = d.m_name;
+        since = std::chrono::steady_clock::now();
+        reported = false;
+    }
     void test_case_reenter(const doctest::TestCaseData&) override {}
-    void test_case_end(const doctest::CurrentTestCaseStats&) override {}
+    void test_case_end(const doctest::CurrentTestCaseStats&) override {
+        std::lock_guard<std::mutex> l(m);
+        current.clear();
+    }
     void test_case_exception(const doctest::TestCaseException&) override {}
     void subcase_start(const doctest::SubcaseSignature&) override {}
     void subcase_end() override {}
