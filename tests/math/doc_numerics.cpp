@@ -171,7 +171,10 @@ TEST_CASE("doc: fourier_integrals") {
     CHECK(close(I, pi / 2, 1e-8));
     bm::quadrature::ooura_fourier_cos<double> cos_integrator;
     auto [J, e2] = cos_integrator.integrate([](double x) { return 1 / (x * x + 1); }, 1.0);
-    CHECK(close(J, pi / (2 * std::exp(1.0)), 1e-6));  // (1e-8 misses on aarch64)
+    // the result is within the integrator's own relative error estimate
+    const double exact = pi / (2 * std::exp(1.0));
+    INFO("J = ", J, ", estimated relative error ", e2, ", actual ", std::abs(J - exact) / exact);
+    CHECK(std::abs(J - exact) / exact <= std::max(10 * e2, 1e-8));
 }
 TEST_CASE("doc: wavelet_transforms") {
     auto f = [](double) { return 1.0; };

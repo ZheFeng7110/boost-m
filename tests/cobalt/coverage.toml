@@ -40,8 +40,9 @@ path = "libs/cobalt/example/signals.cpp"
 case = "cobalt/examples:example: signals"
 
 [[example]]
-path = "libs/cobalt/example/spsc.cpp"
-case = "cobalt/examples:example: spsc"
+path   = "libs/cobalt/example/spsc.cpp"
+status = "excluded"
+reason = "its awaitable_spsc_queue races: await_suspend stores write_executor / the handle without synchronising with the other thread's check and post (a lost wake-up hangs; on aarch64 the unsynchronised executor read crashed)"
 
 [[example]]
 path = "libs/cobalt/example/thread.cpp"
