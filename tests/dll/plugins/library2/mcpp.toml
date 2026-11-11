@@ -1,0 +1,11 @@
+# A plugin of the dll tests: tutorial7/library2.cpp of the Boost.DLL examples, unchanged
+# except for its include of the shared plugin API (tests/dll/common/).
+[package]
+name    = "library2"
+version = "0.0.0"
+
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../../../..", default-features = false, features = ["dll"] }
+
+[targets.library2]
+kind = "shared"

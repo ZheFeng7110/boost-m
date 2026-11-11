@@ -9,10 +9,31 @@ description = "Tests of mcpplibs.mwrap.boost.dll with plugin shared libraries"
 license     = "Apache-2.0"
 
 [dependencies]
-"mcpplibs.mwrap.boost" = { path = "../..", default-features = false, features = ["dll"] }
+# Shared: the program and every plugin reach the package, and only an ELF
+# process lets the plugins bind to a static copy linked into the program
+# (mcpp refuses that graph on Mach-O and PE).
+"mcpplibs.mwrap.boost" = { path = "../..", default-features = false, features = ["dll"], linkage = "shared" }
 
 [dev-dependencies]
 "compat.doctest" = "2.4.12"
+# The plugins: one package per shared library (a shared target is built from
+# its package's sources); as dev-dependencies they are built next to the test
+# programs, which find them in their own directory.
+getting_started_library = { path = "plugins/getting_started_library" }
+library1 = { path = "plugins/library1" }
+library2 = { path = "plugins/library2" }
+my_plugin_aggregator = { path = "plugins/my_plugin_aggregator" }
+my_plugin_sum = { path = "plugins/my_plugin_sum" }
+on_unload_lib = { path = "plugins/on_unload_lib" }
+refcounting_plugin = { path = "plugins/refcounting_plugin" }
+
+[workspace]
+members = ["plugins/getting_started_library", "plugins/library1", "plugins/library2", "plugins/my_plugin_aggregator", "plugins/my_plugin_sum", "plugins/on_unload_lib", "plugins/refcounting_plugin"]
 
 [test]
 discover = ["*.cpp"]
+
+# self.cpp imports from the program itself (tutorial4/5/8_static): its
+# BOOST_DLL_ALIAS symbols must be in the dynamic symbol table.
+[target.unix.build]
+ldflags = ["-rdynamic"]

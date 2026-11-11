@@ -1,0 +1,11 @@
+# A plugin of the dll tests: tutorial8/refcounting_plugin.cpp of the Boost.DLL examples, unchanged
+# except for its include of the shared plugin API (tests/dll/common/).
+[package]
+name    = "refcounting_plugin"
+version = "0.0.0"
+
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../../../..", default-features = false, features = ["dll"] }
+
+[targets.refcounting_plugin]
+kind = "shared"

@@ -1,0 +1,11 @@
+# A plugin of the dll tests: getting_started_library.cpp of the Boost.DLL examples, unchanged
+# except for its include of the shared plugin API (tests/dll/common/).
+[package]
+name    = "getting_started_library"
+version = "0.0.0"
+
+[dependencies]
+"mcpplibs.mwrap.boost" = { path = "../../../..", default-features = false, features = ["dll"] }
+
+[targets.getting_started_library]
+kind = "shared"
