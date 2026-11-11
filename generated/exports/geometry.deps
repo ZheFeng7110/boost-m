@@ -1,3 +1,4 @@
+mcpplibs.mwrap.boost.algorithm
 mcpplibs.mwrap.boost.any
 mcpplibs.mwrap.boost.array
 mcpplibs.mwrap.boost.assert
@@ -18,6 +19,5 @@ mcpplibs.mwrap.boost.throw_exception
 mcpplibs.mwrap.boost.tokenizer
 mcpplibs.mwrap.boost.tuple
 mcpplibs.mwrap.boost.type_traits
-mcpplibs.mwrap.boost.utility
 mcpplibs.mwrap.boost.variant
 mcpplibs.mwrap.boost.variant2

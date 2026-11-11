@@ -822,7 +822,8 @@
   "boost/concept_check/general.hpp"
  ],
  "config": [
-  "boost/config.hpp"
+  "boost/config.hpp",
+  "boost/cstdlib.hpp"
  ],
  "container": [
   "boost/container/adaptive_pool.hpp",

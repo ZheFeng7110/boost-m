@@ -628,7 +628,7 @@ all-modules = { implies = ["optional", "variant", "variant2", "any", "core", "co
   implies = ["asio", "assert", "config", "container-hash", "core", "endian", "intrusive", "logic", "mp11", "optional", "smart-ptr", "static-string", "system", "throw-exception", "type-index", "utility", "winapi"]
 [features.geometry]
   sources = ["src/geometry.cppm"]
-  implies = ["any", "array", "assert", "concept-check", "config", "container", "core", "graph", "integer", "iterator", "math", "mp11", "polygon", "qvm", "range", "rational", "smart-ptr", "thread", "throw-exception", "tokenizer", "tuple", "type-traits", "unordered", "utility", "variant", "variant2"]
+  implies = ["algorithm", "any", "array", "assert", "concept-check", "config", "container", "core", "graph", "integer", "iterator", "math", "mp11", "polygon", "qvm", "range", "rational", "smart-ptr", "thread", "throw-exception", "tokenizer", "tuple", "type-traits", "unordered", "utility", "variant", "variant2"]
 [features.gil]
   sources = ["src/gil.cppm"]
   implies = ["assert", "concept-check", "config", "container-hash", "core", "integer", "iterator", "mp11", "type-traits", "variant2"]

@@ -177,6 +177,8 @@ namespace boost{ namespace math
 #  define BOOST_MATH_PRECOMPUTE_IF_NOT_LOCAL(constant_, name)
 #endif
 
+// boost-m vendored edit: the float_/double_/long_double_constants objects are
+// inline constexpr (were static constexpr: internal linkage, not exportable).
 #define BOOST_DEFINE_MATH_CONSTANT(name, x, y)\
    namespace detail{\
    template <typename T> struct BOOST_MATH_JOIN(constant_, name){\
@@ -242,9 +244,9 @@ namespace boost{ namespace math
    \
    \
    /* Now the namespace specific versions: */ \
-   } namespace float_constants{ static constexpr float name = BOOST_MATH_JOIN(x, F); }\
-   namespace double_constants{ static constexpr double name = x; } \
-   namespace long_double_constants{ static constexpr long double name = BOOST_MATH_JOIN(x, L); }\
+   } namespace float_constants{ inline constexpr float name = BOOST_MATH_JOIN(x, F); }\
+   namespace double_constants{ inline constexpr double name = x; } \
+   namespace long_double_constants{ inline constexpr long double name = BOOST_MATH_JOIN(x, L); }\
    namespace constants{
 
 #else // NVRTC simplified macro definition

@@ -37,15 +37,17 @@ struct accept_ownership_type{};
 
 //!An object indicating that the locking
 //!must be deferred.
-static const defer_lock_type      defer_lock      = defer_lock_type();
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
+// linkage, not exportable from a module).
+BOOST_INLINE_CONSTEXPR defer_lock_type      defer_lock      = defer_lock_type();
 
 //!An object indicating that a try_lock()
 //!operation must be executed.
-static const try_to_lock_type     try_to_lock    = try_to_lock_type();
+BOOST_INLINE_CONSTEXPR try_to_lock_type     try_to_lock    = try_to_lock_type();
 
 //!An object indicating that the ownership of lockable
 //!object must be accepted by the new owner.
-static const accept_ownership_type  accept_ownership = accept_ownership_type();
+BOOST_INLINE_CONSTEXPR accept_ownership_type  accept_ownership = accept_ownership_type();
 
 } // namespace interprocess {
 } // namespace boost{

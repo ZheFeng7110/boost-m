@@ -136,7 +136,9 @@ struct ec_xlate
    error_code_t   ec;
 };
 
-static const ec_xlate ec_table[] =
+// boost-m vendored edit: inline (was static: an inline function of the GMF
+// would read a module-internal copy, as regex's message tables did).
+BOOST_INLINE_CONSTEXPR ec_xlate ec_table[] =
 {
    #if defined (BOOST_INTERPROCESS_WINDOWS)
    { /*ERROR_ACCESS_DENIED*/5L, security_error },

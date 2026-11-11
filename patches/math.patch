@@ -1,0 +1,86 @@
+diff --git a/upstream/boost/boost/math/constants/constants.hpp b/upstream/boost/boost/math/constants/constants.hpp
+index 3daf2d26..d5a305ff 100644
+--- a/upstream/boost/boost/math/constants/constants.hpp
++++ b/upstream/boost/boost/math/constants/constants.hpp
+@@ -177,6 +177,8 @@ namespace boost{ namespace math
+ #  define BOOST_MATH_PRECOMPUTE_IF_NOT_LOCAL(constant_, name)
+ #endif
+ 
++// boost-m vendored edit: the float_/double_/long_double_constants objects are
++// inline constexpr (were static constexpr: internal linkage, not exportable).
+ #define BOOST_DEFINE_MATH_CONSTANT(name, x, y)\
+    namespace detail{\
+    template <typename T> struct BOOST_MATH_JOIN(constant_, name){\
+@@ -242,9 +244,9 @@ namespace boost{ namespace math
+    \
+    \
+    /* Now the namespace specific versions: */ \
+-   } namespace float_constants{ static constexpr float name = BOOST_MATH_JOIN(x, F); }\
+-   namespace double_constants{ static constexpr double name = x; } \
+-   namespace long_double_constants{ static constexpr long double name = BOOST_MATH_JOIN(x, L); }\
++   } namespace float_constants{ inline constexpr float name = BOOST_MATH_JOIN(x, F); }\
++   namespace double_constants{ inline constexpr double name = x; } \
++   namespace long_double_constants{ inline constexpr long double name = BOOST_MATH_JOIN(x, L); }\
+    namespace constants{
+ 
+ #else // NVRTC simplified macro definition
+diff --git a/upstream/boost/boost/math/optimization/detail/line_search_policies.hpp b/upstream/boost/boost/math/optimization/detail/line_search_policies.hpp
+index 1bc3c1cc..10bddb54 100644
+--- a/upstream/boost/boost/math/optimization/detail/line_search_policies.hpp
++++ b/upstream/boost/boost/math/optimization/detail/line_search_policies.hpp
+@@ -139,6 +139,7 @@ public:
+       grad_eval(objective, x_trial, obj_eval, f_trial, g_trial);
+       RealType gTp = dot(g_trial, p);
+ 
++      using std::fabs;  // boost-m vendored edit: not ::fabs, which importers do not see
+       if (fabs(gTp) <= c2_ * fabs(gTp0)) {
+         return alpha;
+       }
+@@ -186,6 +187,7 @@ private:
+       if ((f_mid > f_x + c1_ * alpha_mid * gTp0) || (f_mid >= f_lo)) {
+         alpha_hi = alpha_mid;
+       } else {
++        using std::fabs;  // boost-m vendored edit (as above)
+         if (fabs(gTp_mid) <= c2_ * fabs(gTp0)) {
+           return alpha_mid;
+         }
+diff --git a/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp b/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp
+index 5e08c10d..b41116a7 100644
+--- a/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp
++++ b/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp
+@@ -36,15 +36,17 @@ namespace boost {
+   namespace math {
+ 
+     // flags (enums can be ORed together)       -----------------------------------
++    // boost-m vendored edit: BOOST_INLINE_CONSTEXPR (were const int: internal
++    // linkage, not exportable from a module).
+ 
+-    const int legacy = 0x1; //!< get facet will recognize most string representations of infinity and NaN.
+-    const int signed_zero = 0x2; //!< put facet will distinguish between positive and negative zero.
+-    const int trap_infinity = 0x4; /*!< put facet will throw an exception of type std::ios_base::failure
++    BOOST_INLINE_CONSTEXPR int legacy = 0x1; //!< get facet will recognize most string representations of infinity and NaN.
++    BOOST_INLINE_CONSTEXPR int signed_zero = 0x2; //!< put facet will distinguish between positive and negative zero.
++    BOOST_INLINE_CONSTEXPR int trap_infinity = 0x4; /*!< put facet will throw an exception of type std::ios_base::failure
+        when an attempt is made to format positive or negative infinity.
+        get will set the fail bit of the stream when an attempt is made
+        to parse a string that represents positive or negative sign infinity.
+     */
+-    const int trap_nan = 0x8; /*!< put facet will throw an exception of type std::ios_base::failure
++    BOOST_INLINE_CONSTEXPR int trap_nan = 0x8; /*!< put facet will throw an exception of type std::ios_base::failure
+        when an attempt is made to format positive or negative NaN.
+        get will set the fail bit of the stream when an attempt is made
+        to parse a string that represents positive or negative sign infinity.
+diff --git a/upstream/boost/boost/math/tools/cubic_roots.hpp b/upstream/boost/boost/math/tools/cubic_roots.hpp
+index 1097ad5c..8ed4d715 100644
+--- a/upstream/boost/boost/math/tools/cubic_roots.hpp
++++ b/upstream/boost/boost/math/tools/cubic_roots.hpp
+@@ -47,6 +47,9 @@ std::array<Real, 3> cubic_roots(Real a, Real b, Real c, Real d) {
+     using std::cos;
+     using std::fma;
+     using std::sqrt;
++    // boost-m vendored edit: sin was found as ::sin from the C library header,
++    // which a module's importers do not see.
++    using std::sin;
+     std::array<Real, 3> roots = {std::numeric_limits<Real>::quiet_NaN(),
+                                  std::numeric_limits<Real>::quiet_NaN(),
+                                  std::numeric_limits<Real>::quiet_NaN()};

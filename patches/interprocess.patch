@@ -1,0 +1,90 @@
+diff --git a/upstream/boost/boost/interprocess/creation_tags.hpp b/upstream/boost/boost/interprocess/creation_tags.hpp
+index faf4e6f2..0e81b857 100644
+--- a/upstream/boost/boost/interprocess/creation_tags.hpp
++++ b/upstream/boost/boost/interprocess/creation_tags.hpp
+@@ -51,23 +51,25 @@ struct open_or_create_t {};
+ 
+ //!Value to indicate that the resource must
+ //!be only created
+-static const create_only_t    create_only    = create_only_t();
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
++// linkage, not exportable from a module).
++BOOST_INLINE_CONSTEXPR create_only_t    create_only    = create_only_t();
+ 
+ //!Value to indicate that the resource must
+ //!be only opened
+-static const open_only_t      open_only      = open_only_t();
++BOOST_INLINE_CONSTEXPR open_only_t      open_only      = open_only_t();
+ 
+ //!Value to indicate that the resource must
+ //!be only opened for reading
+-static const open_read_only_t open_read_only = open_read_only_t();
++BOOST_INLINE_CONSTEXPR open_read_only_t open_read_only = open_read_only_t();
+ 
+ //!Value to indicate that the resource must
+ //!be created. If already created, it must be opened.
+-static const open_or_create_t open_or_create = open_or_create_t();
++BOOST_INLINE_CONSTEXPR open_or_create_t open_or_create = open_or_create_t();
+ 
+ //!Value to indicate that the resource must
+ //!be only opened for reading
+-static const open_copy_on_write_t open_copy_on_write = open_copy_on_write_t();
++BOOST_INLINE_CONSTEXPR open_copy_on_write_t open_copy_on_write = open_copy_on_write_t();
+ 
+ namespace ipcdetail {
+ 
+diff --git a/upstream/boost/boost/interprocess/errors.hpp b/upstream/boost/boost/interprocess/errors.hpp
+index 95bca55a..b6e43ed8 100644
+--- a/upstream/boost/boost/interprocess/errors.hpp
++++ b/upstream/boost/boost/interprocess/errors.hpp
+@@ -136,7 +136,9 @@ struct ec_xlate
+    error_code_t   ec;
+ };
+ 
+-static const ec_xlate ec_table[] =
++// boost-m vendored edit: inline (was static: an inline function of the GMF
++// would read a module-internal copy, as regex's message tables did).
++BOOST_INLINE_CONSTEXPR ec_xlate ec_table[] =
+ {
+    #if defined (BOOST_INTERPROCESS_WINDOWS)
+    { /*ERROR_ACCESS_DENIED*/5L, security_error },
+diff --git a/upstream/boost/boost/interprocess/interprocess_fwd.hpp b/upstream/boost/boost/interprocess/interprocess_fwd.hpp
+index 4f56837c..6d36a238 100644
+--- a/upstream/boost/boost/interprocess/interprocess_fwd.hpp
++++ b/upstream/boost/boost/interprocess/interprocess_fwd.hpp
+@@ -239,7 +239,9 @@ class cached_adaptive_pool;
+ //                            offset_ptr
+ //////////////////////////////////////////////////////////////////////////////
+ 
+-static const std::size_t offset_type_alignment = 0;
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
++// linkage, not exportable from a module).
++BOOST_INLINE_CONSTEXPR std::size_t offset_type_alignment = 0;
+ 
+ #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
+ #  ifdef BOOST_HAS_INTPTR_T
+diff --git a/upstream/boost/boost/interprocess/sync/lock_options.hpp b/upstream/boost/boost/interprocess/sync/lock_options.hpp
+index a79159a4..cb6a3423 100644
+--- a/upstream/boost/boost/interprocess/sync/lock_options.hpp
++++ b/upstream/boost/boost/interprocess/sync/lock_options.hpp
+@@ -37,15 +37,17 @@ struct accept_ownership_type{};
+ 
+ //!An object indicating that the locking
+ //!must be deferred.
+-static const defer_lock_type      defer_lock      = defer_lock_type();
++// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
++// linkage, not exportable from a module).
++BOOST_INLINE_CONSTEXPR defer_lock_type      defer_lock      = defer_lock_type();
+ 
+ //!An object indicating that a try_lock()
+ //!operation must be executed.
+-static const try_to_lock_type     try_to_lock    = try_to_lock_type();
++BOOST_INLINE_CONSTEXPR try_to_lock_type     try_to_lock    = try_to_lock_type();
+ 
+ //!An object indicating that the ownership of lockable
+ //!object must be accepted by the new owner.
+-static const accept_ownership_type  accept_ownership = accept_ownership_type();
++BOOST_INLINE_CONSTEXPR accept_ownership_type  accept_ownership = accept_ownership_type();
+ 
+ } // namespace interprocess {
+ } // namespace boost{

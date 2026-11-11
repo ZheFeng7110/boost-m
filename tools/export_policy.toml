@@ -197,6 +197,104 @@ gmf = [
     "boost/convert/strtol.hpp",
 ]
 
+[geometry]
+# The computed set minus geometries/adapted/boost_fusion.hpp. That header
+# adapts every Fusion sequence as a point; other headers of the set
+# (iterator/zip_iterator.hpp, through the index) make boost::tuple, boost::array
+# and std::pair Fusion sequences, so with both adaptations in one GMF a
+# boost::tuple point matched two partial specializations of traits::tag
+# ("ambiguous partial specializations", the whole boost_tuple adaptation
+# unusable). A consumer adapting Fusion sequences includes the header itself.
+# io/svg/svg_mapper.hpp is added: the documentation's examples draw with it,
+# and a consumer could only include it next to the import (gcc then sees
+# Boost.Range twice).
+gmf = [
+    "boost/geometry.hpp",
+    "boost/geometry/algorithms/dispatch/closest_points.hpp",
+    "boost/geometry/algorithms/dispatch/distance.hpp",
+    "boost/geometry/algorithms/dispatch/expand.hpp",
+    "boost/geometry/algorithms/dispatch/is_simple.hpp",
+    "boost/geometry/algorithms/dispatch/is_valid.hpp",
+    "boost/geometry/algorithms/merge_elements.hpp",
+    "boost/geometry/core/is_areal.hpp",
+    "boost/geometry/formulas/gnomonic_intersection.hpp",
+    "boost/geometry/formulas/meridian_direct.hpp",
+    "boost/geometry/formulas/vertex_longitude.hpp",
+    "boost/geometry/geometries/adapted/boost_any.hpp",
+    "boost/geometry/geometries/adapted/boost_array.hpp",
+    "boost/geometry/geometries/adapted/boost_polygon.hpp",
+    "boost/geometry/geometries/adapted/boost_range/adjacent_filtered.hpp",
+    "boost/geometry/geometries/adapted/boost_range/filtered.hpp",
+    "boost/geometry/geometries/adapted/boost_range/reversed.hpp",
+    "boost/geometry/geometries/adapted/boost_range/sliced.hpp",
+    "boost/geometry/geometries/adapted/boost_range/strided.hpp",
+    "boost/geometry/geometries/adapted/boost_range/uniqued.hpp",
+    "boost/geometry/geometries/adapted/boost_tuple.hpp",
+    "boost/geometry/geometries/adapted/boost_variant2.hpp",
+    "boost/geometry/geometries/adapted/c_array.hpp",
+    "boost/geometry/geometries/adapted/std_any.hpp",
+    "boost/geometry/geometries/adapted/std_array.hpp",
+    "boost/geometry/geometries/adapted/std_pair_as_segment.hpp",
+    "boost/geometry/geometries/adapted/std_variant.hpp",
+    "boost/geometry/geometries/pointing_segment.hpp",
+    "boost/geometry/geometries/register/box.hpp",
+    "boost/geometry/geometries/register/linestring.hpp",
+    "boost/geometry/geometries/register/multi_linestring.hpp",
+    "boost/geometry/geometries/register/multi_point.hpp",
+    "boost/geometry/geometries/register/multi_polygon.hpp",
+    "boost/geometry/geometries/register/point.hpp",
+    "boost/geometry/geometries/register/ring.hpp",
+    "boost/geometry/geometries/register/segment.hpp",
+    "boost/geometry/index/adaptors/query.hpp",
+    "boost/geometry/index/parameters.hpp",
+    "boost/geometry/io/svg/svg_mapper.hpp",
+    "boost/geometry/io/svg/write_svg.hpp",
+    "boost/geometry/io/svg/write_svg_multi.hpp",
+    "boost/geometry/io/wkt/stream.hpp",
+    "boost/geometry/iterators/concatenate_iterator.hpp",
+    "boost/geometry/iterators/flatten_iterator.hpp",
+    "boost/geometry/iterators/point_reverse_iterator.hpp",
+    "boost/geometry/policies/disjoint_interrupt_policy.hpp",
+    "boost/geometry/policies/is_valid/default_policy.hpp",
+    "boost/geometry/policies/is_valid/failing_reason_policy.hpp",
+    "boost/geometry/policies/is_valid/failure_type_policy.hpp",
+    "boost/geometry/policies/predicate_based_interrupt_policy.hpp",
+    "boost/geometry/policies/relate/intersection_ratios.hpp",
+    "boost/geometry/srs/epsg.hpp",
+    "boost/geometry/srs/esri.hpp",
+    "boost/geometry/srs/iau2000.hpp",
+    "boost/geometry/srs/shared_grids.hpp",
+    "boost/geometry/srs/shared_grids_std.hpp",
+    "boost/geometry/srs/transformation.hpp",
+    "boost/geometry/strategies/agnostic/point_in_poly_oriented_winding.hpp",
+    "boost/geometry/strategies/cartesian/distance_projected_point_ax.hpp",
+    "boost/geometry/strategies/cartesian/turn_in_ring_winding.hpp",
+    "boost/geometry/strategies/concepts/convex_hull_concept.hpp",
+    "boost/geometry/strategies/concepts/segment_intersect_concept.hpp",
+    "boost/geometry/strategies/concepts/simplify_concept.hpp",
+    "boost/geometry/strategies/concepts/within_concept.hpp",
+    "boost/geometry/strategies/default_comparable_distance_result.hpp",
+    "boost/geometry/strategies/distance/backward_compatibility.hpp",
+    "boost/geometry/strategies/geographic/intersection_elliptic.hpp",
+    "boost/geometry/strategies/geographic/mapping_ssf.hpp",
+    "boost/geometry/strategies/relate3/cartesian.hpp",
+    "boost/geometry/strategies/spherical/side_by_cross_track.hpp",
+    "boost/geometry/strategies/transform/srs_transformer.hpp",
+    "boost/geometry/strategy/cartesian/in_circle_robust.hpp",
+    "boost/geometry/strategy/cartesian/precise_area.hpp",
+    "boost/geometry/util/add_const_if_c.hpp",
+    "boost/geometry/util/bare_type.hpp",
+    "boost/geometry/util/closure_as_bool.hpp",
+    "boost/geometry/util/combine_if.hpp",
+    "boost/geometry/util/compress_variant.hpp",
+    "boost/geometry/util/has_infinite_coordinate.hpp",
+    "boost/geometry/util/has_non_finite_coordinate.hpp",
+    "boost/geometry/util/promote_floating_point.hpp",
+    "boost/geometry/util/rational.hpp",
+    "boost/geometry/util/transform_variant.hpp",
+    "boost/geometry/views/enumerate_view.hpp",
+]
+
 [cobalt]
 # boost/cobalt.hpp includes boost/cobalt/main.hpp, which defines the program's
 # main (as a friend of main_promise) to run the user's co_main. In a module's
@@ -564,6 +662,18 @@ lines = [
 ]
 
 [[cobalt.guard]]
+if = "defined(IPPROTO_SCTP)"
+reason = '''
+boost/cobalt/io/endpoint.hpp declares the SCTP protocol constants only where
+the platform defines IPPROTO_SCTP (MinGW does, MSVC's SDK does not).
+'''
+names = [
+    "boost::cobalt::io::sctp",
+    "boost::cobalt::io::sctp_v4",
+    "boost::cobalt::io::sctp_v6",
+]
+
+[[cobalt.guard]]
 if = "defined(BOOST_ASIO_HAS_FILE)"
 reason = '''
 Asio's file support (basic_file and friends) is declared only where
@@ -691,6 +801,16 @@ names = [
 
 # --------------------------------------------------------------------------
 # core
+
+[[core.drop]]
+reason = '''
+boost/core/size.hpp is `namespace boost { using std::size; }` under C++17.
+Exported, it meets Boost.Range's boost::size (boost/range/size.hpp) in every
+consumer that imports both, and boost::size(range) is ambiguous (the
+geometry examples call it). The headers are rarely both included; the module
+graph always has both. std::size is the same function.
+'''
+names = ["std::size"]
 
 [[core.guard]]
 if = "defined(__GNUC__)"
@@ -834,6 +954,89 @@ M9 platform guard: demangle_symbol comes from demangling/itanium.hpp.
 '''
 names = [
     "boost::dll::experimental::demangle_symbol",
+]
+
+[[dll.extra]]
+namespace = "boost::dll::fs"
+reason = '''
+boost/dll/config.hpp spells boost::dll::fs as `using namespace
+boost::filesystem;` (std::filesystem with BOOST_DLL_USE_STD_FS), and an
+importer never sees a using-directive: the examples and the API (dll::fs::path,
+program_location's return type) name dll::fs::path, fs::is_regular_file,
+fs::recursive_directory_iterator. The filesystem names the documentation uses
+are re-declared here (error_code / system_error are using-declarations
+upstream and exported already).
+'''
+lines = [
+    "#if defined(BOOST_DLL_USE_STD_FS)",
+    "using ::std::filesystem::path;",
+    "using ::std::filesystem::filesystem_error;",
+    "using ::std::filesystem::directory_entry;",
+    "using ::std::filesystem::directory_iterator;",
+    "using ::std::filesystem::recursive_directory_iterator;",
+    "using ::std::filesystem::file_status;",
+    "using ::std::filesystem::file_type;",
+    "using ::std::filesystem::perms;",
+    "using ::std::filesystem::copy_options;",
+    "using ::std::filesystem::space_info;",
+    "using ::std::filesystem::absolute;",
+    "using ::std::filesystem::canonical;",
+    "using ::std::filesystem::copy;",
+    "using ::std::filesystem::copy_file;",
+    "using ::std::filesystem::create_directories;",
+    "using ::std::filesystem::create_directory;",
+    "using ::std::filesystem::current_path;",
+    "using ::std::filesystem::equivalent;",
+    "using ::std::filesystem::exists;",
+    "using ::std::filesystem::file_size;",
+    "using ::std::filesystem::is_directory;",
+    "using ::std::filesystem::is_empty;",
+    "using ::std::filesystem::is_regular_file;",
+    "using ::std::filesystem::is_symlink;",
+    "using ::std::filesystem::last_write_time;",
+    "using ::std::filesystem::read_symlink;",
+    "using ::std::filesystem::relative;",
+    "using ::std::filesystem::remove;",
+    "using ::std::filesystem::remove_all;",
+    "using ::std::filesystem::rename;",
+    "using ::std::filesystem::status;",
+    "using ::std::filesystem::temp_directory_path;",
+    "using ::std::filesystem::weakly_canonical;",
+    "#else",
+    "using ::boost::filesystem::path;",
+    "using ::boost::filesystem::filesystem_error;",
+    "using ::boost::filesystem::directory_entry;",
+    "using ::boost::filesystem::directory_iterator;",
+    "using ::boost::filesystem::recursive_directory_iterator;",
+    "using ::boost::filesystem::file_status;",
+    "using ::boost::filesystem::file_type;",
+    "using ::boost::filesystem::perms;",
+    "using ::boost::filesystem::copy_options;",
+    "using ::boost::filesystem::space_info;",
+    "using ::boost::filesystem::absolute;",
+    "using ::boost::filesystem::canonical;",
+    "using ::boost::filesystem::copy;",
+    "using ::boost::filesystem::copy_file;",
+    "using ::boost::filesystem::create_directories;",
+    "using ::boost::filesystem::create_directory;",
+    "using ::boost::filesystem::current_path;",
+    "using ::boost::filesystem::equivalent;",
+    "using ::boost::filesystem::exists;",
+    "using ::boost::filesystem::file_size;",
+    "using ::boost::filesystem::is_directory;",
+    "using ::boost::filesystem::is_empty;",
+    "using ::boost::filesystem::is_regular_file;",
+    "using ::boost::filesystem::is_symlink;",
+    "using ::boost::filesystem::last_write_time;",
+    "using ::boost::filesystem::read_symlink;",
+    "using ::boost::filesystem::relative;",
+    "using ::boost::filesystem::remove;",
+    "using ::boost::filesystem::remove_all;",
+    "using ::boost::filesystem::rename;",
+    "using ::boost::filesystem::status;",
+    "using ::boost::filesystem::temp_directory_path;",
+    "using ::boost::filesystem::weakly_canonical;",
+    "#endif",
 ]
 
 # --------------------------------------------------------------------------

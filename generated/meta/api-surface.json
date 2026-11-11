@@ -408,9 +408,9 @@
   },
   "config": {
    "deps": [],
-   "exported": 4,
+   "exported": 8,
    "gmf": [
-    "boost/config.hpp"
+    "boost/cstdlib.hpp"
    ]
   },
   "container": {
@@ -572,7 +572,7 @@
     "config",
     "throw_exception"
    ],
-   "exported": 283,
+   "exported": 282,
    "gmf": [
     "boost/core/alloc_construct.hpp",
     "boost/core/allocator_traits.hpp",
@@ -789,6 +789,7 @@
   },
   "geometry": {
    "deps": [
+    "algorithm",
     "any",
     "array",
     "assert",
@@ -809,11 +810,10 @@
     "tokenizer",
     "tuple",
     "type_traits",
-    "utility",
     "variant",
     "variant2"
    ],
-   "exported": 4675,
+   "exported": 4670,
    "gmf": [
     "boost/geometry.hpp",
     "boost/geometry/algorithms/dispatch/closest_points.hpp",
@@ -828,7 +828,6 @@
     "boost/geometry/formulas/vertex_longitude.hpp",
     "boost/geometry/geometries/adapted/boost_any.hpp",
     "boost/geometry/geometries/adapted/boost_array.hpp",
-    "boost/geometry/geometries/adapted/boost_fusion.hpp",
     "boost/geometry/geometries/adapted/boost_polygon.hpp",
     "boost/geometry/geometries/adapted/boost_range/adjacent_filtered.hpp",
     "boost/geometry/geometries/adapted/boost_range/filtered.hpp",
@@ -854,6 +853,7 @@
     "boost/geometry/geometries/register/segment.hpp",
     "boost/geometry/index/adaptors/query.hpp",
     "boost/geometry/index/parameters.hpp",
+    "boost/geometry/io/svg/svg_mapper.hpp",
     "boost/geometry/io/svg/write_svg.hpp",
     "boost/geometry/io/svg/write_svg_multi.hpp",
     "boost/geometry/io/wkt/stream.hpp",
@@ -1210,7 +1210,7 @@
     "move",
     "winapi"
    ],
-   "exported": 716,
+   "exported": 726,
    "gmf": [
     "boost/interprocess/allocators/adaptive_pool.hpp",
     "boost/interprocess/allocators/cached_adaptive_pool.hpp",
@@ -1470,7 +1470,7 @@
     "lexical_cast",
     "random"
    ],
-   "exported": 2621,
+   "exported": 2862,
    "gmf": [
     "boost/math/ccmath/ccmath.hpp",
     "boost/math/common_factor.hpp",

@@ -139,6 +139,7 @@ public:
       grad_eval(objective, x_trial, obj_eval, f_trial, g_trial);
       RealType gTp = dot(g_trial, p);
 
+      using std::fabs;  // boost-m vendored edit: not ::fabs, which importers do not see
       if (fabs(gTp) <= c2_ * fabs(gTp0)) {
         return alpha;
       }
@@ -186,6 +187,7 @@ private:
       if ((f_mid > f_x + c1_ * alpha_mid * gTp0) || (f_mid >= f_lo)) {
         alpha_hi = alpha_mid;
       } else {
+        using std::fabs;  // boost-m vendored edit (as above)
         if (fabs(gTp_mid) <= c2_ * fabs(gTp0)) {
           return alpha_mid;
         }

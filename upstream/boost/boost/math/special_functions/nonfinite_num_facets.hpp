@@ -36,15 +36,17 @@ namespace boost {
   namespace math {
 
     // flags (enums can be ORed together)       -----------------------------------
+    // boost-m vendored edit: BOOST_INLINE_CONSTEXPR (were const int: internal
+    // linkage, not exportable from a module).
 
-    const int legacy = 0x1; //!< get facet will recognize most string representations of infinity and NaN.
-    const int signed_zero = 0x2; //!< put facet will distinguish between positive and negative zero.
-    const int trap_infinity = 0x4; /*!< put facet will throw an exception of type std::ios_base::failure
+    BOOST_INLINE_CONSTEXPR int legacy = 0x1; //!< get facet will recognize most string representations of infinity and NaN.
+    BOOST_INLINE_CONSTEXPR int signed_zero = 0x2; //!< put facet will distinguish between positive and negative zero.
+    BOOST_INLINE_CONSTEXPR int trap_infinity = 0x4; /*!< put facet will throw an exception of type std::ios_base::failure
        when an attempt is made to format positive or negative infinity.
        get will set the fail bit of the stream when an attempt is made
        to parse a string that represents positive or negative sign infinity.
     */
-    const int trap_nan = 0x8; /*!< put facet will throw an exception of type std::ios_base::failure
+    BOOST_INLINE_CONSTEXPR int trap_nan = 0x8; /*!< put facet will throw an exception of type std::ios_base::failure
        when an attempt is made to format positive or negative NaN.
        get will set the fail bit of the stream when an attempt is made
        to parse a string that represents positive or negative sign infinity.

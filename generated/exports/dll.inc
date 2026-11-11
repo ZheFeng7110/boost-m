@@ -155,6 +155,82 @@ export namespace boost { namespace dll { namespace experimental { namespace deta
 }}}}
 
 export namespace boost { namespace dll { namespace fs {
+  // boost/dll/config.hpp spells boost::dll::fs as `using namespace
+  // boost::filesystem;` (std::filesystem with BOOST_DLL_USE_STD_FS), and an
+  // importer never sees a using-directive: the examples and the API (dll::fs::path,
+  // program_location's return type) name dll::fs::path, fs::is_regular_file,
+  // fs::recursive_directory_iterator. The filesystem names the documentation uses
+  // are re-declared here (error_code / system_error are using-declarations
+  // upstream and exported already).
+  #if defined(BOOST_DLL_USE_STD_FS)
+  using ::std::filesystem::path;
+  using ::std::filesystem::filesystem_error;
+  using ::std::filesystem::directory_entry;
+  using ::std::filesystem::directory_iterator;
+  using ::std::filesystem::recursive_directory_iterator;
+  using ::std::filesystem::file_status;
+  using ::std::filesystem::file_type;
+  using ::std::filesystem::perms;
+  using ::std::filesystem::copy_options;
+  using ::std::filesystem::space_info;
+  using ::std::filesystem::absolute;
+  using ::std::filesystem::canonical;
+  using ::std::filesystem::copy;
+  using ::std::filesystem::copy_file;
+  using ::std::filesystem::create_directories;
+  using ::std::filesystem::create_directory;
+  using ::std::filesystem::current_path;
+  using ::std::filesystem::equivalent;
+  using ::std::filesystem::exists;
+  using ::std::filesystem::file_size;
+  using ::std::filesystem::is_directory;
+  using ::std::filesystem::is_empty;
+  using ::std::filesystem::is_regular_file;
+  using ::std::filesystem::is_symlink;
+  using ::std::filesystem::last_write_time;
+  using ::std::filesystem::read_symlink;
+  using ::std::filesystem::relative;
+  using ::std::filesystem::remove;
+  using ::std::filesystem::remove_all;
+  using ::std::filesystem::rename;
+  using ::std::filesystem::status;
+  using ::std::filesystem::temp_directory_path;
+  using ::std::filesystem::weakly_canonical;
+  #else
+  using ::boost::filesystem::path;
+  using ::boost::filesystem::filesystem_error;
+  using ::boost::filesystem::directory_entry;
+  using ::boost::filesystem::directory_iterator;
+  using ::boost::filesystem::recursive_directory_iterator;
+  using ::boost::filesystem::file_status;
+  using ::boost::filesystem::file_type;
+  using ::boost::filesystem::perms;
+  using ::boost::filesystem::copy_options;
+  using ::boost::filesystem::space_info;
+  using ::boost::filesystem::absolute;
+  using ::boost::filesystem::canonical;
+  using ::boost::filesystem::copy;
+  using ::boost::filesystem::copy_file;
+  using ::boost::filesystem::create_directories;
+  using ::boost::filesystem::create_directory;
+  using ::boost::filesystem::current_path;
+  using ::boost::filesystem::equivalent;
+  using ::boost::filesystem::exists;
+  using ::boost::filesystem::file_size;
+  using ::boost::filesystem::is_directory;
+  using ::boost::filesystem::is_empty;
+  using ::boost::filesystem::is_regular_file;
+  using ::boost::filesystem::is_symlink;
+  using ::boost::filesystem::last_write_time;
+  using ::boost::filesystem::read_symlink;
+  using ::boost::filesystem::relative;
+  using ::boost::filesystem::remove;
+  using ::boost::filesystem::remove_all;
+  using ::boost::filesystem::rename;
+  using ::boost::filesystem::status;
+  using ::boost::filesystem::temp_directory_path;
+  using ::boost::filesystem::weakly_canonical;
+  #endif
   using boost::dll::fs::error_code;
   using boost::dll::fs::system_error;
 }}}

@@ -200,9 +200,13 @@ export namespace boost { namespace cobalt { namespace io {
   using boost::cobalt::io::read_stream;
   using boost::cobalt::io::readable_pipe;
   using boost::cobalt::io::resolver;
+#if defined(IPPROTO_SCTP)
+  // boost/cobalt/io/endpoint.hpp declares the SCTP protocol constants only where
+  // the platform defines IPPROTO_SCTP (MinGW does, MSVC's SDK does not).
   using boost::cobalt::io::sctp;
   using boost::cobalt::io::sctp_v4;
   using boost::cobalt::io::sctp_v6;
+#endif
   using boost::cobalt::io::seq_packet_socket;
   using boost::cobalt::io::serial_port;
   using boost::cobalt::io::signal_set;

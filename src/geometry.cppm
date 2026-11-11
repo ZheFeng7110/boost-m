@@ -14,7 +14,6 @@ module;
 #include <boost/geometry/formulas/vertex_longitude.hpp>
 #include <boost/geometry/geometries/adapted/boost_any.hpp>
 #include <boost/geometry/geometries/adapted/boost_array.hpp>
-#include <boost/geometry/geometries/adapted/boost_fusion.hpp>
 #include <boost/geometry/geometries/adapted/boost_polygon.hpp>
 #include <boost/geometry/geometries/adapted/boost_range/adjacent_filtered.hpp>
 #include <boost/geometry/geometries/adapted/boost_range/filtered.hpp>
@@ -40,6 +39,7 @@ module;
 #include <boost/geometry/geometries/register/segment.hpp>
 #include <boost/geometry/index/adaptors/query.hpp>
 #include <boost/geometry/index/parameters.hpp>
+#include <boost/geometry/io/svg/svg_mapper.hpp>
 #include <boost/geometry/io/svg/write_svg.hpp>
 #include <boost/geometry/io/svg/write_svg_multi.hpp>
 #include <boost/geometry/io/wkt/stream.hpp>
@@ -88,6 +88,7 @@ module;
 
 export module mcpplibs.mwrap.boost.geometry;
 
+export import mcpplibs.mwrap.boost.algorithm;
 export import mcpplibs.mwrap.boost.any;
 export import mcpplibs.mwrap.boost.array;
 export import mcpplibs.mwrap.boost.assert;
@@ -117,3 +118,17 @@ export import mcpplibs.mwrap.boost.variant2;
 
 #include "../generated/exports/geometry.inc"
 
+
+#if defined(__clang__)
+// The GMF's Boost.Container headers (through the rtree's static_vector and
+// allocators) bring allocator_traits::construct, which places elements with
+// the global operator new(std::size_t, void*, boost_container_new_t). As in
+// src/json.cppm: nothing exported names that operator, so clang drops it from
+// this module and a consumer's instantiation finds no match; naming it here
+// (unexported) keeps it reachable.
+namespace mcpplibs::mwrap::boost::geometry_detail {
+inline void* container_placement_new(void* p) noexcept {
+    return ::operator new(sizeof(int), p, ::boost_container_new_t());
+}
+}  // namespace mcpplibs::mwrap::boost::geometry_detail
+#endif
