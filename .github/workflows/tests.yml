@@ -251,6 +251,12 @@ jobs:
               echo "tests/dll: not run on Windows (design record §11.6)"
               continue
             fi
+            # gcc@16.1.0 on Linux arm64 targets aarch64-linux-musl with a
+            # static C library: a static program cannot load the plugins.
+            if [ "$RUNNER_OS" = "Linux" ] && [ "$RUNNER_ARCH" = "ARM64" ] && [ "$p" = "tests/dll" ]; then
+              echo "tests/dll: not run on the static musl target"
+              continue
+            fi
             (cd "$p" && mcpp test --toolchain "${{ matrix.target.toolchain }}")
           done
 
