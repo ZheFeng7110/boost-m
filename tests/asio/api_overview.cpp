@@ -443,8 +443,8 @@ TEST_CASE("doc: other_protocols#other_protocols") {
 
 TEST_CASE("doc: timers#timers") {
     asio::io_context io;
+    auto start = std::chrono::steady_clock::now();  // before the timer: its expiry counts from construction
     asio::steady_timer t(io, 5ms);
-    auto start = std::chrono::steady_clock::now();
     t.wait();  // blocking wait
     CHECK(std::chrono::steady_clock::now() - start >= 5ms);
     t.expires_after(1ms);

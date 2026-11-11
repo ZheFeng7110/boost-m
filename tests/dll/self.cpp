@@ -118,7 +118,7 @@ TEST_CASE("example: tutorial9") {
 #ifdef _WIN32
     // GetStdHandle through its signature with the calling convention, without
     // <windows.h>: HANDLE is void*, DWORD unsigned long, STD_OUTPUT_HANDLE -11
-    using GetStdHandle_t = void*(__stdcall)(unsigned long);
+    typedef void*(__stdcall GetStdHandle_t)(unsigned long);  // as the original spells it
     auto get_std_handle =
         dll::import_symbol<GetStdHandle_t>("Kernel32.dll", "GetStdHandle", dll::load_mode::search_system_folders);
     void* h0 = get_std_handle(static_cast<unsigned long>(-11));
