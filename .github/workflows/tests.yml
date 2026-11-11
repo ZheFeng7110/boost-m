@@ -98,6 +98,20 @@ env:
   BOOST_GROUP_B: "accumulators,asio,beast,geometry,gil,hana,interprocess,mqtt5,multiprecision,numeric,polygon,qvm,version,macros"
 
 jobs:
+  # Every official example and documentation section of the hardened libraries
+  # is mapped to a test case or excluded with a reason (tests/<lib>/coverage.toml).
+  coverage:
+    name: example coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Check tests/*/coverage.toml
+        run: python3 tools/ci/test_coverage.py check
+
   # One matrix entry per host; `group` doubles each host into the two aggregate
   # closures. Tests run in both groups, so the compile surface is identical and
   # only the umbrella's re-export set differs.
@@ -218,6 +232,20 @@ jobs:
         run: |
           mcpp test --toolchain "${{ matrix.target.toolchain }}" \
             --features "${{ (matrix.group == 'A' && env.BOOST_GROUP_A) || env.BOOST_GROUP_B }}"
+
+      # The two test projects of their own (design record
+      # .agents/docs/2026-11-09-module-test-hardening-design.md §5): the dll
+      # tutorials with the plugin shared libraries they load, and the compiled
+      # Boost.Test form, which must not meet the header-only one. Both depend
+      # on the root package by path; they run once per host (group A).
+      - name: Test sub-projects (tests/dll, tests/test/utf)
+        if: matrix.group == 'A'
+        shell: bash
+        run: |
+          set -euo pipefail
+          for p in tests/dll tests/test/utf; do
+            (cd "$p" && mcpp test --toolchain "${{ matrix.target.toolchain }}")
+          done
 
   # Runs only after every A/B leg passed. The examples consume the wrapper the
   # way a user does (umbrella import, explicit features, profile backend), then

@@ -29,7 +29,7 @@ boost-m/
 ├── generated/exports/           export lists (.inc) and edges (.deps) — generator output only
 ├── generated/meta/              api-surface.json, skipped.txt, lists/maps build.mcpp reads
 ├── templates/                   basic (default) and lib templates
-├── tests/                       one standalone program per file
+├── tests/                       one standalone program per file; tests/<lib>/ for the hardened libraries
 ├── examples/                    basic, git-dep, profiles consumers
 ├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI
 └── docs/
@@ -253,6 +253,12 @@ feature（两种 Boost.Test 形态绝不能链接在一起）。
 
 - 在 Linux x86_64（GCC 16.1、LLVM）、Linux arm64（GCC）、macOS arm64（LLVM）、
   Windows x86_64（clang-msvc）上执行原生构建 + `mcpp test`。
+- `tests/<lib>/`（34 个库）：官方示例移植成的用例（`examples*.cpp`，输出与 oracle 比对）、
+  文档中的代码（`doc*.cpp`、`api*.cpp`）、各定制点上的自定义类型（`custom_types.cpp`），
+  以及 `coverage.toml`：1.92.0 发布包中每个示例和文档章节都映射到一个用例或写明理由；
+  CI 运行 `tools/ci/test_coverage.py check`。`tests/dll/`（插件共享库作为工作区成员）与
+  `tests/test/utf/`（Boost.Test 的编译形态）是独立工程，被根清单的 `[test] discover`
+  排除，由 CI 在各自目录中运行。
 - `tools/ci/verify_generated.py`：在三种宿主平台的干净代码树上跑补丁重放、
   `gen_exports.py --check`、`gen_features.py --check` 和审计，最后 `git status`
   必须干净；在同一配置上再做一次构建，记录增量 TU 数量和 mtime。

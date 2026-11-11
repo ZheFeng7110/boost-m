@@ -30,7 +30,7 @@ boost-m/
 ├── generated/exports/           export lists (.inc) and edges (.deps) — generator output only
 ├── generated/meta/              api-surface.json, skipped.txt, lists/maps build.mcpp reads
 ├── templates/                   basic (default) and lib templates
-├── tests/                       one standalone program per file
+├── tests/                       one standalone program per file; tests/<lib>/ for the hardened libraries
 ├── examples/                    basic, git-dep, profiles consumers
 ├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI
 └── docs/
@@ -284,6 +284,14 @@ keeps byte-identical notices.
 
 - Native build + `mcpp test` on Linux x86_64 (GCC 16.1, LLVM), Linux arm64 (GCC),
   macOS arm64 (LLVM), Windows x86_64 (clang-msvc).
+- `tests/<lib>/` (34 libraries): the official examples ported as cases with an
+  output oracle (`examples*.cpp`), the documentation's code (`doc*.cpp`,
+  `api*.cpp`), user types at each customization point (`custom_types.cpp`), and
+  `coverage.toml`, which maps every example and documentation section of the
+  1.92.0 release to a case or a reason; `tools/ci/test_coverage.py check` runs
+  in CI. `tests/dll/` (plugin shared libraries as workspace members) and
+  `tests/test/utf/` (the compiled Boost.Test form) are projects of their own,
+  excluded from the root `[test] discover` and run by CI in their directories.
 - `tools/ci/verify_generated.py`: patch replay, `gen_exports.py --check`,
   `gen_features.py --check` and the audits on a clean tree on all three host
   platforms, then `git status` must be clean; a second build on the same
