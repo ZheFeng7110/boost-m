@@ -1,6 +1,6 @@
 ---
 subject: tests
-status: active
+status: landed
 ---
 
 # 模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件
@@ -516,7 +516,7 @@ CI 在 `Test libraries` 之后加一步，遍历 `tests/*/mcpp.toml`，进入每
 - **把官方示例目录 vendor 进仓库。** 这会违背 `upstream/` 只放裁剪后上游树的约定，
   并使仓库增大；`coverage.toml` 只记路径，归档按需下载并校验。
 
-## 11. 实施记录（截至 2026-11-10）
+## 11. 实施记录（截至 2026-11-11）
 
 分支 `test/module-test-hardening`（fork `ZheFeng7110/boost-m`），上游草稿 PR
 [mcpplibs/boost-m#5](https://github.com/mcpplibs/boost-m/pull/5)。本节记录做到哪里、实际怎么做的、
@@ -529,28 +529,22 @@ gap：已知的封装层缺口）：
 
 | 状态 | 库 |
 |---|---|
-| 完成（`todo` 为零，本地 gcc 16 全绿） | algorithm 36、any 2、bimap 40、bloom 11+1、callable_traits 36+4、charconv 18+1、circular_buffer 5、compat 75、container 27+gap 1、container_hash 7、conversion 2、convert 15+1、core 67、crc 7、decimal 155+19、describe 33+4、dynamic_bitset 3、hash2 30、json 36+7、regex 40+14、unordered 12+2、url 40+7、uuid 43、variant2 5、**asio 229+25** |
+| 完成（`todo` 为零，本地 gcc 16 全绿） | algorithm 36、any 2、asio 229+25、beast 38+35、bimap 40、bloom 11+1、callable_traits 36+4、charconv 18+1、circular_buffer 5、cobalt 42+4、compat 75、container 27+gap 1、container_hash 7、conversion 2、convert 15+1、core 67、crc 7、decimal 155+19、describe 33+4、dll 23+4+gap 1、dynamic_bitset 3、geometry 295+23、hash2 30、json 36+7、math 428+41+gap 6、mqtt5 16+2、regex 40+14、test 219+10、unordered 12+2、url 40+7、uuid 43、variant2 5 |
 | 记为不支持（§9 Q2） | context 39、coroutine2 16 |
-| 未完成 | beast 73、cobalt 46、mqtt5 18、geometry 318、math 475、dll 28、test 229（共 1187 条 `todo`） |
+
+`todo` 已全部清零，`test_coverage.py check` 在 CI 的 `example coverage` 作业中运行。
 
 提交（按时间）：设计记录 → conversion 模块化、`core::string_view` 导出、transform_reduce 的 include
 guard（P1）→ 34 个 smoke 迁入 `tests/<lib>/` 并接入 doctest → convert、bimap、bloom/describe/
 container_hash、hash2、unordered、container、regex、url、json、decimal 各库套件 → 平台无关的期望值
-（MSVC 空基类 ABI、反修饰名、临时路径）→ asio。本地（Linux x86_64、gcc 16）全部通过；CI 并未全绿。
-最近一次跑完的 CI（`6b351f3b`，decimal 之后、asio 之前）只有 linux-gcc-x86_64 两组通过，其余 8 条腿失败：
+（MSVC 空基类 ABI、反修饰名、临时路径）→ asio → CI 修复（clang 的 `operator new` 歧义、Windows 的
+`near` 宏与 POSIX 专有示例、aarch64 的 128 位 `long double`）→ beast → cobalt → mqtt5 → geometry →
+math → Boost.Test → dll → CI 步骤与文档。
 
-| 腿 | 失败的测试 | 现象 |
-|---|---|---|
-| linux-llvm-x86_64、macos-llvm-arm64（A/B 组） | `statechart`（既有的平铺测试） | 编译 libc++ 的 `__new/allocate.h` 时 `call to 'operator new' is ambiguous`。很可能是 f62e1725 在 container 中导出全局 `::operator new` / `::operator delete`（§11.4）造成的回归，需优先确认 |
-| linux-gcc-arm64（A/B） | `decimal/api_types` | `static_cast<long double>(T(1.5)) == 1.5L` 不成立（aarch64 的 `long double` 是 128 位） |
-| windows-llvm-msvc-x86_64（A/B） | `decimal/api_cmath_io`、`json/doc_forward_conversion`、`json/doc_snippets` | 编译失败；decimal 的 `d64` 有歧义，`near(...)` 的声明在第 16 行就解析失败（疑与 Windows 头文件的宏 `near` 冲突） |
-
-asio 的提交（`e02d285d`）已推送，CI 运行中。
-
-beast 已开工但未提交：回环 harness（`ex_http_get` / `ex_ws_exchange`，本身用 Beast 写）和生成脚本已有，
-生成的 `examples_http.cpp` / `examples_websocket.cpp` 放在本地 `.tmp/wip-beast/`。剩下的问题是
-oracle 需要链接 Boost.System 的 `error_category → std::error_category` 转换（已用
-`libsystem_extras.a` 解决），以及 `http_server_fast` 的 worker 数（见 §11.3 的探测连接）。
+§11.1 早先记录的 CI 失败均已修复：clang 上 `operator new` 的歧义确是 container 导出全局
+`::operator new` 的回归，改为只在 gcc 上导出，clang 在 json、geometry 的门面里以 purview 内的具名引用
+使 placement 形式可达（§11.4）；decimal 的 `near` 是 Windows 头文件的宏，改名；aarch64 的
+`fast128 → long double` 比较是上游在 113 位 `long double` 上的问题，该平台跳过并注明。
 
 ### 11.2 与设计不一致之处
 
@@ -565,6 +559,18 @@ oracle 需要链接 Boost.System 的 `error_category → std::error_category` �
 - **子工程。** 只有 `tests/dll/` 与 `tests/test/utf/` 是独立工程；`tests/test/included/`
   （Boost.Test 的 header-only 形态）留在根工程。根清单为
   `discover = ["tests/**/*.cpp", "!tests/dll/**", "!tests/test/utf/**"]`。
+- **dll 子工程的链接形态。** 程序和每个插件都依赖本包；mcpp 只在 ELF 上允许插件绑定到程序里静态链接的
+  那一份，Mach-O 与 PE 上拒绝这种依赖图，所以 `tests/dll/mcpp.toml` 对本包写 `linkage = "shared"`
+  （链接形态只由根工程决定，插件里写了会被忽略）。从程序自身导入的示例（tutorial4/5，`self.cpp`）
+  要求程序导出符号，Unix 上加 `-rdynamic`。插件名不用 `shared_library::decorate()`：它对以 `lib`
+  开头的名字（library1）不加前缀。
+- **Boost.Test 的用例形态。** Boost.Test 没有模块，`tests/test/` 下全部是 include 形态的完整程序：
+  文档示例与 `libs/test/example/` 各移植为一个程序（原 `main` 改名，harness 按 `.output` 的命令行
+  运行并与 oracle 输出比对，行号与耗时归一化），`coverage.toml` 的 `case` 写作 `<file>:program`
+  （`test_coverage.py` 把含 `main` 的文件视为一个名为 `program` 的用例）。`tests/test/utf/` 是编译
+  形态（unit-test-framework 特性把框架编入程序）的 smoke；静态库形态定制入口与初始化函数的两页
+  （`custom_main`、`custom_init`）要求以 `BOOST_TEST_ALTERNATIVE_INIT_API`（及 `BOOST_TEST_NO_MAIN`）
+  重新构建框架，特性不提供这种构建配置，这两个示例以 header-only 形态运行，清单中写明。
 - **conversion 之外的封装层改动** 比 §5.3 预期的多，见 §11.4；每一项都在对应提交里重新生成并通过
   `gen_exports.py --check`。
 
@@ -593,6 +599,12 @@ oracle 的输出按字节读取：raw 字符串字面量无法保存 `\r`，含�
 或一条排除。扫描规则修正过一次：Quickbook 的代码块按任意缩进识别（asio 的文档缩进两格），
 最初只认 4 格以上，漏掉了 asio、regex、convert 的若干章节；修正后这些章节都已补上用例。
 
+**挂起与输出位置。** 网络类示例的程序带一个 doctest 监听器：Windows 上打印每个用例名，各平台上
+用例运行超过 60 秒时在 stderr 报出用例名，CI 超时时能看出卡在哪里。会写文件到当前目录的示例
+（geometry 的 svg 与 mapped_file、Boost.Test 的 example50 日志）在临时目录中运行，不在仓库根目录
+留下文件。mqtt5 的示例连接同一进程内的最小 broker（`tests/mqtt5/broker.hpp`，实现示例用到的
+CONNECT/SUBSCRIBE/PUBLISH 与 websocket 传输）。cobalt 的 `co_main` 以 `cobalt::run` 作为 task 运行。
+
 **脚本。** 移植与生成脚本（`port_examples.py`、各库的 `regen_*.py`、asio/beast 的 harness 头文件）目前
 只在本地 `.tmp/scripts/`，未提交；提交的是生成结果，每个生成文件的头注释说明了来源与改动。是否把它们
 整理进 `tools/` 以便升级 Boost 时重跑，待定（§11.6）。
@@ -612,22 +624,77 @@ oracle 的输出按字节读取：raw 字符串字面量无法保存 `\r`，含�
 | asio | `experimental::use_promise` 缺失（`use_promise.hpp` 不能单独编译，被过滤掉）；`stream_errc` / `socket_errc` 只含 using 声明，生成器不收 | `libs.json` 补头文件；policy 的 `extra` |
 | core | `boost::core::string_view` 没有任何模块导出 | `core.cppm` 包含 `core/detail/string_view.hpp` |
 
-另有一处记为 `gap` 而不绕开：container 的 `doc_extended_allocators`（dlmalloc 分配器需要
-`alloc_lib.c`，包没有构建它）。上游文档与实现不一致的地方（charconv 十六进制解析、hash2 文档里两次
+| container、json、geometry | §11.1 的 clang 回归：导出 `using ::operator new;` 后 libc++ 的 `__new/allocate.h` 调用有歧义 | 该导出改为只在 gcc 上（policy `extra` 的 `#if`）；clang 在 json、geometry 的门面中以 purview 内的具名引用使 placement 形式可达 |
+| cobalt | `use_op`、`use_task`、`this_coro::*` 与 io 协议常量是 TU-local；`main.hpp` 定义的 `main` 与使用方的 `main` 冲突；`this_coro` 缺 asio 的同名对象；Windows 没有 `IPPROTO_SCTP` | `cobalt.patch`；policy 的 `gmf` 去掉 `main.hpp`；`extra`；`guard` |
+| beast | `beast::errc` 是命名空间别名，生成器不收 | policy 的 `extra` |
+| geometry | fusion 适配与 tuple 适配同时可见而有歧义；`boost::size` 与 `std::size` 有歧义；svg_mapper 未收入 | policy 的 `gmf`（去掉 `adapted/boost_fusion.hpp`、补 `io/svg/svg_mapper.hpp`）与 `core.drop` |
+| variant | `has_result_type.hpp` 的匿名结构体使 gcc 16 在每次 rtree 使用时 ICE | `variant.patch` 给结构体命名 |
+| interprocess | 创建标签、锁选项、`offset_type_alignment`、`ec_table` 是 TU-local | `interprocess.patch`（`BOOST_INLINE_CONSTEXPR`） |
+| math | `float/double/long_double_constants` 与 nonfinite facet 的标志是 TU-local；`cubic_roots.hpp`、`line_search_policies.hpp` 依赖使用方带入的 `using std::sin/fabs` | `math.patch` |
+| config | `boost/cstdlib.hpp` 不在任何模块中，`exit_success` 等又是 TU-local 的 `const int` | `libs.json` 把它归入 config；`config_cstdlib.patch` |
+| dll | `boost::dll::fs` 以 using 指令（`using namespace boost::filesystem;`）定义，导入方看不到 using 指令，`dll::fs::path` 不可达 | policy 的 `extra` 逐个 using 声明文档用到的名字 |
+
+记为 `gap` 而不绕开的：container 的 `doc_extended_allocators`（dlmalloc 分配器需要
+`alloc_lib.c`，包没有构建它）；dll 的 `tutorial8_static`（`this_line_location()` 在上游是
+`static inline`，按设计每个映像各有一份，TU-local，无法导出）；math 的 C99/TR1 页（编译库
+`libboost_math_tr1` 未构建）以及四个靠 `BOOST_MATH_*_POLICY` 宏在包含头文件前
+配置默认策略的示例（宏无法作用于已编译的模块）。上游文档与实现不一致的地方（charconv 十六进制解析、hash2 文档里两次
 `result()`、decimal 的若干名字等）在用例注释中写明，以实现为准。
 
 ### 11.5 CI 时长（§9 Q3）
 
-尚未在 CI 上正式测量，只有本地数据：全量构建约 5 分钟，全量测试约 4 分钟（MCPP_JOBS=4；6 会 OOM）。
-asio 最慢的两个程序是 `examples_cpp11`（约 60 秒）与 `examples_cpp14`（约 40 秒），时间花在示例自带的
-定时器上（教程的 1 秒定时器 ×5、`time_t_timer`），不是等待；它们与其他程序并行运行。
+首次全量运行（run 42951552436，提交 `f09adfbb`，全部套件就位）的作业时长：
+
+| 腿 | A 组 | B 组 |
+|---|---|---|
+| linux-gcc-x86_64 | 56m24s | 44m57s |
+| linux-llvm-x86_64 | 40m01s | 16m32s |
+| linux-gcc-arm64 | 26m59s（失败，见下） | 31m49s（失败） |
+| macos-llvm-arm64 | 31m28s（失败） | 14m40s（失败） |
+| windows-llvm-msvc-x86_64 | 36m48s（失败） | 36m33s（失败） |
+
+全部通过的运行（run 42978425044，提交 `a46bfc87`）整轮约 65 分钟（含之后的 examples + template 作业），
+各测试作业：
+
+| 腿 | A 组 | B 组 |
+|---|---|---|
+| linux-gcc-x86_64 | 51m39s | 46m24s |
+| linux-llvm-x86_64 | 34m54s | 25m57s |
+| linux-gcc-arm64 | 29m19s | 30m19s |
+| macos-llvm-arm64 | 56m59s | 38m53s |
+| windows-llvm-msvc-x86_64 | 29m32s | 32m36s |
+
+时间几乎都花在构建测试程序上。linux-gcc-x86_64 A 组：库构建 6.5 分钟，根工程 `mcpp test` 2049 秒
+（build 1986 秒 + run 59 秒），两个子工程 15 分钟（`tests/dll` 444 秒、`tests/test/utf` 471 秒，各自重新
+构建本包）；B 组 `mcpp test` 2502 秒（build 2440 秒 + run 59 秒）。linux-llvm-x86_64 A 组 `mcpp test`
+1165 秒（build 1079 秒 + run 83 秒）。416 个测试程序的运行合计约 1 分钟。最长的腿约 57 分钟，在作业的
+240 分钟上限之内，所以按 §9 Q3 暂不拆分测试分组；若要缩短，收益最大的是让两个子工程复用根工程的
+BMI 与目标文件（目前各自重建本包）。这一轮各平台腿的失败都是平台差异（macOS 的 `struct user`、
+Windows 的 `min`/`max`/`near` 宏与类型名前缀、长双精度宽度与 libm 末位、系统对访问违例的描述），
+已在后续提交中修正。
 
 ### 11.6 剩余工作
 
-1. 先修 §11.1 表中的 CI 失败，尤其是 clang 上 `operator new` 的歧义（封装层回归）。
-1. beast（§11.1）、cobalt、mqtt5、geometry、math（P4）。
-2. P5：`tests/dll` 的共享库插件（`kind = "shared"`）与 dll 示例；`tests/test/utf` 的 Boost.Test 示例。
-3. CI：增加进入 `tests/dll`、`tests/test/utf` 运行 `mcpp test` 的步骤，以及
-   `tools/ci/test_coverage.py check`；在 CI 上测量时长并按 §9 Q3 决定是否分组。
-4. 更新 `docs/architecture*.md` 的 `tests/` 描述；全部完成后把本记录标为 `landed`。
-5. 待定：是否把移植脚本整理进 `tools/`（§11.3）。
+§11.6 原列的 1～4 已完成：CI 失败已修复；beast、cobalt、mqtt5、geometry、math、dll、test 的套件已落地；
+CI 增加了 `example coverage` 作业与 A 组的子工程步骤；`docs/architecture*.md` 已更新。提交 `a46bfc87`
+的 CI 全部通过（20 项检查）。尚未解决的问题如下，已移入待办
+[`todos/module-tests-open-issues.md`](todos/module-tests-open-issues.md)：
+
+1. **windows-llvm-msvc 上的进程崩溃。** 只在这一条腿上出现，其余五条腿与本地 gcc / clang 均通过：
+   asio 的 `composed_4` 与 cobalt 的文档程序以堆损坏（0xC0000374）结束进程，cobalt 文档程序每次崩在
+   不同的用例（`a-minimal-executor`、`race`），math 的 `daubechies_scaling` 以 SIGSEGV 结束。目前
+   `composed_4`、整个 `cobalt/doc` 与 `daubechies_scaling` 的求值在 Windows 上跳过并在源码旁注明。
+   堆损坏在释放时才被检测到，确切出错的位置未定；怀疑方向是同一段 asio 内联代码（如
+   `aligned_new` / `aligned_delete` 的配对、`call_stack<>::top_`）在不同模块的 GMF 中以不同配置实例化，
+   需要在 Windows 主机上复现后再定。
+2. **aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN**（结果与误差估计都是 NaN；同一用例的
+   `ooura_fourier_sin` 正常）。它以 `long double` 计算节点，该平台的 `long double` 是 113 位；是上游
+   问题还是封装层问题未定，`doc: fourier_integrals` 在该平台跳过这一项检查。
+3. **Windows 上的 `tests/dll`。** 本包以 `linkage = "shared"` 构建成 DLL 时，包内编译源码的符号
+   （`boost::filesystem::detail::path_algorithms::*`、`boost::system::error_category` 的转换运算符等）
+   没有导出，测试程序链接失败；CI 在 Windows 上暂不运行 `tests/dll`（`tests/test/utf` 照常运行）。需要
+   确认 mcpp 的 `windows_auto_export` 对以共享形态构建的依赖包是否生效。linux-gcc-arm64 腿的 gcc 16.1.0
+   以 `aarch64-linux-musl` 静态 C 库为目标，静态程序无法加载插件，`tests/dll` 在该腿上同样不运行
+   （这是平台限制，不是缺陷）。
+4. 待定：是否把移植脚本整理进 `tools/`（§11.3）。
+5. 子工程各自重新构建本包，A 组因此多约 15 分钟（§11.5）；可以研究复用根工程的构建产物。
