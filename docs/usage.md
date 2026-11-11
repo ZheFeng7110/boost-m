@@ -229,6 +229,10 @@ BMI. Configurations outside this set must use header-only consumption
   limit is a compiler boundary, not a package defect.
 - Group-level success does not prove the umbrella closure: `all-modules` is a
   module set, not a claim that every compiler can aggregate it.
+- `mcpplibs.mwrap.boost.core` does not export `boost::size` (upstream
+  `boost/core/size.hpp`, `using std::size;`): exported, it is ambiguous with
+  Boost.Range's `boost::size` in every consumer that imports both. Call
+  `std::size`, or import `mcpplibs.mwrap.boost.range` for `boost::size`.
 
 ## 7. Migrating from `ZheFeng7110.boost`
 

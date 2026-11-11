@@ -85,9 +85,6 @@ UNSUPPORTED = {
 # Libraries with customization points: tests/<lib>/custom_types.cpp is
 # mandatory (design §4.3). charconv has none.
 CUSTOM_TYPES = set(LIBRARIES) - {"charconv", "context", "coroutine2"}
-# Projects of their own (design §5): custom_types lives in the project dir.
-SUBPROJECTS = {"dll", "test"}
-
 STATUSES = {"covered", "excluded", "gap", "unsupported", "todo"}
 
 _SKIP_DOC = re.compile(
@@ -144,25 +141,45 @@ def _code_in_qbk(body):
 
 
 def qbk_sections(text):
-    """[(id, title)] of the sections that hold a code block."""
-    out = []
-    parts = re.split(r"^\s*\[section", text, flags=re.M)
-    for part in parts[1:]:
-        head, _, body = part.partition("\n")
-        body = body.split("[endsect]", 1)[0]
-        m = re.match(r":([\w.-]+)\s*(.*?)\]?\s*$", head)
-        if m:
-            sid, title = m.group(1), m.group(2).strip()
+    """[(id, title)] of the sections that hold a code block, in document
+    order. A section's body is its own text only: what a nested
+    [section ...] ... [endsect] encloses belongs to the nested section, and
+    the parent's body continues after it."""
+    entries = []                    # [sid, title, has_code] in document order
+    stack = []                      # open sections: (entry, [own text])
+    pos = 0
+    for m in re.finditer(r"^\s*\[section(?P<head>[^\n]*)|\[endsect\]",
+                         text, flags=re.M):
+        if stack:
+            stack[-1][1].append(text[pos:m.start()])
+        pos = m.end()
+        if m.group("head") is None:             # [endsect]
+            if stack:
+                entry, pieces = stack.pop()
+                entry[2] = _code_in_qbk("".join(pieces))
+            continue
+        head = m.group("head")
+        sm = re.match(r":([\w.-]+)\s*(.*?)\]?\s*$", head)
+        if sm:
+            sid, title = sm.group(1), sm.group(2).strip()
         else:
             title = head.strip().rstrip("]").strip()
             sid = _slug(title)
-        if _code_in_qbk(body):
-            out.append((sid, title))
-    return out
+        entry = [sid, title, False]
+        entries.append(entry)
+        stack.append((entry, []))
+    if stack:                                   # unterminated sections
+        stack[-1][1].append(text[pos:])
+    while stack:
+        entry, pieces = stack.pop()
+        entry[2] = _code_in_qbk("".join(pieces))
+    return [(sid, title) for sid, title, has_code in entries if has_code]
 
 
-def md_sections(text):
-    """AsciiDoc (`=`/`#` headings) and Markdown sections with a code block."""
+def md_sections(text, adoc=False):
+    """AsciiDoc (`=`/`#` headings) and Markdown sections with a code block.
+    `adoc` enables the AsciiDoc block delimiters; in Markdown a line of
+    dashes is a setext heading underline or a thematic break, not a fence."""
     out = []
     lines = text.splitlines()
     cur, title, anchor, has_code, fence = None, None, None, False, None
@@ -178,9 +195,9 @@ def md_sections(text):
                 fence = None
             continue
         s = line.strip()
-        # ``` fences, and AsciiDoc ---- (listing) / .... (literal) blocks of
-        # four or more delimiter characters.
-        if s.startswith("```") or re.fullmatch(r"-{4,}|\.{4,}", s):
+        # ``` fences, and in AsciiDoc the ---- (listing) / .... (literal)
+        # blocks of four or more delimiter characters.
+        if s.startswith("```") or (adoc and re.fullmatch(r"-{4,}|\.{4,}", s)):
             fence = "```" if s.startswith("```") else s
             if not s.startswith("."):
                 has_code = True
@@ -204,13 +221,10 @@ def scan_archive(archive, libs):
     """{lib: {"examples": [path], "snippets": [(doc_key, title)]}}"""
     found = {lib: {"examples": [], "snippets": []} for lib in libs}
     with tarfile.open(archive, "r:gz") as tar:
-        top = None
         for member in tar:
             if not member.isfile():
                 continue
             parts = member.name.split("/")
-            if top is None:
-                top = parts[0]
             if len(parts) < 4 or parts[1] != "libs" or parts[2] not in found:
                 continue
             lib, rest = parts[2], parts[3:]
@@ -228,7 +242,7 @@ def scan_archive(archive, libs):
                 continue
             text = tar.extractfile(member).read().decode("utf-8", "replace")
             secs = (qbk_sections(text) if rel.endswith(".qbk")
-                    else md_sections(text))
+                    else md_sections(text, adoc=rel.endswith(".adoc")))
             seen = {}
             for sid, title in secs:
                 if _SKIP_TITLE.search(title):

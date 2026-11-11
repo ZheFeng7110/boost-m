@@ -970,7 +970,7 @@
     "utility",
     "version"
    ],
-   "exported": 3069,
+   "exported": 3070,
    "gmf": [
     "boost/graph/adj_list_serialize.hpp",
     "boost/graph/adjacency_list_io.hpp",
@@ -1116,7 +1116,7 @@
     "mp11",
     "type_traits"
    ],
-   "exported": 89,
+   "exported": 92,
    "gmf": [
     "boost/heap/binomial_heap.hpp",
     "boost/heap/d_ary_heap.hpp",
@@ -2264,8 +2264,9 @@
     "config",
     "core"
    ],
-   "exported": 144,
+   "exported": 147,
    "gmf": [
+    "boost/pointer_cast.hpp",
     "boost/smart_ptr.hpp",
     "boost/smart_ptr/allocate_unique.hpp",
     "boost/smart_ptr/atomic_shared_ptr.hpp",

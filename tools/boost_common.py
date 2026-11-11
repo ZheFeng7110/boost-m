@@ -191,20 +191,26 @@ TARGET_LIBS = LIBS_M3 + LIBS_M4 + LIBS_T1A + LIBS_T2 + LIBS_T1B + LIBS_SPECIAL
 #     boost/core/detail/string_view.hpp; without it no module exported the
 #     string_view alias, which charconv's from_chars(string_view) overloads
 #     take (only json exported basic_string_view, reached through its own GMF).
+#   - smart_ptr: boost/pointer_cast.hpp is smart_ptr's (upstream:
+#     Boost::conversion links Boost::smart_ptr for it) and declares the raw
+#     pointer / std::unique_ptr / std::shared_ptr overloads of
+#     *_pointer_cast. It must be in smart_ptr's GMF, not only owned by it: a
+#     using-declaration brings the overloads the GMF sees, and smart_ptr.hpp
+#     does not include this header, so ownership alone left those overloads
+#     exported by no module (conversion, which reaches the header first in
+#     TARGET_LIBS order, saw them but could not claim them).
 # TOP_LEVEL_OWNERS: ownership (and include edges) only, for top-level files;
 #   the file stays out of the owner's header set, so the owner's GMF and
-#   export list do not change. boost/pointer_cast.hpp is smart_ptr's
-#   (upstream: Boost::conversion links Boost::smart_ptr for it); without the
-#   entry conversion, which reaches it first in TARGET_LIBS order, would claim
-#   smart_ptr's *_pointer_cast names.
+#   export list do not change. Filled from the top-level EXTRA_HEADERS
+#   entries; a file whose declarations a module must export belongs in
+#   EXTRA_HEADERS, not here.
 EXTRA_HEADERS = {
     "conversion": ["implicit_cast.hpp", "polymorphic_cast.hpp",
                    "polymorphic_pointer_cast.hpp"],
     "core": ["core/detail/string_view.hpp"],
+    "smart_ptr": ["pointer_cast.hpp"],
 }
-TOP_LEVEL_OWNERS = {
-    "pointer_cast.hpp": "smart_ptr",
-}
+TOP_LEVEL_OWNERS = {}
 for _lib, _names in EXTRA_HEADERS.items():
     for _name in _names:
         if "/" not in _name:

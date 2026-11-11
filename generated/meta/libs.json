@@ -4708,6 +4708,7 @@
   "boost/signals2/trackable.hpp"
  ],
  "smart_ptr": [
+  "boost/pointer_cast.hpp",
   "boost/smart_ptr.hpp",
   "boost/smart_ptr/allocate_local_shared_array.hpp",
   "boost/smart_ptr/allocate_shared_array.hpp",

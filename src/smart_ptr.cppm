@@ -1,6 +1,7 @@
 // mcpplibs.mwrap.boost.smart_ptr — module facade over generated/exports/smart_ptr.inc
 // (hand-maintained; tools/gen_exports.py --check verifies its GMF include set)
 module;
+#include <boost/pointer_cast.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/smart_ptr/allocate_unique.hpp>
 #include <boost/smart_ptr/atomic_shared_ptr.hpp>

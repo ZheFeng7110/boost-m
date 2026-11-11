@@ -196,6 +196,29 @@ gmf = [
     "boost/convert/stream.hpp",
     "boost/convert/strtol.hpp",
 ]
+# The math edge (export import mcpplibs.mwrap.boost.math, and the lexical_cast
+# / mp11 / utility edges that come with it) is pass-2 body completion:
+# boost/convert/strtol.hpp calls boost::math::round in the converter's
+# template body. A consumer of the convert feature therefore builds and loads
+# the Boost.Math BMI; the edge is kept because the module graph re-exports
+# what exported bodies reach (design record 2026-09-08, pass 2).
+
+[heap]
+# Boost.Parameter names heap's named-parameter API is built on
+# (boost/heap/policies.hpp). convert's GMF reaches boost/parameter first in
+# TARGET_LIBS order and claims them; a consumer importing heap but not
+# convert would get them from no module it imports. Re-exported here (legal
+# duplicate re-export, as [any] does).
+add = [
+    "boost::parameter::aux::is_name_tag",
+    "boost::parameter::aux::name_tag",
+    "boost::parameter::aux::name_tag_base",
+]
+
+[graph]
+# Same as [heap]: boost::parameter::is_argument_pack backs the named-parameter
+# overloads of the graph algorithms (boost/graph/named_function_params.hpp).
+add = ["boost::parameter::is_argument_pack"]
 
 [geometry]
 # The computed set minus geometries/adapted/boost_fusion.hpp. That header

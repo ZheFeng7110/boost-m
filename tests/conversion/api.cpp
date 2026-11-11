@@ -35,6 +35,28 @@ TEST_CASE("polymorphic_cast: downcast and crosscast") {
     CHECK_THROWS_AS(boost::polymorphic_cast<Derived*>(ob), std::bad_cast);
 }
 
+// boost/pointer_cast.hpp (smart_ptr's header, reached through
+// polymorphic_pointer_cast.hpp): the raw-pointer and std::unique_ptr
+// overloads of the *_pointer_cast family must be exported by a module a
+// consumer of conversion imports (smart_ptr), next to the shared_ptr ones.
+TEST_CASE("pointer_cast: raw pointer, unique_ptr and shared_ptr overloads") {
+    Derived d;
+    Base* b = &d;
+    CHECK(boost::static_pointer_cast<Derived>(b)->kind() == 'D');
+    CHECK(boost::dynamic_pointer_cast<Derived>(b) == &d);
+    CHECK(boost::dynamic_pointer_cast<Other>(b) == nullptr);
+    const Base* cb = b;
+    CHECK(boost::const_pointer_cast<Base>(cb) == b);
+    std::unique_ptr<Base> ub(new Derived);
+    std::unique_ptr<Derived> ud = boost::dynamic_pointer_cast<Derived>(std::move(ub));
+    CHECK(ud != nullptr);
+    CHECK(ub == nullptr);
+    std::shared_ptr<Base> sb = std::make_shared<Derived>();
+    CHECK(boost::static_pointer_cast<Derived>(sb)->kind() == 'D');
+    boost::shared_ptr<Base> bb = boost::make_shared<Derived>();
+    CHECK(boost::dynamic_pointer_cast<Derived>(bb) != nullptr);
+}
+
 TEST_CASE("polymorphic_downcast: pointer and reference") {
     Derived d;
     Base* b = &d;
