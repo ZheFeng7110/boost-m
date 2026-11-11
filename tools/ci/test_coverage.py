@@ -29,7 +29,8 @@ Entry status:
 A <test name> is the path under tests/ without ``.cpp`` (``json/examples``);
 for the Boost.Test projects it is the path of the source under tests/.
 A <test case name> is the doctest ``TEST_CASE("...")`` string, or the
-``BOOST_AUTO_TEST_CASE(name)`` identifier in tests/test/.
+``BOOST_AUTO_TEST_CASE(name)`` identifier in tests/test/, or ``program`` for a
+test program that is an example as a whole (it defines ``main``).
 
 Naming convention (what ``link`` matches, in any tests/<lib>/**/*.cpp):
 
@@ -335,6 +336,8 @@ _DOCTEST_CASE = re.compile(r'\bTEST_CASE(?:_TEMPLATE|_FIXTURE)?\s*\(\s*(?:\w+\s*
 # TEST_SUITE(type, "name") into TEST_CASE("doc: name").
 _URL_SUITE = re.compile(r'\bTEST_SUITE\(\s*\w+\s*,\s*"((?:[^"\\]|\\.)*)"')
 _BOOST_CASE = re.compile(r"\bBOOST_(?:AUTO|DATA|FIXTURE)_TEST_CASE(?:_TEMPLATE)?\s*\(\s*(\w+)")
+# A whole program (an example ported as one test program, tests/test/): "program".
+_MAIN = re.compile(r"^\s*int\s+main\s*\(", re.M)
 
 
 def test_cases(test):
@@ -343,7 +346,8 @@ def test_cases(test):
         return None
     text = path.read_text(encoding="utf-8", errors="replace")
     return (set(_DOCTEST_CASE.findall(text)) | set(_BOOST_CASE.findall(text))
-            | {"doc: " + n for n in _URL_SUITE.findall(text)})
+            | {"doc: " + n for n in _URL_SUITE.findall(text)}
+            | ({"program"} if _MAIN.search(text) else set()))
 
 
 def check_entry(lib, entry, key, errors, cache):
