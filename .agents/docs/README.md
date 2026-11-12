@@ -27,7 +27,11 @@
 - `todos/` 放尚未完成的工作项，它们不是决定的记录。
 - 移动或改名用 `tools/doc-tools/move_record.py`，它同时改写仓库中对该文件的引用。
 
-共 22 篇记录（其中 0 篇已归档），1 项待办。
+共 23 篇记录（其中 0 篇已归档），1 项待办。
+
+## 进行中
+
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 
 ## 按主题
 
@@ -39,12 +43,14 @@
 
 ### tests
 
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 - [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed
 
 ## 按日期
 
 ### 2026-11
 
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 - [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed
 - [设计记录的管理：只增不删、按年归档、生成的索引与 `tools/doc-tools/`](2026-11-08-design-records-management-design.md) — landed
 - [封装层生成原理改造：clang JSON AST + 声明式策略 + `--check`](2026-11-05-json-ast-generation.md)
