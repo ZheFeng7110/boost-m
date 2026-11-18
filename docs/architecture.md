@@ -32,7 +32,7 @@ boost-m/
 ├── templates/                   basic (default) and lib templates
 ├── tests/                       one standalone program per file; tests/<lib>/ for the hardened libraries
 ├── examples/                    basic, git-dep, profiles consumers
-├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI
+├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI, test ports
 └── docs/
 ```
 
@@ -289,7 +289,10 @@ keeps byte-identical notices.
   `api*.cpp`), user types at each customization point (`custom_types.cpp`), and
   `coverage.toml`, which maps every example and documentation section of the
   1.92.0 release to a case or a reason; `tools/ci/test_coverage.py check` runs
-  in CI. `tests/dll/` (plugin shared libraries as workspace members) and
+  in CI. The mechanically ported files (their header says so) are generator
+  output: `tools/port_tests/regen.py` re-creates them from the release archive
+  and the oracle, after a Boost upgrade followed by `test_coverage.py scan` and
+  `link`. `tests/dll/` (plugin shared libraries as workspace members) and
   `tests/test/utf/` (the compiled Boost.Test form) are projects of their own,
   excluded from the root `[test] discover` and run by CI in their directories.
 - `tools/ci/verify_generated.py`: patch replay, `gen_exports.py --check`,

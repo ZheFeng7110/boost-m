@@ -34,7 +34,10 @@ test program that is an example as a whole (it defines ``main``).
 
 Naming convention (what ``link`` matches, in any tests/<lib>/**/*.cpp):
 
-    libs/<lib>/**/<stem>.cpp             TEST_CASE("example: <stem>")
+    libs/<lib>/**/<stem>.cpp             TEST_CASE("example: <stem>"), or
+                                         TEST_CASE("example: <dir>/<stem>") with
+                                         the path under example/ (stems repeat
+                                         across directories: asio, beast)
     libs/<lib>/**/<page>.qbk#<section>   TEST_CASE("doc: <page>#<section>"), or
                                          TEST_CASE("doc: <section>") when no
                                          other page of the library has <section>
@@ -425,6 +428,9 @@ def cmd_link(args):
                 if table == "example":
                     stem = Path(e["path"]).stem
                     wanted = ["example: " + stem]
+                    rel = re.search(r"/examples?/(?!.*/examples?/)(.*)\.cpp$", e["path"])
+                    if rel and rel.group(1) != stem:
+                        wanted.append("example: " + rel.group(1))
                 else:
                     doc, _, sid = e["doc"].partition("#")
                     wanted = ["doc: {}#{}".format(Path(doc).stem, sid)]

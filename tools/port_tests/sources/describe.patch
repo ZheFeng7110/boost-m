@@ -1,0 +1,19 @@
+Boost.Describe's console example reads stdin in an endless loop: it stops at
+the end of input here (tests/describe/examples_json.cpp).
+
+--- a/libs/describe/example/console.cpp
++++ b/libs/describe/example/console.cpp
+@@ -107,6 +107,7 @@ int main()
+ 
+         std::string line;
+         std::getline( std::cin, line );
++        if( !std::cin ) break; // boost-m port: stop at the end of input
+ 
+         try
+         {
+@@ -126,4 +127,5 @@ int main()
+             std::cout << "Error: " << x.what() << std::endl;
+         }
+     }
++    return 0;
+ }

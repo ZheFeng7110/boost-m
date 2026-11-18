@@ -17,5 +17,3 @@
   `windows_auto_export` 对以共享形态构建的依赖包是否生效。
 - [ ] 子工程（`tests/dll`、`tests/test/utf`）各自重新构建本包，A 组因此多约 15 分钟；研究复用根工程的
   构建产物。
-- [ ] 决定是否把移植脚本（`port_examples.py`、各库的 `regen_*.py`、harness 头文件，目前在本地
-  `.tmp/scripts/`）整理进 `tools/`，以便升级 Boost 时重跑。

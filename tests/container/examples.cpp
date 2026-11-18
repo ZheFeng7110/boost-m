@@ -71,13 +71,13 @@ int example_main()
    //Requesting capacity for more elements than representable by "unsigned char"
    //is an error in the size optimized deque.
    bool exception_thrown = false;
-   /*<-*/ 
+    
    #ifndef BOOST_NO_EXCEPTIONS
    BOOST_CONTAINER_TRY{ size_optimized_deque_t v(256); } BOOST_CONTAINER_CATCH(...){ exception_thrown = true; } BOOST_CONTAINER_CATCH_END
    #else
    exception_thrown = true;
    #endif   //BOOST_NO_EXCEPTIONS
-   /*->*/
+   
    //=try       { size_optimized_deque_t v(256); }
    //=catch(...){ exception_thrown = true;       }
 
@@ -157,13 +157,13 @@ int example_main()
 
    //Requesting capacity for more elements than representable by "unsigned char" is an error
    bool exception_thrown = false;
-   /*<-*/ 
+    
    #ifndef BOOST_NO_EXCEPTIONS
    BOOST_CONTAINER_TRY{ size_optimized_devector_t v(256); } BOOST_CONTAINER_CATCH(...){ exception_thrown = true; } BOOST_CONTAINER_CATCH_END
    #else
    exception_thrown = true;
    #endif   //BOOST_NO_EXCEPTIONS
-   /*->*/
+   
    //=try       { size_optimized_devector_t v(256); }
    //=catch(...){ exception_thrown = true;          }
    assert(exception_thrown == true);
@@ -257,13 +257,13 @@ int example_main()
    //Requesting capacity for more elements than representable by "unsigned char"
    //is an error in the size optimized segtor.
    bool exception_thrown = false;
-   /*<-*/ 
+    
    #ifndef BOOST_NO_EXCEPTIONS
    BOOST_CONTAINER_TRY{ size_optimized_segtor_t v(256); } BOOST_CONTAINER_CATCH(...){ exception_thrown = true; } BOOST_CONTAINER_CATCH_END
    #else
    exception_thrown = true;
    #endif   //BOOST_NO_EXCEPTIONS
-   /*->*/
+   
    //=try       { size_optimized_segtor_t v(256); }
    //=catch(...){ exception_thrown = true;                  }
 
@@ -468,13 +468,13 @@ int example_main()
    //"unsigned char" max (due to the need to a bit to indicate short/long representation)
    //minus 1 (due to the terminating null) is an error in the size optimized string.
    bool exception_thrown = false;
-   /*<-*/ 
+    
    #ifndef BOOST_NO_EXCEPTIONS
    BOOST_CONTAINER_TRY{ size_optimized_string_t v(127, 'a');} BOOST_CONTAINER_CATCH(...) { exception_thrown = true; } BOOST_CONTAINER_CATCH_END
    #else
    exception_thrown = true;
    #endif   //BOOST_NO_EXCEPTIONS
-   /*->*/
+   
    //=try       { size_optimized_string_t v(127, 'a'); }
    //=catch(...){ exception_thrown = true;             }
 
@@ -619,13 +619,13 @@ int example_main()
    //Requesting capacity for more elements than representable by "unsigned char"
    //is an error in the size optimized vector.
    bool exception_thrown = false;
-   /*<-*/ 
+    
    #ifndef BOOST_NO_EXCEPTIONS
    BOOST_CONTAINER_TRY{ size_optimized_vector_t v(256); } BOOST_CONTAINER_CATCH(...){ exception_thrown = true; } BOOST_CONTAINER_CATCH_END
    #else
    exception_thrown = true;
    #endif   //BOOST_NO_EXCEPTIONS
-   /*->*/
+   
    //=try       { size_optimized_vector_t v(256); }
    //=catch(...){ exception_thrown = true;        }
 
