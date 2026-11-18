@@ -28,7 +28,8 @@ PROGRAMS = [
     ("math/doc_sf", ["-tc=doc: daubechies"]),
 ]
 # minimal programs, every case run in its own process
-REPROS = ["zz_repro/textual", "zz_repro/std_only", "zz_repro/with_asio"]
+REPROS = ["zz_repro/textual", "zz_repro/std_only", "zz_repro/with_asio", "zz_repro/future_only",
+          "zz_repro/future_fixed"]
 
 
 def sub(path, old, new, count=1):
@@ -181,10 +182,12 @@ def under_cdb(cdb, prog, args, env, cwd, log):
     script.write_text("\n".join([
         ".lines -e", "sxd eh", "g", ".echo ==STOP==", ".lastevent", "r", "kn 100",
         ".echo ==SYMBOLS==",
-        # CatchableTypes: the name carries the copy constructor when there is one
+        # decorated names: a CatchableType's name carries its copy constructor
+        ".symopt- 2",
         "x %s!_CT??_R0?AV*error*" % mod, "x %s!_CT??_R0?AVexception@std@@*" % mod,
-        "x %s!_TI*error*" % mod,
-        "x %s!*ambient*" % mod, "x %s!*Ambient*" % mod,
+        "x %s!_CT??_R0?AV*exception*" % mod,
+        "x %s!*_S_scheduler_address*" % mod, "x %s!*_GetStaticAmbientSchedulerRef*" % mod,
+        ".symopt+ 2",
         ".frame 3", "ub @$scopeip L30", "u @$scopeip L4",
         ".echo ==THREADS==", "~* kn 40", ".echo ==ANALYZE==", "!analyze -v", "q",
     ]) + "\n", encoding="utf-8")
