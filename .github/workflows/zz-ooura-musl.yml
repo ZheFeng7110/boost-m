@@ -1,0 +1,44 @@
+# Experiment only (dropped before merging): plain-include ooura_fourier_cos on
+# native aarch64 musl, with the vendored header before and after the patch.
+name: ooura musl experiment
+on:
+  pull_request:
+    branches: [test/module-test-hardening]
+jobs:
+  ooura:
+    runs-on: ubuntu-24.04-arm
+    container: alpine:3.22
+    steps:
+      - run: apk add --no-cache g++ git
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            upstream/boost/boost
+            patches/math.patch
+      - name: program
+        run: |
+          cat > /tmp/t.cpp <<'CPP'
+          #include <boost/math/quadrature/ooura_fourier_integrals.hpp>
+          #include <cmath>
+          #include <cstdio>
+          #include <limits>
+          int main() {
+              std::printf("long double digits %d, expl(1000) = %Lg\n",
+                          std::numeric_limits<long double>::digits, std::exp(1000.0L));
+              boost::math::quadrature::ooura_fourier_cos<double> c;
+              auto [J, e] = c.integrate([](double x) { return 1 / (x * x + 1); }, 1.0);
+              boost::math::quadrature::ooura_fourier_sin<double> s;
+              auto [I, e1] = s.integrate([](double x) { return 1 / x; }, 1.0);
+              double exact = M_PI / (2 * std::exp(1.0));
+              std::printf("cos %.17g err %g (exact %.17g)\nsin %.17g err %g\n", J, e, exact, I, e1);
+              return std::abs(J - exact) / exact <= std::max(10 * e, 1e-8) ? 0 : 1;
+          }
+          CPP
+      - name: patched header
+        run: g++ -std=c++20 -O2 -Iupstream/boost /tmp/t.cpp -o /tmp/patched && /tmp/patched
+      - name: pristine header (expected to fail)
+        run: |
+          git config --global --add safe.directory "$PWD"
+          git apply -R --include='*ooura*' patches/math.patch
+          g++ -std=c++20 -O2 -Iupstream/boost /tmp/t.cpp -o /tmp/pristine
+          if /tmp/pristine; then echo "pristine unexpectedly passes"; exit 1; fi
