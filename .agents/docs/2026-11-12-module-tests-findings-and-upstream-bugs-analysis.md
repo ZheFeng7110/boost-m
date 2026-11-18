@@ -114,7 +114,8 @@ status: active
    `cobalt/doc`、math `daubechies_scaling`，只在这一条腿上出现。怀疑方向是同一段 asio
    内联代码在不同模块的 GMF 中以不同配置实例化。如果属实，这是影响 Windows 使用方的真实缺陷，
    目前靠跳过绕开。三项中风险最高。
-2. **aarch64 上 `ooura_fourier_cos<double>` 返回 NaN**：还没确定是上游问题还是封装层问题（§4 #6）。
+2. ~~**aarch64 上 `ooura_fourier_cos<double>` 返回 NaN**~~：已确定是上游问题（与 musl 的
+   113 位 `long double` 数学函数共同触发），`patches/math.patch` 修复（§4 #6）。
 3. **Windows 上以 shared 形态构建本包时，包内编译源码的符号没有导出**，`tests/dll` 链接失败。
    以前没有使用方以 shared 形态依赖本包，这是新暴露的打包问题，或 mcpp 的
    `windows_auto_export` 问题。
@@ -137,7 +138,7 @@ status: active
 | 3 | **decimal**：`long double` 为 113 位时，`static_cast<long double>(decimal_fast128_t(1.5))` 得 `1.5e15`；`decimal128_t` 正确 | 未找到 | ❌ 未修复。在 x86_64 上用 `clang -mlong-double-128` 实测，1.92 与 1.93 结果相同 |
 | 4 | **decimal**：`logb`/`ilogb` 返回带偏置的指数，`logb(decimal64_t(1000)) == 401` | [#1437](https://github.com/boostorg/decimal/issues/1437) / [#1439](https://github.com/boostorg/decimal/pull/1439)，2026-08-29 修复，晚于 1.92.0（2026-08-05） | ✅ 已修复（实测返回 3） |
 | 5 | **charconv**：`from_chars("1.3a2bp-10", …, chars_format::hex)` 得 8.0427e-10：十六进制数字被当成一个整数读入，再按十的幂缩放。文档写 8.0427e-18，C hexfloat `0x1.3a2bp-10` 的正确值约为 1.1985e-3，三者互不一致 | 未找到。上游测试 `from_chars_float.cpp`（`simple_hex_scientific_test`）把 `80427e-14` 写成了期望值 | ❌ 实现、文档、测试都没变 |
-| 6 | **math**：aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN（结果与误差估计都是 NaN，`ooura_fourier_sin` 正常），节点以 113 位 `long double` 计算 | 未找到。[#1606](https://github.com/boostorg/math/issues/1606) 第 6 条是另一个 ooura 缺陷（`levels = 0` 越界） | ❓ 1.93 只改了命名空间宏。是不是上游问题，还要在 aarch64 上用纯 include 程序确认 |
+| 6 | **math**：aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN（结果与误差估计都是 NaN，`ooura_fourier_sin` 正常），节点以 113 位 `long double` 计算。该腿的 C 库是 musl，其 113 位 `expl`/`expm1l`/`log1pl` 只是调用 `double` 版本（源码注释“TODO: broken implementation to make things compile”）。每一层最后一个小节点（level 0 为 n = −8）处 `exp(-eta)` 约为 1e450：glibc 上有限，节点与权重转成 `double` 后都下溢为 0，循环随即结束；musl 上溢出为 `inf`，`phi_prime = -(inf + x·inf·η′)/inf²` 为 NaN，节点为 0。cosine 的小节点循环只在节点为负时停止（sine 版在 `node <= 0` 与 `isnan(node)` 时停止），于是收入了 `f(0)·NaN`，每一层的估计都是 NaN。在 x86_64 上用 `float128` 作节点精度、把 `exp`/`expm1`/`log1p` 换成 `double` 版本的纯 include 程序可复现，换回 libquadmath 则正常。在原生 aarch64 musl（ubuntu-24.04-arm 上的 alpine 3.22，gcc 14.2）上，同一个纯 include 程序用原始头文件得 `-nan`/`nan`，打补丁后得 0.57786367489546109（误差估计 6.4e-9） | 未找到。[#1606](https://github.com/boostorg/math/issues/1606) 第 6 条是另一个 ooura 缺陷（`levels = 0` 越界） | ❌ 1.93 只改了命名空间宏。`patches/math.patch` 让该循环在权重非有限时停止（真实权重此时已下溢，不损失精度），封装层不变 |
 | 7 | **math**：`tools/cubic_roots.hpp` 与 `optimization/detail/line_search_policies.hpp` 使用未限定的 `sin`/`fabs`，依赖 C 头文件把 `::sin`/`::fabs` 带进来 | 未找到 | ❌ 未修复（1.93 只加了模块宏） |
 | 8 | **variant**：`detail/has_result_type.hpp` 的 `typedef struct { char array[2]; } no;` 使 gcc 16.1 在模块导入方 ICE | 未找到 | ❌ 未修复。本质上是 gcc 的 bug，应报给 GCC |
 
@@ -202,9 +203,9 @@ status: active
 6. dll：`mangled/` 两个示例。
 7. cobalt：`spsc.cpp` 的数据竞争。
 8. GCC：`has_result_type.hpp` 匿名结构体触发的 ICE，先做最小复现。
+9. math：`ooura_fourier_cos` 的小节点循环收入非有限权重（§4 #6）。
 
 待确认：
-- aarch64 上 `ooura_fourier_cos` 的 NaN（§4 #6）。
 - windows-llvm-msvc 的堆损坏（§2.4）。
 
 待修正：§6 的两条排除理由。

@@ -8,9 +8,11 @@
   `tools/port_tests/helpers/asio.hpp`（及重新生成的 `tests/asio/*.cpp`）与 `tests/cobalt/doc.cpp` 中补全
   CatchableType 的 throw；ppltasks 局部静态变量合并的缺陷修好后，`tests/math/doc_sf.cpp` 可恢复
   `import std` 在前。两处都要在 Windows 上确认。
-- [ ] **aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN**（`tests/math/doc_numerics.cpp` 的
-  `doc: fourier_integrals`，在 113 位 `long double` 上跳过）。先在该平台上用纯 include 的程序确认是
-  上游问题还是封装层问题。
+- [x] **aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN**：上游问题，与封装层无关。该腿以
+  musl 为 C 库，musl 的 113 位 `expl`/`expm1l`/`log1pl` 直接调用 `double` 版本，最后一个小节点上
+  `exp(-eta)` 溢出成 `inf`，权重成为 NaN 而节点为 0，被收入求和；sine 版因 `node <= 0` 即停而不受影响。
+  `patches/math.patch` 让 cosine 的小节点循环在权重非有限时停止，`doc: fourier_integrals` 的跳过已删去
+  （分析见[发现记录](../2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) §4 #6）。
 - [ ] **Windows 上的 `tests/dll`。** 本包以 `linkage = "shared"` 构建的 DLL 不导出包内编译源码的符号
   （`boost::filesystem::detail::path_algorithms::*`、`boost::system::error_category` 的转换运算符），
   测试程序链接失败；`.github/workflows/tests.yml` 在 Windows 上跳过 `tests/dll`。确认 mcpp 的
