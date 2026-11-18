@@ -67,15 +67,17 @@ def headers():
     if not incs:  # clang found the installation itself
         incs = {str(p) for p in pathlib.Path(r"C:\Program Files\Microsoft Visual Studio").glob("*/*/VC/Tools/MSVC/*/include")}
     print("MSVC include dirs:", sorted(incs))
-    for inc in sorted(incs)[:1]:
-        for name in ("ppltasks.h", "pplwin.h", "pplinterface.h", "future"):
-            f = pathlib.Path(inc) / name
-            if not f.exists():
+    ver = lambda d: [int(x) for x in re.findall(r"MSVC[/\\](\d+)\.(\d+)\.(\d+)", d)[0]]
+    for inc in sorted(incs, key=ver)[-1:]:
+        print("using", inc)
+        for f in sorted(pathlib.Path(inc).iterdir()):
+            if not f.is_file():
                 continue
+            name = f.name
             lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
             for i, line in enumerate(lines):
-                if re.search(r"get_ambient_scheduler|_GetStaticAmbientSchedulerRef|_Ambient|alternatename|"
-                             r"_DefaultPPLTaskScheduler|_Task_async_state\b.*:|task_options\(\)", line):
+                if re.search(r"get_ambient_scheduler|_GetStaticAmbientSchedulerRef|_Ambient_scheduler|"
+                             r"alternatename", line):
                     print("== %s:%d" % (name, i + 1))
                     print("\n".join(lines[max(0, i - 3): i + 12]))
 
@@ -175,8 +177,15 @@ def run_once(prog, args, env, cwd, log, timeout=600):
 
 def under_cdb(cdb, prog, args, env, cwd, log):
     script = log.with_suffix(".cdbscript")
+    mod = pathlib.Path(prog).stem
     script.write_text("\n".join([
         ".lines -e", "sxd eh", "g", ".echo ==STOP==", ".lastevent", "r", "kn 100",
+        ".echo ==SYMBOLS==",
+        # CatchableTypes: the name carries the copy constructor when there is one
+        "x %s!_CT??_R0?AV*error*" % mod, "x %s!_CT??_R0?AVexception@std@@*" % mod,
+        "x %s!_TI*error*" % mod,
+        "x %s!*ambient*" % mod, "x %s!*Ambient*" % mod,
+        ".frame 3", "ub @$scopeip L30", "u @$scopeip L4",
         ".echo ==THREADS==", "~* kn 40", ".echo ==ANALYZE==", "!analyze -v", "q",
     ]) + "\n", encoding="utf-8")
     denv = dict(env)
@@ -186,7 +195,7 @@ def under_cdb(cdb, prog, args, env, cwd, log):
     out = d.stdout + d.stderr
     log.write_text(out, encoding="utf-8")
     i = out.find("==STOP==")
-    j = out.find("==ANALYZE==")
+    j = out.find("==THREADS==")
     print("cdb exit %s; from the stop:" % code(d.returncode))
     print(out[i:j if j > i else None][:40000] if i >= 0 else out[-20000:])
 
@@ -216,15 +225,20 @@ def run():
         for c in cases:
             tag = "%s.%s" % (test.replace("/", "_"), re.sub(r"\W+", "_", c))
             r = run_once(prog, ["-tc=" + c], env, cwd, logs / (tag + ".log"))
-            bad = r.returncode != 0
-            print("  %-45s exit %s" % (c, code(r.returncode)), flush=True)
-            if bad:
-                for line in (r.stdout + r.stderr).strip().splitlines()[-8:]:
-                    print("      " + line)
+            page_heap(os.path.basename(prog), True)
+            try:
+                h = run_once(prog, ["-tc=" + c], env, cwd, logs / (tag + ".pageheap.log"))
+            finally:
+                page_heap(os.path.basename(prog), False)
+            print("  %-45s exit %-24s page heap %s" % (c, code(r.returncode), code(h.returncode)), flush=True)
+            for x in (r, h):
+                if x.returncode != 0:
+                    for line in (x.stdout + x.stderr).strip().splitlines()[-6:]:
+                        print("      " + line)
             for line in r.stderr.splitlines():
-                if line.startswith("ambient scheduler"):
+                if line.startswith(("ambient scheduler", "orig.what()")):
                     print("      " + line)
-            if bad and cdb and r.returncode & 0xFFFFFFFF >= 0xC0000000:
+            if (r.returncode != 0 or h.returncode != 0) and cdb:
                 under_cdb(cdb, prog, ["-tc=" + c], env, cwd, logs / (tag + ".cdb.log"))
 
     print("\n" + "#" * 78 + "\n# the three crashing programs")

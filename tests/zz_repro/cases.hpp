@@ -53,3 +53,26 @@ TEST_CASE("repro: thread") {
     t.join();
     CHECK(s.size() == 100);
 }
+
+// make_exception_ptr copies the object into its storage through the ThrowInfo's
+// copy function; a missing copy function means a bitwise copy whose what()
+// buffer the by-value parameter frees on return (use-after-free / double free).
+template <class E>
+void repro_stored_copy(E orig) {
+    auto p = std::make_exception_ptr(orig);
+    const char* w = nullptr;
+    std::string text;
+    try {
+        std::rethrow_exception(p);
+    } catch (const std::exception& e) {
+        w = e.what();
+        text = w;
+    }
+    std::fprintf(stderr, "orig.what() %p, rethrown what() %p, %zu chars\n", (const void*)orig.what(), (const void*)w,
+                 text.size());
+    CHECK(text.find(std::string(100, 'x')) != std::string::npos);
+}
+TEST_CASE("repro: stored copy runtime_error") { repro_stored_copy(std::runtime_error(std::string(100, 'x'))); }
+TEST_CASE("repro: stored copy system_error") {
+    repro_stored_copy(std::system_error(std::make_error_code(std::errc::invalid_argument), std::string(100, 'x')));
+}

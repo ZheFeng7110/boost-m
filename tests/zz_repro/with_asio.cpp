@@ -50,3 +50,6 @@ TEST_CASE("repro: asio post bind error") {
     ctx.run();
     CHECK(got == asio::error::invalid_argument);
 }
+TEST_CASE("repro: stored copy boost system_error") {
+    repro_stored_copy(boost::system::system_error(asio::error::invalid_argument, std::string(100, 'x')));
+}
