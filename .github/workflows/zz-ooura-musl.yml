@@ -1,7 +1,7 @@
 # Experiment only (dropped before merging): plain-include ooura_fourier_cos on
 # native aarch64 musl, with the vendored header before and after the patch.
-
-# Add this line to trigger CI
+# JavaScript actions cannot run in an Alpine job container on arm64, so the
+# checkout runs on the host and the build in `docker run alpine`.
 name: ooura musl experiment
 on:
   push:
@@ -11,9 +11,7 @@ on:
 jobs:
   ooura:
     runs-on: ubuntu-24.04-arm
-    container: alpine:3.22
     steps:
-      - run: apk add --no-cache g++ git
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -21,7 +19,7 @@ jobs:
             patches/math.patch
       - name: program
         run: |
-          cat > /tmp/t.cpp <<'CPP'
+          cat > t.cpp <<'CPP'
           #include <boost/math/quadrature/ooura_fourier_integrals.hpp>
           #include <cmath>
           #include <cstdio>
@@ -38,11 +36,17 @@ jobs:
               return std::abs(J - exact) / exact <= std::max(10 * e, 1e-8) ? 0 : 1;
           }
           CPP
-      - name: patched header
-        run: g++ -std=c++20 -O2 -Iupstream/boost /tmp/t.cpp -o /tmp/patched && /tmp/patched
-      - name: pristine header (expected to fail)
-        run: |
-          git config --global --add safe.directory "$PWD"
+          cat > run.sh <<'SH'
+          set -eux
+          apk add --no-cache g++ git
+          uname -m
+          echo "== patched header"
+          g++ -std=c++20 -O2 -Iupstream/boost t.cpp -o patched
+          ./patched
+          echo "== pristine header (expected to fail)"
           git apply -R --include='*ooura*' patches/math.patch
-          g++ -std=c++20 -O2 -Iupstream/boost /tmp/t.cpp -o /tmp/pristine
-          if /tmp/pristine; then echo "pristine unexpectedly passes"; exit 1; fi
+          g++ -std=c++20 -O2 -Iupstream/boost t.cpp -o pristine
+          if ./pristine; then echo "pristine unexpectedly passes"; exit 1; fi
+          SH
+      - name: aarch64 musl
+        run: docker run --rm -v "$PWD:/w" -w /w alpine:3.22 sh run.sh
