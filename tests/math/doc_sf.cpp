@@ -4,8 +4,13 @@
 // through identities between them.
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
-import std;
+// math before std: the math module's global fragment and the std module both
+// define MSVC's ppltasks (<future>), and with std imported first clang merges
+// _GetStaticAmbientSchedulerRef so that its call_once lambda writes a second
+// copy of the function's static: std::async (daubechies_scaling) then reads a
+// null scheduler on windows-llvm-msvc (the shape of llvm/llvm-project#221548).
 import mcpplibs.mwrap.boost.math;
+import std;
 
 namespace bm = boost::math;
 namespace bmc = boost::math::constants;
@@ -153,10 +158,8 @@ TEST_CASE("doc: daubechies") {
     for (double x : h)
         sum += x;
     CHECK(close(sum, std::sqrt(2.0), 1e-14));
-#if !defined(_WIN32)  // segfaults on windows-llvm-msvc: an open issue (design record §11.6)
     bm::daubechies_scaling<double, 2> phi(10);  // 2^10 grid refinements (x = 1 is a grid point)
     CHECK(close(phi(1.0), (1 + std::sqrt(3.0)) / 2, 1e-12));
-#endif
 }
 TEST_CASE("doc: sph_harm") {
     CHECK(close(bm::spherical_harmonic_r(0, 0, 0.3, 0.7), 0.5 / std::sqrt(pi)));

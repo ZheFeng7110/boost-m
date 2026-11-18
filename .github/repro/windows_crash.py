@@ -20,20 +20,15 @@ TOOLCHAIN = os.environ.get("TOOLCHAIN", "llvm@22.1.8")
 FEATURES = os.environ.get("FEATURES", "asio,cobalt,math")
 RUNS = int(os.environ.get("RUNS", "5"))
 
-# (test, doctest arguments)
-# (test, doctest arguments): the three crashing programs
+# (test, doctest arguments): the formerly crashing programs, every case
 PROGRAMS = [
     ("asio/examples_cpp11", []),
     ("asio/examples_cpp14", []),
     ("asio/examples_cpp20", []),
     ("cobalt/doc", []),
-    ("math/doc_sf", ["-tc=doc: daubechies"]),
-    ("zz_repro/doc_sf_math_first", ["-tc=doc: daubechies"]),
+    ("math/doc_sf", []),
 ]
-# minimal programs, every case run in its own process
-REPROS = ["zz_repro/future_only",
-          "zz_repro/future_fixed", "zz_repro/async_module_first", "zz_repro/async_textual_future",
-          "zz_repro/async_math", "zz_repro/daub_std_first", "zz_repro/daub_math_first"]
+REPROS = []
 
 
 def sub(path, old, new, count=1):
