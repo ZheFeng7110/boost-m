@@ -1,0 +1,102 @@
+# Experiment for open issue 1 (.agents/docs/todos/module-tests-open-issues.md):
+# the windows-llvm-msvc process crashes of asio composed_4, cobalt/doc and
+# math daubechies_scaling. Builds only those three test programs with the
+# Windows skips removed, prints the effective flags, runs each plainly and
+# then under full page heap in cdb. Not part of the package's CI.
+
+name: Windows crash repro
+
+on:
+  pull_request:
+    branches: [test/module-test-hardening]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repro-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  XLINGS_VERSION: v2026.10.26.1
+  XLINGS_NON_INTERACTIVE: '1'
+  MCPP_VERSION: "2026.11.5.1"
+  MCPP_JOBS: '4'
+  TOOLCHAIN: "llvm@22.1.8"
+  FEATURES: "asio,cobalt,math"
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  repro:
+    name: windows-llvm-msvc-x86_64 (crash repro)
+    runs-on: windows-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Cache mcpp sandbox
+        uses: actions/cache@v6
+        with:
+          path: ~/.mcpp
+          key: repro-mcpp-windows-latest-${{ env.TOOLCHAIN }}-v${{ env.MCPP_VERSION }}
+          restore-keys: |
+            repro-mcpp-windows-latest-${{ env.TOOLCHAIN }}-
+
+      - name: Install xlings
+        shell: pwsh
+        run: |
+          irm https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.ps1 | iex
+          "$env:USERPROFILE\.xlings\subos\current\bin" |
+            Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+      - name: Install mcpp and the toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq "\"mcpp\": \"$MCPP_VERSION\"" .xlings.json
+          xlings update
+          xlings install -y "mcpp@$MCPP_VERSION"
+          mcpp --version | grep -Fq "$MCPP_VERSION"
+          mcpp toolchain install llvm 22.1.8
+          mcpp toolchain default "$TOOLCHAIN"
+
+      - name: Locate the debugger
+        shell: pwsh
+        run: |
+          Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\Debuggers' -Recurse -Filter cdb.exe -ErrorAction SilentlyContinue |
+            ForEach-Object { $_.FullName }
+
+      - name: Remove the Windows skips
+        shell: bash
+        run: python .github/repro/windows_crash.py unskip
+
+      - name: Build the three test programs
+        shell: bash
+        run: |
+          set -euo pipefail
+          for t in math/doc_sf cobalt/doc asio/examples_cpp20; do
+            echo "::group::build $t"
+            mcpp test --no-run --toolchain "$TOOLCHAIN" --features "$FEATURES" "$t"
+            echo "::endgroup::"
+          done
+
+      - name: Effective flags
+        if: always()
+        shell: bash
+        run: python .github/repro/windows_crash.py flags
+
+      - name: Run (plain, then page heap under cdb)
+        shell: bash
+        run: python .github/repro/windows_crash.py run
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: repro-logs
+          path: |
+            target/repro-logs/
+            target/*/*/build.ninja
+            target/*/*/compile_commands.json
+          if-no-files-found: warn
