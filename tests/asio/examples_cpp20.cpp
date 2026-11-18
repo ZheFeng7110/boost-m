@@ -11,7 +11,8 @@
 // priority_scheduler (std::priority_queue does not order equal priorities) and
 // prioritised_handlers (whether the accept has completed when the queue is
 // first run depends on the host's timing) and tutorial/timer5 (two threads,
-// both timers due at the same instant).
+// both timers due at the same instant), and composed_4 on Windows (the system's
+// text for EINVAL).
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
@@ -1683,10 +1684,12 @@ TEST_CASE("example: cpp20/operations/composed_4") {
     ex_argc = int(ex_args.size());
     int rc = example_main();
     CHECK(rc == 0);
+#if !(defined(BOOST_ASIO_WINDOWS))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Error: Invalid argument
 Error: Invalid argument
 Exception: Invalid argument [system:22]
 )ex"));
+#endif
 }
 }  // namespace ex_cpp20_operations_composed_4
 

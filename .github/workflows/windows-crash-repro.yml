@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for t in zz_repro/future_only zz_repro/future_fixed zz_repro/async_module_first zz_repro/async_textual_future zz_repro/async_math math/doc_sf cobalt/doc asio/examples_cpp11 asio/examples_cpp14 asio/examples_cpp20; do
+          for t in zz_repro/future_only zz_repro/future_fixed zz_repro/async_module_first zz_repro/async_textual_future zz_repro/async_math zz_repro/daub_std_first zz_repro/daub_math_first zz_repro/doc_sf_math_first math/doc_sf cobalt/doc asio/examples_cpp11 asio/examples_cpp14 asio/examples_cpp20; do
             echo "::group::build $t"
             mcpp test --no-run --toolchain "$TOOLCHAIN" --features "$FEATURES" "$t"
             echo "::endgroup::"

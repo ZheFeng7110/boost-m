@@ -28,11 +28,12 @@ PROGRAMS = [
     ("asio/examples_cpp20", []),
     ("cobalt/doc", []),
     ("math/doc_sf", ["-tc=doc: daubechies"]),
+    ("zz_repro/doc_sf_math_first", ["-tc=doc: daubechies"]),
 ]
 # minimal programs, every case run in its own process
 REPROS = ["zz_repro/future_only",
           "zz_repro/future_fixed", "zz_repro/async_module_first", "zz_repro/async_textual_future",
-          "zz_repro/async_math"]
+          "zz_repro/async_math", "zz_repro/daub_std_first", "zz_repro/daub_math_first"]
 
 
 def sub(path, old, new, count=1):
@@ -48,7 +49,14 @@ def unskip():
     sub("tests/math/doc_sf.cpp", "#if !defined(_WIN32)  // segfaults on windows-llvm-msvc",
         "#if 1  // segfaults on windows-llvm-msvc")
     sub("mcpp.toml", 'ldflags = ["-lws2_32",', 'ldflags = ["-g", "-lws2_32",')
-    print("unskipped daubechies_scaling; ldflags += -g")
+    # doc_sf with the math module imported before std
+    src = (ROOT / "tests/math/doc_sf.cpp").read_text(encoding="utf-8")
+    a = "import std;\nimport mcpplibs.mwrap.boost.math;\n"
+    if a not in src:
+        sys.exit("unskip: doc_sf imports changed")
+    (ROOT / "tests/zz_repro/doc_sf_math_first.cpp").write_text(
+        src.replace(a, "import mcpplibs.mwrap.boost.math;\nimport std;\n"), encoding="utf-8")
+    print("unskipped daubechies_scaling; ldflags += -g; wrote zz_repro/doc_sf_math_first.cpp")
 
 
 def headers():
