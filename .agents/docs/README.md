@@ -27,7 +27,7 @@
 - `todos/` 放尚未完成的工作项，它们不是决定的记录。
 - 移动或改名用 `tools/doc-tools/move_record.py`，它同时改写仓库中对该文件的引用。
 
-共 24 篇记录（其中 0 篇已归档），1 项待办。
+共 25 篇记录（其中 0 篇已归档），1 项待办。
 
 ## 进行中
 
@@ -43,6 +43,7 @@
 
 ### tests
 
+- [windows-llvm-msvc 上的进程崩溃：两个 clang 模块缺陷](2026-11-18-windows-msvc-module-crashes-analysis.md) — landed
 - [示例移植脚本进入 `tools/port_tests/`：升级 Boost 时重跑上游测试的移植](2026-11-18-port-tests-tools-design.md) — landed
 - [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 - [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed
@@ -51,6 +52,7 @@
 
 ### 2026-11
 
+- [windows-llvm-msvc 上的进程崩溃：两个 clang 模块缺陷](2026-11-18-windows-msvc-module-crashes-analysis.md) — landed
 - [示例移植脚本进入 `tools/port_tests/`：升级 Boost 时重跑上游测试的移植](2026-11-18-port-tests-tools-design.md) — landed
 - [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 - [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed

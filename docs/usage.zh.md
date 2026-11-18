@@ -155,6 +155,11 @@ serialization numeric version macros`。
 
 已验证的 CI 组合：Linux x86_64 配 GCC 16.1 与 LLVM，Linux arm64 配 GCC，macOS arm64 配 LLVM（Apple 链接器；lld-macho 会重复一条零 unwind 条目），Windows x86_64 配 clang-msvc。真正的 MSVC（`cl`）、MinGW 以及依赖外部 SDK 的库不在承诺范围内。
 
+clang-msvc 上有两个影响模块的 clang 缺陷（llvm 22.1.8 与 23.1.3 均有）。两者都出在导入方的翻译单元里，本包无法替你绕开：
+
+- 来自模块的 throw，其 MSVC ABI 异常元数据缺少拷贝构造函数，除非该翻译单元自己检查过同类型的 throw（clice-io/xclang#27，修复为尚未合入的 llvm/llvm-project#114075）。复制这样的异常（`std::make_exception_ptr`、`std::current_exception`、asio 的 `use_future`、cobalt 的 promise）时变成按位复制，进程以堆损坏（0xC0000374）结束。复制 Boost 异常的翻译单元可以在一个从不调用的函数里 throw 一次该类型，例如 `[[maybe_unused]] static void f() { throw boost::system::system_error(boost::system::error_code()); }`。
+- 先 `import std;`、再导入其全局模块片段包含 `<future>` 的 Boost 模块（math、asio）时，clang 可能把 MSVC 的 ppltasks 合并错，`std::async` 读到空的调度器而崩溃。测试中先导入 Boost 模块可以避开。
+
 与 ABI 相关的配置由包固定，而非由消费者决定：
 
 - `BOOST_FILESYSTEM_VERSION=3` 与 `BOOST_THREAD_VERSION=2` —— 生成导出时所依据的上游默认值，予以固定，以免环境使模块接口与库翻译单元失步；
