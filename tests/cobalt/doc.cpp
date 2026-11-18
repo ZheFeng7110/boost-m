@@ -23,10 +23,19 @@ namespace bsys = boost::system;  // (`system` would clash with ::system)
 namespace variant2 = boost::variant2;
 using namespace std::chrono_literals;
 
-#if defined(_WIN32)
-constexpr bool ex_on_windows = true;
-#else
-constexpr bool ex_on_windows = false;
+#if defined(_MSC_VER)
+// clang on the MSVC ABI leaves the copy constructor out of the CatchableTypes it
+// emits for a throw that came from a named module, unless this TU checks a throw
+// of the type itself (clice-io/xclang#27, llvm/llvm-project#114075); the linker
+// may keep that copy, and copying the exception into an exception_ptr (race,
+// promise) is then bitwise and frees its message twice (0xC0000374). The two
+// throws cover the bases (system_error, bad_exception, ...). Never called.
+[[maybe_unused]] static void doc_msvc_catchable_types() {
+    namespace bd = boost::detail;
+    if (std::rand())
+        throw bd::with_throw_location<bsys::system_error>(bsys::system_error(bsys::error_code()), {});
+    throw bd::with_throw_location<std::bad_exception>(std::bad_exception(), {});
+}
 #endif
 
 #if defined(_WIN32)
@@ -50,10 +59,7 @@ struct doc_case_names : doctest::IReporter {
 DOCTEST_REGISTER_LISTENER("doc_case_names", 1, doc_case_names);
 #endif
 
-// Not on Windows: on windows-llvm-msvc the process ends with heap corruption
-// (0xC0000374) at a different case from run to run (race, a-minimal-executor),
-// like asio's composed_4; an open issue of the wrapper (design record §11.6).
-TEST_SUITE_BEGIN("cobalt doc" * doctest::skip(ex_on_windows));
+TEST_SUITE_BEGIN("cobalt doc");
 
 namespace {
 std::string out;

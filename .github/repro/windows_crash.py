@@ -23,13 +23,16 @@ RUNS = int(os.environ.get("RUNS", "5"))
 # (test, doctest arguments)
 # (test, doctest arguments): the three crashing programs
 PROGRAMS = [
-    ("asio/examples_cpp20", ["-tc=example: cpp20/operations/composed_4"]),
+    ("asio/examples_cpp11", []),
+    ("asio/examples_cpp14", []),
+    ("asio/examples_cpp20", []),
     ("cobalt/doc", []),
     ("math/doc_sf", ["-tc=doc: daubechies"]),
 ]
 # minimal programs, every case run in its own process
-REPROS = ["zz_repro/textual", "zz_repro/std_only", "zz_repro/with_asio", "zz_repro/future_only",
-          "zz_repro/future_fixed"]
+REPROS = ["zz_repro/future_only",
+          "zz_repro/future_fixed", "zz_repro/async_module_first", "zz_repro/async_textual_future",
+          "zz_repro/async_math"]
 
 
 def sub(path, old, new, count=1):
@@ -42,20 +45,10 @@ def sub(path, old, new, count=1):
 
 
 def unskip():
-    for v in ("cpp11", "cpp14", "cpp20"):
-        p = ROOT / ("tests/asio/examples_%s.cpp" % v)
-        s = p.read_text(encoding="utf-8")
-        guard = "#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)\n"
-        marker = guard + "// libs/asio/example/%s/operations/composed_4.cpp\n" % v
-        if marker not in s:
-            sys.exit("unskip: composed_4 guard not found in " + p.name)
-        p.write_text(s.replace(marker, "#if 1\n" + marker[len(guard):]), encoding="utf-8")
-    sub("tests/cobalt/doc.cpp", 'TEST_SUITE_BEGIN("cobalt doc" * doctest::skip(ex_on_windows));',
-        'TEST_SUITE_BEGIN("cobalt doc");')
     sub("tests/math/doc_sf.cpp", "#if !defined(_WIN32)  // segfaults on windows-llvm-msvc",
         "#if 1  // segfaults on windows-llvm-msvc")
     sub("mcpp.toml", 'ldflags = ["-lws2_32",', 'ldflags = ["-g", "-lws2_32",')
-    print("unskipped composed_4 (cpp11/14/20), cobalt/doc, daubechies_scaling; ldflags += -g")
+    print("unskipped daubechies_scaling; ldflags += -g")
 
 
 def headers():
