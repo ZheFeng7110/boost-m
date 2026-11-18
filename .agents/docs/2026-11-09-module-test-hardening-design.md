@@ -689,7 +689,8 @@ CI 增加了 `example coverage` 作业与 A 组的子工程步骤；`docs/archit
    需要在 Windows 主机上复现后再定。
 2. **aarch64 Linux 上 `ooura_fourier_cos<double>` 返回 NaN**（结果与误差估计都是 NaN；同一用例的
    `ooura_fourier_sin` 正常）。它以 `long double` 计算节点，该平台的 `long double` 是 113 位；是上游
-   问题还是封装层问题未定，`doc: fourier_integrals` 在该平台跳过这一项检查。
+   问题还是封装层问题未定，`doc: fourier_integrals` 在该平台跳过这一项检查。（已解决：上游问题，经
+   musl 的 113 位数学函数触发，由 `patches/math.patch` 修复，跳过已删去；见发现记录 §4 #6。）
 3. **Windows 上的 `tests/dll`。** 本包以 `linkage = "shared"` 构建成 DLL 时，包内编译源码的符号
    （`boost::filesystem::detail::path_algorithms::*`、`boost::system::error_category` 的转换运算符等）
    没有导出，测试程序链接失败；CI 在 Windows 上暂不运行 `tests/dll`（`tests/test/utf` 照常运行）。需要

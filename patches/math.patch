@@ -44,6 +44,24 @@ index 1bc3c1cc..10bddb54 100644
          if (fabs(gTp_mid) <= c2_ * fabs(gTp0)) {
            return alpha_mid;
          }
+diff --git a/upstream/boost/boost/math/quadrature/detail/ooura_fourier_integrals_detail.hpp b/upstream/boost/boost/math/quadrature/detail/ooura_fourier_integrals_detail.hpp
+index c677852d..520ad359 100644
+--- a/upstream/boost/boost/math/quadrature/detail/ooura_fourier_integrals_detail.hpp
++++ b/upstream/boost/boost/math/quadrature/detail/ooura_fourier_integrals_detail.hpp
+@@ -612,6 +612,13 @@ private:
+                 break;
+             }
+             Real weight = static_cast<Real>(precise_nw.second);
++            using std::isfinite;
++            if (!isfinite(weight)) {
++                // exp(-eta) overflowed where the weight has already underflowed;
++                // happens when exp of PreciseReal has a narrower range than the type,
++                // e.g. musl's 113-bit long double exp is the double one:
++                break;
++            }
+             w = weight;
+             if (lnode_row.size() > 0) {
+                 if (lnode_row.back() == node) {
 diff --git a/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp b/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp
 index 5e08c10d..b41116a7 100644
 --- a/upstream/boost/boost/math/special_functions/nonfinite_num_facets.hpp

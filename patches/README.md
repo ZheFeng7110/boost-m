@@ -78,7 +78,13 @@ internal linkage (`static constexpr`, `const int`) and were not exported; they
 become `inline constexpr`. `tools/cubic_roots.hpp` called `sin` and the
 optimizers' line search `fabs` unqualified with no `using std::...`, so they
 found `::sin` / `::fabs` of the C library header, which a module's importers do
-not see; the using-declarations are added.
+not see; the using-declarations are added. The third change is an upstream bug:
+`ooura_fourier_cos<double>` computes its nodes in `long double`, and where
+that type's `exp` has a narrower range than the type (musl's 113-bit
+`expl` is the `double` one, the linux-gcc-arm64 leg) `exp(-eta)` overflows on
+the last little node; its weight becomes NaN at a node of 0, which the cosine
+loop (unlike the sine one) accepts, so every estimate is NaN. The loop now
+stops at a non-finite weight; the true weight there has already underflowed.
 
 `variant.patch` works around a gcc 16.1 internal compiler error:
 `boost/variant/detail/has_result_type.hpp` declares its `no` type as a
