@@ -21,11 +21,14 @@ FEATURES = os.environ.get("FEATURES", "asio,cobalt,math")
 RUNS = int(os.environ.get("RUNS", "5"))
 
 # (test, doctest arguments)
+# (test, doctest arguments): the three crashing programs
 PROGRAMS = [
     ("asio/examples_cpp20", ["-tc=example: cpp20/operations/composed_4"]),
     ("cobalt/doc", []),
     ("math/doc_sf", ["-tc=doc: daubechies"]),
 ]
+# minimal programs, every case run in its own process
+REPROS = ["zz_repro/textual", "zz_repro/std_only", "zz_repro/with_asio"]
 
 
 def sub(path, old, new, count=1):
@@ -52,6 +55,29 @@ def unskip():
         "#if 1  // segfaults on windows-llvm-msvc")
     sub("mcpp.toml", 'ldflags = ["-lws2_32",', 'ldflags = ["-g", "-lws2_32",')
     print("unskipped composed_4 (cpp11/14/20), cobalt/doc, daubechies_scaling; ldflags += -g")
+
+
+def headers():
+    """The MSVC STL definitions behind the null ambient scheduler."""
+    incs = set()
+    for cc in ROOT.glob("target/*/*/compile_commands.json"):
+        for e in json.loads(cc.read_text(encoding="utf-8")):
+            cmd = e.get("command") or " ".join(e.get("arguments", []))
+            incs.update(re.findall(r"-(?:isystem|imsvc|I)\s*\"?([^\s\"]*MSVC[^\s\"]*[/\\]include)", cmd))
+    if not incs:  # clang found the installation itself
+        incs = {str(p) for p in pathlib.Path(r"C:\Program Files\Microsoft Visual Studio").glob("*/*/VC/Tools/MSVC/*/include")}
+    print("MSVC include dirs:", sorted(incs))
+    for inc in sorted(incs)[:1]:
+        for name in ("ppltasks.h", "pplwin.h", "pplinterface.h", "future"):
+            f = pathlib.Path(inc) / name
+            if not f.exists():
+                continue
+            lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
+            for i, line in enumerate(lines):
+                if re.search(r"get_ambient_scheduler|_GetStaticAmbientSchedulerRef|_Ambient|alternatename|"
+                             r"_DefaultPPLTaskScheduler|_Task_async_state\b.*:|task_options\(\)", line):
+                    print("== %s:%d" % (name, i + 1))
+                    print("\n".join(lines[max(0, i - 3): i + 12]))
 
 
 def flags():
@@ -140,68 +166,80 @@ def code(rc):
     return "%d (0x%08X)" % (rc, rc & 0xFFFFFFFF)
 
 
+def run_once(prog, args, env, cwd, log, timeout=600):
+    r = subprocess.run([prog, *args], env=env, cwd=cwd, capture_output=True, text=True,
+                       errors="replace", timeout=timeout)
+    log.write_text(r.stdout + "\n--- stderr ---\n" + r.stderr, encoding="utf-8")
+    return r
+
+
+def under_cdb(cdb, prog, args, env, cwd, log):
+    script = log.with_suffix(".cdbscript")
+    script.write_text("\n".join([
+        ".lines -e", "sxd eh", "g", ".echo ==STOP==", ".lastevent", "r", "kn 100",
+        ".echo ==THREADS==", "~* kn 40", ".echo ==ANALYZE==", "!analyze -v", "q",
+    ]) + "\n", encoding="utf-8")
+    denv = dict(env)
+    denv["_NT_SYMBOL_PATH"] = "%s;srv*C:\\symcache*https://msdl.microsoft.com/download/symbols" % os.path.dirname(prog)
+    d = subprocess.run([str(cdb), "-g", "-G", "-cf", str(script), prog, *args], env=denv, cwd=cwd,
+                       capture_output=True, text=True, errors="replace", timeout=2400)
+    out = d.stdout + d.stderr
+    log.write_text(out, encoding="utf-8")
+    i = out.find("==STOP==")
+    j = out.find("==ANALYZE==")
+    print("cdb exit %s; from the stop:" % code(d.returncode))
+    print(out[i:j if j > i else None][:40000] if i >= 0 else out[-20000:])
+
+
+def program(test):
+    info = launch(test)
+    prog = info["program"]
+    if not prog.lower().endswith(".exe") and os.path.exists(prog + ".exe"):
+        prog += ".exe"
+    env = dict(os.environ)
+    env.update(info.get("env") or {})
+    return prog, env, info.get("cwd") or str(ROOT)
+
+
 def run():
     cdb = find_cdb()
     print("cdb:", cdb)
     logs = ROOT / "target" / "repro-logs"
     logs.mkdir(parents=True, exist_ok=True)
+
+    print("\n" + "#" * 78 + "\n# minimal programs, one process per case")
+    for test in REPROS:
+        prog, env, cwd = program(test)
+        r = subprocess.run([prog, "-ltc"], env=env, cwd=cwd, capture_output=True, text=True, errors="replace")
+        cases = [l.strip() for l in r.stdout.splitlines() if l.strip().startswith("repro:")]
+        print("\n== %s (%d cases)" % (test, len(cases)), flush=True)
+        for c in cases:
+            tag = "%s.%s" % (test.replace("/", "_"), re.sub(r"\W+", "_", c))
+            r = run_once(prog, ["-tc=" + c], env, cwd, logs / (tag + ".log"))
+            bad = r.returncode != 0
+            print("  %-45s exit %s" % (c, code(r.returncode)), flush=True)
+            if bad:
+                for line in (r.stdout + r.stderr).strip().splitlines()[-8:]:
+                    print("      " + line)
+            for line in r.stderr.splitlines():
+                if line.startswith("ambient scheduler"):
+                    print("      " + line)
+            if bad and cdb and r.returncode & 0xFFFFFFFF >= 0xC0000000:
+                under_cdb(cdb, prog, ["-tc=" + c], env, cwd, logs / (tag + ".cdb.log"))
+
+    print("\n" + "#" * 78 + "\n# the three crashing programs")
     for test, args in PROGRAMS:
-        info = launch(test)
-        prog = info["program"]
-        if not prog.lower().endswith(".exe") and os.path.exists(prog + ".exe"):
-            prog += ".exe"
-        env = dict(os.environ)
-        env.update(info.get("env") or {})
-        cwd = info.get("cwd") or str(ROOT)
-        exe = os.path.basename(prog)
+        prog, env, cwd = program(test)
         print("\n" + "=" * 78 + "\n%s  %s  %s" % (test, prog, args), flush=True)
-        pdbs = sorted(p.name for p in pathlib.Path(prog).parent.glob("*.pdb"))
-        print("pdb next to the program:", pdbs or "none")
-
         for i in range(RUNS):
-            r = subprocess.run([prog, *args], env=env, cwd=cwd, capture_output=True, text=True,
-                               errors="replace", timeout=600)
-            tail = (r.stdout + r.stderr).strip().splitlines()[-6:]
+            r = run_once(prog, args, env, cwd, logs / ("%s.plain%d.log" % (test.replace("/", "_"), i + 1)))
             print("plain run %d: exit %s" % (i + 1, code(r.returncode)))
-            for line in tail:
+            for line in (r.stdout + r.stderr).strip().splitlines()[-3:]:
                 print("    " + line)
-            (logs / ("%s.plain%d.log" % (test.replace("/", "_"), i + 1))).write_text(
-                r.stdout + "\n--- stderr ---\n" + r.stderr, encoding="utf-8")
-
-        page_heap(exe, True)
-        try:
-            r = subprocess.run([prog, *args], env=env, cwd=cwd, capture_output=True, text=True,
-                               errors="replace", timeout=1200)
-            print("page-heap run: exit %s" % code(r.returncode))
-            for line in (r.stdout + r.stderr).strip().splitlines()[-6:]:
-                print("    " + line)
-            if cdb:
-                script = logs / ("%s.cdb.txt" % test.replace("/", "_"))
-                script.write_text("\n".join([
-                    ".lines -e",
-                    "sxe -c \".echo ==AV==; .lastevent; r; kn 100; !analyze -v; q\" av",
-                    "sxd eh",
-                    "g",
-                    ".echo ==STOP==",
-                    ".lastevent",
-                    "r",
-                    "kn 100",
-                    "!analyze -v",
-                    "q",
-                ]) + "\n", encoding="utf-8")
-                denv = dict(env)
-                denv["_NT_SYMBOL_PATH"] = "%s;srv*C:\\symcache*https://msdl.microsoft.com/download/symbols" % os.path.dirname(prog)
-                d = subprocess.run([str(cdb), "-g", "-G", "-cf", str(script), prog, *args], env=denv, cwd=cwd,
-                                   capture_output=True, text=True, errors="replace", timeout=2400)
-                out = d.stdout + d.stderr
-                (logs / ("%s.cdb.log" % test.replace("/", "_"))).write_text(out, encoding="utf-8")
-                i = max(out.find("==AV=="), out.find("==STOP=="))
-                print("cdb exit %s; debugger output from the stop:" % code(d.returncode))
-                print(out[i:][:30000] if i >= 0 else out[-30000:])
-        finally:
-            page_heap(exe, False)
+        if cdb:
+            under_cdb(cdb, prog, args, env, cwd, logs / ("%s.cdb.log" % test.replace("/", "_")))
         sys.stdout.flush()
 
 
 if __name__ == "__main__":
-    {"unskip": unskip, "flags": flags, "run": run}[sys.argv[1]]()
+    {"unskip": unskip, "flags": flags, "headers": headers, "run": run}[sys.argv[1]]()

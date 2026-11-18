@@ -26,6 +26,7 @@ env:
   TOOLCHAIN: "llvm@22.1.8"
   FEATURES: "asio,cobalt,math"
   PYTHONUNBUFFERED: '1'
+  RUNS: '2'
 
 jobs:
   repro:
@@ -71,11 +72,11 @@ jobs:
         shell: bash
         run: python .github/repro/windows_crash.py unskip
 
-      - name: Build the three test programs
+      - name: Build the test programs
         shell: bash
         run: |
           set -euo pipefail
-          for t in math/doc_sf cobalt/doc asio/examples_cpp20; do
+          for t in zz_repro/textual zz_repro/std_only zz_repro/with_asio math/doc_sf cobalt/doc asio/examples_cpp20; do
             echo "::group::build $t"
             mcpp test --no-run --toolchain "$TOOLCHAIN" --features "$FEATURES" "$t"
             echo "::endgroup::"
@@ -86,7 +87,12 @@ jobs:
         shell: bash
         run: python .github/repro/windows_crash.py flags
 
-      - name: Run (plain, then page heap under cdb)
+      - name: MSVC STL ambient scheduler
+        if: always()
+        shell: bash
+        run: python .github/repro/windows_crash.py headers
+
+      - name: Run (plain, then under cdb)
         shell: bash
         run: python .github/repro/windows_crash.py run
 
