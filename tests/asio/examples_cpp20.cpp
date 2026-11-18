@@ -11,8 +11,8 @@
 // priority_scheduler (std::priority_queue does not order equal priorities) and
 // prioritised_handlers (whether the accept has completed when the queue is
 // first run depends on the host's timing) and tutorial/timer5 (two threads,
-// both timers due at the same instant). composed_4 is not compiled on Windows
-// (it ends the process there; see the design record).
+// both timers due at the same instant), and composed_4 on Windows (the system's
+// text for EINVAL).
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
@@ -344,6 +344,16 @@ struct ex_case_names : doctest::IReporter {
     void test_case_skipped(const doctest::TestCaseData&) override {}
 };
 DOCTEST_REGISTER_LISTENER("ex_case_names", 1, ex_case_names);
+#if defined(_MSC_VER)
+// clang on the MSVC ABI leaves the copy constructor out of the CatchableTypes it
+// emits for a throw that came from a named module, unless this TU checks a throw
+// of the type itself (clice-io/xclang#27, llvm/llvm-project#114075); the linker
+// may keep that copy, and the exception_ptr behind use_future then copies the
+// error bitwise and frees its message twice (0xC0000374). Never called.
+[[maybe_unused]] static void ex_msvc_catchable_types() {
+    throw boost::system::system_error(boost::system::error_code());
+}
+#endif
 #endif
 
 // libs/asio/example/cpp20/invocation/completion_executor.cpp
@@ -1435,7 +1445,6 @@ Message sent
 }
 }  // namespace ex_cpp20_operations_composed_3
 
-#if !defined(BOOST_ASIO_WINDOWS)  // the program uses what only exists there (see the file header)
 // libs/asio/example/cpp20/operations/composed_4.cpp
 namespace ex_cpp20_operations_composed_4 {
 using boost::asio::ip::tcp;
@@ -1675,13 +1684,14 @@ TEST_CASE("example: cpp20/operations/composed_4") {
     ex_argc = int(ex_args.size());
     int rc = example_main();
     CHECK(rc == 0);
+#if !(defined(BOOST_ASIO_WINDOWS))  // this output is not portable there (see the file header)
     CHECK(ex_out.str() == std::string_view(R"ex(Error: Invalid argument
 Error: Invalid argument
 Exception: Invalid argument [system:22]
 )ex"));
+#endif
 }
 }  // namespace ex_cpp20_operations_composed_4
-#endif
 
 // libs/asio/example/cpp20/operations/composed_5.cpp
 namespace ex_cpp20_operations_composed_5 {

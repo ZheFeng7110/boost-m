@@ -200,6 +200,23 @@ macOS arm64 with LLVM (Apple linker; lld-macho duplicates a zero-unwind entry),
 Windows x86_64 with clang-msvc. Real MSVC (`cl`), MinGW and external-SDK
 libraries are not claimed.
 
+Two clang defects affect modules on clang-msvc (llvm 22.1.8 and 23.1.3); both
+are in the importing translation unit, so the package cannot work around them
+for you:
+
+- A throw that comes from a module gets MSVC-ABI exception metadata without the
+  copy constructor unless the TU itself checks a throw of the same type
+  (clice-io/xclang#27, fix pending as llvm/llvm-project#114075). Copying such an
+  exception (`std::make_exception_ptr`, `std::current_exception`, asio's
+  `use_future`, cobalt's promises) is then bitwise, and the process ends with
+  heap corruption (0xC0000374). A TU that copies Boost exceptions can name a
+  throw of the type in a function it never calls, e.g.
+  `[[maybe_unused]] static void f() { throw boost::system::system_error(boost::system::error_code()); }`.
+- With `import std;` before a Boost module whose global module fragment includes
+  `<future>` (math, asio), clang may merge MSVC's ppltasks so that `std::async`
+  reads a null scheduler and crashes. Importing the Boost module first avoided it
+  in the tests.
+
 ABI-relevant configuration is fixed by the package, not by the consumer:
 
 - `BOOST_FILESYSTEM_VERSION=3` and `BOOST_THREAD_VERSION=2` — the upstream

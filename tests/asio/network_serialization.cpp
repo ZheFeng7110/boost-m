@@ -332,6 +332,16 @@ struct ex_case_names : doctest::IReporter {
     void test_case_skipped(const doctest::TestCaseData&) override {}
 };
 DOCTEST_REGISTER_LISTENER("ex_case_names", 1, ex_case_names);
+#if defined(_MSC_VER)
+// clang on the MSVC ABI leaves the copy constructor out of the CatchableTypes it
+// emits for a throw that came from a named module, unless this TU checks a throw
+// of the type itself (clice-io/xclang#27, llvm/llvm-project#114075); the linker
+// may keep that copy, and the exception_ptr behind use_future then copies the
+// error bitwise and frees its message twice (0xC0000374). Never called.
+[[maybe_unused]] static void ex_msvc_catchable_types() {
+    throw boost::system::system_error(boost::system::error_code());
+}
+#endif
 #endif
 
 // libs/asio/example/cpp11/serialization/server.cpp

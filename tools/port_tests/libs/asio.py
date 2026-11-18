@@ -43,8 +43,8 @@ HEADER = """\
 // priority_scheduler (std::priority_queue does not order equal priorities) and
 // prioritised_handlers (whether the accept has completed when the queue is
 // first run depends on the host's timing) and tutorial/timer5 (two threads,
-// both timers due at the same instant). composed_4 is not compiled on Windows
-// (it ends the process there; see the design record).
+// both timers due at the same instant), and composed_4 on Windows (the system's
+// text for EINVAL).
 // boost/asio/yield.hpp / unyield.hpp (the stackless-coroutine macros) stay
 // where the examples include them; BOOST_ASIO_COMPLETION_TOKEN_FOR(sig) is
 // written as the completion_token_for<sig> concept it expands to; boost/asio/coroutine.hpp is included first
@@ -72,9 +72,9 @@ def examples(v):
            "--output-unless", "ranged_wait_for_all=1", "--output-unless", "priority_scheduler=1",
            "--output-unless", "prioritised_handlers=1",
            "--output-unless", "cpp11/tutorial/timer5/timer=1",
-           # composed_4 ends the process on windows-llvm-msvc (0xC0000374, heap
-           # corruption; under investigation, design record §11.4)
-           "--only-if", "composed_4=!defined(BOOST_ASIO_WINDOWS)",
+           # composed_4 prints the system's text for EINVAL (Windows: WSA's
+           # "An invalid argument was supplied", code 10022)
+           "--output-unless", "composed_4=defined(BOOST_ASIO_WINDOWS)",
            "--post-re", r"parallel_sort:BOOST_ASIO_COMPLETION_TOKEN_FOR\((void\([^)]*\))\)=>boost::asio::completion_token_for<\1>",
            "--merge", "main=sleep.cpp,stdin_line_reader.cpp",
            "--stdin", "main=line one\\nline two\\n",
