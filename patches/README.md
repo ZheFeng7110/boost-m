@@ -92,6 +92,21 @@ typedef of an unnamed struct inside a class template, and gcc segfaults when
 a module importer instantiates it (every `boost::geometry::index::rtree`
 use, through the variant of its nodes). The struct is named.
 
+`thread.patch` and the export part of `serialization.patch` keep the package
+from declaring exports on Windows. On the MSVC ABI, mcpp writes a `.def` for
+a shared library only when none of its objects declares an export (a declared
+one decides the whole surface; GNU ld's auto-export follows the same rule), so
+a single `dllexport` left the shared package DLL publishing nothing but itself
+and `tests/dll` failed to link. There were three of them, none tied to a DLL
+build of Boost: the LNK4221 placeholder `foo` in thread's `win32/tss_dll.cpp`,
+now a plain extern function; `codecvt_null<wchar_t>`, `BOOST_SYMBOL_EXPORT`
+in every build, now only under `BOOST_SERIALIZATION_DYN_LINK` /
+`BOOST_ALL_DYN_LINK`; and `BOOST_DLLEXPORT` in
+`boost/serialization/force_include.hpp`, which keeps registration code from
+being dropped. On clang for Windows it is now empty and `BOOST_USED` is
+`__attribute__((used))`, which is what ELF builds already use. cl keeps
+`dllexport`.
+
 Every patch is reviewed against the 1.92.0 tag it was written for;
 `upstream/boost/SOURCE.md` records the archive and checksum the tree comes
 from. A patch that neither applies nor is already applied fails the replay.

@@ -31,7 +31,7 @@ PATCHES = [
     "accumulators", "algorithm", "asio", "beast", "bimap", "cobalt", "config_platform",
     "config_cstdlib", "config_user", "container", "convert", "hof", "interprocess", "io", "json", "lambda", "math",
     "mqtt5", "multi_array", "parameter", "range_adaptors", "numeric", "regex",
-    "safe_numerics", "serialization", "system", "test", "ublas", "units",
+    "safe_numerics", "serialization", "system", "test", "thread", "ublas", "units",
     "url", "variant",
 ]
 

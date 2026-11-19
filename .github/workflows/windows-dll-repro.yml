@@ -86,7 +86,22 @@ jobs:
             tests/dll/target/*/*/bin/*.def
           if-no-files-found: warn
 
-      - name: Fail if tests/dll failed
-        if: steps.test.outcome == 'failure'
+      # The patch changes how Serialization keeps its registration code on
+      # clang for Windows: run the root project's tests that use it.
+      - name: Test serialization and thread (root project)
+        id: root
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          for t in serialization thread describe/examples_serialization; do
+            echo "::group::$t"
+            mcpp test --toolchain "$TOOLCHAIN" --features "serialization,thread,describe" "$t"
+            echo "::endgroup::"
+          done
+
+      - name: Fail if a step failed
+        if: steps.test.outcome == 'failure' || steps.root.outcome == 'failure'
         shell: bash
         run: exit 1
+

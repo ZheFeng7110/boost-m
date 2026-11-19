@@ -244,13 +244,6 @@ jobs:
         run: |
           set -euo pipefail
           for p in tests/dll tests/test/utf; do
-            # The shared package DLL does not export the package's compiled
-            # sources on PE yet (undefined boost::filesystem / boost::system
-            # symbols at link time): an open issue, design record §11.6.
-            if [ "$RUNNER_OS" = "Windows" ] && [ "$p" = "tests/dll" ]; then
-              echo "tests/dll: not run on Windows (design record §11.6)"
-              continue
-            fi
             # gcc@16.1.0 on Linux arm64 targets aarch64-linux-musl with a
             # static C library: a static program cannot load the plugins.
             if [ "$RUNNER_OS" = "Linux" ] && [ "$RUNNER_ARCH" = "ARM64" ] && [ "$p" = "tests/dll" ]; then

@@ -30,8 +30,14 @@
 // in an ungraceful crash at runtime when (and only when) built in
 // release mode.
 
-#if defined(BOOST_HAS_DECLSPEC) && !defined(__COMO__)
+// boost-m vendored edit: clang on Windows keeps the code with `used`, as it
+// does on ELF. A `dllexport` here lands in every object that instantiates a
+// serializer, and a DLL with any declared export gets no discovered ones
+// (lld-link with a generated .def, GNU ld's auto-export alike).
+#if defined(BOOST_HAS_DECLSPEC) && !defined(__COMO__) && !defined(__clang__)
 #   define BOOST_DLLEXPORT __declspec(dllexport)
+#elif defined(__clang__) && (defined(_WIN32) || defined(_WIN64))
+#   define BOOST_USED __attribute__ ((__used__))
 #elif ! defined(_WIN32) && ! defined(_WIN64)
 #   if defined(__MWERKS__)
 #       define BOOST_DLLEXPORT __declspec(dllexport)

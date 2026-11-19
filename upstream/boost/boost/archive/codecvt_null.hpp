@@ -26,6 +26,17 @@
 #include <boost/archive/detail/auto_link_archive.hpp>
 //#include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
+// boost-m vendored edit: upstream marks codecvt_null<wchar_t>
+// BOOST_SYMBOL_EXPORT in every build; only a DLL build of Serialization
+// exports it. An export in a static build is the only one of the DLL it is
+// linked into, which then gets no discovered exports (lld-link with a
+// generated .def, GNU ld's auto-export alike).
+#if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SERIALIZATION_DYN_LINK)
+#define BOOST_ARCHIVE_CODECVT_NULL_DECL BOOST_SYMBOL_EXPORT
+#else
+#define BOOST_ARCHIVE_CODECVT_NULL_DECL
+#endif
+
 #if defined(BOOST_NO_STDC_NAMESPACE)
 namespace std {
 // For STLport on WinCE, BOOST_NO_STDC_NAMESPACE can get defined if STLport is putting symbols in its own namespace.
@@ -66,7 +77,7 @@ template<>
 class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
     public std::codecvt<wchar_t, char, std::mbstate_t>
 {
-    BOOST_SYMBOL_EXPORT std::codecvt_base::result
+    BOOST_ARCHIVE_CODECVT_NULL_DECL std::codecvt_base::result
     do_out(
         std::mbstate_t & state,
         const wchar_t * first1,
@@ -77,7 +88,7 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
         char * & next2
     ) const BOOST_OVERRIDE;
 
-    BOOST_SYMBOL_EXPORT std::codecvt_base::result
+    BOOST_ARCHIVE_CODECVT_NULL_DECL std::codecvt_base::result
     do_in(
         std::mbstate_t & state,
         const char * first1,
@@ -88,21 +99,21 @@ class BOOST_SYMBOL_VISIBLE codecvt_null<wchar_t> :
         wchar_t * & next2
     ) const BOOST_OVERRIDE;
 
-    BOOST_SYMBOL_EXPORT int do_encoding( ) const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
+    BOOST_ARCHIVE_CODECVT_NULL_DECL int do_encoding( ) const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
         return sizeof(wchar_t) / sizeof(char);
     }
 
-    BOOST_SYMBOL_EXPORT bool do_always_noconv() const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
+    BOOST_ARCHIVE_CODECVT_NULL_DECL bool do_always_noconv() const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
         return false;
     }
 
-    BOOST_SYMBOL_EXPORT int do_max_length( ) const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
+    BOOST_ARCHIVE_CODECVT_NULL_DECL int do_max_length( ) const BOOST_NOEXCEPT_OR_NOTHROW BOOST_OVERRIDE {
         return do_encoding();
     }
 public:
-    BOOST_SYMBOL_EXPORT explicit codecvt_null(std::size_t no_locale_manage = 0);
+    BOOST_ARCHIVE_CODECVT_NULL_DECL explicit codecvt_null(std::size_t no_locale_manage = 0);
 
-    BOOST_SYMBOL_EXPORT ~codecvt_null() BOOST_OVERRIDE ;
+    BOOST_ARCHIVE_CODECVT_NULL_DECL ~codecvt_null() BOOST_OVERRIDE ;
 };
 
 } // namespace archive
