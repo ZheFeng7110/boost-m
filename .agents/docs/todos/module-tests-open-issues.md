@@ -13,9 +13,13 @@
   `exp(-eta)` 溢出成 `inf`，权重成为 NaN 而节点为 0，被收入求和；sine 版因 `node <= 0` 即停而不受影响。
   `patches/math.patch` 让 cosine 的小节点循环在权重非有限时停止，`doc: fourier_integrals` 的跳过已删去
   （分析见[发现记录](../2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) §4 #6）。
-- [ ] **Windows 上的 `tests/dll`。** 本包以 `linkage = "shared"` 构建的 DLL 不导出包内编译源码的符号
-  （`boost::filesystem::detail::path_algorithms::*`、`boost::system::error_category` 的转换运算符），
-  测试程序链接失败；`.github/workflows/tests.yml` 在 Windows 上跳过 `tests/dll`。确认 mcpp 的
-  `windows_auto_export` 对以共享形态构建的依赖包是否生效。
+- [x] **Windows 上的 `tests/dll`**：mcpp 的 `windows_auto_export` 对以共享形态构建的依赖包同样生效，
+  会生成 `.def`。但只要 DLL 的某个输入目标文件自己声明了导出（`.drectve` 中的 `-export:`），mcpp 就把
+  导出面交给这些声明，不再发现其余符号；GNU ld 的 auto-export 规则相同。本包的 352 个目标文件中有 35 个
+  带这种声明，都与 Boost 的 DLL 构建无关：thread `win32/tss_dll.cpp` 里消除 LNK4221 的 `foo`、
+  `codecvt_null<wchar_t>` 无条件的 `BOOST_SYMBOL_EXPORT`、serialization 的 `BOOST_DLLEXPORT`。结果
+  `.def` 为空。`patches/thread.patch` 与 `patches/serialization.patch` 去掉了这三处（说明见
+  `patches/README.md`），Windows 上 `.def` 有 50689 项（PE 上限 65535），`tests/dll` 四个程序全部通过。
+  `tests.yml` 的 Windows 跳过已删去（实验见 fork PR #3）。
 - [ ] 子工程（`tests/dll`、`tests/test/utf`）各自重新构建本包，A 组因此多约 15 分钟；研究复用根工程的
   构建产物。

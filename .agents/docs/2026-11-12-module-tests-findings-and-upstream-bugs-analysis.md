@@ -116,9 +116,10 @@ status: active
    目前靠跳过绕开。三项中风险最高。
 2. ~~**aarch64 上 `ooura_fourier_cos<double>` 返回 NaN**~~：已确定是上游问题（与 musl 的
    113 位 `long double` 数学函数共同触发），`patches/math.patch` 修复（§4 #6）。
-3. **Windows 上以 shared 形态构建本包时，包内编译源码的符号没有导出**，`tests/dll` 链接失败。
-   以前没有使用方以 shared 形态依赖本包，这是新暴露的打包问题，或 mcpp 的
-   `windows_auto_export` 问题。
+3. ~~**Windows 上以 shared 形态构建本包时，包内编译源码的符号没有导出**~~：打包问题，不是 mcpp
+   的问题。DLL 的输入中只要有一个目标文件声明了导出，mcpp 就不再生成发现的导出（与 GNU ld 的
+   auto-export 相同）；thread 与 serialization 的三处 `dllexport` 在静态构建中也存在，
+   `patches/thread.patch` 与 `patches/serialization.patch` 去掉了它们。
 
 ## 3. 上游问题的归类
 

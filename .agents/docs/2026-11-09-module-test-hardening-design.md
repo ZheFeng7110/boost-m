@@ -696,6 +696,8 @@ CI 增加了 `example coverage` 作业与 A 组的子工程步骤；`docs/archit
    没有导出，测试程序链接失败；CI 在 Windows 上暂不运行 `tests/dll`（`tests/test/utf` 照常运行）。需要
    确认 mcpp 的 `windows_auto_export` 对以共享形态构建的依赖包是否生效。linux-gcc-arm64 腿的 gcc 16.1.0
    以 `aarch64-linux-musl` 静态 C 库为目标，静态程序无法加载插件，`tests/dll` 在该腿上同样不运行
-   （这是平台限制，不是缺陷）。
+   （这是平台限制，不是缺陷）。（已解决：auto-export 生效，但包内三处与 DLL 构建无关的 `dllexport`
+   使 mcpp 不再发现其余导出，`.def` 为空；由 `patches/thread.patch` 与 `patches/serialization.patch`
+   去掉，Windows 上运行 `tests/dll`；见待办记录。）
 4. 待定：是否把移植脚本整理进 `tools/`（§11.3）。
 5. 子工程各自重新构建本包，A 组因此多约 15 分钟（§11.5）；可以研究复用根工程的构建产物。
