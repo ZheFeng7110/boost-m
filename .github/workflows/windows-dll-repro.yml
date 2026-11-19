@@ -1,0 +1,92 @@
+# Experiment for the open issue "tests/dll on Windows"
+# (.agents/docs/todos/module-tests-open-issues.md): builds tests/dll on
+# windows-llvm-msvc and reports what the auto-generated .def of each shared
+# library contains and which input objects declare exports themselves.
+# Not part of the package's CI.
+
+name: Windows dll repro
+
+on:
+  pull_request:
+    branches: [test/module-test-hardening]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dll-repro-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  XLINGS_VERSION: v2026.10.26.1
+  XLINGS_NON_INTERACTIVE: '1'
+  MCPP_VERSION: "2026.11.5.1"
+  MCPP_JOBS: '4'
+  TOOLCHAIN: "llvm@22.1.8"
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  repro:
+    name: windows-llvm-msvc-x86_64 (tests/dll)
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Cache mcpp sandbox
+        uses: actions/cache@v6
+        with:
+          path: ~/.mcpp
+          key: repro-mcpp-windows-latest-${{ env.TOOLCHAIN }}-v${{ env.MCPP_VERSION }}
+          restore-keys: |
+            repro-mcpp-windows-latest-${{ env.TOOLCHAIN }}-
+
+      - name: Install xlings
+        shell: pwsh
+        run: |
+          irm https://raw.githubusercontent.com/openxlings/xlings/main/tools/other/quick_install.ps1 | iex
+          "$env:USERPROFILE\.xlings\subos\current\bin" |
+            Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+
+      - name: Install mcpp and the toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq "\"mcpp\": \"$MCPP_VERSION\"" .xlings.json
+          xlings update
+          xlings install -y "mcpp@$MCPP_VERSION"
+          mcpp --version | grep -Fq "$MCPP_VERSION"
+          mcpp toolchain install llvm 22.1.8
+          mcpp toolchain default "$TOOLCHAIN"
+
+      - name: Test tests/dll
+        id: test
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          cd tests/dll && mcpp test --toolchain "$TOOLCHAIN" 2>&1 | tee ../../target-dll-test.log
+
+      - name: Exports report
+        if: always()
+        shell: bash
+        run: |
+          grep -n -i "undefined symbol\|lld-link: error\|warning: .*exports\|referenced by" target-dll-test.log | head -60 || true
+          python .github/repro/windows_dll.py tests/dll
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dll-repro
+          path: |
+            target-dll-test.log
+            tests/dll/target/*/*/*.ninja
+            tests/dll/target/*/*/bin/*.def
+          if-no-files-found: warn
+
+      - name: Fail if tests/dll failed
+        if: steps.test.outcome == 'failure'
+        shell: bash
+        run: exit 1
