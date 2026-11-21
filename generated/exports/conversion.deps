@@ -1,0 +1,3 @@
+mcpplibs.mwrap.boost.assert
+mcpplibs.mwrap.boost.smart_ptr
+mcpplibs.mwrap.boost.throw_exception

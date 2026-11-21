@@ -1,0 +1,277 @@
+# tests/regex/coverage.toml — official examples and documentation snippets of
+# Boost.regex 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "regex"
+
+[[example]]
+path = "libs/regex/example/grep/grep.cpp"
+case = "regex/examples_grep:example: grep"
+
+[[example]]
+path   = "libs/regex/example/snippets/captures_example.cpp"
+status = "excluded"
+reason = "needs a regex library built with BOOST_REGEX_MATCH_EXTRA (a configuration that changes the compiled TUs); the package builds the default configuration"
+
+[[example]]
+path = "libs/regex/example/snippets/credit_card_example.cpp"
+case = "regex/examples:example: credit_card_example"
+
+[[example]]
+path   = "libs/regex/example/snippets/icu_example.cpp"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
+
+[[example]]
+path   = "libs/regex/example/snippets/mfc_example.cpp"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[example]]
+path = "libs/regex/example/snippets/partial_regex_grep.cpp"
+case = "regex/examples:example: partial_regex_grep"
+
+[[example]]
+path = "libs/regex/example/snippets/partial_regex_iterate.cpp"
+case = "regex/examples:example: partial_regex_iterate"
+
+[[example]]
+path = "libs/regex/example/snippets/partial_regex_match.cpp"
+case = "regex/examples:example: partial_regex_match"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_grep_example_1.cpp"
+case = "regex/examples:example: regex_grep_example_1"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_grep_example_2.cpp"
+case = "regex/examples:example: regex_grep_example_2"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_grep_example_3.cpp"
+case = "regex/examples:example: regex_grep_example_3"
+
+[[example]]
+path   = "libs/regex/example/snippets/regex_grep_example_4.cpp"
+status = "excluded"
+reason = "Borland C++Builder __closure extension"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_iterator_example.cpp"
+case = "regex/examples:example: regex_iterator_example"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_match_example.cpp"
+case = "regex/examples:example: regex_match_example"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_merge_example.cpp"
+case = "regex/examples:example: regex_merge_example"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_replace_example.cpp"
+case = "regex/examples:example: regex_replace_example"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_search_example.cpp"
+case = "regex/examples:example: regex_search_example"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_split_example_1.cpp"
+case = "regex/examples:example: regex_split_example_1"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_split_example_2.cpp"
+case = "regex/examples:example: regex_split_example_2"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_token_iterator_eg_1.cpp"
+case = "regex/examples:example: regex_token_iterator_eg_1"
+
+[[example]]
+path = "libs/regex/example/snippets/regex_token_iterator_eg_2.cpp"
+case = "regex/examples:example: regex_token_iterator_eg_2"
+
+[[example]]
+path   = "libs/regex/example/timer/regex_timer.cpp"
+status = "excluded"
+reason = "interactive benchmark (times expressions typed on stdin)"
+
+[[snippet]]
+doc   = "libs/regex/doc/bad_expression.qbk#bad_expression"
+title = "bad_expression"
+case  = "regex/api:doc: bad_expression"
+
+[[snippet]]
+doc   = "libs/regex/doc/basic_regex.qbk#basic_regex"
+title = "basic_regex"
+case  = "regex/api:doc: basic_regex"
+
+[[snippet]]
+doc    = "libs/regex/doc/captures.qbk#captures"
+title  = "Understanding Marked Sub-Expressions and Captures"
+status = "excluded"
+reason = "needs a regex library built with BOOST_REGEX_MATCH_EXTRA (a configuration that changes the compiled TUs); the package builds the default configuration"
+
+[[snippet]]
+doc   = "libs/regex/doc/error_type.qbk#error_type"
+title = "error_type"
+case  = "regex/api:doc: error_type"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_algo"
+title  = "Unicode Regular Expression Algorithms"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_iter"
+title  = "Unicode Aware Regex Iterators"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
+
+[[snippet]]
+doc    = "libs/regex/doc/icu_strings.qbk#unicode_types"
+title  = "Unicode regular expression types"
+status = "excluded"
+reason = "needs ICU (the package builds regex without ICU)"
+
+[[snippet]]
+doc   = "libs/regex/doc/introduction.qbk#intro"
+title = "Introduction and Overview"
+case  = "regex/api:doc: intro"
+
+[[snippet]]
+doc    = "libs/regex/doc/locale.qbk#locale"
+title  = "Localization"
+status = "excluded"
+reason = "message catalogues: set_message_catalogue needs a POSIX catalogue installed (cpp/c traits) or a Win32 resource DLL (w32 traits); neither is part of the package or its test environment"
+
+[[snippet]]
+doc    = "libs/regex/doc/match_flag_type.qbk#match_flag_type"
+title  = "match_flag_type"
+case   = "regex/api:regex_constants and match flags"
+reason = "the page is the flag listing; the case uses match_any / match_not_bol and the default"
+
+[[snippet]]
+doc   = "libs/regex/doc/match_result.qbk#match_results"
+title = "match_results"
+case  = "regex/api:doc: match_results"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_algo"
+title  = "Overloaded Algorithms For MFC String Types"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_iter"
+title  = "Iterating Over the Matches Within An MFC String"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_regex_create"
+title  = "Regular Expression Creation From an MFC String"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[snippet]]
+doc    = "libs/regex/doc/mfc_strings.qbk#mfc_regex_types"
+title  = "Regex Types Used With MFC Strings"
+status = "excluded"
+reason = "MFC/ATL strings, Windows-only Visual C++ libraries"
+
+[[snippet]]
+doc   = "libs/regex/doc/modules.qbk#modules"
+title = "Module Support (Experimental)"
+case  = "regex/api:doc: modules"
+
+[[snippet]]
+doc    = "libs/regex/doc/partial_matches.qbk#partial_matches"
+title  = "Partial Matches"
+case   = "regex/examples:example: partial_regex_match"
+reason = "the section's example is example/snippets/partial_regex_match.cpp"
+
+[[snippet]]
+doc   = "libs/regex/doc/posix_api.qbk#posix"
+title = "POSIX Compatible C API's"
+case  = "regex/posix_api:doc: posix"
+
+[[snippet]]
+doc   = "libs/regex/doc/regex_format.qbk#regex_format"
+title = "regex_format (Deprecated)"
+case  = "regex/api:doc: regex_format"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_grep.qbk#regex_grep"
+title  = "regex_grep (Deprecated)"
+case   = "regex/examples:example: regex_grep_example_1"
+reason = "the section's example is example/snippets/regex_grep_example_1.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_iterator.qbk#regex_iterator"
+title  = "regex_iterator"
+case   = "regex/examples:example: regex_iterator_example"
+reason = "the section's example is example/snippets/regex_iterator_example.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_match.qbk#regex_match"
+title  = "regex_match"
+case   = "regex/examples:example: regex_match_example"
+reason = "the section's example is example/snippets/regex_match_example.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_replace.qbk#regex_replace"
+title  = "regex_replace"
+case   = "regex/examples:example: regex_replace_example"
+reason = "the section's example is example/snippets/regex_replace_example.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_search.qbk#regex_search"
+title  = "regex_search"
+case   = "regex/examples:example: regex_search_example"
+reason = "the section's example is example/snippets/regex_search_example.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_split.qbk#regex_split"
+title  = "regex_split (deprecated)"
+case   = "regex/examples:example: regex_split_example_1"
+reason = "the section's example is example/snippets/regex_split_example_1.cpp"
+
+[[snippet]]
+doc    = "libs/regex/doc/regex_token_iterator.qbk#regex_token_iterator"
+title  = "regex_token_iterator"
+case   = "regex/examples:example: regex_token_iterator_eg_1"
+reason = "the section's example is example/snippets/regex_token_iterator_eg_1.cpp"
+
+[[snippet]]
+doc   = "libs/regex/doc/regex_traits.qbk#regex_traits"
+title = "regex_traits"
+case  = "regex/custom_types:doc: regex_traits"
+
+[[snippet]]
+doc   = "libs/regex/doc/sub_match.qbk#sub_match"
+title = "sub_match"
+case  = "regex/api:doc: sub_match"
+
+[[snippet]]
+doc   = "libs/regex/doc/syntax_basic.qbk#basic_syntax"
+title = "POSIX Basic Regular Expression Syntax"
+case  = "regex/api:doc: basic_syntax"
+
+[[snippet]]
+doc   = "libs/regex/doc/syntax_extended.qbk#basic_extended"
+title = "POSIX Extended Regular Expression Syntax"
+case  = "regex/api:doc: basic_extended"
+
+[[snippet]]
+doc   = "libs/regex/doc/syntax_perl.qbk#perl_syntax"
+title = "Perl Regular Expression Syntax"
+case  = "regex/api:doc: perl_syntax"
+
+[[snippet]]
+doc   = "libs/regex/doc/unicode_iterators.qbk#uni_iter"
+title = "Unicode Iterators"
+case  = "regex/api:doc: uni_iter"

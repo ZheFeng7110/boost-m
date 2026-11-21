@@ -18,4 +18,4 @@ description = "Example consumer: profile feature backend-log-avx2 (backend = sug
 license     = "Apache-2.0"
 
 [dependencies]
-"mcpplibs.mwrap.boost" = { path = "../..", default-features = false, backend = "log-avx2" }
+mcpplibs.mwrap.boost = { path = "../..", default-features = false, backend = "log-avx2" }

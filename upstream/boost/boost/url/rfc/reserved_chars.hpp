@@ -36,7 +36,9 @@ namespace urls {
         @ref grammar::parse,
         @ref pct_encoded_rule.
 */
-constexpr auto reserved_chars = ~unreserved_chars;
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR auto reserved_chars = ~unreserved_chars;
 
 } // urls
 } // boost

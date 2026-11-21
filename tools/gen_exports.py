@@ -1092,7 +1092,9 @@ def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
         groups.setdefault(ns, []).append((q, guard))
     extras = {}
     for x in policy.extras(lib):
-        extras.setdefault(tuple(x["namespace"].split("::")), []).append(x)
+        # namespace = "" is the global namespace (`export { ... }`).
+        key = tuple(x["namespace"].split("::")) if x["namespace"] else ()
+        extras.setdefault(key, []).append(x)
         skipped.append((lib, "extra", x["namespace"], "", x["reason"]))
 
     lines = [
@@ -1102,8 +1104,8 @@ def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
         "",
     ]
     for key in sorted(set(groups) | set(extras)):
-        lines.append("export " + " ".join(
-            "namespace {} {{".format(n) for n in key))
+        lines.append("export " + (" ".join(
+            "namespace {} {{".format(n) for n in key) if key else "{"))
         for x in extras.get(key, ()):
             lines += _comment(x["reason"])
             lines += ["  " + ln for ln in x["lines"]]
@@ -1119,7 +1121,7 @@ def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
             lines.append("  using {};".format(_spell(q, key, namespaces)))
         if open_guard is not None:
             lines += _close_guard(open_guard)
-        lines.append("}" * len(key))
+        lines.append("}" * max(len(key), 1))
         lines.append("")
 
     gen = out_dir / "generated" / "exports"

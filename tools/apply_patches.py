@@ -28,10 +28,11 @@ PATCH_DIR = ROOT / "patches"
 
 # One entry per patches/<name>.patch; see patches/README.md for each reason.
 PATCHES = [
-    "accumulators", "asio", "beast", "config_platform", "config_user", "hof",
-    "io", "lambda", "mqtt5", "multi_array", "parameter", "range_adaptors",
-    "numeric", "regex", "safe_numerics", "serialization", "system", "test",
-    "ublas", "units",
+    "accumulators", "algorithm", "asio", "beast", "bimap", "cobalt", "config_platform",
+    "config_cstdlib", "config_user", "container", "convert", "hof", "interprocess", "io", "json", "lambda", "math",
+    "mqtt5", "multi_array", "parameter", "range_adaptors", "numeric", "regex",
+    "safe_numerics", "serialization", "system", "test", "thread", "ublas", "units",
+    "url", "variant",
 ]
 
 # A vendored file that is an addition, not a patch of an upstream file.

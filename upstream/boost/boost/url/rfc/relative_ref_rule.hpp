@@ -61,7 +61,9 @@ struct relative_ref_rule_t
         @ref parse_relative_ref,
         @ref url_view.
 */
-constexpr implementation_defined::relative_ref_rule_t relative_ref_rule{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::relative_ref_rule_t relative_ref_rule{};
 
 } // urls
 } // boost

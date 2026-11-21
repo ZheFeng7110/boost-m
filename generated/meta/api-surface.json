@@ -47,7 +47,7 @@
     "tuple",
     "type_traits"
    ],
-   "exported": 477,
+   "exported": 478,
    "gmf": [
     "boost/algorithm/algorithm.hpp",
     "boost/algorithm/apply_permutation.hpp",
@@ -132,7 +132,7 @@
     "system",
     "type_traits"
    ],
-   "exported": 1426,
+   "exported": 1428,
    "gmf": [
     "boost/asio.hpp",
     "boost/asio/deadline_timer.hpp",
@@ -144,6 +144,7 @@
     "boost/asio/experimental/concurrent_channel.hpp",
     "boost/asio/experimental/promise.hpp",
     "boost/asio/experimental/use_coro.hpp",
+    "boost/asio/experimental/use_promise.hpp",
     "boost/asio/fwd.hpp",
     "boost/asio/spawn.hpp",
     "boost/asio/ssl/stream_base.hpp",
@@ -233,7 +234,7 @@
     "multi_index",
     "type_traits"
    ],
-   "exported": 190,
+   "exported": 192,
    "gmf": [
     "boost/bimap.hpp",
     "boost/bimap/container_adaptor/support/iterator_facade_converters.hpp",
@@ -336,22 +337,43 @@
     "callable_traits",
     "circular_buffer",
     "config",
+    "container",
     "core",
     "endian",
     "intrusive",
     "mp11",
     "smart_ptr",
     "system",
+    "throw_exception",
     "utility",
     "variant2"
    ],
-   "exported": 211,
+   "exported": 230,
    "gmf": [
-    "boost/cobalt.hpp",
+    "boost/cobalt/async_for.hpp",
+    "boost/cobalt/channel.hpp",
     "boost/cobalt/composition.hpp",
+    "boost/cobalt/concepts.hpp",
+    "boost/cobalt/config.hpp",
+    "boost/cobalt/detached.hpp",
+    "boost/cobalt/error.hpp",
     "boost/cobalt/experimental/context.hpp",
     "boost/cobalt/experimental/yield_context.hpp",
-    "boost/cobalt/io.hpp"
+    "boost/cobalt/gather.hpp",
+    "boost/cobalt/generator.hpp",
+    "boost/cobalt/io.hpp",
+    "boost/cobalt/join.hpp",
+    "boost/cobalt/op.hpp",
+    "boost/cobalt/promise.hpp",
+    "boost/cobalt/race.hpp",
+    "boost/cobalt/run.hpp",
+    "boost/cobalt/spawn.hpp",
+    "boost/cobalt/task.hpp",
+    "boost/cobalt/this_coro.hpp",
+    "boost/cobalt/this_thread.hpp",
+    "boost/cobalt/thread.hpp",
+    "boost/cobalt/wait_group.hpp",
+    "boost/cobalt/with.hpp"
    ]
   },
   "compat": {
@@ -386,9 +408,9 @@
   },
   "config": {
    "deps": [],
-   "exported": 4,
+   "exported": 8,
    "gmf": [
-    "boost/config.hpp"
+    "boost/cstdlib.hpp"
    ]
   },
   "container": {
@@ -398,7 +420,7 @@
     "intrusive",
     "move"
    ],
-   "exported": 976,
+   "exported": 978,
    "gmf": [
     "boost/container/adaptive_pool.hpp",
     "boost/container/allocator.hpp",
@@ -509,16 +531,39 @@
     "boost/contract.hpp"
    ]
   },
+  "conversion": {
+   "deps": [
+    "assert",
+    "smart_ptr",
+    "throw_exception"
+   ],
+   "exported": 6,
+   "gmf": [
+    "boost/implicit_cast.hpp",
+    "boost/polymorphic_cast.hpp",
+    "boost/polymorphic_pointer_cast.hpp"
+   ]
+  },
   "convert": {
    "deps": [
     "assert",
+    "config",
     "core",
+    "lexical_cast",
+    "math",
+    "mp11",
     "optional",
-    "type_traits"
+    "type_traits",
+    "utility"
    ],
-   "exported": 12,
+   "exported": 144,
    "gmf": [
-    "boost/convert.hpp"
+    "boost/convert.hpp",
+    "boost/convert/charconv.hpp",
+    "boost/convert/lexical_cast.hpp",
+    "boost/convert/printf.hpp",
+    "boost/convert/stream.hpp",
+    "boost/convert/strtol.hpp"
    ]
   },
   "core": {
@@ -527,7 +572,7 @@
     "config",
     "throw_exception"
    ],
-   "exported": 270,
+   "exported": 282,
    "gmf": [
     "boost/core/alloc_construct.hpp",
     "boost/core/allocator_traits.hpp",
@@ -535,6 +580,7 @@
     "boost/core/checked_delete.hpp",
     "boost/core/cmath.hpp",
     "boost/core/default_allocator.hpp",
+    "boost/core/detail/string_view.hpp",
     "boost/core/empty_value.hpp",
     "boost/core/exchange.hpp",
     "boost/core/explicit_operator_bool.hpp",
@@ -743,6 +789,7 @@
   },
   "geometry": {
    "deps": [
+    "algorithm",
     "any",
     "array",
     "assert",
@@ -763,11 +810,10 @@
     "tokenizer",
     "tuple",
     "type_traits",
-    "utility",
     "variant",
     "variant2"
    ],
-   "exported": 4675,
+   "exported": 4670,
    "gmf": [
     "boost/geometry.hpp",
     "boost/geometry/algorithms/dispatch/closest_points.hpp",
@@ -782,7 +828,6 @@
     "boost/geometry/formulas/vertex_longitude.hpp",
     "boost/geometry/geometries/adapted/boost_any.hpp",
     "boost/geometry/geometries/adapted/boost_array.hpp",
-    "boost/geometry/geometries/adapted/boost_fusion.hpp",
     "boost/geometry/geometries/adapted/boost_polygon.hpp",
     "boost/geometry/geometries/adapted/boost_range/adjacent_filtered.hpp",
     "boost/geometry/geometries/adapted/boost_range/filtered.hpp",
@@ -808,6 +853,7 @@
     "boost/geometry/geometries/register/segment.hpp",
     "boost/geometry/index/adaptors/query.hpp",
     "boost/geometry/index/parameters.hpp",
+    "boost/geometry/io/svg/svg_mapper.hpp",
     "boost/geometry/io/svg/write_svg.hpp",
     "boost/geometry/io/svg/write_svg_multi.hpp",
     "boost/geometry/io/wkt/stream.hpp",
@@ -898,6 +944,7 @@
     "concept_check",
     "config",
     "container_hash",
+    "conversion",
     "core",
     "function",
     "integer",
@@ -923,7 +970,7 @@
     "utility",
     "version"
    ],
-   "exported": 3072,
+   "exported": 3070,
    "gmf": [
     "boost/graph/adj_list_serialize.hpp",
     "boost/graph/adjacency_list_io.hpp",
@@ -1163,7 +1210,7 @@
     "move",
     "winapi"
    ],
-   "exported": 716,
+   "exported": 726,
    "gmf": [
     "boost/interprocess/allocators/adaptive_pool.hpp",
     "boost/interprocess/allocators/cached_adaptive_pool.hpp",
@@ -1323,7 +1370,7 @@
     "system",
     "variant2"
    ],
-   "exported": 306,
+   "exported": 308,
    "gmf": [
     "boost/json/debug_printers.hpp",
     "boost/json.hpp"
@@ -1423,7 +1470,7 @@
     "lexical_cast",
     "random"
    ],
-   "exported": 2621,
+   "exported": 2862,
    "gmf": [
     "boost/math/ccmath/ccmath.hpp",
     "boost/math/common_factor.hpp",
@@ -1986,6 +2033,7 @@
     "assert",
     "concept_check",
     "config",
+    "conversion",
     "core",
     "functional",
     "iterator",
@@ -1994,7 +2042,7 @@
     "tuple",
     "type_traits"
    ],
-   "exported": 482,
+   "exported": 480,
    "gmf": [
     "boost/range.hpp",
     "boost/range/adaptor/define_adaptor.hpp",
@@ -2048,7 +2096,7 @@
     "throw_exception",
     "type_traits"
    ],
-   "exported": 404,
+   "exported": 407,
    "gmf": [
     "boost/regex/concepts.hpp",
     "boost/regex/pending/object_cache.hpp",
@@ -2216,8 +2264,9 @@
     "config",
     "core"
    ],
-   "exported": 144,
+   "exported": 147,
    "gmf": [
+    "boost/pointer_cast.hpp",
     "boost/smart_ptr.hpp",
     "boost/smart_ptr/allocate_unique.hpp",
     "boost/smart_ptr/atomic_shared_ptr.hpp",
@@ -2268,11 +2317,11 @@
    "deps": [
     "assert",
     "config",
+    "conversion",
     "core",
     "function",
     "smart_ptr",
     "thread",
-    "throw_exception",
     "type_traits"
    ],
    "exported": 73,
@@ -2638,7 +2687,7 @@
     "type_traits",
     "variant2"
    ],
-   "exported": 318,
+   "exported": 337,
    "gmf": [
     "boost/url.hpp"
    ]

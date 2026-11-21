@@ -51,23 +51,25 @@ struct open_or_create_t {};
 
 //!Value to indicate that the resource must
 //!be only created
-static const create_only_t    create_only    = create_only_t();
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
+// linkage, not exportable from a module).
+BOOST_INLINE_CONSTEXPR create_only_t    create_only    = create_only_t();
 
 //!Value to indicate that the resource must
 //!be only opened
-static const open_only_t      open_only      = open_only_t();
+BOOST_INLINE_CONSTEXPR open_only_t      open_only      = open_only_t();
 
 //!Value to indicate that the resource must
 //!be only opened for reading
-static const open_read_only_t open_read_only = open_read_only_t();
+BOOST_INLINE_CONSTEXPR open_read_only_t open_read_only = open_read_only_t();
 
 //!Value to indicate that the resource must
 //!be created. If already created, it must be opened.
-static const open_or_create_t open_or_create = open_or_create_t();
+BOOST_INLINE_CONSTEXPR open_or_create_t open_or_create = open_or_create_t();
 
 //!Value to indicate that the resource must
 //!be only opened for reading
-static const open_copy_on_write_t open_copy_on_write = open_copy_on_write_t();
+BOOST_INLINE_CONSTEXPR open_copy_on_write_t open_copy_on_write = open_copy_on_write_t();
 
 namespace ipcdetail {
 

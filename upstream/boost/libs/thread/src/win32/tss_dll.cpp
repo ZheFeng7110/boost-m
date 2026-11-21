@@ -79,8 +79,11 @@ namespace boost
 
 #ifdef _MSC_VER
 // Prevent LNK4221 warning with link=static
+// boost-m vendored edit: a public symbol is enough. An export would be the
+// only one of a DLL this object is linked into, which then gets no
+// discovered exports.
 namespace boost { namespace link_static_warning_inhibit {
-    extern __declspec(dllexport) void foo() { }
+    extern void foo() { }
 } }
 #endif
 

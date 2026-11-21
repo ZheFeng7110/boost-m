@@ -239,7 +239,9 @@ class cached_adaptive_pool;
 //                            offset_ptr
 //////////////////////////////////////////////////////////////////////////////
 
-static const std::size_t offset_type_alignment = 0;
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was static const: internal
+// linkage, not exportable from a module).
+BOOST_INLINE_CONSTEXPR std::size_t offset_type_alignment = 0;
 
 #if !defined(BOOST_INTERPROCESS_DOXYGEN_INVOKED)
 #  ifdef BOOST_HAS_INTPTR_T

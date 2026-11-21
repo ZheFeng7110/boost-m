@@ -612,6 +612,13 @@ private:
                 break;
             }
             Real weight = static_cast<Real>(precise_nw.second);
+            using std::isfinite;
+            if (!isfinite(weight)) {
+                // exp(-eta) overflowed where the weight has already underflowed;
+                // happens when exp of PreciseReal has a narrower range than the type,
+                // e.g. musl's 113-bit long double exp is the double one:
+                break;
+            }
             w = weight;
             if (lnode_row.size() > 0) {
                 if (lnode_row.back() == node) {

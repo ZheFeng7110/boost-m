@@ -22,7 +22,9 @@ template <typename T >
 struct has_result_type {
 private:
     typedef char                      yes;
-    typedef struct { char array[2]; } no;
+    // boost-m vendored edit: a named struct (was a typedef of an unnamed one,
+    // on which gcc 16.1 ends with an internal compiler error in module importers).
+    struct no { char array[2]; };
 
     template<typename C> static yes test(typename boost::remove_reference<typename C::result_type>::type*);
     template<typename C> static no  test(...);

@@ -1,0 +1,105 @@
+Boost.Bimap examples edited before porting (the oracle runs the edited
+program too); tests/bimap/examples_with_boost.cpp's header gives the reasons.
+population_bimap: boost::optional spelled out (ambiguous with std::optional),
+BOOST_FOREACH over an iterator pair as range-for; mi_hashed_indices:
+BOOST_MULTI_INDEX_MEMBER written as the member<> it expands to; range:
+using namespace boost::placeholders; serialization: the archive goes to the
+temporary directory instead of ./data.
+
+--- a/libs/bimap/example/population_bimap.cpp
++++ b/libs/bimap/example/population_bimap.cpp
+@@ -29,7 +29,7 @@
+ 
+ #include <boost/optional.hpp>
+ #include <boost/none.hpp>
+-#include <boost/foreach.hpp>
++#include <boost/range/iterator_range.hpp>
+ #include <boost/assign/list_inserter.hpp>
+ 
+ using namespace boost::bimaps;
+@@ -43,7 +43,7 @@ int main()
+     typedef bimap<
+ 
+         string,
+-        multiset_of< optional<string> >
++        multiset_of< boost::optional<string> >
+ 
+     > bm_type;
+ 
+@@ -62,15 +62,13 @@ int main()
+          << endl;
+ 
+     cout << "Project vinicius is being developed by " << endl;
+-    BOOST_FOREACH( bm_type::right_reference rp,
+-                   bm.right.equal_range( std::string("vinicius") ) )
++    for( bm_type::right_reference rp : boost::make_iterator_range( bm.right.equal_range( std::string("vinicius") ) ) )
+     {
+         cout << rp.second << endl;
+     }
+ 
+     cout << "This workers need a project " << endl;
+-    BOOST_FOREACH( bm_type::right_reference rp,
+-                   bm.right.equal_range(none) )
++    for( bm_type::right_reference rp : boost::make_iterator_range( bm.right.equal_range(none) ) )
+     {
+         cout << rp.second << endl;
+     }
+--- a/libs/bimap/example/mi_to_b_path/mi_hashed_indices.cpp
++++ b/libs/bimap/example/mi_to_b_path/mi_hashed_indices.cpp
+@@ -47,13 +47,12 @@ typedef multi_index_container
+     <
+         ordered_non_unique
+         <
+-            BOOST_MULTI_INDEX_MEMBER(
+-                word_counter_entry,unsigned int,occurrences),
++            boost::multi_index::member< word_counter_entry, unsigned int, &word_counter_entry::occurrences >,
+             std::greater<unsigned int>
+         >,
+         hashed_unique
+         <
+-            BOOST_MULTI_INDEX_MEMBER(word_counter_entry,std::string,word)
++            boost::multi_index::member< word_counter_entry, std::string, &word_counter_entry::word >
+         >
+   >
+ 
+--- a/libs/bimap/example/bimap_and_boost/range.cpp
++++ b/libs/bimap/example/bimap_and_boost/range.cpp
+@@ -66,6 +66,10 @@ typename boost::range_difference<ForwardReadableRange>::type
+ 
+ using namespace boost::bimaps;
+ using namespace boost;
++// boost/bind.hpp also makes boost::placeholders visible globally, which a
++// module cannot do; the module consumer writes the directive (the
++// upstream-recommended spelling).
++using namespace boost::placeholders;
+ 
+ //[ code_bimap_and_boost_range
+ 
+--- a/libs/bimap/example/bimap_and_boost/serialization.cpp
++++ b/libs/bimap/example/bimap_and_boost/serialization.cpp
+@@ -21,6 +21,7 @@
+ #include <boost/config.hpp>
+ 
+ #include <fstream>
++#include <filesystem>
+ #include <string>
+ #include <cassert>
+ 
+@@ -43,7 +44,7 @@ int main()
+         bm.insert( bm_type::value_type("one",1) );
+         bm.insert( bm_type::value_type("two",2) );
+ 
+-        std::ofstream ofs("data");
++        std::ofstream ofs((std::filesystem::temp_directory_path() / "boost-m-bimap-serialization.data").string());
+         boost::archive::text_oarchive oa(ofs);
+ 
+         oa << const_cast<const bm_type&>(bm); /*<
+@@ -65,7 +66,7 @@ int main()
+     {
+         bm_type bm;
+ 
+-        std::ifstream ifs("data", std::ios::binary);
++        std::ifstream ifs((std::filesystem::temp_directory_path() / "boost-m-bimap-serialization.data").string(), std::ios::binary);
+         boost::archive::text_iarchive ia(ifs);
+ 
+         ia >> bm;

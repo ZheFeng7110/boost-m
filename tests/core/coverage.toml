@@ -1,0 +1,341 @@
+# tests/core/coverage.toml — official examples and documentation snippets of
+# Boost.core 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "core"
+
+[[snippet]]
+doc   = "libs/core/doc/addressof.qbk#example"
+title = "Example"
+case  = "core/api:doc: addressof#example"
+
+[[snippet]]
+doc   = "libs/core/doc/alignof.qbk#example"
+title = "Example"
+case  = "core/include_macros:doc: alignof#example"
+
+[[snippet]]
+doc   = "libs/core/doc/allocator_access.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: allocator_access#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/bit.qbk#endian"
+title = "Endian"
+case  = "core/api:doc: bit#endian"
+
+[[snippet]]
+doc   = "libs/core/doc/checked_delete.qbk#checked-array-deleter"
+title = "checked_array_deleter"
+case  = "core/api:doc: checked_delete#checked-array-deleter"
+
+[[snippet]]
+doc   = "libs/core/doc/checked_delete.qbk#checked-deleter"
+title = "checked_deleter"
+case  = "core/api:doc: checked_delete#checked-deleter"
+
+[[snippet]]
+doc   = "libs/core/doc/default_allocator.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: default_allocator#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/demangle.qbk#example"
+title = "Example"
+case  = "core/api:doc: demangle#example"
+
+[[snippet]]
+doc   = "libs/core/doc/demangle.qbk#example-2"
+title = "Example"
+case  = "core/api:doc: demangle#example-2"
+
+[[snippet]]
+doc   = "libs/core/doc/empty_value.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: empty_value#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#background"
+title = "Background"
+case  = "core/api:doc: enable_if#background"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#compiler-workarounds"
+title = "Compiler workarounds"
+case  = "core/api:doc: enable_if#compiler-workarounds"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#enable_if_0x"
+title = "Enabling function templates in C++0x"
+case  = "core/api:doc: enable_if#enable_if_0x"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#enable_if_lazy"
+title = "Lazy enable_if"
+case  = "core/api:doc: enable_if#enable_if_lazy"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#enabling-template-class-specializations"
+title = "Enabling template class specializations"
+case  = "core/api:doc: enable_if#enabling-template-class-specializations"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#overlapping-enabler-conditions"
+title = "Overlapping enabler conditions"
+case  = "core/api:doc: enable_if#overlapping-enabler-conditions"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#the-enable-if-templates"
+title = "The enable_if templates"
+case  = "core/api:doc: enable_if#the-enable-if-templates"
+
+[[snippet]]
+doc   = "libs/core/doc/enable_if.qbk#using_enable_if"
+title = "Using enable_if"
+case  = "core/api:doc: enable_if#using_enable_if"
+
+[[snippet]]
+doc   = "libs/core/doc/exchange.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: exchange#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/exchange.qbk#functions"
+title = "Functions"
+case  = "core/api:doc: exchange#functions"
+
+[[snippet]]
+doc   = "libs/core/doc/explicit_operator_bool.qbk#examples"
+title = "Examples"
+case  = "core/include_macros:doc: explicit_operator_bool#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/fclose_deleter.qbk#example"
+title = "Example"
+case  = "core/api:doc: fclose_deleter#example"
+
+[[snippet]]
+doc   = "libs/core/doc/first_scalar.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: first_scalar#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/identity.qbk#example"
+title = "Example"
+case  = "core/api:doc: identity#example"
+
+[[snippet]]
+doc   = "libs/core/doc/ignore_unused.qbk#example"
+title = "Example"
+case  = "core/api:doc: ignore_unused#example"
+
+[[snippet]]
+doc   = "libs/core/doc/ignore_unused.qbk#usage"
+title = "Usage"
+case  = "core/api:doc: ignore_unused#usage"
+
+[[snippet]]
+doc   = "libs/core/doc/is_placeholder.qbk#example"
+title = "Example"
+case  = "core/custom_types:doc: is_placeholder#example"
+
+[[snippet]]
+doc   = "libs/core/doc/is_same.qbk#example"
+title = "Example"
+case  = "core/api:doc: is_same#example"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-error"
+title = "BOOST_ERROR"
+case  = "core/include_macros:doc: lightweight_test#boost-error"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test"
+title = "BOOST_TEST"
+case  = "core/include_macros:doc: lightweight_test#boost-test"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-all-eq"
+title = "BOOST_TEST_ALL_EQ"
+case  = "core/include_macros:doc: lightweight_test#boost-test-all-eq"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-all-with"
+title = "BOOST_TEST_ALL_WITH"
+case  = "core/include_macros:doc: lightweight_test#boost-test-all-with"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-cstr-eq"
+title = "BOOST_TEST_CSTR_EQ"
+case  = "core/include_macros:doc: lightweight_test#boost-test-cstr-eq"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-cstr-ne"
+title = "BOOST_TEST_CSTR_NE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-cstr-ne"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-eq"
+title = "BOOST_TEST_EQ"
+case  = "core/include_macros:doc: lightweight_test#boost-test-eq"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-ge"
+title = "BOOST_TEST_GE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-ge"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-gt"
+title = "BOOST_TEST_GT"
+case  = "core/include_macros:doc: lightweight_test#boost-test-gt"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-le"
+title = "BOOST_TEST_LE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-le"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-lt"
+title = "BOOST_TEST_LT"
+case  = "core/include_macros:doc: lightweight_test#boost-test-lt"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-ne"
+title = "BOOST_TEST_NE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-ne"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-no-throw"
+title = "BOOST_TEST_NO_THROW"
+case  = "core/include_macros:doc: lightweight_test#boost-test-no-throw"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-not"
+title = "BOOST_TEST_NOT"
+case  = "core/include_macros:doc: lightweight_test#boost-test-not"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-throws"
+title = "BOOST_TEST_THROWS"
+case  = "core/include_macros:doc: lightweight_test#boost-test-throws"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-trait-false"
+title = "BOOST_TEST_TRAIT_FALSE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-trait-false"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-trait-same"
+title = "BOOST_TEST_TRAIT_SAME"
+case  = "core/include_macros:doc: lightweight_test#boost-test-trait-same"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-trait-true"
+title = "BOOST_TEST_TRAIT_TRUE"
+case  = "core/include_macros:doc: lightweight_test#boost-test-trait-true"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#boost-test-with"
+title = "BOOST_TEST_WITH"
+case  = "core/include_macros:doc: lightweight_test#boost-test-with"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#example"
+title = "Example"
+case  = "core/include_macros:doc: lightweight_test#example"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#example-2"
+title = "Example"
+case  = "core/include_macros:doc: lightweight_test#example-2"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#lwt-init"
+title = "lwt_init"
+case  = "core/include_macros:doc: lightweight_test#lwt-init"
+
+[[snippet]]
+doc   = "libs/core/doc/lightweight_test.qbk#report-errors"
+title = "report_errors"
+case  = "core/include_macros:doc: lightweight_test#report-errors"
+
+[[snippet]]
+doc   = "libs/core/doc/no_exceptions_support.qbk#example-use"
+title = "Example Use"
+case  = "core/include_macros:doc: no_exceptions_support#example-use"
+
+[[snippet]]
+doc   = "libs/core/doc/noinit_adaptor.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: noinit_adaptor#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/noncopyable.qbk#example"
+title = "Example"
+case  = "core/api:doc: noncopyable#example"
+
+[[snippet]]
+doc   = "libs/core/doc/null_deleter.qbk#example"
+title = "Example"
+case  = "core/api:doc: null_deleter#example"
+
+[[snippet]]
+doc   = "libs/core/doc/nvp.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: nvp#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/pointer_in_range.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: pointer_in_range#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/pointer_traits.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: pointer_traits#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/scoped_enum.qbk#deprecated-syntax"
+title = "Deprecated syntax"
+case  = "core/include_macros:doc: scoped_enum#deprecated-syntax"
+
+[[snippet]]
+doc   = "libs/core/doc/scoped_enum.qbk#overview"
+title = "Overview"
+case  = "core/include_macros:doc: scoped_enum#overview"
+
+[[snippet]]
+doc   = "libs/core/doc/serialization.qbk#core-version-type"
+title = "`core_version_type`"
+case  = "core/api:doc: serialization#core-version-type"
+
+[[snippet]]
+doc   = "libs/core/doc/snprintf.qbk#example"
+title = "Example"
+case  = "core/api:doc: snprintf#example"
+
+[[snippet]]
+doc   = "libs/core/doc/span.qbk#examples"
+title = "Examples"
+case  = "core/api:doc: span#examples"
+
+[[snippet]]
+doc   = "libs/core/doc/typeinfo.qbk#example"
+title = "Example"
+case  = "core/api:doc: typeinfo#example"
+
+[[snippet]]
+doc   = "libs/core/doc/uncaught_exceptions.qbk#example"
+title = "Example"
+case  = "core/api:doc: uncaught_exceptions#example"
+
+[[snippet]]
+doc   = "libs/core/doc/use_default.qbk#example"
+title = "Example"
+case  = "core/api:doc: use_default#example"
+
+[[snippet]]
+doc   = "libs/core/doc/verbose_terminate_handler.qbk#example"
+title = "Example"
+case  = "core/api:doc: verbose_terminate_handler#example"

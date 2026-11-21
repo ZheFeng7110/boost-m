@@ -12,6 +12,7 @@
 #ifndef BOOST_CSTDLIB_HPP
 #define BOOST_CSTDLIB_HPP
 
+#include <boost/config.hpp>  // BOOST_INLINE_CONSTEXPR
 #include <cstdlib>
 
 namespace boost
@@ -30,10 +31,10 @@ namespace boost
    //  their own error reporting.  Values > 255 are sometimes reserved for
    //  system detected errors.  200/201 were suggested to minimize conflict.
 
-   const int exit_success = EXIT_SUCCESS;  // implementation-defined value
-   const int exit_failure = EXIT_FAILURE;  // implementation-defined value
-   const int exit_exception_failure = 200; // otherwise uncaught exception
-   const int exit_test_failure = 201;      // report_error or
+   BOOST_INLINE_CONSTEXPR int exit_success = EXIT_SUCCESS;  // implementation-defined value
+   BOOST_INLINE_CONSTEXPR int exit_failure = EXIT_FAILURE;  // implementation-defined value
+   BOOST_INLINE_CONSTEXPR int exit_exception_failure = 200; // otherwise uncaught exception
+   BOOST_INLINE_CONSTEXPR int exit_test_failure = 201;      // report_error or
                                            //  report_critical_error called.
 }
 

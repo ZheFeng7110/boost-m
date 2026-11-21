@@ -8,22 +8,22 @@ Boost 1.92.0 被封装为 C++23 具名模块。导入模块即可替代该库的
 ## 1. 依赖声明
 
 ```toml
-# The default feature set (50-library closure)
+# The default feature set (51-library closure)
 [dependencies]
-"mcpplibs.mwrap.boost" = "1.92.0"
+mcpplibs.mwrap.boost = "1.92.0"
 
 # A specific set; default-features = false stops this edge from also pulling
 # the default closure in
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["optional", "json"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["optional", "json"] }
 
 # Everything with a module interface
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["all-modules"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["all-modules"] }
 
 # From the repository at the immutable release tag
 [dependencies]
-"mcpplibs.mwrap.boost" = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional"] }
+mcpplibs.mwrap.boost = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional"] }
 ```
 
 版本方案：首个 mwrap 版本即上游版本 `1.92.0`。仅涉及封装层的修复追加修订号 `1.92.0.1`，且永不发布 `1.92.0.0`（其排序结果与 `1.92.0` 相同）。仓库标签使用另一套序列 `mwrap-<version>`；旧的 `ZheFeng7110.boost` 版本与标签不再复用。
@@ -59,6 +59,8 @@ import mcpplibs.mwrap.boost.optional;    // module API
 BOOST_SCOPE_EXIT(void) { /* ... */ } BOOST_SCOPE_EXIT_END
 ```
 
+`#include` 行应写在 `import` 行之前。若某个头文件与所导入模块的全局模块片段共享声明，却在 import 之后才被包含，两个固定的编译器都会拒绝（GCC 16.1：「conflicting declaration of template」；Clang：「cannot add 'abi_tag' attribute in a redeclaration」）。
+
 ### 2.3 仅头文件使用的库
 
 有些库只以头文件方式使用。它们既没有模块，也没有特征。
@@ -76,7 +78,7 @@ BOOST_SCOPE_EXIT(void) { /* ... */ } BOOST_SCOPE_EXIT_END
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["log"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["log"] }
 ```
 
 ```cpp
@@ -127,18 +129,18 @@ static_assert(mcpplibs::mwrap::boost::macros::BOOST_VERSION == raw_version);
 
 | 特征 | 作用 |
 |---|---|
-| `default` | 50 个库构成的闭包（见下文） |
-| `all-modules` | 全部 117 个模块条目（116 个库接口 + `macros`）；不含 `log`，不含 `unit-test-framework` |
+| `default` | 51 个库构成的闭包（见下文） |
+| `all-modules` | 全部 118 个模块条目（117 个库接口 + `macros`）；不含 `log`，不含 `unit-test-framework` |
 | `macros`、`version` | 映射模块及其薄重导出 |
 | `backend-log-avx2`、`backend-log-ssse3` | 构建期的 Boost.Log dump 实现，仅限 x86_64，每条轴各择其一 |
 
 默认闭包沿模块导入边闭合：
 `optional variant variant2 any core container-hash mp11 type-traits algorithm
 iterator range io endian tuple system filesystem regex thread chrono json array
-assert compat concept-check config dynamic-bitset functional integer intrusive
-lambda lexical-cast move multi-array ratio smart-ptr throw-exception tokenizer
-type-index units utility winapi atomic container date-time math random
-serialization numeric version macros`。
+assert bind compat concept-check config conversion dynamic-bitset function
+functional integer intrusive lambda lexical-cast move multi-array ratio
+smart-ptr throw-exception tokenizer type-index units utility winapi atomic
+container date-time math random serialization numeric version macros`。
 
 特征在各依赖边上可累加。某条边上的 `default-features = false` 只关闭该边本来会请求的默认集合：其他边仍可再次请求默认特征，而显式特征总是生效。启用某特征会追加其 `implies` 闭包，因此选中一个库时，拉取的正好是该库接口所导入的内容。
 
@@ -148,12 +150,17 @@ serialization numeric version macros`。
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, backend = "log-avx2" }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, backend = "log-avx2" }
 ```
 
 ## 5. 平台、ABI 与运行时
 
 已验证的 CI 组合：Linux x86_64 配 GCC 16.1 与 LLVM，Linux arm64 配 GCC，macOS arm64 配 LLVM（Apple 链接器；lld-macho 会重复一条零 unwind 条目），Windows x86_64 配 clang-msvc。真正的 MSVC（`cl`）、MinGW 以及依赖外部 SDK 的库不在承诺范围内。
+
+clang-msvc 上有两个影响模块的 clang 缺陷（llvm 22.1.8 与 23.1.3 均有）。两者都出在导入方的翻译单元里，本包无法替你绕开：
+
+- 来自模块的 throw，其 MSVC ABI 异常元数据缺少拷贝构造函数，除非该翻译单元自己检查过同类型的 throw（clice-io/xclang#27，修复为尚未合入的 llvm/llvm-project#114075）。复制这样的异常（`std::make_exception_ptr`、`std::current_exception`、asio 的 `use_future`、cobalt 的 promise）时变成按位复制，进程以堆损坏（0xC0000374）结束。复制 Boost 异常的翻译单元可以在一个从不调用的函数里 throw 一次该类型，例如 `[[maybe_unused]] static void f() { throw boost::system::system_error(boost::system::error_code()); }`。
+- 先 `import std;`、再导入其全局模块片段包含 `<future>` 的 Boost 模块（math、asio）时，clang 可能把 MSVC 的 ppltasks 合并错，`std::async` 读到空的调度器而崩溃。测试中先导入 Boost 模块可以避开。
 
 与 ABI 相关的配置由包固定，而非由消费者决定：
 
@@ -172,12 +179,24 @@ serialization numeric version macros`。
 - 当任何模块通过伞模块间接重导出 `mcpplibs.mwrap.boost.sort` 时，GCC 16.1 会在写出其 BMI 的过程中内部错误（ICE）。根模块在 GCC 下会略过 `sort` 并给出警告；请直接导入 `mcpplibs.mwrap.boost.sort`（这是允许的，且不受影响）。
 - 构建整个 `all-modules` 闭包时，可能触及 Clang 的 2^31 源位置上限。此时应改为导入库分组而非伞模块；该上限是编译器的边界，而非包的缺陷。
 - 分组级别的成功并不能证明伞模块闭包可用：`all-modules` 是一个模块集合，而非「每个编译器都能聚合它」的声明。
+- `mcpplibs.mwrap.boost.core` 不导出 `boost::size`（上游 `boost/core/size.hpp` 中的 `using std::size;`）：若导出，它在同时导入 Boost.Range 的每个消费者中都会与 Boost.Range 的 `boost::size` 产生二义。请调用 `std::size`，或导入 `mcpplibs.mwrap.boost.range` 以使用 `boost::size`。
+- `mcpplibs.mwrap.boost.cobalt` 不提供 `main`。`boost/cobalt.hpp` 包含 `boost/cobalt/main.hpp`，后者定义程序的 `main` 来运行用户的 `co_main`；放在模块的全局模块片段中，这个定义会传到每个导入方，Clang 随后会拒绝消费者自己的 `main`。该模块包含 `boost/cobalt.hpp` 的其余头文件。用 `co_main` 编写的程序自行包含 `<boost/cobalt/main.hpp>`，且写在 import 之前（`tests/cobalt/co_main.cpp` 在 GCC 与 Clang 上测试）：
+
+  ```cpp
+  #include <boost/cobalt/main.hpp>
+  import mcpplibs.mwrap.boost.cobalt;
+
+  boost::cobalt::main co_main(int argc, char* argv[]) { co_return 0; }
+  ```
+
+  自带 `main` 的程序用 `boost::cobalt::run` 运行协程。
+- `mcpplibs.mwrap.boost.geometry` 不包含 `boost/geometry/geometries/adapted/boost_fusion.hpp`。该头文件把每个 Fusion 序列适配为点，而模块中的其他头文件使 `boost::tuple`、`boost::array` 与 `std::pair` 成为 Fusion 序列；二者同处一个全局模块片段时，`boost::tuple` 点会匹配 `traits::tag` 的两个偏特化，`boost::tuple` 适配因此无法使用。需要适配 Fusion 序列的消费者自行包含该头文件，且写在 import 之前（如 `tests/geometry/examples_core_geometries_6.cpp`）。
 
 ## 7. 从 `ZheFeng7110.boost` 迁移
 
 | 旧 | 新 |
 |---|---|
-| `[dependencies.ZheFeng7110] boost = "1.92.0.0.0.1"` | `[dependencies] "mcpplibs.mwrap.boost" = { version = "1.92.0", features = [...] }` |
+| `[dependencies.ZheFeng7110] boost = "1.92.0.0.0.1"` | `[dependencies] mcpplibs.mwrap.boost = { version = "1.92.0", features = [...] }` |
 | `import boost.optional;` | `import mcpplibs.mwrap.boost.optional;` |
 | `import boost;` | `import mcpplibs.mwrap.boost;` |
 | `features = ["type_traits"]` | `features = ["type-traits"]` |
@@ -188,7 +207,7 @@ serialization numeric version macros`。
 
 ## 8. 工具链固定与测试
 
-受测的构建工具固定在 `.xlings.json` 中（`mcpp 2026.11.5.1`）；CI 在每条组合上运行同一固定版本。生成（重新生成导出列表或审计头文件）还需要 `.xlings.json` 中固定的 clang++ 23.1.3，以及 `tools/` 下固定的 MinGW sysroot；普通消费者只使用已提交的生成文件。
+受测的构建工具固定在 `.xlings.json` 中（`mcpp 2026.11.20.1`）；CI 在每条组合上运行同一固定版本。生成（重新生成导出列表或审计头文件）还需要 `.xlings.json` 中固定的 clang++ 23.1.3，以及 `tools/` 下固定的 MinGW sysroot；普通消费者只使用已提交的生成文件。
 
 ```sh
 mcpp build                      # default feature closure

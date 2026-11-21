@@ -6,6 +6,7 @@ mcpplibs.mwrap.boost.bimap
 mcpplibs.mwrap.boost.concept_check
 mcpplibs.mwrap.boost.config
 mcpplibs.mwrap.boost.container_hash
+mcpplibs.mwrap.boost.conversion
 mcpplibs.mwrap.boost.core
 mcpplibs.mwrap.boost.function
 mcpplibs.mwrap.boost.integer

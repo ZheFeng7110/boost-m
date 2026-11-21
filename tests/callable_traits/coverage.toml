@@ -1,0 +1,174 @@
+# tests/callable_traits/coverage.toml — official examples and documentation snippets of
+# Boost.callable_traits 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "callable_traits"
+
+[[example]]
+path = "libs/callable_traits/example/add_member_const.cpp"
+case = "callable_traits/examples:example: add_member_const"
+
+[[example]]
+path = "libs/callable_traits/example/add_member_cv.cpp"
+case = "callable_traits/examples:example: add_member_cv"
+
+[[example]]
+path = "libs/callable_traits/example/add_member_lvalue_reference.cpp"
+case = "callable_traits/examples:example: add_member_lvalue_reference"
+
+[[example]]
+path = "libs/callable_traits/example/add_member_rvalue_reference.cpp"
+case = "callable_traits/examples:example: add_member_rvalue_reference"
+
+[[example]]
+path = "libs/callable_traits/example/add_member_volatile.cpp"
+case = "callable_traits/examples:example: add_member_volatile"
+
+[[example]]
+path = "libs/callable_traits/example/add_noexcept.cpp"
+case = "callable_traits/examples:example: add_noexcept"
+
+[[example]]
+path   = "libs/callable_traits/example/add_transaction_safe.cpp"
+status = "excluded"
+reason = "transaction_safe function types need GCC's -fgnu-tm (Transactional Memory TS); without it upstream compiles this example to an empty main"
+
+[[example]]
+path = "libs/callable_traits/example/add_varargs.cpp"
+case = "callable_traits/examples:example: add_varargs"
+
+[[example]]
+path = "libs/callable_traits/example/apply_member_pointer.cpp"
+case = "callable_traits/examples:example: apply_member_pointer"
+
+[[example]]
+path = "libs/callable_traits/example/args.cpp"
+case = "callable_traits/examples:example: args"
+
+[[example]]
+path = "libs/callable_traits/example/class_of.cpp"
+case = "callable_traits/examples:example: class_of"
+
+[[example]]
+path = "libs/callable_traits/example/function_type.cpp"
+case = "callable_traits/examples:example: function_type"
+
+[[example]]
+path = "libs/callable_traits/example/function_types_remove_const_comparison.cpp"
+case = "callable_traits/examples:example: function_types_remove_const_comparison"
+
+[[example]]
+path = "libs/callable_traits/example/has_member_qualifiers.cpp"
+case = "callable_traits/examples:example: has_member_qualifiers"
+
+[[example]]
+path = "libs/callable_traits/example/has_varargs.cpp"
+case = "callable_traits/examples:example: has_varargs"
+
+[[example]]
+path = "libs/callable_traits/example/has_void_return.cpp"
+case = "callable_traits/examples:example: has_void_return"
+
+[[example]]
+path = "libs/callable_traits/example/intro.cpp"
+case = "callable_traits/examples:example: intro"
+
+[[example]]
+path = "libs/callable_traits/example/is_const_member.cpp"
+case = "callable_traits/examples:example: is_const_member"
+
+[[example]]
+path = "libs/callable_traits/example/is_cv_member.cpp"
+case = "callable_traits/examples:example: is_cv_member"
+
+[[example]]
+path = "libs/callable_traits/example/is_invocable.cpp"
+case = "callable_traits/examples:example: is_invocable"
+
+[[example]]
+path = "libs/callable_traits/example/is_lvalue_reference_member.cpp"
+case = "callable_traits/examples:example: is_lvalue_reference_member"
+
+[[example]]
+path = "libs/callable_traits/example/is_noexcept.cpp"
+case = "callable_traits/examples:example: is_noexcept"
+
+[[example]]
+path = "libs/callable_traits/example/is_reference_member.cpp"
+case = "callable_traits/examples:example: is_reference_member"
+
+[[example]]
+path = "libs/callable_traits/example/is_rvalue_reference_member.cpp"
+case = "callable_traits/examples:example: is_rvalue_reference_member"
+
+[[example]]
+path   = "libs/callable_traits/example/is_transaction_safe.cpp"
+status = "excluded"
+reason = "transaction_safe function types need GCC's -fgnu-tm (Transactional Memory TS); without it upstream compiles this example to an empty main"
+
+[[example]]
+path = "libs/callable_traits/example/is_volatile_member.cpp"
+case = "callable_traits/examples:example: is_volatile_member"
+
+[[example]]
+path = "libs/callable_traits/example/overview.cpp"
+case = "callable_traits/examples:example: overview"
+
+[[example]]
+path = "libs/callable_traits/example/qualified_class_of.cpp"
+case = "callable_traits/examples:example: qualified_class_of"
+
+[[example]]
+path = "libs/callable_traits/example/remove_member_const.cpp"
+case = "callable_traits/examples:example: remove_member_const"
+
+[[example]]
+path = "libs/callable_traits/example/remove_member_cv.cpp"
+case = "callable_traits/examples:example: remove_member_cv"
+
+[[example]]
+path = "libs/callable_traits/example/remove_member_reference.cpp"
+case = "callable_traits/examples:example: remove_member_reference"
+
+[[example]]
+path = "libs/callable_traits/example/remove_member_volatile.cpp"
+case = "callable_traits/examples:example: remove_member_volatile"
+
+[[example]]
+path = "libs/callable_traits/example/remove_noexcept.cpp"
+case = "callable_traits/examples:example: remove_noexcept"
+
+[[example]]
+path   = "libs/callable_traits/example/remove_transaction_safe.cpp"
+status = "excluded"
+reason = "transaction_safe function types need GCC's -fgnu-tm (Transactional Memory TS); without it upstream compiles this example to an empty main"
+
+[[example]]
+path = "libs/callable_traits/example/remove_varargs.cpp"
+case = "callable_traits/examples:example: remove_varargs"
+
+[[example]]
+path = "libs/callable_traits/example/return_type.cpp"
+case = "callable_traits/examples:example: return_type"
+
+[[example]]
+path = "libs/callable_traits/example/void.cpp"
+case = "callable_traits/examples:example: void"
+
+[[snippet]]
+doc    = "libs/callable_traits/doc/callable_traits.qbk#boost_function_types"
+title  = "Regarding [^Boost.FunctionTypes]"
+case   = "callable_traits/examples:example: function_types_remove_const_comparison"
+reason = "the section imports the example file"
+
+[[snippet]]
+doc    = "libs/callable_traits/doc/callable_traits.qbk#building"
+title  = "Building the test suite"
+status = "excluded"
+reason = "shell commands for building upstream's own test suite"
+
+[[snippet]]
+doc   = "libs/callable_traits/doc/callable_traits.qbk#faq"
+title = "FAQ"
+case  = "callable_traits/custom_types:doc: faq"

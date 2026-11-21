@@ -12,22 +12,22 @@ namespace exists only for the macro mappings described below.
 ## 1. Dependency declaration
 
 ```toml
-# The default feature set (50-library closure)
+# The default feature set (51-library closure)
 [dependencies]
-"mcpplibs.mwrap.boost" = "1.92.0"
+mcpplibs.mwrap.boost = "1.92.0"
 
 # A specific set; default-features = false stops this edge from also pulling
 # the default closure in
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["optional", "json"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["optional", "json"] }
 
 # Everything with a module interface
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["all-modules"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["all-modules"] }
 
 # From the repository at the immutable release tag
 [dependencies]
-"mcpplibs.mwrap.boost" = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional"] }
+mcpplibs.mwrap.boost = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional"] }
 ```
 
 Version scheme: the first mwrap release is the upstream version, `1.92.0`. A
@@ -71,6 +71,12 @@ import mcpplibs.mwrap.boost.optional;    // module API
 BOOST_SCOPE_EXIT(void) { /* ... */ } BOOST_SCOPE_EXIT_END
 ```
 
+Put the `#include` lines before the `import` lines. A header that shares
+declarations with an imported module's global module fragment and is included
+after the import is rejected by both pinned compilers (GCC 16.1: "conflicting
+declaration of template"; Clang: "cannot add 'abi_tag' attribute in a
+redeclaration").
+
 ### 2.3 Include-only libraries
 
 Some libraries are consumed by header only. They have no module and no feature.
@@ -92,7 +98,7 @@ interface. Enable the feature and include the upstream headers:
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, features = ["log"] }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, features = ["log"] }
 ```
 
 ```cpp
@@ -160,18 +166,18 @@ spelling, so feature `type-traits` enables `mcpplibs.mwrap.boost.type_traits`.
 
 | Feature | Effect |
 |---|---|
-| `default` | 50-library closure (see below) |
-| `all-modules` | All 117 module entries (116 library interfaces + `macros`); not `log`, not `unit-test-framework` |
+| `default` | 51-library closure (see below) |
+| `all-modules` | All 118 module entries (117 library interfaces + `macros`); not `log`, not `unit-test-framework` |
 | `macros`, `version` | The mapping module and its thin re-export |
 | `backend-log-avx2`, `backend-log-ssse3` | Build-time Boost.Log dump implementation, x86_64 only, one per axis |
 
 The default closure is closed over the module import edges:
 `optional variant variant2 any core container-hash mp11 type-traits algorithm
 iterator range io endian tuple system filesystem regex thread chrono json array
-assert compat concept-check config dynamic-bitset functional integer intrusive
-lambda lexical-cast move multi-array ratio smart-ptr throw-exception tokenizer
-type-index units utility winapi atomic container date-time math random
-serialization numeric version macros`.
+assert bind compat concept-check config conversion dynamic-bitset function
+functional integer intrusive lambda lexical-cast move multi-array ratio
+smart-ptr throw-exception tokenizer type-index units utility winapi atomic
+container date-time math random serialization numeric version macros`.
 
 Features are additive across dependency edges. `default-features = false` on one
 edge only closes the default set that edge would have requested: another edge may
@@ -190,7 +196,7 @@ a diagnostic naming the features.
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.boost" = { version = "1.92.0", default-features = false, backend = "log-avx2" }
+mcpplibs.mwrap.boost = { version = "1.92.0", default-features = false, backend = "log-avx2" }
 ```
 
 ## 5. Platforms, ABI and runtime
@@ -199,6 +205,23 @@ Verified CI legs: Linux x86_64 with GCC 16.1 and LLVM, Linux arm64 with GCC,
 macOS arm64 with LLVM (Apple linker; lld-macho duplicates a zero-unwind entry),
 Windows x86_64 with clang-msvc. Real MSVC (`cl`), MinGW and external-SDK
 libraries are not claimed.
+
+Two clang defects affect modules on clang-msvc (llvm 22.1.8 and 23.1.3); both
+are in the importing translation unit, so the package cannot work around them
+for you:
+
+- A throw that comes from a module gets MSVC-ABI exception metadata without the
+  copy constructor unless the TU itself checks a throw of the same type
+  (clice-io/xclang#27, fix pending as llvm/llvm-project#114075). Copying such an
+  exception (`std::make_exception_ptr`, `std::current_exception`, asio's
+  `use_future`, cobalt's promises) is then bitwise, and the process ends with
+  heap corruption (0xC0000374). A TU that copies Boost exceptions can name a
+  throw of the type in a function it never calls, e.g.
+  `[[maybe_unused]] static void f() { throw boost::system::system_error(boost::system::error_code()); }`.
+- With `import std;` before a Boost module whose global module fragment includes
+  `<future>` (math, asio), clang may merge MSVC's ppltasks so that `std::async`
+  reads a null scheduler and crashes. Importing the Boost module first avoided it
+  in the tests.
 
 ABI-relevant configuration is fixed by the package, not by the consumer:
 
@@ -229,12 +252,40 @@ BMI. Configurations outside this set must use header-only consumption
   limit is a compiler boundary, not a package defect.
 - Group-level success does not prove the umbrella closure: `all-modules` is a
   module set, not a claim that every compiler can aggregate it.
+- `mcpplibs.mwrap.boost.core` does not export `boost::size` (upstream
+  `boost/core/size.hpp`, `using std::size;`): exported, it is ambiguous with
+  Boost.Range's `boost::size` in every consumer that imports both. Call
+  `std::size`, or import `mcpplibs.mwrap.boost.range` for `boost::size`.
+- `mcpplibs.mwrap.boost.cobalt` does not provide `main`. `boost/cobalt.hpp`
+  includes `boost/cobalt/main.hpp`, which defines the program's `main` to run
+  the user's `co_main`; in a module's global module fragment that definition
+  would reach every importer, and Clang then rejects a consumer's own `main`.
+  The module has the other headers of `boost/cobalt.hpp`. A program written with
+  `co_main` includes `<boost/cobalt/main.hpp>` itself, before the import
+  (tested on GCC and Clang by `tests/cobalt/co_main.cpp`):
+
+  ```cpp
+  #include <boost/cobalt/main.hpp>
+  import mcpplibs.mwrap.boost.cobalt;
+
+  boost::cobalt::main co_main(int argc, char* argv[]) { co_return 0; }
+  ```
+
+  A program with its own `main` runs coroutines with `boost::cobalt::run`.
+- `mcpplibs.mwrap.boost.geometry` does not include
+  `boost/geometry/geometries/adapted/boost_fusion.hpp`. That header adapts every
+  Fusion sequence as a point, and other headers of the module make
+  `boost::tuple`, `boost::array` and `std::pair` Fusion sequences; with both in
+  one global module fragment, a `boost::tuple` point matches two partial
+  specializations of `traits::tag` and the `boost::tuple` adaptation cannot be
+  used. A consumer that adapts Fusion sequences includes the header itself,
+  before the import (as `tests/geometry/examples_core_geometries_6.cpp` does).
 
 ## 7. Migrating from `ZheFeng7110.boost`
 
 | Old | New |
 |---|---|
-| `[dependencies.ZheFeng7110] boost = "1.92.0.0.0.1"` | `[dependencies] "mcpplibs.mwrap.boost" = { version = "1.92.0", features = [...] }` |
+| `[dependencies.ZheFeng7110] boost = "1.92.0.0.0.1"` | `[dependencies] mcpplibs.mwrap.boost = { version = "1.92.0", features = [...] }` |
 | `import boost.optional;` | `import mcpplibs.mwrap.boost.optional;` |
 | `import boost;` | `import mcpplibs.mwrap.boost;` |
 | `features = ["type_traits"]` | `features = ["type-traits"]` |
@@ -247,7 +298,7 @@ immutable; this is a new identity, not a rename.
 
 ## 8. Toolchain pin and tests
 
-The tested build tool is pinned in `.xlings.json` (`mcpp 2026.11.5.1`); CI runs
+The tested build tool is pinned in `.xlings.json` (`mcpp 2026.11.20.1`); CI runs
 the same pin on every leg. Generation (regenerating export lists or auditing
 headers) additionally needs the clang++ 23.1.3 pinned in `.xlings.json` and the
 pinned MinGW sysroot under `tools/`; ordinary consumers only use the committed

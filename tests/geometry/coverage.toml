@@ -1,0 +1,1415 @@
+# tests/geometry/coverage.toml — official examples and documentation snippets of
+# Boost.geometry 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "geometry"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/interprocess.cpp"
+case = "geometry/examples_index:example: rtree/interprocess"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/iterative_query.cpp"
+case = "geometry/examples_index:example: rtree/iterative_query"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/mapped_file.cpp"
+case = "geometry/examples_index:example: rtree/mapped_file"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/polygons_shared_ptr.cpp"
+case = "geometry/examples_index:example: rtree/polygons_shared_ptr"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/polygons_vector.cpp"
+case = "geometry/examples_index:example: rtree/polygons_vector"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/quick_start.cpp"
+case = "geometry/examples_index:example: rtree/quick_start"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/range_adaptors.cpp"
+case = "geometry/examples_index:example: rtree/range_adaptors"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/value_index.cpp"
+case = "geometry/examples_index:example: rtree/value_index"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/value_shared_ptr.cpp"
+case = "geometry/examples_index:example: rtree/value_shared_ptr"
+
+[[example]]
+path = "libs/geometry/doc/index/src/examples/rtree/variants_map.cpp"
+case = "geometry/examples_index:example: rtree/variants_map"
+
+[[example]]
+path   = "libs/geometry/doc/src/docutils/tools/doxygen_xml2qbk/sample/src/examples/apple_example.cpp"
+status = "excluded"
+reason = "a sample of the documentation tool (doxygen_xml2qbk), not of Boost.Geometry"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/append.cpp"
+case = "geometry/examples_algorithms:example: algorithms/append"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/area.cpp"
+case = "geometry/examples_algorithms:example: algorithms/area"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/area_with_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/area_with_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_2d_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_2d_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_3d_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_3d_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_box_corners.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_box_corners"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_inverse.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_inverse"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_point_from_index.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_point_from_index"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_point_to_index.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_point_to_index"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/assign_points.cpp"
+case = "geometry/examples_algorithms:example: algorithms/assign_points"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/azimuth.cpp"
+case = "geometry/examples_algorithms:example: algorithms/azimuth"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/azimuth_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/azimuth_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/buffer_with_strategies.cpp"
+case = "geometry/examples_algorithms:example: algorithms/buffer_with_strategies"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/centroid.cpp"
+case = "geometry/examples_algorithms:example: algorithms/centroid"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/clear.cpp"
+case = "geometry/examples_algorithms:example: algorithms/clear"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/closest_points.cpp"
+case = "geometry/examples_algorithms:example: algorithms/closest_points"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/closest_points_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/closest_points_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/comparable_distance.cpp"
+case = "geometry/examples_algorithms:example: algorithms/comparable_distance"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/convert.cpp"
+case = "geometry/examples_algorithms:example: algorithms/convert"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/convex_hull.cpp"
+case = "geometry/examples_algorithms:example: algorithms/convex_hull"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/correct.cpp"
+case = "geometry/examples_algorithms:example: algorithms/correct"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/covered_by.cpp"
+case = "geometry/examples_algorithms:example: algorithms/covered_by"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/crosses.cpp"
+case = "geometry/examples_algorithms:example: algorithms/crosses"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/densify.cpp"
+case = "geometry/examples_algorithms:example: algorithms/densify"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/densify_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/densify_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/difference.cpp"
+case = "geometry/examples_algorithms:example: algorithms/difference"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/discrete_frechet_distance.cpp"
+case = "geometry/examples_algorithms:example: algorithms/discrete_frechet_distance"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/discrete_frechet_distance_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/discrete_frechet_distance_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/discrete_hausdorff_distance.cpp"
+case = "geometry/examples_algorithms:example: algorithms/discrete_hausdorff_distance"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/discrete_hausdorff_distance_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/discrete_hausdorff_distance_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/disjoint.cpp"
+case = "geometry/examples_algorithms:example: algorithms/disjoint"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/distance.cpp"
+case = "geometry/examples_algorithms:example: algorithms/distance"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/envelope.cpp"
+case = "geometry/examples_algorithms:example: algorithms/envelope"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/equals.cpp"
+case = "geometry/examples_algorithms:example: algorithms/equals"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/expand.cpp"
+case = "geometry/examples_algorithms:example: algorithms/expand"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/for_each_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/for_each_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/for_each_point_const.cpp"
+case = "geometry/examples_algorithms:example: algorithms/for_each_point_const"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/for_each_segment_const.cpp"
+case = "geometry/examples_algorithms:example: algorithms/for_each_segment_const"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/intersection_ls_ls_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/intersection_ls_ls_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/intersection_poly_poly.cpp"
+case = "geometry/examples_algorithms:example: algorithms/intersection_poly_poly"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/intersection_segment.cpp"
+case = "geometry/examples_algorithms:example: algorithms/intersection_segment"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/intersects_linestring.cpp"
+case = "geometry/examples_algorithms:example: algorithms/intersects_linestring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/intersects_segment.cpp"
+case = "geometry/examples_algorithms:example: algorithms/intersects_segment"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/is_empty.cpp"
+case = "geometry/examples_algorithms:example: algorithms/is_empty"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/is_simple.cpp"
+case = "geometry/examples_algorithms:example: algorithms/is_simple"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/is_valid.cpp"
+case = "geometry/examples_algorithms:example: algorithms/is_valid"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/is_valid_failure.cpp"
+case = "geometry/examples_algorithms:example: algorithms/is_valid_failure"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/is_valid_message.cpp"
+case = "geometry/examples_algorithms:example: algorithms/is_valid_message"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/length.cpp"
+case = "geometry/examples_algorithms:example: algorithms/length"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/length_with_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/length_with_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/line_interpolate.cpp"
+case = "geometry/examples_algorithms:example: algorithms/line_interpolate"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/line_interpolate_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/line_interpolate_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/make_2d_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/make_2d_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/make_3d_point.cpp"
+case = "geometry/examples_algorithms:example: algorithms/make_3d_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/make_inverse.cpp"
+case = "geometry/examples_algorithms:example: algorithms/make_inverse"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/make_with_range.cpp"
+case = "geometry/examples_algorithms:example: algorithms/make_with_range"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/num_geometries.cpp"
+case = "geometry/examples_algorithms:example: algorithms/num_geometries"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/num_interior_rings.cpp"
+case = "geometry/examples_algorithms:example: algorithms/num_interior_rings"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/num_points.cpp"
+case = "geometry/examples_algorithms:example: algorithms/num_points"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/num_segments.cpp"
+case = "geometry/examples_algorithms:example: algorithms/num_segments"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/overlaps.cpp"
+case = "geometry/examples_algorithms:example: algorithms/overlaps"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/perimeter.cpp"
+case = "geometry/examples_algorithms:example: algorithms/perimeter"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/relate.cpp"
+case = "geometry/examples_algorithms:example: algorithms/relate"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/relation.cpp"
+case = "geometry/examples_algorithms:example: algorithms/relation"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/return_envelope.cpp"
+case = "geometry/examples_algorithms:example: algorithms/return_envelope"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/reverse.cpp"
+case = "geometry/examples_algorithms:example: algorithms/reverse"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/simplify.cpp"
+case = "geometry/examples_algorithms:example: algorithms/simplify"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/simplify_insert.cpp"
+case = "geometry/examples_algorithms:example: algorithms/simplify_insert"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/sym_difference.cpp"
+case = "geometry/examples_algorithms:example: algorithms/sym_difference"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/touches_one_geometry.cpp"
+case = "geometry/examples_algorithms:example: algorithms/touches_one_geometry"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/touches_two_geometries.cpp"
+case = "geometry/examples_algorithms:example: algorithms/touches_two_geometries"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/transform.cpp"
+case = "geometry/examples_algorithms:example: algorithms/transform"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/transform_with_strategy.cpp"
+case = "geometry/examples_algorithms:example: algorithms/transform_with_strategy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/union.cpp"
+case = "geometry/examples_algorithms:example: algorithms/union"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/unique.cpp"
+case = "geometry/examples_algorithms:example: algorithms/unique"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/algorithms/within.cpp"
+case = "geometry/examples_algorithms:example: algorithms/within"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/arithmetic/cross_product.cpp"
+case = "geometry/examples_strategies_io:example: arithmetic/cross_product"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/arithmetic/dot_product.cpp"
+case = "geometry/examples_strategies_io:example: arithmetic/dot_product"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/closure.cpp"
+case = "geometry/examples_core_geometries:example: core/closure"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/coordinate_dimension.cpp"
+case = "geometry/examples_core_geometries:example: core/coordinate_dimension"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/coordinate_system.cpp"
+case = "geometry/examples_core_geometries:example: core/coordinate_system"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/coordinate_type.cpp"
+case = "geometry/examples_core_geometries:example: core/coordinate_type"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/degree_radian.cpp"
+case = "geometry/examples_core_geometries:example: core/degree_radian"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/get_box.cpp"
+case = "geometry/examples_core_geometries:example: core/get_box"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/get_point.cpp"
+case = "geometry/examples_core_geometries:example: core/get_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/interior_type.cpp"
+case = "geometry/examples_core_geometries:example: core/interior_type"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/point_order.cpp"
+case = "geometry/examples_core_geometries:example: core/point_order"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/point_type.cpp"
+case = "geometry/examples_core_geometries:example: core/point_type"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/ring_type.cpp"
+case = "geometry/examples_core_geometries:example: core/ring_type"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/rings.cpp"
+case = "geometry/examples_core_geometries:example: core/rings"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/set_box.cpp"
+case = "geometry/examples_core_geometries:example: core/set_box"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/set_point.cpp"
+case = "geometry/examples_core_geometries:example: core/set_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/tag.cpp"
+case = "geometry/examples_core_geometries:example: core/tag"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/core/tag_cast.cpp"
+case = "geometry/examples_core_geometries:example: core/tag_cast"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_array.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_array"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_fusion.cpp"
+case = "geometry/examples_core_geometries_6:example: geometries/adapted/boost_fusion"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_box.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_polygon_box"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_point.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_polygon_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_polygon.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_polygon_polygon"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_polygon_ring.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_polygon_ring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/filtered.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_range/filtered"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/reversed.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_range/reversed"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/sliced.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_range/sliced"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/strided.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_range/strided"
+
+[[example]]
+path   = "libs/geometry/doc/src/examples/geometries/adapted/boost_range/uniqued.cpp"
+status = "excluded"
+reason = "does not compile upstream (1.92.0, clang and gcc): boost::adaptors::uniqued needs operator== and a bidirectional iterator the example's types do not provide"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/boost_tuple.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/boost_tuple"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/c_array.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/c_array"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/adapted/std_array.cpp"
+case = "geometry/examples_core_geometries:example: geometries/adapted/std_array"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/box.cpp"
+case = "geometry/examples_core_geometries:example: geometries/box"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/linestring.cpp"
+case = "geometry/examples_core_geometries:example: geometries/linestring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/multi_linestring.cpp"
+case = "geometry/examples_core_geometries:example: geometries/multi_linestring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/multi_point.cpp"
+case = "geometry/examples_core_geometries:example: geometries/multi_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/multi_polygon.cpp"
+case = "geometry/examples_core_geometries:example: geometries/multi_polygon"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/point.cpp"
+case = "geometry/examples_core_geometries:example: geometries/point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/point_xy.cpp"
+case = "geometry/examples_core_geometries:example: geometries/point_xy"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/point_xyz.cpp"
+case = "geometry/examples_core_geometries:example: geometries/point_xyz"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/polygon.cpp"
+case = "geometry/examples_core_geometries:example: geometries/polygon"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/polyhedral_surface.cpp"
+case = "geometry/examples_core_geometries:example: geometries/polyhedral_surface"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/box.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/box"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/box_2d_4values.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/box_2d_4values"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/box_templated.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/box_templated"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/linestring.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/linestring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/linestring_templated.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/linestring_templated"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/multi_linestring.cpp"
+case = "geometry/examples_core_geometries_2:example: geometries/register/multi_linestring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/multi_point.cpp"
+case = "geometry/examples_core_geometries_3:example: geometries/register/multi_point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/multi_point_templated.cpp"
+case = "geometry/examples_core_geometries_4:example: geometries/register/multi_point_templated"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/multi_polygon.cpp"
+case = "geometry/examples_core_geometries_2:example: geometries/register/multi_polygon"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/point.cpp"
+case = "geometry/examples_core_geometries:example: geometries/register/point"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/ring.cpp"
+case = "geometry/examples_core_geometries_3:example: geometries/register/ring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/register/ring_templated.cpp"
+case = "geometry/examples_core_geometries_5:example: geometries/register/ring_templated"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/ring.cpp"
+case = "geometry/examples_core_geometries:example: geometries/ring"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/geometries/segment.cpp"
+case = "geometry/examples_core_geometries:example: geometries/segment"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/from_wkt.cpp"
+case = "geometry/examples_strategies_io:example: io/from_wkt"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/read_wkt.cpp"
+case = "geometry/examples_strategies_io:example: io/read_wkt"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/svg.cpp"
+case = "geometry/examples_strategies_io:example: io/svg"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/svg_mapper_custom.cpp"
+case = "geometry/examples_strategies_io:example: io/svg_mapper_custom"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/to_wkt.cpp"
+case = "geometry/examples_strategies_io:example: io/to_wkt"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/io/wkt.cpp"
+case = "geometry/examples_strategies_io:example: io/wkt"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/quick_start.cpp"
+case = "geometry/examples_strategies_io:example: quick_start"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_distance_asymmetric.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_distance_asymmetric"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_distance_symmetric.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_distance_symmetric"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_end_flat.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_end_flat"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_end_round.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_end_round"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_geographic_point_circle.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_geographic_point_circle"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_join_miter.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_join_miter"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_join_round.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_join_round"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_point_circle.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_point_circle"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/strategies/buffer_point_square.cpp"
+case = "geometry/examples_strategies_io:example: strategies/buffer_point_square"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/views/box_view.cpp"
+case = "geometry/examples_strategies_io:example: views/box_view"
+
+[[example]]
+path = "libs/geometry/doc/src/examples/views/segment_view.cpp"
+case = "geometry/examples_strategies_io:example: views/segment_view"
+
+[[example]]
+path = "libs/geometry/example/01_point_example.cpp"
+case = "geometry/examples:example: 01_point_example"
+
+[[example]]
+path = "libs/geometry/example/02_linestring_example.cpp"
+case = "geometry/examples:example: 02_linestring_example"
+
+[[example]]
+path = "libs/geometry/example/03_polygon_example.cpp"
+case = "geometry/examples:example: 03_polygon_example"
+
+[[example]]
+path = "libs/geometry/example/04_boost_example.cpp"
+case = "geometry/examples:example: 04_boost_example"
+
+[[example]]
+path = "libs/geometry/example/05_a_overlay_polygon_example.cpp"
+case = "geometry/examples:example: 05_a_overlay_polygon_example"
+
+[[example]]
+path = "libs/geometry/example/05_b_overlay_linestring_polygon_example.cpp"
+case = "geometry/examples:example: 05_b_overlay_linestring_polygon_example"
+
+[[example]]
+path = "libs/geometry/example/06_a_transformation_example.cpp"
+case = "geometry/examples:example: 06_a_transformation_example"
+
+[[example]]
+path = "libs/geometry/example/06_b_transformation_example.cpp"
+case = "geometry/examples:example: 06_b_transformation_example"
+
+[[example]]
+path = "libs/geometry/example/07_a_graph_route_example.cpp"
+case = "geometry/examples:example: 07_a_graph_route_example"
+
+[[example]]
+path = "libs/geometry/example/07_b_graph_route_example.cpp"
+case = "geometry/examples:example: 07_b_graph_route_example"
+
+[[example]]
+path = "libs/geometry/example/c01_custom_point_example.cpp"
+case = "geometry/examples:example: c01_custom_point_example"
+
+[[example]]
+path = "libs/geometry/example/c02_custom_box_example.cpp"
+case = "geometry/examples:example: c02_custom_box_example"
+
+[[example]]
+path   = "libs/geometry/example/c03_custom_linestring_example.cpp"
+status = "excluded"
+reason = "uses the Boost.Geometry extensions (boost/geometry/extensions), which the release does not ship"
+
+[[example]]
+path = "libs/geometry/example/c04_a_custom_triangle_example.cpp"
+case = "geometry/examples:example: c04_a_custom_triangle_example"
+
+[[example]]
+path = "libs/geometry/example/c04_b_custom_triangle_example.cpp"
+case = "geometry/examples:example: c04_b_custom_triangle_example"
+
+[[example]]
+path = "libs/geometry/example/c05_custom_point_pointer_example.cpp"
+case = "geometry/examples:example: c05_custom_point_pointer_example"
+
+[[example]]
+path = "libs/geometry/example/c06_custom_polygon_example.cpp"
+case = "geometry/examples:example: c06_custom_polygon_example"
+
+[[example]]
+path = "libs/geometry/example/c07_custom_ring_pointer_example.cpp"
+case = "geometry/examples_2:example: c07_custom_ring_pointer_example"
+
+[[example]]
+path = "libs/geometry/example/c08_custom_non_std_example.cpp"
+case = "geometry/examples:example: c08_custom_non_std_example"
+
+[[example]]
+path = "libs/geometry/example/c09_custom_fusion_example.cpp"
+case = "geometry/examples_3:example: c09_custom_fusion_example"
+
+[[example]]
+path = "libs/geometry/example/c10_custom_cs_example.cpp"
+case = "geometry/examples:example: c10_custom_cs_example"
+
+[[example]]
+path = "libs/geometry/example/c11_custom_cs_transform_example.cpp"
+case = "geometry/examples:example: c11_custom_cs_transform_example"
+
+[[example]]
+path = "libs/geometry/example/ml01_multipolygon_simplify.cpp"
+case = "geometry/examples:example: ml01_multipolygon_simplify"
+
+[[example]]
+path = "libs/geometry/example/ml02_distance_strategy.cpp"
+case = "geometry/examples:example: ml02_distance_strategy"
+
+[[example]]
+path = "libs/geometry/example/ml03_distance_formula.cpp"
+case = "geometry/examples:example: ml03_distance_formula"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/qt/qt_world_mapper.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/wxwidgets/wxwidgets_world_mapper.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x02_gd_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_a_soci_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_b_soci_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_c_soci_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x03_d_soci_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/example/with_external_libs/x05_shapelib_example.cpp"
+status = "excluded"
+reason = "needs an external library (Qt, wxWidgets, GD, SOCI, shapelib)"
+
+[[example]]
+path   = "libs/geometry/index/example/3d_benchmark.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark2.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark3.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark_experimental.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/benchmark_insert.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[example]]
+path   = "libs/geometry/index/example/glut_vis.cpp"
+status = "excluded"
+reason = "an OpenGL/GLUT visualizer"
+
+[[example]]
+path   = "libs/geometry/index/example/random_test.cpp"
+status = "excluded"
+reason = "does not compile upstream (1.92.0): uses rtree internals (qbegin_) that are private"
+
+[[example]]
+path   = "libs/geometry/index/example/serialize.cpp"
+status = "excluded"
+reason = "a benchmark (prints timings)"
+
+[[snippet]]
+doc   = "libs/geometry/doc/concept/point.qbk#concept_point"
+title = "Point Concept"
+case  = "geometry/custom_types:doc: concept_point"
+
+[[snippet]]
+doc    = "libs/geometry/doc/design_rationale.qbk#design"
+title  = "Design Rationale"
+status = "excluded"
+reason = "the design narrative: code fragments that build up a hypothetical distance function step by step, not calls of the library"
+
+[[snippet]]
+doc   = "libs/geometry/doc/example_adapting_a_legacy_geometry_object_model.qbk#example-adapting-a-legacy-geometry-object-model"
+title = "Example: Adapting a legacy geometry object model"
+case  = "geometry/custom_types:doc: example-adapting-a-legacy-geometry-object-model"
+
+[[snippet]]
+doc   = "libs/geometry/doc/example_adapting_a_legacy_geometry_object_model.qbk#example-source-code-adapting-a-legacy-geometry-object-model"
+title = "Example source code: Adapting a legacy geometry object model"
+case  = "geometry/custom_types:doc: example-source-code-adapting-a-legacy-geometry-object-model"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/area_cartesian.qbk#strategy_area_cartesian"
+title = "strategy::area::cartesian"
+case  = "geometry/api_reference:doc: strategy_area_cartesian"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/area_geographic.qbk#strategy_area_geographic"
+title = "strategy::area::geographic"
+case  = "geometry/api_reference:doc: strategy_area_geographic"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/area_spherical.qbk#strategy_area_spherical"
+title = "strategy::area::spherical"
+case  = "geometry/api_reference:doc: strategy_area_spherical"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/box.qbk#model_box"
+title = "model::box"
+case  = "geometry/api_reference:doc: model_box"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/box_view.qbk#box_view"
+title = "box_view"
+case  = "geometry/api_reference:doc: box_view"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_distance_asymmetric.qbk#strategy_buffer_distance_asymmetric"
+title = "strategy::buffer::distance_asymmetric"
+case  = "geometry/api_reference:doc: strategy_buffer_distance_asymmetric"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_distance_symmetric.qbk#strategy_buffer_distance_symmetric"
+title = "strategy::buffer::distance_symmetric"
+case  = "geometry/api_reference:doc: strategy_buffer_distance_symmetric"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_end_flat.qbk#strategy_buffer_end_flat"
+title = "strategy::buffer::end_flat"
+case  = "geometry/api_reference:doc: strategy_buffer_end_flat"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_end_round.qbk#strategy_buffer_end_round"
+title = "strategy::buffer::end_round"
+case  = "geometry/api_reference:doc: strategy_buffer_end_round"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_geographic_point_circle.qbk#strategy_buffer_geographic_point_circle"
+title = "strategy::buffer::geographic_point_circle"
+case  = "geometry/api_reference:doc: strategy_buffer_geographic_point_circle"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_join_miter.qbk#strategy_buffer_join_miter"
+title = "strategy::buffer::join_miter"
+case  = "geometry/api_reference:doc: strategy_buffer_join_miter"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_join_round.qbk#strategy_buffer_join_round"
+title = "strategy::buffer::join_round"
+case  = "geometry/api_reference:doc: strategy_buffer_join_round"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_point_circle.qbk#strategy_buffer_point_circle"
+title = "strategy::buffer::point_circle"
+case  = "geometry/api_reference:doc: strategy_buffer_point_circle"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_point_square.qbk#strategy_buffer_point_square"
+title = "strategy::buffer::point_square"
+case  = "geometry/api_reference:doc: strategy_buffer_point_square"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/buffer_side_straight.qbk#strategy_buffer_side_straight"
+title = "strategy::buffer::side_straight"
+case  = "geometry/api_reference:doc: strategy_buffer_side_straight"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/cartesian.qbk#cs_cartesian"
+title = "cs::cartesian"
+case  = "geometry/api_reference:doc: cs_cartesian"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/centroid_average.qbk#strategy_centroid_average"
+title = "strategy::centroid::average"
+case  = "geometry/api_reference:doc: strategy_centroid_average"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/centroid_bashein_detmer.qbk#strategy_centroid_bashein_detmer"
+title = "strategy::centroid::bashein_detmer"
+case  = "geometry/api_reference:doc: strategy_centroid_bashein_detmer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/centroid_exception.qbk#centroid_exception"
+title = "centroid_exception"
+case  = "geometry/api_reference:doc: centroid_exception"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/closeable_view.qbk#closeable_view"
+title = "closeable_view"
+case  = "geometry/api_reference:doc: closeable_view"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/closing_iterator.qbk#closing_iterator"
+title = "closing_iterator"
+case  = "geometry/api_reference:doc: closing_iterator"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/closure.qbk#closure"
+title = "closure"
+case  = "geometry/api_reference:doc: closure"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/coordinate_system.qbk#coordinate_system"
+title = "coordinate_system"
+case  = "geometry/api_reference:doc: coordinate_system"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/coordinate_type.qbk#coordinate_type"
+title = "coordinate_type"
+case  = "geometry/api_reference:doc: coordinate_type"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/cs_tag.qbk#cs_tag"
+title = "cs_tag"
+case  = "geometry/api_reference:doc: cs_tag"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/de9im_mask.qbk#de9im_mask"
+title = "de9im::mask"
+case  = "geometry/api_reference:doc: de9im_mask"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/de9im_matrix.qbk#de9im_matrix"
+title = "de9im::matrix"
+case  = "geometry/api_reference:doc: de9im_matrix"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/de9im_static_mask.qbk#de9im_static_mask"
+title = "de9im::static_mask"
+case  = "geometry/api_reference:doc: de9im_static_mask"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/degree.qbk#degree"
+title = "degree"
+case  = "geometry/api_reference:doc: degree"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/densify_cartesian.qbk#strategy_densify_cartesian"
+title = "strategy::densify::cartesian"
+case  = "geometry/api_reference:doc: strategy_densify_cartesian"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/densify_geographic.qbk#strategy_densify_geographic"
+title = "strategy::densify::geographic"
+case  = "geometry/api_reference:doc: strategy_densify_geographic"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/densify_spherical.qbk#strategy_densify_spherical"
+title = "strategy::densify::spherical"
+case  = "geometry/api_reference:doc: strategy_densify_spherical"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/dimension.qbk#dimension"
+title = "dimension"
+case  = "geometry/api_reference:doc: dimension"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_cross_track.qbk#strategy_distance_cross_track"
+title = "strategy::distance::cross_track"
+case  = "geometry/api_reference:doc: strategy_distance_cross_track"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_cross_track_point_box.qbk#strategy_distance_cross_track_point_box"
+title = "strategy::distance::cross_track_point_box"
+case  = "geometry/api_reference:doc: strategy_distance_cross_track_point_box"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_haversine.qbk#strategy_distance_haversine"
+title = "strategy::distance::haversine"
+case  = "geometry/api_reference:doc: strategy_distance_haversine"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_projected_point.qbk#strategy_distance_projected_point"
+title = "strategy::distance::projected_point"
+case  = "geometry/api_reference:doc: strategy_distance_projected_point"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_pythagoras.qbk#strategy_distance_pythagoras"
+title = "strategy::distance::pythagoras"
+case  = "geometry/api_reference:doc: strategy_distance_pythagoras"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_pythagoras_box_box.qbk#strategy_distance_pythagoras_box_box"
+title = "strategy::distance::pythagoras_box_box"
+case  = "geometry/api_reference:doc: strategy_distance_pythagoras_box_box"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/distance_pythagoras_point_box.qbk#strategy_distance_pythagoras_point_box"
+title = "strategy::distance::pythagoras_point_box"
+case  = "geometry/api_reference:doc: strategy_distance_pythagoras_point_box"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/ever_circling_iterator.qbk#ever_circling_iterator"
+title = "ever_circling_iterator"
+case  = "geometry/api_reference:doc: ever_circling_iterator"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/exception.qbk#exception"
+title = "exception"
+case  = "geometry/api_reference:doc: exception"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/geographic.qbk#cs_geographic"
+title = "cs::geographic"
+case  = "geometry/api_reference:doc: cs_geographic"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/identity_view.qbk#identity_view"
+title = "identity_view"
+case  = "geometry/api_reference:doc: identity_view"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/interior_type.qbk#interior_type"
+title = "interior_type"
+case  = "geometry/api_reference:doc: interior_type"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/line_interpolate_cartesian.qbk#strategy_line_interpolate_cartesian"
+title = "strategy::line_interpolate::cartesian"
+case  = "geometry/api_reference:doc: strategy_line_interpolate_cartesian"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/line_interpolate_geographic.qbk#strategy_line_interpolate_geographic"
+title = "strategy::line_interpolate::geographic"
+case  = "geometry/api_reference:doc: strategy_line_interpolate_geographic"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/line_interpolate_spherical.qbk#strategy_line_interpolate_spherical"
+title = "strategy::line_interpolate::spherical"
+case  = "geometry/api_reference:doc: strategy_line_interpolate_spherical"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/linestring.qbk#model_linestring"
+title = "model::linestring"
+case  = "geometry/api_reference:doc: model_linestring"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/multi_linestring.qbk#model_multi_linestring"
+title = "model::multi_linestring"
+case  = "geometry/api_reference:doc: model_multi_linestring"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/multi_point.qbk#model_multi_point"
+title = "model::multi_point"
+case  = "geometry/api_reference:doc: model_multi_point"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/multi_polygon.qbk#model_multi_polygon"
+title = "model::multi_polygon"
+case  = "geometry/api_reference:doc: model_multi_polygon"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/point.qbk#model_point"
+title = "model::point"
+case  = "geometry/api_reference:doc: model_point"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/point_order.qbk#point_order"
+title = "point_order"
+case  = "geometry/api_reference:doc: point_order"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/point_type.qbk#point_type"
+title = "point_type"
+case  = "geometry/api_reference:doc: point_type"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/point_xy.qbk#model_d2_point_xy"
+title = "model::d2::point_xy"
+case  = "geometry/api_reference:doc: model_d2_point_xy"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/point_xyz.qbk#model_d3_point_xyz"
+title = "model::d3::point_xyz"
+case  = "geometry/api_reference:doc: model_d3_point_xyz"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/polar.qbk#cs_polar"
+title = "cs::polar"
+case  = "geometry/api_reference:doc: cs_polar"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/polygon.qbk#model_polygon"
+title = "model::polygon"
+case  = "geometry/api_reference:doc: model_polygon"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/polyhedral_surface.qbk#model_polyhedral_surface"
+title = "model::polyhedral_surface"
+case  = "geometry/api_reference:doc: model_polyhedral_surface"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/radian.qbk#radian"
+title = "radian"
+case  = "geometry/api_reference:doc: radian"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/referring_segment.qbk#model_referring_segment"
+title = "model::referring_segment"
+case  = "geometry/api_reference:doc: model_referring_segment"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/reversible_view.qbk#reversible_view"
+title = "reversible_view"
+case  = "geometry/api_reference:doc: reversible_view"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/ring.qbk#model_ring"
+title = "model::ring"
+case  = "geometry/api_reference:doc: model_ring"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/ring_type.qbk#ring_type"
+title = "ring_type"
+case  = "geometry/api_reference:doc: ring_type"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/segment.qbk#model_segment"
+title = "model::segment"
+case  = "geometry/api_reference:doc: model_segment"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/segment_view.qbk#segment_view"
+title = "segment_view"
+case  = "geometry/api_reference:doc: segment_view"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/side_geographic.qbk#strategy_side_geographic"
+title = "strategy::side::geographic"
+case  = "geometry/api_reference:doc: strategy_side_geographic"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/side_side_by_cross_track.qbk#strategy_side_side_by_cross_track"
+title = "strategy::side::side_by_cross_track"
+case  = "geometry/api_reference:doc: strategy_side_side_by_cross_track"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/side_side_by_triangle.qbk#strategy_side_side_by_triangle"
+title = "strategy::side::side_by_triangle"
+case  = "geometry/api_reference:doc: strategy_side_side_by_triangle"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/side_spherical_side_formula.qbk#strategy_side_spherical_side_formula"
+title = "strategy::side::spherical_side_formula"
+case  = "geometry/api_reference:doc: strategy_side_spherical_side_formula"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/simplify_douglas_peucker.qbk#strategy_simplify_douglas_peucker"
+title = "strategy::simplify::douglas_peucker"
+case  = "geometry/api_reference:doc: strategy_simplify_douglas_peucker"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/spherical.qbk#cs_spherical"
+title = "cs::spherical"
+case  = "geometry/api_reference:doc: cs_spherical"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/spherical_equatorial.qbk#cs_spherical_equatorial"
+title = "cs::spherical_equatorial"
+case  = "geometry/api_reference:doc: cs_spherical_equatorial"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/srs_spheroid.qbk#srs_spheroid"
+title = "srs::spheroid"
+case  = "geometry/api_reference:doc: srs_spheroid"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/svg_mapper.qbk#svg_mapper"
+title = "svg_mapper"
+case  = "geometry/api_reference:doc: svg_mapper"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/tag.qbk#tag"
+title = "tag"
+case  = "geometry/api_reference:doc: tag"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/tag_cast.qbk#tag_cast"
+title = "tag_cast"
+case  = "geometry/api_reference:doc: tag_cast"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_inverse_transformer.qbk#strategy_transform_inverse_transformer"
+title = "strategy::transform::inverse_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_inverse_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_map_transformer.qbk#strategy_transform_map_transformer"
+title = "strategy::transform::map_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_map_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_matrix_transformer.qbk#strategy_transform_matrix_transformer"
+title = "strategy::transform::matrix_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_matrix_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_rotate_transformer.qbk#strategy_transform_rotate_transformer"
+title = "strategy::transform::rotate_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_rotate_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_scale_transformer.qbk#strategy_transform_scale_transformer"
+title = "strategy::transform::scale_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_scale_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/transform_translate_transformer.qbk#strategy_transform_translate_transformer"
+title = "strategy::transform::translate_transformer"
+case  = "geometry/api_reference:doc: strategy_transform_translate_transformer"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/within_crossings_multiply.qbk#strategy_within_crossings_multiply"
+title = "strategy::within::crossings_multiply"
+case  = "geometry/api_reference:doc: strategy_within_crossings_multiply"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/within_franklin.qbk#strategy_within_franklin"
+title = "strategy::within::franklin"
+case  = "geometry/api_reference:doc: strategy_within_franklin"
+
+[[snippet]]
+doc   = "libs/geometry/doc/generated/within_winding.qbk#strategy_within_winding"
+title = "strategy::within::winding"
+case  = "geometry/api_reference:doc: strategy_within_winding"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#contains-geometry-const"
+title = "contains(Geometry const &)"
+case  = "geometry/api_index:doc: contains-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#covered-by-geometry-const"
+title = "covered_by(Geometry const &)"
+case  = "geometry/api_index:doc: covered-by-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#covers-geometry-const"
+title = "covers(Geometry const &)"
+case  = "geometry/api_index:doc: covers-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#disjoint-geometry-const"
+title = "disjoint(Geometry const &)"
+case  = "geometry/api_index:doc: disjoint-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#intersects-geometry-const"
+title = "intersects(Geometry const &)"
+case  = "geometry/api_index:doc: intersects-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#nearest-geometry-const-std-size-t"
+title = "nearest(Geometry const &, std::size_t)"
+case  = "geometry/api_index:doc: nearest-geometry-const-std-size-t"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#overlaps-geometry-const"
+title = "overlaps(Geometry const &)"
+case  = "geometry/api_index:doc: overlaps-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#satisfies-unarypredicate-const"
+title = "satisfies(UnaryPredicate const &)"
+case  = "geometry/api_index:doc: satisfies-unarypredicate-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/predicates.qbk#within-geometry-const"
+title = "within(Geometry const &)"
+case  = "geometry/api_index:doc: within-geometry-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree.qbk#begin"
+title = "begin()"
+case  = "geometry/api_index:doc: begin"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree.qbk#end"
+title = "end()"
+case  = "geometry/api_index:doc: end"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree.qbk#qbegin-predicates-const"
+title = "qbegin(Predicates const &)"
+case  = "geometry/api_index:doc: qbegin-predicates-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree.qbk#qend"
+title = "qend()"
+case  = "geometry/api_index:doc: qend"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree.qbk#query-predicates-const-outiter"
+title = "query(Predicates const &, OutIter)"
+case  = "geometry/api_index:doc: query-predicates-const-outiter"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree_functions.qbk#begin-rtree-const"
+title = "begin(rtree<...> const &)"
+case  = "geometry/api_index:doc: begin-rtree-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree_functions.qbk#end-rtree-const"
+title = "end(rtree<...> const &)"
+case  = "geometry/api_index:doc: end-rtree-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree_functions.qbk#qbegin-rtree-const-predicates-const"
+title = "qbegin(rtree<...> const &, Predicates const &)"
+case  = "geometry/api_index:doc: qbegin-rtree-const-predicates-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree_functions.qbk#qend-rtree-const"
+title = "qend(rtree<...> const &)"
+case  = "geometry/api_index:doc: qend-rtree-const"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/generated/rtree_functions.qbk#query-rtree-const-predicates-const-outiter"
+title = "query(rtree<...> const &, Predicates const &, OutIter)"
+case  = "geometry/api_index:doc: query-rtree-const-predicates-const-outiter"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/rtree/creation.qbk#creation-and-modification"
+title = "Creation and Modification"
+case  = "geometry/api_index:doc: creation-and-modification"
+
+[[snippet]]
+doc    = "libs/geometry/doc/index/rtree/experimental.qbk#experimental-features"
+title  = "Experimental Features"
+status = "excluded"
+reason = "the experimental rtree features need BOOST_GEOMETRY_INDEX_DETAIL_EXPERIMENTAL, which the module is not built with"
+
+[[snippet]]
+doc   = "libs/geometry/doc/index/rtree/query.qbk#queries"
+title = "Queries"
+case  = "geometry/api_index:doc: queries"
+
+[[snippet]]
+doc    = "libs/geometry/doc/src/docutils/tools/doxygen_xml2qbk/sample/apple.qbk#fruit_apple"
+title  = "fruit::apple"
+status = "excluded"
+reason = "a sample of the documentation tool (doxygen_xml2qbk), not of Boost.Geometry"

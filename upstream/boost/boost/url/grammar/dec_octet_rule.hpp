@@ -65,7 +65,9 @@ struct dec_octet_rule_t
     @see
         @ref parse.
 */
-constexpr implementation_defined::dec_octet_rule_t dec_octet_rule{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::dec_octet_rule_t dec_octet_rule{};
 
 } // grammar
 } // urls

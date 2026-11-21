@@ -71,7 +71,11 @@ def install_fixture(home, namespace, name, version):
 
     registry = home / "registry"
     (registry / "data/xpkgs").mkdir(parents=True, exist_ok=True)
-    for entry in ("bin", "subos", "config", "abi", "abi.gen", "abi.json"):
+    # Not the ABI tables (`abi`, `abi.gen`, `abi.json`): mcpp regenerates them
+    # in this home from the linked payloads, and through a link it would write
+    # the fixture's paths into the donor's tables and prune the generation the
+    # donor's toolchains name as their interpreter (mcpp 2026.11.20.1).
+    for entry in ("bin", "subos", "config"):
         source = donor / "registry" / entry
         if source.exists() and not (registry / entry).exists():
             link_or_copy(source, registry / entry)
@@ -97,8 +101,7 @@ def install_fixture(home, namespace, name, version):
     descriptor = (
         'package={spec="1",namespace=' + json.dumps(namespace) +
         ',name=' + json.dumps(name) +
-        ',description="Installed template fixture",type="package",'
-        'mcpp="mcpp.toml",xpm={')
+        ',description="Installed template fixture",type="package",xpm={')
     descriptor += ",".join(
         platform + "={[" + json.dumps(version) + "]=" + entry + "}"
         for platform in ("linux", "macosx", "windows")) + "}}\n"
@@ -109,11 +112,15 @@ def install_fixture(home, namespace, name, version):
 def check_rendered(manifest_path, identity, version, template_features):
     """Assert the rendered dependency is the complete selector at this version."""
     data = tomllib.loads(manifest_path.read_text(encoding="utf-8"))
-    dependencies = data.get("dependencies", {})
-    assert list(dependencies) == [identity], (
-        "expected exactly one dependency keyed by the complete selector, got {}"
-        .format(list(dependencies)))
-    options = dependencies[identity]
+    # The key is the complete selector written unquoted (mcpp 2026.11.8.1+),
+    # which TOML reads as one table per dotted segment.
+    node = data.get("dependencies", {})
+    for segment in identity.split("."):
+        assert isinstance(node, dict) and list(node) == [segment], (
+            "expected exactly one dependency keyed by the complete selector "
+            "{}, got {}".format(identity, node))
+        node = node[segment]
+    options = node
     assert isinstance(options, dict), (
         "the rendered dependency must be the table form so features survive: {}"
         .format(options))
@@ -128,7 +135,7 @@ def redirect_to_fixture(manifest_path, identity, version, options, package_dir):
     """Point the checked dependency at the fixture, preserving explicit features.
 
     Rewritten through tomllib's parsed values and one precise line replacement:
-    the dependency line is the only one that starts with the quoted identity."""
+    the dependency line is the only one that starts with the identity."""
     replacement = "{ path = " + json.dumps(package_dir.as_posix())
     if options.get("features"):
         replacement += ", features = " + json.dumps(options["features"])
@@ -136,7 +143,7 @@ def redirect_to_fixture(manifest_path, identity, version, options, package_dir):
         replacement += ", default-features = false"
     replacement += " }"
     lines = manifest_path.read_text(encoding="utf-8").splitlines()
-    prefix = json.dumps(identity) + " ="
+    prefix = identity + " ="
     matches = [i for i, line in enumerate(lines) if line.startswith(prefix)]
     assert len(matches) == 1, matches
     lines[matches[0]] = prefix + " " + replacement
@@ -169,12 +176,18 @@ def main():
     scratch = ROOT / ".tmp"
     scratch.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix=name + "-template-", dir=scratch))
-    home = temporary / "home"
-    package_dir = install_fixture(home, namespace, name, version)
-    env = dict(os.environ, MCPP_HOME=str(home))
-
+    # The home is not: the fixture's package is the working tree, mcpp keys a
+    # path package by the digest of its whole tree (mcpp 2026.11.19.1+), and
+    # a home below it, which the build writes to, changes that tree while it is
+    # built (refused under --strict). The project needs no such care: a
+    # directory holding its own mcpp.toml is not part of the digest.
+    home_root = Path(tempfile.mkdtemp(prefix=name + "-template-home-"))
+    home = home_root / "home"
     selector = identity + "@" + version
     try:
+        package_dir = install_fixture(home, namespace, name, version)
+        env = dict(os.environ, MCPP_HOME=str(home))
+
         run([args.mcpp, "new", "--list-templates", selector],
             temporary, env)
         run([args.mcpp, "new", "quickstart", "--template",
@@ -200,9 +213,10 @@ def main():
         print("template {}: ok".format(args.template or "default"))
     finally:
         if args.keep:
-            print("kept", temporary)
+            print("kept", temporary, home_root)
         else:
             shutil.rmtree(temporary, ignore_errors=True)
+            shutil.rmtree(home_root, ignore_errors=True)
     return 0
 
 

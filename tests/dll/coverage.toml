@@ -1,0 +1,130 @@
+# tests/dll/coverage.toml — official examples and documentation snippets of
+# Boost.dll 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "dll"
+
+[[example]]
+path = "libs/dll/example/getting_started.cpp"
+case = "dll/examples:example: getting_started"
+
+[[example]]
+path = "libs/dll/example/getting_started_library.cpp"
+case = "dll/examples:example: getting_started_library"
+
+[[example]]
+path   = "libs/dll/example/mangled/import_class.cpp"
+status = "excluded"
+reason = "does not compile as published (`\"Calc(float): \" (cl->*calc)` lacks its <<) and needs the mangled test plugin of libs/dll/test; smart_library / import_class are experimental"
+
+[[example]]
+path   = "libs/dll/example/mangled/smart_lib.cpp"
+status = "excluded"
+reason = "does not compile as published (unqualified cout / endl) and needs the mangled test plugin of libs/dll/test; smart_library is experimental"
+
+[[example]]
+path = "libs/dll/example/tutorial1/my_plugin_sum.cpp"
+case = "dll/examples:example: my_plugin_sum"
+
+[[example]]
+path = "libs/dll/example/tutorial1/tutorial1.cpp"
+case = "dll/examples:example: tutorial1"
+
+[[example]]
+path = "libs/dll/example/tutorial2/my_plugin_aggregator.cpp"
+case = "dll/examples:example: my_plugin_aggregator"
+
+[[example]]
+path = "libs/dll/example/tutorial2/tutorial2.cpp"
+case = "dll/examples:example: tutorial2"
+
+[[example]]
+path = "libs/dll/example/tutorial3/tutorial3.cpp"
+case = "dll/examples:example: tutorial3"
+
+[[example]]
+path = "libs/dll/example/tutorial4/load_self.cpp"
+case = "dll/self:example: load_self"
+
+[[example]]
+path = "libs/dll/example/tutorial4/static_plugin.cpp"
+case = "dll/self:example: static_plugin"
+
+[[example]]
+path = "libs/dll/example/tutorial5/load_all.cpp"
+case = "dll/self:example: load_all"
+
+[[example]]
+path = "libs/dll/example/tutorial6/on_unload_lib.cpp"
+case = "dll/examples:example: on_unload_lib"
+
+[[example]]
+path = "libs/dll/example/tutorial6/tutorial6.cpp"
+case = "dll/examples:example: tutorial6"
+
+[[example]]
+path = "libs/dll/example/tutorial7/library1.cpp"
+case = "dll/examples:example: library1"
+
+[[example]]
+path = "libs/dll/example/tutorial7/library2.cpp"
+case = "dll/examples:example: library2"
+
+[[example]]
+path = "libs/dll/example/tutorial7/tutorial7.cpp"
+case = "dll/examples:example: tutorial7"
+
+[[example]]
+path = "libs/dll/example/tutorial8/refcounting_plugin.cpp"
+case = "dll/examples:example: refcounting_plugin"
+
+[[example]]
+path = "libs/dll/example/tutorial8/tutorial8.cpp"
+case = "dll/examples:example: tutorial8"
+
+[[example]]
+path   = "libs/dll/example/tutorial8/tutorial8_static.cpp"
+status = "gap"
+reason = "links refcounting_plugin.cpp into the importing program, whose location() calls boost::dll::this_line_location(): declared static inline upstream so that each binary instantiates its own (it reports the calling image), hence TU-local and not exportable; the plugin form is dll/examples:example: tutorial8"
+
+[[example]]
+path = "libs/dll/example/tutorial9/tutorial9.cpp"
+case = "dll/self:example: tutorial9"
+
+[[snippet]]
+doc   = "libs/dll/doc/design_rationale.qbk#aliases-vs-mangling"
+title = "Aliases vs Mangling"
+case  = "dll/examples:example: getting_started"
+
+[[snippet]]
+doc   = "libs/dll/doc/faq.qbk#f-a-q"
+title = "F.A.Q."
+case  = "dll/examples:doc: f-a-q"
+
+[[snippet]]
+doc   = "libs/dll/doc/getting_started.qbk#getting_started"
+title = "Getting started"
+case  = "dll/examples:doc: getting_started"
+
+[[snippet]]
+doc   = "libs/dll/doc/limitations.qbk#multithread"
+title = "Thread safe library loading (Fails on FreeBSD, MacOS, iOS and some other)"
+case  = "dll/examples:doc: multithread"
+
+[[snippet]]
+doc    = "libs/dll/doc/mangled.qbk#mangled-import"
+title  = "Mangled Import"
+status = "excluded"
+reason = "the page's programs are example/mangled/*.cpp (excluded above): experimental smart_library"
+
+[[snippet]]
+doc    = "libs/dll/doc/mangled.qbk#overloading-qualifiers"
+title  = "Overloading qualifiers"
+status = "excluded"
+reason = "experimental smart_library (example/mangled/, excluded above)"
+
+[[snippet]]
+doc   = "libs/dll/doc/missuses.qbk#missuses"
+title = "Missuses"
+case  = "dll/examples:doc: missuses"

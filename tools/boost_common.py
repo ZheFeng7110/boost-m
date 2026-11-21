@@ -49,7 +49,7 @@ BOOST_VERSION = _boost_version()
 # C1 downgrade (2026-09-06): scope_exit is include-only now — its public API
 # is the BOOST_SCOPE_EXIT_* macro family (macros never cross module
 # boundaries, M10 rule), and gcc 16.1 ODR-conflicts on include+import mixing
-# (describe.cpp precedent), so consumers #include <boost/scope_exit.hpp>.
+# (describe/smoke.cpp precedent), so consumers #include <boost/scope_exit.hpp>.
 LIBS_M3 = [
     "optional", "variant", "variant2", "any", "core", "container_hash",
     "mp11", "static_string", "scope", "type_traits",
@@ -92,10 +92,15 @@ LIBS_M4 = [
 # global `using namespace boost::placeholders;` cannot be reproduced by a
 # module — consumers of the module face write their own using-directive
 # (the upstream-recommended spelling anyway).
+# Conversion (2026-11-09, .agents/docs/2026-11-09-module-test-hardening-design.md
+# §5.3): its public headers sit at the top of boost/ (implicit_cast.hpp,
+# polymorphic_cast.hpp, polymorphic_pointer_cast.hpp) and boost/conversion/
+# holds only detail/, so the prefix heuristic saw an empty library and the
+# 2026-09-08 inventory filed it as a "no-header stub". See EXTRA_HEADERS.
 LIBS_T1A = [
     "align", "array", "assert", "assign", "bimap", "bind", "bloom",
     "callable_traits", "circular_buffer", "compat", "concept_check",
-    "config", "convert", "crc", "decimal",
+    "config", "conversion", "convert", "crc", "decimal",
     "dll", "dynamic_bitset", "flyweight", "format", "function",
     "functional", "hash2", "heap", "histogram", "hof", "icl",
     "integer", "intrusive", "lambda", "lambda2", "leaf", "lexical_cast", "lockfree",
@@ -174,6 +179,46 @@ LIBS_T4 = [
 LIBS_SPECIAL = ["version", "macros"]
 TARGET_LIBS = LIBS_M3 + LIBS_M4 + LIBS_T1A + LIBS_T2 + LIBS_T1B + LIBS_SPECIAL
 
+# Public headers the prefix rules (boost/<lib>/** minus detail/, boost/<lib>.hpp)
+# do not see. Paths are relative to boost/.
+#
+# EXTRA_HEADERS: added to the library's public header set (its GMF) and owned
+#   by it: file ownership and include-edge detection read it, and the header
+#   set gains it. The source of truth for a library's header set (its GMF) is
+#   the hand-maintained generated/meta/libs.json, which headers_of() reads; a
+#   header added only there (config: boost/cstdlib.hpp) is in the GMF but has
+#   no owner here, so keep libs.json when regenerating it from the heuristics.
+#   - conversion: its headers sit at the top of boost/ under other names.
+#   - core: boost::core::string_view is a documented Core component
+#     (libs/core/doc/string_view.qbk) whose only header is
+#     boost/core/detail/string_view.hpp; without it no module exported the
+#     string_view alias, which charconv's from_chars(string_view) overloads
+#     take (only json exported basic_string_view, reached through its own GMF).
+#   - smart_ptr: boost/pointer_cast.hpp is smart_ptr's (upstream:
+#     Boost::conversion links Boost::smart_ptr for it) and declares the raw
+#     pointer / std::unique_ptr / std::shared_ptr overloads of
+#     *_pointer_cast. It must be in smart_ptr's GMF, not only owned by it: a
+#     using-declaration brings the overloads the GMF sees, and smart_ptr.hpp
+#     does not include this header, so ownership alone left those overloads
+#     exported by no module (conversion, which reaches the header first in
+#     TARGET_LIBS order, saw them but could not claim them).
+# TOP_LEVEL_OWNERS: ownership (and include edges) only, for top-level files;
+#   the file stays out of the owner's header set, so the owner's GMF and
+#   export list do not change. Filled from the top-level EXTRA_HEADERS
+#   entries; a file whose declarations a module must export belongs in
+#   EXTRA_HEADERS, not here.
+EXTRA_HEADERS = {
+    "conversion": ["implicit_cast.hpp", "polymorphic_cast.hpp",
+                   "polymorphic_pointer_cast.hpp"],
+    "core": ["core/detail/string_view.hpp"],
+    "smart_ptr": ["pointer_cast.hpp"],
+}
+TOP_LEVEL_OWNERS = {}
+for _lib, _names in EXTRA_HEADERS.items():
+    for _name in _names:
+        if "/" not in _name:
+            TOP_LEVEL_OWNERS[_name] = _lib
+
 # M9 downgrades to include-only (plan §2 note + 2026-08-17 M9 doc §1): pure
 # macro libs (predef: .h only; static_assert: module name is a keyword) and
 # internal-linkage constexpr-object APIs (hof, units) — same consumer rule
@@ -204,12 +249,13 @@ LIBS_INCLUDE_ONLY_M11 = ["exception"]
 #    the official header-only configuration (<boost/test/included/**>
 #    aggregate,自带 main). The two forms must never link together (the
 #    included aggregate and the framework TUs double-define the framework
-#    symbols, M11 §3) — tests/test_utf.cpp vs tests/test_included.cpp are
-#    gated on MCPP_FEATURE_UNIT_TEST_FRAMEWORK.
+#    symbols, M11 §3): tests/test/utf/ is a project of its own that always
+#    enables the feature; tests/test/included/ (root project) is gated on
+#    MCPP_FEATURE_UNIT_TEST_FRAMEWORK.
 # The feature names live in gen_features.py (test is renamed
 # `unit_test_framework` there, aligned with the upstream CMake target
 # boost_unit_test_framework); the internal keys here stay `log` / `test`
-# (COMPILED_TU_GLOBS keys, tests/test_utf.cpp naming).
+# (COMPILED_TU_GLOBS keys).
 LIBS_COMPILED_INCLUDE_ONLY = ["log", "test"]
 
 # Target triple for the bundle AST snapshot. The committed .inc files are a
@@ -321,6 +367,8 @@ def resolve_headers_heuristic(lib: str):
     single = BOOST_ROOT / (lib + ".hpp")
     if single.is_file():
         headers.add(single)
+    headers.update(BOOST_ROOT / name for name in EXTRA_HEADERS.get(lib, ())
+                   if (BOOST_ROOT / name).is_file())
 
     def key(p: Path):
         rel = p.relative_to(BOOST_ROOT).as_posix()
@@ -482,7 +530,8 @@ def build_file_to_lib():
 
     Prefix-based: every file under boost/<lib>/ (including detail/ subtrees,
     which are enumerated but not GMF-included) plus the boost/<lib>.hpp
-    aggregate belongs to the library."""
+    aggregate belongs to the library; TOP_LEVEL_OWNERS adds the top-level
+    files whose name is not a library's."""
     mapping = {}
     for lib in TARGET_LIBS:
         d = BOOST_ROOT / lib
@@ -492,6 +541,8 @@ def build_file_to_lib():
         single = BOOST_ROOT / (lib + ".hpp")
         if single.is_file():
             mapping[str(single.resolve()).lower()] = lib
+    for name, lib in TOP_LEVEL_OWNERS.items():
+        mapping[str((BOOST_ROOT / name).resolve()).lower()] = lib
     return mapping
 
 
@@ -514,8 +565,11 @@ def _lib_of_include(rel: str):
     """boost/<x>... -> target lib x ('' when not a target lib root).
 
     Handles both directory roots (boost/<lib>/...) and single-header
-    aggregates (boost/<lib>.hpp, e.g. boost/tokenizer.hpp / boost/crc.hpp)."""
+    aggregates (boost/<lib>.hpp, e.g. boost/tokenizer.hpp / boost/crc.hpp),
+    and the TOP_LEVEL_OWNERS files (boost/polymorphic_cast.hpp -> conversion)."""
     top = rel[len("boost/"):].split("/")[0]
+    if top in TOP_LEVEL_OWNERS:
+        return TOP_LEVEL_OWNERS[top]
     if "." in top:
         # single-header aggregate include (boost/<lib>.hpp)
         stem = top.rsplit(".", 1)[0]

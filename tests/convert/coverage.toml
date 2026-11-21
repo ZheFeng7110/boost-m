@@ -1,0 +1,85 @@
+# tests/convert/coverage.toml — official examples and documentation snippets of
+# Boost.convert 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "convert"
+
+[[example]]
+path = "libs/convert/example/algorithms.cpp"
+case = "convert/examples_stream:example: algorithms"
+
+[[example]]
+path = "libs/convert/example/default_converter.cpp"
+case = "convert/examples_default_converter:example: default_converter"
+
+[[example]]
+path   = "libs/convert/example/default_converter_fail.cpp"
+status = "excluded"
+reason = "compile-failure demonstration: boost::convert without a defined boost::cnv::by_default must not compile"
+
+[[example]]
+path = "libs/convert/example/getting_serious.cpp"
+case = "convert/examples_stream:example: getting_serious"
+
+[[example]]
+path = "libs/convert/example/getting_started.cpp"
+case = "convert/examples_lexical_cast:example: getting_started"
+
+[[example]]
+path = "libs/convert/example/lexical_cast.cpp"
+case = "convert/examples_lexical_cast:example: lexical_cast"
+
+[[example]]
+path = "libs/convert/example/stream.cpp"
+case = "convert/examples_stream:example: stream"
+
+[[snippet]]
+doc    = "libs/convert/doc/converters.qbk#converters"
+title  = "Converters"
+case   = "convert/custom_types:user converters: class, function, lambda"
+reason = "the converter signatures the page lists, as user class/function/lambda converters"
+
+[[snippet]]
+doc    = "libs/convert/doc/default_converter.qbk#default-converter"
+title  = "Default Converter"
+case   = "convert/examples_default_converter:example: default_converter"
+reason = "the page's snippets are default_converter.cpp's"
+
+[[snippet]]
+doc   = "libs/convert/doc/design_notes.qbk#converter_signature"
+title = "Converter Signature"
+case  = "convert/examples_stream:doc: converter_signature"
+
+[[snippet]]
+doc   = "libs/convert/doc/design_notes.qbk#user-interface-signature"
+title = "User Interface Signature"
+case  = "convert/examples_stream:doc: user-interface-signature"
+
+[[snippet]]
+doc    = "libs/convert/doc/getting_serious.qbk#error_detection"
+title  = "Better Error Detection"
+case   = "convert/examples_stream:example: getting_serious"
+reason = "the page's snippets are getting_serious.cpp's"
+
+[[snippet]]
+doc    = "libs/convert/doc/no_optional_interface.qbk#alternative-interface"
+title  = "Alternative Interface"
+case   = "convert/examples_stream:example: getting_serious"
+reason = "the page's snippets are getting_serious.cpp's"
+
+[[snippet]]
+doc   = "libs/convert/doc/other.qbk#other_conversions"
+title = "Beyond Basic Conversions"
+case  = "convert/custom_types:doc: other_conversions"
+
+[[snippet]]
+doc   = "libs/convert/doc/stream_converter.qbk#the-default-constructible-type-requirement"
+title = "The ['Default Constructible] Type Requirement"
+case  = "convert/include_spirit:doc: the-default-constructible-type-requirement"
+
+[[snippet]]
+doc    = "libs/convert/doc/user_types.qbk#integration_of_user_types"
+title  = "Integration of User-Defined Types"
+case   = "convert/custom_types:a user type through its stream operators"
+reason = "the user type and the operator signatures of the page"

@@ -30,7 +30,7 @@ Exception — FEATURE_ONLY_SOURCES: the unit_test_framework TU globs are
 deliberately NOT put into the base set. In test mode the base compiles
 unconditionally and every TU links into every test program (no archive
 pull-on-demand), so the framework TUs and the official header-only aggregate
-(<boost/test/included/**>, tests/test_included.cpp) would double-define the
+(<boost/test/included/**>, tests/test/included/smoke.cpp) would double-define the
 framework symbols in one program (M11 §3 constraint: the two consumption
 forms must never link together). Feature-only sources compile only when the
 feature is active — in build AND test mode (M8 §1.1) — which makes the two
@@ -220,7 +220,7 @@ COMPILED_TU_GLOBS = {
     # links every TU into each test program, so they collide there (no archive
     # pull-on-demand in that mode). Consumers own main + the unit_test_main
     # runner (the runner comes from #including impl/unit_test_main.ipp with
-    # BOOST_TEST_NO_MAIN, cf. tests/test_utf.cpp); all framework services are
+    # BOOST_TEST_NO_MAIN, cf. tests/test/utf/smoke.cpp); all framework services are
     # linked from the remaining TUs. C1: these TUs ship under the module-less
     # unit_test_framework feature (FEATURE_ONLY_SOURCES — kept out of the
     # base set so the included/* aggregate test can link without them).
@@ -276,7 +276,7 @@ EXTRA_IMPLIES = {
 # the base [build].sources union. In test mode the base compiles
 # unconditionally and every TU links into every test program, so the
 # unit_test_framework TUs and the official header-only aggregate
-# (<boost/test/included/**>, consumed by tests/test_included.cpp) would
+# (<boost/test/included/**>, consumed by tests/test/included/smoke.cpp) would
 # double-define the framework symbols when both land in one program (M11 §3).
 # Feature-only sources compile only when the feature is active (M8 §1.1),
 # making the two test consumption forms mutually exclusive. log's TUs stay in

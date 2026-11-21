@@ -47,6 +47,9 @@ std::array<Real, 3> cubic_roots(Real a, Real b, Real c, Real d) {
     using std::cos;
     using std::fma;
     using std::sqrt;
+    // boost-m vendored edit: sin was found as ::sin from the C library header,
+    // which a module's importers do not see.
+    using std::sin;
     std::array<Real, 3> roots = {std::numeric_limits<Real>::quiet_NaN(),
                                  std::numeric_limits<Real>::quiet_NaN(),
                                  std::numeric_limits<Real>::quiet_NaN()};

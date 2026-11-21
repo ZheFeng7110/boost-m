@@ -1,8 +1,7 @@
 diff --git a/upstream/boost/boost/regex/v5/mem_block_cache.hpp b/upstream/boost/boost/regex/v5/mem_block_cache.hpp
-index 18116fb..f98d220 100644
 --- a/upstream/boost/boost/regex/v5/mem_block_cache.hpp
 +++ b/upstream/boost/boost/regex/v5/mem_block_cache.hpp
-@@ -71,13 +71,19 @@ struct mem_block_cache
+@@ -71,13 +71,19 @@
       ::operator delete(ptr);
     }
  
@@ -27,7 +26,7 @@ index 18116fb..f98d220 100644
  
  #else /* lock-based implementation */
  
-@@ -136,12 +142,16 @@ struct mem_block_cache
+@@ -136,12 +142,16 @@
           ++cached_blocks;
        }
     }
@@ -50,17 +49,18 @@ index 18116fb..f98d220 100644
  #endif
  
 diff --git a/upstream/boost/boost/regex/v5/regex_traits_defaults.hpp b/upstream/boost/boost/regex/v5/regex_traits_defaults.hpp
-index 1cd7adc..f0a607f 100644
 --- a/upstream/boost/boost/regex/v5/regex_traits_defaults.hpp
 +++ b/upstream/boost/boost/regex/v5/regex_traits_defaults.hpp
-@@ -118,37 +118,40 @@ inline const char*  get_default_syntax(regex_constants::syntax_type n)
+@@ -118,37 +118,42 @@
     return ((n >= (sizeof(messages) / sizeof(messages[1]))) ? "" : messages[n]);
  }
  
 +// boost-module (M5 B'): 原为 get_default_error_string 函数内 static — gcc 模块管线在
-+// 消费者 TU 以强符号发射函数内 static (非 COMDAT), 与 regex 库 TU 定义多重定义;
-+// 改命名空间作用域内部链接数组, 每 TU 独立持有 (const 表, 语义等价)。
-+static const char* const s_default_error_messages[] = {
++// 消费者 TU 以强符号发射函数内 static (非 COMDAT), 与 regex 库 TU 定义多重定义。
++// boost-m (2026-11-09): 改为 inline constexpr (外部链接, COMDAT)。M5 的命名空间作用域
++// 内部链接数组在模块消费者 TU 中是未初始化的本地副本 (gcc): 错误信息为空指针,
++// regex_error 构造时 std::string(nullptr) 抛 logic_error (tests/regex/api.cpp)。
++inline constexpr const char* const s_default_error_messages[] = {
 +   "Success",                                                            /* REG_NOERROR 0 error_ok */
 +   "No match",                                                           /* REG_NOMATCH 1 error_no_match */
 +   "Invalid regular expression.",                                        /* REG_BADPAT 2 error_bad_pattern */
@@ -123,7 +123,7 @@ index 1cd7adc..f0a607f 100644
  }
  
  inline regex_constants::syntax_type  get_default_syntax_type(char c)
-@@ -656,57 +659,56 @@ inline bool is_separator<char>(char c)
+@@ -656,57 +661,58 @@
  //
  // get a default collating element:
  //
@@ -147,8 +147,9 @@ index 1cd7adc..f0a607f 100644
 -   "vertical-line", "right-curly-bracket", "tilde", "DEL", "",
 -   };
 +// boost-module (M5 B'): 原为 lookup_default_collate_name 函数内 static — 与
-+// get_default_error_string 同因 (见上), 改命名空间作用域内部链接, 每 TU 独立持有。
-+static const char* def_coll_names[] = {
++// get_default_error_string 同因 (见上)。boost-m (2026-11-09): 同上改为
++// inline constexpr (内部链接的副本在模块消费者 TU 中未初始化)。
++inline constexpr const char* const def_coll_names[] = {
 +"NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "alert", "backspace", "tab", "newline",
 +"vertical-tab", "form-feed", "carriage-return", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK",
 +"SYN", "ETB", "CAN", "EM", "SUB", "ESC", "IS4", "IS3", "IS2", "IS1", "space", "exclamation-mark",
@@ -199,7 +200,8 @@ index 1cd7adc..f0a607f 100644
 +// little more - but this will have to do for
 +// now:
 +
-+static const char* def_multi_coll[] = {
++// boost-m (2026-11-09): inline constexpr for the same reason as def_coll_names.
++inline constexpr const char* const def_multi_coll[] = {
 +   "ae",
 +   "Ae",
 +   "AE",
@@ -229,7 +231,7 @@ index 1cd7adc..f0a607f 100644
     unsigned int i = 0;
     while (*def_coll_names[i])
     {
-@@ -764,58 +766,69 @@ struct character_pointer_range
+@@ -764,58 +770,69 @@
  #endif
     }
  };

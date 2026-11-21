@@ -13,4 +13,4 @@ description = "Example consumer: import mcpplibs.mwrap.boost; (filesystem + json
 license     = "Apache-2.0"
 
 [dependencies]
-"mcpplibs.mwrap.boost" = { path = "../.." }
+mcpplibs.mwrap.boost = { path = "../.." }

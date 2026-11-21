@@ -9,7 +9,7 @@
 模块让其可被 import，同时保留上游 API。包装层不重新实现 Boost，不把它的实体
 搬进新的命名空间，也不链接第二份 Boost 实现。
 
-- 116 个库模块接口 + 根模块 + 宏映射模块。
+- 117 个库模块接口 + 根模块 + 宏映射模块。
 - 22 个纯 include-only 库，以及 2 个需要编译的 include-only feature（`log`、
   `unit-test-framework`）：按头文件方式消费，列于 [usage.zh.md](usage.zh.md)。
 - 11 个库需要外部工具链/SDK，未做声明。
@@ -29,9 +29,9 @@ boost-m/
 ├── generated/exports/           export lists (.inc) and edges (.deps) — generator output only
 ├── generated/meta/              api-surface.json, skipped.txt, lists/maps build.mcpp reads
 ├── templates/                   basic (default) and lib templates
-├── tests/                       one standalone program per file
+├── tests/                       one standalone program per file; tests/<lib>/ for the hardened libraries
 ├── examples/                    basic, git-dep, profiles consumers
-├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI
+├── tools/                       import, generation (+ export_policy.toml), audit, packaging, CI, test ports
 └── docs/
 ```
 
@@ -195,7 +195,7 @@ clang++ -std=c++23 --target=x86_64-w64-mingw32 --sysroot=<pinned MinGW> \
   mtime 上都是幂等的。feature 名使用 kebab-case；`implies` 列出的是 feature
   名（绝不是内部键），由各接口的 `export import` 行加上生成的函数体边推导而来。
   `modules.lst` 是 `build.mcpp` 读取的 feature → 模块映射；`all-modules` 展开为
-  117 个模块条目。
+  118 个模块条目。
 - `gen_audit.py` 从同一份 AST 报告每个库的内部链接函数、匿名命名空间实体和显式
   特化；其报告要结合已提交的代码树审阅，不能当成“不属于公共 API”。
 
@@ -253,6 +253,16 @@ feature（两种 Boost.Test 形态绝不能链接在一起）。
 
 - 在 Linux x86_64（GCC 16.1、LLVM）、Linux arm64（GCC）、macOS arm64（LLVM）、
   Windows x86_64（clang-msvc）上执行原生构建 + `mcpp test`。
+- `tests/<lib>/`（34 个库）：官方示例移植成的用例（`examples*.cpp`，输出与 oracle 比对）、
+  文档中的代码（`doc*.cpp`、`api*.cpp`）、各定制点上的自定义类型（`custom_types.cpp`），
+  以及 `coverage.toml`：1.92.0 发布包中每个示例和文档章节都映射到一个用例或写明理由；
+  CI 运行 `tools/ci/test_coverage.py check`，并在 linux-gcc x86_64 腿上按构建出的测试程序
+  列出的用例（doctest `--list-test-cases`、Boost.Test `--list_content`）核对每个用例。机械移植的文件（头注释写明）是生成结果：
+  `tools/port_tests/regen.py` 从发布包和 oracle 重新生成它们（升级 Boost 后运行，
+  再跑 `test_coverage.py scan` / `link`）。`tests/dll/`（带插件共享库）与
+  `tests/test/utf/`（Boost.Test 的编译形态）是独立工程，被根清单的 `[test] discover`
+  排除。它们是根工作区的成员，CI 在根目录以 `mcpp test -p <成员>` 和根工程
+  的 feature 集合运行，从而复用根工程 `mcpp build` 的目标文件与 BMI。
 - `tools/ci/verify_generated.py`：在三种宿主平台的干净代码树上跑补丁重放、
   `gen_exports.py --check`、`gen_features.py --check` 和审计，最后 `git status`
   必须干净；在同一配置上再做一次构建，记录增量 TU 数量和 mtime。

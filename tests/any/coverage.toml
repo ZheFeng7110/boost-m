@@ -1,0 +1,16 @@
+# tests/any/coverage.toml — official examples and documentation snippets of
+# Boost.any 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "any"
+
+[[snippet]]
+doc   = "libs/any/doc/any.qbk#c-20-module"
+title = "C++20 module"
+case  = "any/examples:doc: c-20-module"
+
+[[snippet]]
+doc   = "libs/any/doc/any.qbk#examples"
+title = "Examples"
+case  = "any/examples:doc: examples"

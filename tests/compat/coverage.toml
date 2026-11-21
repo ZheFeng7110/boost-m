@@ -1,0 +1,381 @@
+# tests/compat/coverage.toml — official examples and documentation snippets of
+# Boost.compat 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "compat"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/bind_back.adoc#bind-back"
+title = "bind_back"
+case  = "compat/api:doc: bind_back#bind-back"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/bind_back.adoc#example"
+title = "Example"
+case  = "compat/api:doc: bind_back#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/bind_front.adoc#bind-front"
+title = "bind_front"
+case  = "compat/api:doc: bind_front#bind-front"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/bind_front.adoc#example"
+title = "Example"
+case  = "compat/api:doc: bind_front#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#bound-object-constructor"
+title = "Bound Object Constructor"
+case  = "compat/api:doc: function_ref#bound-object-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#bound-pointer-constructor"
+title = "Bound Pointer Constructor"
+case  = "compat/api:doc: function_ref#bound-pointer-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#call-operator"
+title = "call operator"
+case  = "compat/api:doc: function_ref#call-operator"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#copy-assignment"
+title = "Copy Assignment"
+case  = "compat/api:doc: function_ref#copy-assignment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#copy-constructor"
+title = "Copy Constructor"
+case  = "compat/api:doc: function_ref#copy-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#example"
+title = "Example"
+case  = "compat/api:doc: function_ref#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#function-pointer-constructor"
+title = "Function Pointer Constructor"
+case  = "compat/api:doc: function_ref#function-pointer-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#object-constructor"
+title = "Object Constructor"
+case  = "compat/api:doc: function_ref#object-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/function_ref.adoc#pointer-to-member-function-constructor"
+title = "Pointer to Member Function Constructor"
+case  = "compat/api:doc: function_ref#pointer-to-member-function-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/integer_sequence.adoc#index-sequence"
+title = "index_sequence"
+case  = "compat/api:doc: integer_sequence#index-sequence"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/integer_sequence.adoc#index-sequence-for"
+title = "index_sequence_for"
+case  = "compat/api:doc: integer_sequence#index-sequence-for"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/integer_sequence.adoc#integer-sequence"
+title = "integer_sequence"
+case  = "compat/api:doc: integer_sequence#integer-sequence"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/integer_sequence.adoc#make-index-sequence"
+title = "make_index_sequence"
+case  = "compat/api:doc: integer_sequence#make-index-sequence"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/integer_sequence.adoc#make-integer-sequence"
+title = "make_integer_sequence"
+case  = "compat/api:doc: integer_sequence#make-integer-sequence"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#example"
+title = "Example"
+case  = "compat/api:doc: invoke#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#invoke"
+title = "invoke"
+case  = "compat/api:doc: invoke#invoke"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#invoke-r"
+title = "invoke_r"
+case  = "compat/api:doc: invoke#invoke-r"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#invoke-result-t"
+title = "invoke_result_t"
+case  = "compat/api:doc: invoke#invoke-result-t"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#is-invocable"
+title = "is_invocable"
+case  = "compat/api:doc: invoke#is-invocable"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#is-invocable-r"
+title = "is_invocable_r"
+case  = "compat/api:doc: invoke#is-invocable-r"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#is-nothrow-invocable"
+title = "is_nothrow_invocable"
+case  = "compat/api:doc: invoke#is-nothrow-invocable"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/invoke.adoc#is-nothrow-invocable-r"
+title = "is_nothrow_invocable_r"
+case  = "compat/api:doc: invoke#is-nothrow-invocable-r"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#arrive-and-wait"
+title = "arrive_and_wait"
+case  = "compat/api:doc: latch#arrive-and-wait"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#copy-constructor"
+title = "Copy Constructor"
+case  = "compat/api:doc: latch#copy-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#count-down"
+title = "count_down"
+case  = "compat/api:doc: latch#count-down"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#counter-constructor"
+title = "Counter Constructor"
+case  = "compat/api:doc: latch#counter-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#example"
+title = "Example"
+case  = "compat/api:doc: latch#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#max"
+title = "max"
+case  = "compat/api:doc: latch#max"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#try-wait"
+title = "try_wait"
+case  = "compat/api:doc: latch#try-wait"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/latch.adoc#wait"
+title = "wait"
+case  = "compat/api:doc: latch#wait"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/mem_fn.adoc#example"
+title = "Example"
+case  = "compat/api:doc: mem_fn#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/mem_fn.adoc#mem-fn"
+title = "mem_fn"
+case  = "compat/api:doc: mem_fn#mem-fn"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#boolean-conversion"
+title = "Boolean Conversion"
+case  = "compat/api:doc: move_only_function#boolean-conversion"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#call-operator"
+title = "Call Operator"
+case  = "compat/api:doc: move_only_function#call-operator"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#callable-assignment"
+title = "Callable Assignment"
+case  = "compat/api:doc: move_only_function#callable-assignment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#default-constructor"
+title = "Default Constructor"
+case  = "compat/api:doc: move_only_function#default-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#example"
+title = "Example"
+case  = "compat/api:doc: move_only_function#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#in-place-constructor"
+title = "In-Place Constructor"
+case  = "compat/api:doc: move_only_function#in-place-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#list-in-place-constructor"
+title = "List In-Place Constructor"
+case  = "compat/api:doc: move_only_function#list-in-place-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#move-assignment"
+title = "Move Assignment"
+case  = "compat/api:doc: move_only_function#move-assignment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#move-constructor"
+title = "Move Constructor"
+case  = "compat/api:doc: move_only_function#move-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#null-assigment"
+title = "Null Assigment"
+case  = "compat/api:doc: move_only_function#null-assigment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#null-constructor"
+title = "Null Constructor"
+case  = "compat/api:doc: move_only_function#null-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#null-equality"
+title = "Null Equality"
+case  = "compat/api:doc: move_only_function#null-equality"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#object-constructor"
+title = "Object Constructor"
+case  = "compat/api:doc: move_only_function#object-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/move_only_function.adoc#swap"
+title = "Swap"
+case  = "compat/api:doc: move_only_function#swap"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/nontype.adoc#example"
+title = "Example"
+case  = "compat/api:doc: nontype#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#adopting-constructor"
+title = "Adopting Constructor"
+case  = "compat/api:doc: shared_lock#adopting-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#boolean-conversion"
+title = "boolean conversion"
+case  = "compat/api:doc: shared_lock#boolean-conversion"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#copy-assignment"
+title = "Copy Assignment"
+case  = "compat/api:doc: shared_lock#copy-assignment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#copy-constructor"
+title = "Copy Constructor"
+case  = "compat/api:doc: shared_lock#copy-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#default-constructor"
+title = "Default Constructor"
+case  = "compat/api:doc: shared_lock#default-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#deferred-constructor"
+title = "Deferred Constructor"
+case  = "compat/api:doc: shared_lock#deferred-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#destructor"
+title = "Destructor"
+case  = "compat/api:doc: shared_lock#destructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#example"
+title = "Example"
+case  = "compat/api:doc: shared_lock#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#free-function-swap"
+title = "Free Function swap"
+case  = "compat/api:doc: shared_lock#free-function-swap"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#lock"
+title = "lock"
+case  = "compat/api:doc: shared_lock#lock"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#locking-constructor"
+title = "Locking Constructor"
+case  = "compat/api:doc: shared_lock#locking-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#move-assignment"
+title = "Move Assignment"
+case  = "compat/api:doc: shared_lock#move-assignment"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#move-constructor"
+title = "Move Constructor"
+case  = "compat/api:doc: shared_lock#move-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#mutex"
+title = "mutex"
+case  = "compat/api:doc: shared_lock#mutex"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#owns-lock"
+title = "owns_lock"
+case  = "compat/api:doc: shared_lock#owns-lock"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#release"
+title = "release"
+case  = "compat/api:doc: shared_lock#release"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#swap"
+title = "swap"
+case  = "compat/api:doc: shared_lock#swap"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#try-lock"
+title = "try_lock"
+case  = "compat/api:doc: shared_lock#try-lock"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#try-to-lock-constructor"
+title = "Try-to-Lock Constructor"
+case  = "compat/api:doc: shared_lock#try-to-lock-constructor"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/shared_lock.adoc#unlock"
+title = "unlock"
+case  = "compat/api:doc: shared_lock#unlock"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/to_array.adoc#example"
+title = "Example"
+case  = "compat/api:doc: to_array#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/to_array.adoc#to-array"
+title = "to_array"
+case  = "compat/api:doc: to_array#to-array"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/to_underlying.adoc#example"
+title = "Example"
+case  = "compat/api:doc: to_underlying#example"
+
+[[snippet]]
+doc   = "libs/compat/doc/compat/to_underlying.adoc#to-underlying"
+title = "to_underlying"
+case  = "compat/api:doc: to_underlying#to-underlying"

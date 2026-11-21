@@ -7,4 +7,4 @@ license     = "Apache-2.0"
 # The dependency key is the complete package selector, and the version stays
 # tied to the package that shipped this template.
 [dependencies]
-"{{self.name}}" = { version = "{{self.version}}", default-features = false, features = ["optional"] }
+{{self.name}} = { version = "{{self.version}}", default-features = false, features = ["optional"] }

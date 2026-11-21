@@ -20,4 +20,4 @@ description = "Example consumer: git dep, default-features = false, explicit fea
 license     = "Apache-2.0"
 
 [dependencies]
-"mcpplibs.mwrap.boost" = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional", "json", "version", "type-traits"] }
+mcpplibs.mwrap.boost = { git = "https://github.com/mcpplibs/boost-m", tag = "mwrap-1.92.0", default-features = false, features = ["optional", "json", "version", "type-traits"] }

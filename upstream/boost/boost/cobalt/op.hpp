@@ -186,7 +186,9 @@ struct use_op_t
 
 };
 
-constexpr use_op_t use_op{};
+// boost-m vendored edit: inline constexpr (was constexpr: internal linkage,
+// not exportable from a module).
+inline constexpr use_op_t use_op{};
 
 struct enable_await_deferred
 {

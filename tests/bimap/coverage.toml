@@ -1,0 +1,182 @@
+# tests/bimap/coverage.toml — official examples and documentation snippets of
+# Boost.bimap 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "bimap"
+
+[[example]]
+path = "libs/bimap/example/at_function_examples.cpp"
+case = "bimap/examples:example: at_function_examples"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/assign.cpp"
+case = "bimap/examples_with_boost:example: assign"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/foreach.cpp"
+case = "bimap/include_with_boost:example: foreach"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/lambda.cpp"
+case = "bimap/examples_with_boost:example: lambda"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/property_map.cpp"
+case = "bimap/examples_with_boost:example: property_map"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/range.cpp"
+case = "bimap/examples_with_boost:example: range"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/serialization.cpp"
+case = "bimap/examples_with_boost:example: serialization"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/typeof.cpp"
+case = "bimap/include_with_boost:example: typeof"
+
+[[example]]
+path = "libs/bimap/example/bimap_and_boost/xpressive.cpp"
+case = "bimap/include_with_boost:example: xpressive"
+
+[[example]]
+path = "libs/bimap/example/mi_to_b_path/bidirectional_map.cpp"
+case = "bimap/examples:example: bidirectional_map"
+
+[[example]]
+path = "libs/bimap/example/mi_to_b_path/hashed_indices.cpp"
+case = "bimap/examples:example: hashed_indices"
+
+[[example]]
+path = "libs/bimap/example/mi_to_b_path/mi_bidirectional_map.cpp"
+case = "bimap/examples:example: mi_bidirectional_map"
+
+[[example]]
+path = "libs/bimap/example/mi_to_b_path/mi_hashed_indices.cpp"
+case = "bimap/examples_with_boost:example: mi_hashed_indices"
+
+[[example]]
+path = "libs/bimap/example/mi_to_b_path/tagged_bidirectional_map.cpp"
+case = "bimap/examples:example: tagged_bidirectional_map"
+
+[[example]]
+path = "libs/bimap/example/mighty_bimap.cpp"
+case = "bimap/examples:example: mighty_bimap"
+
+[[example]]
+path = "libs/bimap/example/population_bimap.cpp"
+case = "bimap/examples_with_boost:example: population_bimap"
+
+[[example]]
+path = "libs/bimap/example/projection.cpp"
+case = "bimap/examples:example: projection"
+
+[[example]]
+path = "libs/bimap/example/repetitions_counter.cpp"
+case = "bimap/examples:example: repetitions_counter"
+
+[[example]]
+path = "libs/bimap/example/simple_bimap.cpp"
+case = "bimap/examples:example: simple_bimap"
+
+[[example]]
+path = "libs/bimap/example/standard_map_comparison.cpp"
+case = "bimap/examples:example: standard_map_comparison"
+
+[[example]]
+path = "libs/bimap/example/step_by_step.cpp"
+case = "bimap/examples:example: step_by_step"
+
+[[example]]
+path = "libs/bimap/example/tagged_simple_bimap.cpp"
+case = "bimap/examples:example: tagged_simple_bimap"
+
+[[example]]
+path = "libs/bimap/example/tutorial_info_hook.cpp"
+case = "bimap/examples:example: tutorial_info_hook"
+
+[[example]]
+path = "libs/bimap/example/tutorial_modify_and_replace.cpp"
+case = "bimap/examples:example: tutorial_modify_and_replace"
+
+[[example]]
+path = "libs/bimap/example/tutorial_range.cpp"
+case = "bimap/examples:example: tutorial_range"
+
+[[example]]
+path = "libs/bimap/example/unconstrained_collection.cpp"
+case = "bimap/examples:example: unconstrained_collection"
+
+[[example]]
+path = "libs/bimap/example/user_defined_names.cpp"
+case = "bimap/examples:example: user_defined_names"
+
+[[snippet]]
+doc    = "libs/bimap/doc/bimap_and_boost.qbk#boost-typeof"
+title  = "Boost.Typeof"
+case   = "bimap/include_with_boost:example: typeof"
+reason = "the section imports bimap_and_boost/typeof.cpp"
+
+[[snippet]]
+doc   = "libs/bimap/doc/quick_tutorial.qbk#one-minute-tutorial"
+title = "One minute tutorial"
+case  = "bimap/api:doc: one-minute-tutorial"
+
+[[snippet]]
+doc   = "libs/bimap/doc/rationale.qbk#general-design"
+title = "General Design"
+case  = "bimap/api:doc: general-design"
+
+[[snippet]]
+doc   = "libs/bimap/doc/rationale.qbk#the-student-and-the-mentor"
+title = "The student and the mentor"
+case  = "bimap/api:doc: the-student-and-the-mentor"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#bimap-mapping-framework"
+title = "Bimap mapping framework"
+case  = "bimap/api:doc: bimap-mapping-framework"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#bimaps-with-user-defined-names"
+title = "Bimaps with user defined names"
+case  = "bimap/api:doc: bimaps-with-user-defined-names"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#complete-instantiation-scheme"
+title = "Complete instantiation scheme"
+case  = "bimap/api:doc: complete-instantiation-scheme"
+
+[[snippet]]
+doc    = "libs/bimap/doc/tutorial.qbk#examples"
+title  = "Examples"
+case   = "bimap/examples_with_boost:example: population_bimap"
+reason = "the section imports population_bimap.cpp (and repetitions_counter.cpp)"
+
+[[snippet]]
+doc    = "libs/bimap/doc/tutorial.qbk#examples-2"
+title  = "Examples"
+case   = "bimap/examples_with_boost:example: population_bimap"
+reason = "the section imports population_bimap.cpp (and repetitions_counter.cpp)"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#freedom-of-choice"
+title = "Freedom of choice"
+case  = "bimap/api:doc: freedom-of-choice"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#insertion"
+title = "Insertion"
+case  = "bimap/api:doc: insertion"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#iterator-value-type"
+title = "iterator::value_type"
+case  = "bimap/api:doc: iterator-value-type"
+
+[[snippet]]
+doc   = "libs/bimap/doc/tutorial.qbk#operator-and-at"
+title = "operator\\[\\] and at()"
+case  = "bimap/api:doc: operator-and-at"

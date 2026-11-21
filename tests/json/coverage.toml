@@ -1,0 +1,249 @@
+# tests/json/coverage.toml — official examples and documentation snippets of
+# Boost.json 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "json"
+
+[[example]]
+path = "libs/json/example/cbor.cpp"
+case = "json/examples:example: cbor"
+
+[[example]]
+path   = "libs/json/example/parse_into.cpp"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
+
+[[example]]
+path   = "libs/json/example/parse_into_canada.cpp"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
+
+[[example]]
+path   = "libs/json/example/parse_into_citm_catalog.cpp"
+status = "excluded"
+reason = "timing benchmark over a data file the release does not ship (canada.json / citm_catalog.json / /tmp/1.json from kostya/benchmarks)"
+
+[[example]]
+path = "libs/json/example/path.cpp"
+case = "json/examples:example: path"
+
+[[example]]
+path = "libs/json/example/pretty.cpp"
+case = "json/examples:example: pretty"
+
+[[example]]
+path = "libs/json/example/proxy.cpp"
+case = "json/examples:example: proxy"
+
+[[example]]
+path = "libs/json/example/use_allocator.cpp"
+case = "json/examples:example: use_allocator"
+
+[[example]]
+path = "libs/json/example/validate.cpp"
+case = "json/examples:example: validate"
+
+[[snippet]]
+doc    = "libs/json/doc/README.md#instructions-for-documentation"
+title  = "Instructions for Documentation"
+status = "excluded"
+reason = "instructions for building the documentation"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/background.adoc#polymorphic-allocators"
+title  = "Polymorphic Allocators"
+case   = "json/doc_background:doc: boost.json.doc_background"
+reason = "the page's code is included from test/doc_background.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#allocator-propagation"
+title  = "Allocator Propagation"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#default-memory-resource"
+title  = "Default Memory Resource"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#monotonic-resource"
+title  = "Monotonic Resource"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#resource-lifetime"
+title  = "Resource Lifetime"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#static-resource"
+title  = "Static Resource"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/allocators/storage_ptr.adoc#user-defined-resource"
+title  = "User-Defined Resource"
+case   = "json/doc_storage_ptr:doc: boost.json.doc_storage_ptr"
+reason = "the page's code is included from test/doc_storage_ptr.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-nlohmann-json"
+title  = "Comparison to nlohmann JSON"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-rapidjson"
+title  = "Comparison to RapidJSON"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/comparison.adoc#comparison-to-simd-json"
+title  = "Comparison to SIMD JSON"
+status = "excluded"
+reason = "prose comparison with other JSON libraries; the code shown is theirs (nlohmann, RapidJSON, simdjson)"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#combining-contexts"
+title  = "Combining Contexts"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#contexts-and-composite-types"
+title  = "Contexts and Composite Types"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#conversions-for-third-party-types"
+title  = "Conversions for Third-Party Types"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/context.adoc#passing-data-to-conversion-functions"
+title  = "Passing Data to Conversion Functions"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/custom.adoc#conversion-traits"
+title  = "Conversion Traits"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/conversion/custom.adoc#tag-invoke-overloads"
+title  = "`tag_invoke` Overloads"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/dom/string.adoc#accessing-storage-beyond-size"
+title  = "Accessing Storage Beyond `size()`"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/dom/value.adoc#dom_value"
+title  = "Working With Values"
+case   = "json/doc_snippets:doc: boost.json.snippets"
+reason = "the page's code is included from test/snippets.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#allocator-aware-conversion"
+title  = "Allocator-Aware Conversion"
+case   = "json/examples:example: use_allocator"
+reason = "the section shows example/use_allocator.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#cbor"
+title  = "CBOR"
+case   = "json/examples:example: cbor"
+reason = "the section shows example/cbor.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#examples_validate"
+title  = "Validate"
+case   = "json/examples:example: validate"
+reason = "the section shows example/validate.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/examples.adoc#pretty"
+title  = "Pretty"
+case   = "json/examples:example: pretty"
+reason = "the section shows example/pretty.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#avoiding-dynamic-allocations"
+title  = "Avoiding Dynamic Allocations"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#controlling-memory"
+title  = "Controlling Memory"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#full-precision-number-parsing"
+title  = "Full Precision Number Parsing"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#non-standard-json"
+title  = "Non-Standard JSON"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#parser"
+title  = "Parser"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/io/parsing.adoc#streaming-parser"
+title  = "Streaming Parser"
+case   = "json/doc_parsing:doc: boost.json.doc_parsing"
+reason = "the page's code is included from test/doc_parsing.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_allocators"
+title  = "Allocators"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_conversion"
+title  = "Value Conversion"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_parsing"
+title  = "Parsing"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_serializing"
+title  = "Serializing"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"
+
+[[snippet]]
+doc    = "libs/json/doc/pages/quick_look.adoc#quick_look_values"
+title  = "Values"
+case   = "json/doc_quick_look:doc: boost.json.doc_quick_look"
+reason = "the page's code is included from test/doc_quick_look.cpp"

@@ -27,7 +27,13 @@
 - `todos/` 放尚未完成的工作项，它们不是决定的记录。
 - 移动或改名用 `tools/doc-tools/move_record.py`，它同时改写仓库中对该文件的引用。
 
-共 22 篇记录（其中 0 篇已归档），0 项待办。
+共 28 篇记录（其中 0 篇已归档），1 项待办。
+
+## 进行中
+
+- [PR #5 第二轮评审的 [nit] 修复：覆盖率按测试程序列出的用例核对](2026-11-21-pr5-review-nits-design.md) — active
+- [子工程复用根工程的构建产物，mcpp 升级到 2026.11.20.1](2026-11-20-sub-project-build-reuse-design.md) — active
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
 
 ## 按主题
 
@@ -37,6 +43,15 @@
 
 - [设计记录的管理：只增不删、按年归档、生成的索引与 `tools/doc-tools/`](2026-11-08-design-records-management-design.md) — landed
 
+### tests
+
+- [PR #5 第二轮评审的 [nit] 修复：覆盖率按测试程序列出的用例核对](2026-11-21-pr5-review-nits-design.md) — active
+- [子工程复用根工程的构建产物，mcpp 升级到 2026.11.20.1](2026-11-20-sub-project-build-reuse-design.md) — active
+- [windows-llvm-msvc 上的进程崩溃：两个 clang 模块缺陷](2026-11-18-windows-msvc-module-crashes-analysis.md) — landed
+- [示例移植脚本进入 `tools/port_tests/`：升级 Boost 时重跑上游测试的移植](2026-11-18-port-tests-tools-design.md) — landed
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
+- [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed
+
 ### upstream-modules
 
 - [上游已提供模块的库：直接使用 `boost.<lib>`，撤掉 mwrap 门面](2026-11-07-upstream-boost-modules.md) — abandoned
@@ -45,6 +60,12 @@
 
 ### 2026-11
 
+- [PR #5 第二轮评审的 [nit] 修复：覆盖率按测试程序列出的用例核对](2026-11-21-pr5-review-nits-design.md) — active
+- [子工程复用根工程的构建产物，mcpp 升级到 2026.11.20.1](2026-11-20-sub-project-build-reuse-design.md) — active
+- [windows-llvm-msvc 上的进程崩溃：两个 clang 模块缺陷](2026-11-18-windows-msvc-module-crashes-analysis.md) — landed
+- [示例移植脚本进入 `tools/port_tests/`：升级 Boost 时重跑上游测试的移植](2026-11-18-port-tests-tools-design.md) — landed
+- [模块测试加固的发现复盘：封装层缺陷与上游 Boost 问题（对照 1.93.0.beta1）](2026-11-12-module-tests-findings-and-upstream-bugs-analysis.md) — active
+- [模块封装层测试加固：常用 34 个库的示例覆盖与自定义类型套件](2026-11-09-module-test-hardening-design.md) — landed
 - [设计记录的管理：只增不删、按年归档、生成的索引与 `tools/doc-tools/`](2026-11-08-design-records-management-design.md) — landed
 - [上游已提供模块的库：直接使用 `boost.<lib>`，撤掉 mwrap 门面](2026-11-07-upstream-boost-modules.md) — abandoned
 - [封装层生成原理改造：clang JSON AST + 声明式策略 + `--check`](2026-11-05-json-ast-generation.md)
@@ -73,3 +94,7 @@
 - [计划 — 发布预览版 (Preview Release)](2026-09-08-release-preview-plan.md)
 - [dep_graph 结构性缺陷修复 — 两遍扫描体引用边补全 (pass 2)](2026-09-08-dep-graph-two-pass-body-edge-completion.md)
 - [boost-module 总体设计汇总 (2026-09-08 重写版)](2026-09-08-consolidated-design.md)
+
+## 待办
+
+- [模块测试加固的遗留问题](todos/module-tests-open-issues.md)

@@ -13,9 +13,10 @@
 # Every host is built twice, once per feature group, because a single clang
 # aggregate closure of the whole package can exhaust the source-location space:
 #
-#   A — the 105 library features of the original group A: 103 module-bearing
-#       libraries plus the two compiled include-only features (`log`,
-#       `unit-test-framework`);
+#   A — the 105 library features of the original group A (103 module-bearing
+#       libraries plus the two compiled include-only features `log` and
+#       `unit-test-framework`), plus `conversion` (six function templates,
+#       added by the module test hardening);
 #   B — the twelve heavy libraries (asio, beast, geometry, ...) plus the two
 #       wrapper-only modules the mwrap migration added (`version`, `macros`),
 #       so group A's aggregate closure stays at the module count whose limit was
@@ -32,7 +33,7 @@
 # `examples` job, which `needs: [test]`: they start only after both groups have
 # passed on all five hosts.
 #
-# mcpp comes from the repository's own pin: xlings installs `mcpp 2026.11.5.1`
+# mcpp comes from the repository's own pin: xlings installs `mcpp 2026.11.20.1`
 # (only that entry of `.xlings.json`; its `llvm` pin is the generator's), and
 # the job asserts that CI's MCPP_VERSION and the manifest pin are the same
 # build. Toolchains are then installed by mcpp into its sandbox (`~/.mcpp`),
@@ -67,7 +68,7 @@ on:
       - "templates/**"
       - "tests/**"
       - "tools/**"
-      - "upstream/boost"
+      - "upstream/boost/**"
       - ".xlings.json"
       - "build.mcpp"
       - "mcpp.toml"
@@ -85,17 +86,32 @@ env:
   XLINGS_VERSION: v2026.10.26.1
   XLINGS_NON_INTERACTIVE: '1'
   # Must match [workspace].mcpp in .xlings.json — checked on every leg.
-  MCPP_VERSION: "2026.11.5.1"
+  MCPP_VERSION: "2026.11.20.1"
   # Leave the runners room: the vendored tree is large and every leg compiles
   # Boost from the same checkout.
   MCPP_JOBS: '4'
-  # M12 grouping: group A is the original wrapper's 105-feature set; group B is
+  # M12 grouping: group A is the original wrapper's 105-feature set plus
+  # `conversion`; group B is
   # its twelve heavy libraries plus the two wrapper-only modules added by the
   # mwrap migration. Both are kebab-case features declared in mcpp.toml.
-  BOOST_GROUP_A: "optional,variant,variant2,any,core,container-hash,mp11,static-string,scope,type-traits,algorithm,iterator,range,io,rational,endian,tuple,system,filesystem,regex,thread,chrono,program-options,stacktrace,json,url,align,array,assert,assign,bimap,bind,bloom,callable-traits,circular-buffer,compat,concept-check,config,convert,crc,decimal,dll,dynamic-bitset,flyweight,format,function,functional,hash2,heap,histogram,hof,icl,integer,intrusive,lambda,lambda2,leaf,lexical-cast,lockfree,logic,move,multi-array,multi-index,outcome,parser,pfr,poly-collection,pool,property-map,property-tree,ptr-container,ratio,safe-numerics,signals2,smart-ptr,sort,statechart,stl-interfaces,throw-exception,tokenizer,type-index,units,unordered,utility,uuid,winapi,yap,atomic,charconv,cobalt,container,contract,date-time,graph,iostreams,log,math,nowide,process,random,serialization,unit-test-framework,timer,type-erasure,wave"
+  BOOST_GROUP_A: "optional,variant,variant2,any,core,container-hash,mp11,static-string,scope,type-traits,algorithm,iterator,range,io,rational,endian,tuple,system,filesystem,regex,thread,chrono,program-options,stacktrace,json,url,align,array,assert,assign,bimap,bind,bloom,callable-traits,circular-buffer,compat,concept-check,config,conversion,convert,crc,decimal,dll,dynamic-bitset,flyweight,format,function,functional,hash2,heap,histogram,hof,icl,integer,intrusive,lambda,lambda2,leaf,lexical-cast,lockfree,logic,move,multi-array,multi-index,outcome,parser,pfr,poly-collection,pool,property-map,property-tree,ptr-container,ratio,safe-numerics,signals2,smart-ptr,sort,statechart,stl-interfaces,throw-exception,tokenizer,type-index,units,unordered,utility,uuid,winapi,yap,atomic,charconv,cobalt,container,contract,date-time,graph,iostreams,log,math,nowide,process,random,serialization,unit-test-framework,timer,type-erasure,wave"
   BOOST_GROUP_B: "accumulators,asio,beast,geometry,gil,hana,interprocess,mqtt5,multiprecision,numeric,polygon,qvm,version,macros"
 
 jobs:
+  # Every official example and documentation section of the hardened libraries
+  # is mapped to a test case or excluded with a reason (tests/<lib>/coverage.toml).
+  coverage:
+    name: example coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Check tests/*/coverage.toml
+        run: python3 tools/ci/test_coverage.py check
+
   # One matrix entry per host; `group` doubles each host into the two aggregate
   # closures. Tests run in both groups, so the compile surface is identical and
   # only the umbrella's re-export set differs.
@@ -216,6 +232,64 @@ jobs:
         run: |
           mcpp test --toolchain "${{ matrix.target.toolchain }}" \
             --features "${{ (matrix.group == 'A' && env.BOOST_GROUP_A) || env.BOOST_GROUP_B }}"
+
+      # The cases each coverage.toml entry names, as the built programs list
+      # them (tools/ci/test_coverage.py): the same build, every program run
+      # again with the listing arguments. Group B, which has no
+      # unit-test-framework feature: with it the tests/test/included programs
+      # are stubs. tests/dll is listed in group A, where it runs.
+      - name: Check coverage cases against the test programs
+        if: matrix.group == 'B' && matrix.target.name == 'linux-gcc' && matrix.target.arch == 'x86_64'
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p .tmp
+          mcpp test --toolchain "${{ matrix.target.toolchain }}" \
+            --features "$BOOST_GROUP_B" --message-format json \
+            -- --list_content -- --list-test-cases > .tmp/listing.ndjson
+          python3 tools/ci/test_coverage.py check --listing .tmp/listing.ndjson
+
+      # The two test projects of their own (design record
+      # .agents/docs/2026-11-09-module-test-hardening-design.md §5): the dll
+      # tutorials with the plugin shared libraries they load, and the compiled
+      # Boost.Test form, which must not meet the header-only one. Both depend
+      # on the root package by path; they run once per host (group A).
+      #
+      # They are members of the root workspace and run from the root with
+      # `-p`, so they build in the root's build directory and reuse the
+      # package objects of `Build libraries` (design record
+      # .agents/docs/2026-11-20-sub-project-build-reuse-design.md). A unit's
+      # command carries the package's active features (-DMCPP_FEATURE_*), so
+      # the members ask for the group's feature set. One `-p` per member:
+      # tests/dll links the package shared and tests/test/utf static, and a
+      # plan that holds a shared library links every program's C++ runtime
+      # dynamically.
+      - name: Test sub-projects (tests/dll, tests/test/utf)
+        if: matrix.group == 'A'
+        shell: bash
+        run: |
+          set -euo pipefail
+          dep="mcpplibs.mwrap.boost"
+          features="$dep/default,$dep/${BOOST_GROUP_A//,/,$dep/}"
+          for member in boost-m-tests-dll boost-m-tests-test-utf; do
+            # gcc@16.1.0 on Linux arm64 targets aarch64-linux-musl with a
+            # static C library: a static program cannot load the plugins.
+            if [ "$RUNNER_OS" = "Linux" ] && [ "$RUNNER_ARCH" = "ARM64" ] && [ "$member" = "boost-m-tests-dll" ]; then
+              echo "tests/dll: not run on the static musl target"
+              continue
+            fi
+            mcpp test -p "$member" --toolchain "${{ matrix.target.toolchain }}" \
+              --features "$features"
+          done
+          # tests/dll's coverage cases, as its programs list them (see the
+          # group B step "Check coverage cases against the test programs").
+          if [ "${{ matrix.target.name }}" = "linux-gcc" ] && [ "$RUNNER_ARCH" = "X64" ]; then
+            mkdir -p .tmp
+            mcpp test -p boost-m-tests-dll --toolchain "${{ matrix.target.toolchain }}" \
+              --features "$features" --message-format json \
+              -- --list_content -- --list-test-cases > .tmp/listing-dll.ndjson || true
+            python3 tools/ci/test_coverage.py check --listing .tmp/listing-dll.ndjson
+          fi
 
   # Runs only after every A/B leg passed. The examples consume the wrapper the
   # way a user does (umbrella import, explicit features, profile backend), then

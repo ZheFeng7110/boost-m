@@ -1,0 +1,171 @@
+# tests/algorithm/coverage.toml — official examples and documentation snippets of
+# Boost.algorithm 1.92.0 mapped to test cases (tools/ci/test_coverage.py; design
+# .agents/docs/2026-11-09-module-test-hardening-design.md §4.6).
+# `scan` adds and drops entries; status, case and reason are maintained by hand.
+upstream = "1.92.0"
+library = "algorithm"
+
+[[example]]
+path = "libs/algorithm/example/apply_permutation_example.cpp"
+case = "algorithm/examples:example: apply_permutation_example"
+
+[[example]]
+path = "libs/algorithm/example/clamp_example.cpp"
+case = "algorithm/examples:example: clamp_example"
+
+[[example]]
+path = "libs/algorithm/example/is_palindrome_example.cpp"
+case = "algorithm/examples:example: is_palindrome_example"
+
+[[example]]
+path = "libs/algorithm/example/is_partitioned_until_example.cpp"
+case = "algorithm/examples:example: is_partitioned_until_example"
+
+[[example]]
+path = "libs/algorithm/example/search_example.cpp"
+case = "algorithm/examples:example: search_example"
+
+[[example]]
+path = "libs/algorithm/minmax/example/minmax_ex.cpp"
+case = "algorithm/examples:example: minmax_ex"
+
+[[example]]
+path = "libs/algorithm/minmax/example/minmax_timer.cpp"
+case = "algorithm/examples:example: minmax_timer"
+
+[[example]]
+path = "libs/algorithm/string/example/conv_example.cpp"
+case = "algorithm/examples:example: conv_example"
+
+[[example]]
+path = "libs/algorithm/string/example/find_example.cpp"
+case = "algorithm/examples:example: find_example"
+
+[[example]]
+path = "libs/algorithm/string/example/predicate_example.cpp"
+case = "algorithm/examples:example: predicate_example"
+
+[[example]]
+path = "libs/algorithm/string/example/regex_example.cpp"
+case = "algorithm/include_string_regex:example: regex_example"
+
+[[example]]
+path = "libs/algorithm/string/example/replace_example.cpp"
+case = "algorithm/examples:example: replace_example"
+
+[[example]]
+path = "libs/algorithm/string/example/rle_example.cpp"
+case = "algorithm/examples:example: rle_example"
+
+[[example]]
+path = "libs/algorithm/string/example/split_example.cpp"
+case = "algorithm/examples:example: split_example"
+
+[[example]]
+path = "libs/algorithm/string/example/trim_example.cpp"
+case = "algorithm/examples:example: trim_example"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/all_of.qbk#all_of"
+title = "all_of"
+case  = "algorithm/api_sequences:doc: all_of"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/any_of.qbk#any_of"
+title = "any_of"
+case  = "algorithm/api_sequences:doc: any_of"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/apply_permutation.qbk#apply_permutation"
+title = "apply_permutation"
+case  = "algorithm/api_sequences:doc: apply_permutation"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/boyer_moore.qbk#BoyerMoore"
+title = "Boyer-Moore Search"
+case  = "algorithm/api_sequences:doc: BoyerMoore"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/boyer_moore_horspool.qbk#BoyerMooreHorspool"
+title = "Boyer-Moore-Horspool Search"
+case  = "algorithm/api_sequences:doc: BoyerMooreHorspool"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/clamp-hpp.qbk#clamp"
+title = "clamp"
+case  = "algorithm/api_sequences:doc: clamp"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/equal.qbk#equal"
+title = "equal"
+case  = "algorithm/api_sequences:doc: equal"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/find_backward.qbk#find_backward"
+title = "find_backward"
+case  = "algorithm/api_sequences:doc: find_backward"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/find_not.qbk#find_not"
+title = "find_not"
+case  = "algorithm/api_sequences:doc: find_not"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/gather.qbk#gather"
+title = "gather"
+case  = "algorithm/api_sequences:doc: gather"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/hex.qbk#hex"
+title = "hex"
+case  = "algorithm/api_sequences:doc: hex"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/is_palindrome.qbk#is_palindrome"
+title = "is_palindrome"
+case  = "algorithm/api_sequences:doc: is_palindrome"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/is_partitioned.qbk#is_partitioned"
+title = "is_partitioned"
+case  = "algorithm/api_sequences:doc: is_partitioned"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/is_partitioned_until.qbk#is_partitioned_until"
+title = "is_partitioned_until"
+case  = "algorithm/api_sequences:doc: is_partitioned_until"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/is_permutation.qbk#is_permutation"
+title = "is_permutation"
+case  = "algorithm/api_sequences:doc: is_permutation"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/knuth_morris_pratt.qbk#KnuthMorrisPratt"
+title = "Knuth-Morris-Pratt Search"
+case  = "algorithm/api_sequences:doc: KnuthMorrisPratt"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/mismatch.qbk#mismatch"
+title = "mismatch"
+case  = "algorithm/api_sequences:doc: mismatch"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/none_of.qbk#none_of"
+title = "none_of"
+case  = "algorithm/api_sequences:doc: none_of"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/one_of.qbk#one_of"
+title = "one_of"
+case  = "algorithm/api_sequences:doc: one_of"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/ordered-hpp.qbk#is_sorted"
+title = "is_sorted"
+case  = "algorithm/api_sequences:doc: is_sorted"
+
+[[snippet]]
+doc   = "libs/algorithm/doc/partition_point.qbk#partition_point"
+title = "partition_point"
+case  = "algorithm/api_sequences:doc: partition_point"

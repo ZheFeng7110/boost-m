@@ -73,7 +73,9 @@ struct digit_chars_t
         @ref parse,
         @ref token_rule.
 */
-constexpr implementation_defined::digit_chars_t digit_chars{};
+// boost-m vendored edit: BOOST_INLINE_CONSTEXPR (was constexpr: internal linkage,
+// not exportable from a module), as upstream already spells absolute_uri_rule.
+BOOST_INLINE_CONSTEXPR implementation_defined::digit_chars_t digit_chars{};
 
 } // grammar
 } // urls

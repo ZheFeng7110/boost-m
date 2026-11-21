@@ -1,6 +1,6 @@
 // mcpplibs.mwrap.boost.statechart smoke — simple state machine (mpl::list is include-only;
 // mixing include + import is standard-compliant, but gcc 16 ODR-conflicts on
-// it — same redefinition pattern as describe.cpp — so the import is skipped on
+// it — same redefinition pattern as describe/smoke.cpp — so the import is skipped on
 // gcc, keeping the test pure-header)
 #include "test_assert.hpp"
 #include <cassert>
