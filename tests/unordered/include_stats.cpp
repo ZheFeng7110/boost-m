@@ -3,7 +3,6 @@
 // needs BOOST_UNORDERED_ENABLE_STATS defined before the headers, which changes
 // the containers' layout; the module is built without it, so this TU uses the
 // headers alone (and does not import).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #define BOOST_UNORDERED_ENABLE_STATS
 #include <string>

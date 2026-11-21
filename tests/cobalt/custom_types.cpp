@@ -5,7 +5,6 @@
 // generator / channel carrying a move-only user type, and a user executor
 // (the properties any_io_executor needs) that cobalt::spawn runs a task on;
 // the concepts rejecting non-awaitables.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <coroutine>
 #include <new>

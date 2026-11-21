@@ -3,7 +3,6 @@
 // module (tools/export_policy.toml [convert]); this TU uses headers only.
 // Covers the spirit part of libs/convert/example/getting_started.cpp
 // (example3) and the stream_converter page's default-constructible note.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <string>
 #include <boost/convert.hpp>

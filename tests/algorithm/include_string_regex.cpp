@@ -4,7 +4,6 @@
 // as headers. No import in this TU (gcc include+import ODR rule). Covers
 // libs/algorithm/string/example/regex_example.cpp; regex's compiled TUs come
 // from the package's base source list.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <string>
 #include <vector>

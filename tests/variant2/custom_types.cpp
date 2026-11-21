@@ -4,7 +4,6 @@
 // place, user visitors (overload sets, visitors with state, multi-variant
 // visits), user ordering/streaming/hashing used by the variant's own
 // operators, and recursive data through an indirection.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.variant2;

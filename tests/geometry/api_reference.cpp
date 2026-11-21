@@ -4,7 +4,6 @@
 // de9im masks, svg_mapper, and every strategy page (area, buffer, centroid,
 // densify, distance, line_interpolate, side, simplify, transform, within),
 // each constructed as its synopsis shows and used through its algorithm.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.geometry;
@@ -258,8 +257,8 @@ TEST_CASE("doc: svg_mapper") {
         mapper.text(point(1, 1), "label", "font-size:8pt");
     }
     CHECK(svg.str().starts_with("<?xml"));
-    CHECK(svg.str().find("fill:rgb(0,0,255)") != std::string::npos);
-    CHECK(svg.str().find("label") != std::string::npos);
+    CHECK(svg.str().contains("fill:rgb(0,0,255)"));
+    CHECK(svg.str().contains("label"));
     CHECK(svg.str().ends_with("</svg>\n"));
 }
 

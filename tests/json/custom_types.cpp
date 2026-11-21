@@ -5,7 +5,6 @@
 // like and variant-like through the standard ones, conversion contexts
 // (a user context selecting a representation), and a user memory_resource
 // behind storage_ptr. Described types are mixed_describe.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.json;

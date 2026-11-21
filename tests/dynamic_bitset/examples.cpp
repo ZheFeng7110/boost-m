@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.dynamic_bitset — libs/dynamic_bitset/example/
 // example1..3.cpp as test cases (example3 reads std::cin; it reads a string
 // stream here).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.dynamic_bitset;

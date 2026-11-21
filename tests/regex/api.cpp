@@ -4,7 +4,6 @@
 // features, the POSIX basic / extended syntax options, the error_type codes,
 // the Unicode iterators, and the "C++20 module" page (upstream's
 // `import boost.regex;`, here this package's module).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.regex;

@@ -737,6 +737,7 @@ kind = "lib"
 # The test programs under tests/<lib>/ are doctest programs, one per file.
 [dev-dependencies]
 compat.doctest = "2.4.12"
+mcpplibs.mtest.doctest = "0.11.1"
 
 # tests/dll/ (shared-library plugins) and tests/test/utf/ (the compiled
 # Boost.Test form, which needs the unit-test-framework feature on) are projects

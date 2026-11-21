@@ -8,12 +8,12 @@
 // ports (13, 55555, 54321) are replaced by the free one, "daytime"/"http"
 // service names by its number, and output that carries the time of day is
 // not compared.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/asio/detail/config.hpp>
 #include <boost/asio/coroutine.hpp>
 #include <cassert>
+#include <csignal>
 import std;
 import mcpplibs.mwrap.boost.asio;
 

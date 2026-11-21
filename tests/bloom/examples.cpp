@@ -5,7 +5,6 @@
 // of ./filter.bin, and keeps its #include of boost/core/detail/splitmix64.hpp
 // (a detail header no module exports). genome.cpp reads a 140 MB genome
 // download: genome.cpp in this directory runs it on a small FASTA fixture.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

@@ -3,7 +3,6 @@
 // decimal_fast{32,64,128}_t.adoc): each section's members are checked by a
 // function template, instantiated once per type under the case name of that
 // type's page section, plus the fast_types and generic_decimal operator pages.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.decimal;

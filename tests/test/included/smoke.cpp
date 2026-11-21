@@ -19,6 +19,9 @@ int main() { return 0; }
 
 #define BOOST_TEST_MODULE boost_test_included_smoke
 #include <boost/test/included/unit_test.hpp>
+// The header defines main; mcpp reads this file's text for a main of its own,
+// and a test with none begins at the doctest adapter's entry (test-main).
+int main(int argc, char* argv[]);
 
 BOOST_AUTO_TEST_CASE(included_arithmetic) {
     BOOST_TEST(2 + 2 == 4);

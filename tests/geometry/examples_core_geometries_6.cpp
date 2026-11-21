@@ -17,7 +17,6 @@
 // (and mapped_file, whose file outlives a run).
 // boost_range/uniqued.cpp does not compile upstream (coverage.toml). The examples' SVG helpers are inlined;
 // they write SVG only under HAVE_SVG, which the cases do not define.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/fusion/include/adapt_struct_named.hpp>

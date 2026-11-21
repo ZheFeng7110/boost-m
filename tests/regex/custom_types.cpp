@@ -3,7 +3,6 @@
 // boost::regex_traits, searches over user iterator types (a deque, a user
 // bidirectional container), a match_results with a user allocator, a user
 // formatter functor for regex_replace, and a user callback for regex_grep.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.regex;

@@ -2,7 +2,6 @@
 // serialization.cpp: described classes serialized through a generic
 // serialize() written with describe_members, archives from the module.
 // Output must equal the original program's.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/describe.hpp>

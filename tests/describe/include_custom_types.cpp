@@ -3,7 +3,6 @@
 // (libs/describe/doc/describe/{classes,enums}.adoc) plus the queries over the
 // descriptors (members, bases, modifiers, static and function members,
 // overloads, nested enums). Pure include: describe has no module.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <string>
 #include <string_view>

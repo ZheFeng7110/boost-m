@@ -14,7 +14,6 @@
 #include <sys/socket.h>
 #include <sys/uio.h>
 #endif
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cstdlib>
@@ -23,6 +22,7 @@
 #include <boost/asio/detail/handler_tracking.hpp>
 #include <cassert>
 #include <boost/config.hpp>
+#include <cmath>
 import std;
 import mcpplibs.mwrap.boost.asio;
 

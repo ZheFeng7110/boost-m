@@ -4,7 +4,6 @@
 // from_chars_erange, every base, every chars_format). The library has no
 // user-type customization point. to_chars does not null-terminate, so results
 // are compared as [first, ptr) instead of with strcmp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.charconv;

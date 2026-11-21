@@ -8,7 +8,6 @@
 // generator of the tutorial. Declarations the pages leave undefined
 // (do_the_thing, gen1, some_data_source, ...) are given small bodies; printf
 // output goes to a string the cases compare.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <coroutine>
 #include <new>

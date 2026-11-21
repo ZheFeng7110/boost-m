@@ -15,7 +15,6 @@
 // The range module exports boost::count_if, which range.cpp's own count_if
 // meets through `using namespace boost` (the original includes only the range
 // headers it needs); the port calls the example's count_if qualified.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

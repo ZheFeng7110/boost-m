@@ -3,7 +3,6 @@
 // move-only allowed for unique_any), small-object storage vs heap storage,
 // a throwing copy constructor leaving the target unchanged, and destructors
 // running exactly once.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.any;

@@ -4,7 +4,6 @@
 // client, per-operation cancellation and executors. "<your-mqtt-broker>" is
 // the in-process broker of broker.hpp on a free port; the pages' std::cout
 // output goes to a string the cases compare.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.asio;

@@ -6,7 +6,6 @@
 // pointer_in_range, pointer_traits, snprintf, span, typeinfo,
 // uncaught_exceptions, use_default, verbose_terminate_handler. The macro
 // components are include_macros.cpp. Cases are "doc: <page>#<section>".
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 import std;

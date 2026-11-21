@@ -6,7 +6,6 @@
 // library it came from; and library_info listing the user section. The
 // exports are this program's own (-rdynamic, tests/dll/mcpp.toml), with the
 // macro header included next to the module import (design §4.4).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/config.hpp>     // BOOST_SYMBOL_VISIBLE
 #include <boost/dll/alias.hpp>  // BOOST_DLL_ALIAS, BOOST_DLL_ALIAS_SECTIONED

@@ -2,7 +2,6 @@
 // cases: libs/crc/crc_example.cpp (CRC-32 of files, read in blocks) and the
 // three snippets of libs/crc/doc/crc_examples.cpp. <cstdarg> is included for
 // the va_* macros, which no module can export.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdarg>
 import std;

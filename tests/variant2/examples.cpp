@@ -1,6 +1,5 @@
 // mcpplibs.mwrap.boost.variant2 — the overview examples of Boost.Variant2
 // (libs/variant2/doc/variant2/overview.adoc) as test cases.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.variant2;

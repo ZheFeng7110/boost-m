@@ -19,6 +19,7 @@ mcpplibs.mwrap.boost = { path = "../..", default-features = false, features = ["
 
 [dev-dependencies]
 compat.doctest = "2.4.12"
+mcpplibs.mtest.doctest = "0.11.1"
 # The plugins: one package per shared library (a shared target is built from
 # its package's sources); as dev-dependencies they are built next to the test
 # programs, which find them in their own directory.

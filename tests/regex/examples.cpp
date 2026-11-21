@@ -11,7 +11,6 @@
 // excluded); icu_example and mfc_example need ICU and MFC, captures_example a
 // regex library built with BOOST_REGEX_MATCH_EXTRA, regex_grep_example_4
 // Borland's __closure (all excluded in coverage.toml).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <string>

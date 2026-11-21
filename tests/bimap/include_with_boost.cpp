@@ -2,7 +2,6 @@
 // {foreach,typeof,xpressive}.cpp exercise BOOST_FOREACH, BOOST_TYPEOF /
 // BOOST_AUTO and xpressive actions, which no module can carry, so this TU
 // includes everything and imports nothing. Same output oracle as examples.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/config.hpp>

@@ -8,7 +8,6 @@
 // returns; the last case (cases run in declaration order) checks that count.
 // Two failures are made on purpose (BOOST_ERROR, a failing BOOST_TEST_NE)
 // to see them counted; lightweight_test reports them on stderr.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstddef>
 #include <stdexcept>

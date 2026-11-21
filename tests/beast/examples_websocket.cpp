@@ -8,7 +8,6 @@
 // is what the same code printed when built from upstream/boost headers alone.
 // Response headers that carry the build (Server: Boost.Beast/<version>) or the
 // time are left out by the harness.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cstdlib>
@@ -20,6 +19,7 @@
 #include <cassert>
 #include <boost/config.hpp>
 #include <cstddef>
+#include <csignal>
 import std;
 import mcpplibs.mwrap.boost.asio;
 import mcpplibs.mwrap.boost.beast;

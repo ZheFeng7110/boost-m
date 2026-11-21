@@ -4,7 +4,6 @@
 // polynomials, rational functions, recurrences, minimax, expansions, AGM,
 // color maps, ...). Each case runs the documented call on a problem with a
 // known answer.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.math;

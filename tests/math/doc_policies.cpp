@@ -5,7 +5,6 @@
 // and performance notes. Policies are passed as arguments and through
 // make_policy; the BOOST_MATH_*_POLICY macros of a translation unit cannot
 // reach a module built once (docs/usage.md).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/math/special_functions/math_fwd.hpp>  // BOOST_MATH_DECLARE_SPECIAL_FUNCTIONS
 #include <boost/math/cstdfloat/cstdfloat_types.hpp>  // BOOST_FLOAT64_C and friends

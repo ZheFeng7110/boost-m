@@ -3,7 +3,6 @@
 // over user function objects (stateful, move-only, overloaded on value
 // category), bind_front/bind_back/invoke over user member functions and data
 // members, to_underlying on user enums, shared_lock over a user SharedMutex.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.compat;

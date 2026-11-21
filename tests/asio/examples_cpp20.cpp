@@ -21,7 +21,6 @@
 // C library's own text for it differs between platforms); programs that need
 // a POSIX stream_descriptor or socketpair are compiled only where asio has them.
 // The actor benchmark passes its token 500 thousand times, not 50 million.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/asio/detail/config.hpp>

@@ -7,7 +7,6 @@
 // boost/json/src.hpp).
 // console.cpp reads a fixed stdin, and its endless loop stops at the end of
 // input (an added 'if (!std::cin) break;', also in the oracle's copy).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/describe.hpp>

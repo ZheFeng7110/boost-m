@@ -4,7 +4,6 @@
 // serialization), the generators (nil, string, name md5/sha1, random,
 // basic_random, time v1/v6/v7), uuid_clock, namespaces, constants and the I/O
 // functions. Cases are "doc: <page>#<section>".
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.uuid;

@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.bimap — user types on both sides: a user key with its
 // own ordering and hashing, user comparators and hashers passed to the set
 // types, user tags, user info payloads, modify/replace with user functors.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.bimap;

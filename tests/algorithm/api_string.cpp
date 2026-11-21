@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.algorithm — the string algorithms (boost/algorithm/
 // string.hpp, trim_all) through the module: case conversion, trimming,
 // predicates, find/replace/erase families, split/join, finders and formatters.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.algorithm;

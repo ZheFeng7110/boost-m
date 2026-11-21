@@ -4,7 +4,6 @@
 // counts and without boost::timer (they are timing comparisons upstream; the
 // test keeps the FIFO behavior). boost::call_traits<T>::param_type is spelled
 // `const T&` (the int / std::string case it resolves to).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.circular_buffer;

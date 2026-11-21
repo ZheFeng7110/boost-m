@@ -3,7 +3,6 @@
 // k-mer filter code (copied unchanged below) on a small FASTA fixture holding
 // the three sequences the example expects to find, and checks the example's
 // expected answers: 1 1 1 0 0.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cassert>
 #include <climits>

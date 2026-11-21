@@ -45,7 +45,6 @@ HEADER = '''// mcpplibs.mwrap.boost.callable_traits — the %d official examples
 // and transaction_safe (GCC's -fgnu-tm) is off: the three *_transaction_safe
 // examples compile to an empty main upstream then, and are excluded in
 // coverage.toml.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.callable_traits;

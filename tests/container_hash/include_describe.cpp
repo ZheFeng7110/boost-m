@@ -3,7 +3,6 @@
 // class is hashed in a TU that includes container_hash too. Covers
 // libs/container_hash/examples/point2.cpp; mixed_describe.cpp checks the same
 // with the container_hash module imported.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstddef>
 #include <string>

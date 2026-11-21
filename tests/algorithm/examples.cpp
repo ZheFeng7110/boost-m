@@ -3,7 +3,6 @@
 // case keeps the example's data and calls and turns what it prints into
 // checks. string/example/regex_example.cpp is include_string_regex.cpp: the
 // *_regex family is not in the module (tools/export_policy.toml [algorithm]).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.algorithm;

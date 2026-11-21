@@ -4,8 +4,8 @@
 // functions (quantize, samequantum, decompose, frexp10, normalize, payloads,
 // comparetotal, rescale), <charconv>, string conversions, rounding modes,
 // stream input of non-finite values, and std::format.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
+#include <cmath>
 import std;
 import mcpplibs.mwrap.boost.decimal;
 

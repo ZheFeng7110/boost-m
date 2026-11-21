@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.container_hash — the official examples
 // (libs/container_hash/examples/*.cpp) as test cases. point2.cpp, which
 // describes its class with BOOST_DESCRIBE_CLASS, is include_describe.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.container_hash;

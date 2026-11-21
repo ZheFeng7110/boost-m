@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.conversion — the documentation examples of
 // Boost.Conversion (libs/conversion/doc/conversion.qbk) through the module
 // that the 2026-11-09 hardening added (design §5.3).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.conversion;

@@ -3,7 +3,6 @@
 // comparators (function objects, function pointers, lambdas), user iterators
 // (a bidirectional list-like container), and string algorithms over a user
 // character sequence.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.algorithm;

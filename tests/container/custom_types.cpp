@@ -4,7 +4,6 @@
 // allocator through allocator_traits, vector/deque/small_vector options
 // (growth factor, stored size, block size, inplace alignment), and a user
 // memory_resource for the pmr aliases.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.container;

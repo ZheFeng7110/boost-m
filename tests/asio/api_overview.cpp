@@ -2,7 +2,6 @@
 // (libs/asio/doc/overview/*.qbk, std_executors.qbk, using.qbk), one case per
 // page: the features they describe, exercised in-process (loopback sockets,
 // pipes, timers, signals) through the module. Cases are "doc: <page>#<id>".
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <csignal>
 #include <boost/asio/detail/config.hpp>  // BOOST_ASIO_HAS_* feature macros

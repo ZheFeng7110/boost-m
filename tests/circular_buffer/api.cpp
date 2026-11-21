@@ -3,7 +3,6 @@
 // at both ends with overwrite, rotation and linearization, array_one/array_two,
 // insert/erase/rinsert/rerase, assign, set_capacity / rset_capacity, resize,
 // comparison and swap.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.circular_buffer;

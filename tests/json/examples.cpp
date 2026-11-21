@@ -7,11 +7,11 @@
 // BOOST_JSON_UNREACHABLE() (an internal macro) is std::unreachable(). parse_into_canada and
 // parse_into_citm_catalog and parse_into are timing benchmarks over data files the release
 // does not ship (excluded in coverage.toml).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>
 #include <boost/config.hpp>
+#include <cerrno>
 import std;
 import mcpplibs.mwrap.boost.json;
 import mcpplibs.mwrap.boost.container;

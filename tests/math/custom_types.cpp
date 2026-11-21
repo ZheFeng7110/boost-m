@@ -6,7 +6,6 @@
 // precision); user functors for the root finders, the minimiser and the
 // series / continued-fraction tools; a user distribution-like object with
 // find_location; and the traits rejecting unsuitable types.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.math;

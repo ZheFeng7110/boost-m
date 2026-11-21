@@ -4,7 +4,6 @@
 // with closed forms, complements, and the non-member properties; plus the
 // tutorial pages (distribution objects, complements, the algorithms that find
 // parameters, the empirical CDF).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.math;

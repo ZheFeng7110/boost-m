@@ -2,7 +2,6 @@
 // Boost.Bimap documentation (libs/bimap/doc/{quick_tutorial,tutorial,
 // rationale}.qbk) whose code is written inline; sections that import an
 // example are covered by that example's case (coverage.toml).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.bimap;

@@ -11,6 +11,9 @@ int main() { return 0; }
 #else
 #define BOOST_TEST_MODULE boost_test_custom_types
 #include <boost/test/included/unit_test.hpp>
+// The header defines main; mcpp reads this file's text for a main of its own,
+// and a test with none begins at the doctest adapter's entry (test-main).
+int main(int argc, char* argv[]);
 #include <boost/test/data/test_case.hpp>
 #include <boost/test/data/monomorphic.hpp>
 #include <boost/test/tools/output_test_stream.hpp>

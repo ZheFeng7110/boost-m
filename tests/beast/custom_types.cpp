@@ -5,7 +5,6 @@
 // websocket::stream with its own teardown / async_teardown /
 // beast_close_socket overloads, and the
 // compile-time traits rejecting types that do not model the concepts.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.beast;

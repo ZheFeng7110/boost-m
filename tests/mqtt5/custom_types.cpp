@@ -5,7 +5,6 @@
 // authenticator for enhanced authentication (async_auth and method), all
 // against the in-process broker of broker.hpp; the traits rejecting types
 // without the hooks.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.asio;

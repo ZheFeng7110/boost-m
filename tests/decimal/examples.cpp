@@ -12,7 +12,6 @@
 // to_from_file draws its values from std::uniform_int_distribution, whose
 // sequence is the standard library's own, so only its round-trip result is
 // checked (the program verifies the values it reads back).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <version>
