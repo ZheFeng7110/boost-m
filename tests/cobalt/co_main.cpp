@@ -5,6 +5,11 @@
 // on a fresh io_context and returns co_main's result.
 #include <boost/cobalt/main.hpp>
 #include "../test_assert.hpp"
+
+// The header defines main; mcpp reads this file's text for a main of its own,
+// and a test with none begins at the doctest adapter's entry (test-main), whose
+// main would then be a second definition. The header declares main the same way.
+int main(int argc, char* argv[]);
 import mcpplibs.mwrap.boost.cobalt;
 
 namespace {

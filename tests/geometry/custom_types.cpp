@@ -7,7 +7,6 @@
 // #included before the import: macros are not exported), and a user
 // coordinate type; algorithms on each, and the traits telling a non-geometry
 // apart.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/concept/assert.hpp>
 #include <boost/geometry/geometries/register/point.hpp>

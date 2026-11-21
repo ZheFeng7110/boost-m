@@ -5,7 +5,6 @@
 // a user tuple-like type (tuple_size/get) and the is_tuple_like trait, the
 // is_unordered_range trait for a user set type, and hash_combine-based
 // composition of user types inside std containers.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.container_hash;

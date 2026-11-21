@@ -3,7 +3,6 @@
 // hashing from `import mcpplibs.mwrap.boost.container_hash;`, which exports
 // boost::container_hash::is_described_class. This is the include+import mix
 // of design §4.4; the includes precede every import.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/describe/class.hpp>
 import std;

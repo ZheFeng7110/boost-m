@@ -5,7 +5,6 @@
 // (CharSet concept), a user StringToken for decoding into a user buffer, and
 // url_view / url used as members of user types. The grammar index page's
 // `using namespace boost::urls::grammar;` is how this file names the grammar.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.url;

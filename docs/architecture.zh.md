@@ -257,7 +257,10 @@ feature（两种 Boost.Test 形态绝不能链接在一起）。
   文档中的代码（`doc*.cpp`、`api*.cpp`）、各定制点上的自定义类型（`custom_types.cpp`），
   以及 `coverage.toml`：1.92.0 发布包中每个示例和文档章节都映射到一个用例或写明理由；
   CI 运行 `tools/ci/test_coverage.py check`，并在 linux-gcc x86_64 腿上按构建出的测试程序
-  列出的用例（doctest `--list-test-cases`、Boost.Test `--list_content`）核对每个用例。机械移植的文件（头注释写明）是生成结果：
+  列出的用例（doctest `--list-test-cases`、Boost.Test `--list_content`）核对每个用例。
+  doctest 程序经由 dev-dependency `mcpplibs.mtest.doctest` 实现 mtest 测试协议，doctest 的实现与
+  `main` 只编译一次：测试文件只包含 `<doctest/doctest.h>`，不定义 `DOCTEST_CONFIG_IMPLEMENT*`，
+  `mcpp test --cases` / `--case` 作用于其中的用例。机械移植的文件（头注释写明）是生成结果：
   `tools/port_tests/regen.py` 从发布包和 oracle 重新生成它们（升级 Boost 后运行，
   再跑 `test_coverage.py scan` / `link`）。`tests/dll/`（带插件共享库）与
   `tests/test/utf/`（Boost.Test 的编译形态）是独立工程，被根清单的 `[test] discover`

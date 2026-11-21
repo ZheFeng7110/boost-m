@@ -8,7 +8,6 @@
 // a harness client exchanges one message with it; delay / delay_op get a
 // 10 ms delay as argv[1]. The output of thread and thread_pool (worker
 // threads) is not compared.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/asio/detail/config.hpp>

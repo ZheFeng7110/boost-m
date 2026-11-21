@@ -2,7 +2,6 @@
 // (in_place_type / in_place_index), emplace, swap, relational operators,
 // get / get_if / unsafe_get / holds_alternative, visit, visit_by_index,
 // variant_size / variant_alternative, subset<>(), operator<< and hashing.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.variant2;

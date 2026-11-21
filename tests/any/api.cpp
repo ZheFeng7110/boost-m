@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.any — boost::any, boost::anys::basic_any and
 // boost::anys::unique_any: construction, assignment, swap, the any_cast
 // family (value, reference, pointer, rvalue), unsafe_any_cast, type queries.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.any;

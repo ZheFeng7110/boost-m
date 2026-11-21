@@ -4,7 +4,6 @@
 // boost::algorithm::iequals) is copied into the case namespace, and its
 // BOOST_TEST checks are doctest CHECKs (the same conditions); both keep the
 // TU on imports only.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.unordered;

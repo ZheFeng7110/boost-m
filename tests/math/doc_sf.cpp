@@ -2,7 +2,6 @@
 // one case per section, each calling the functions it documents at points
 // with known values (closed forms, tabulated values from DLMF / A&S) or
 // through identities between them.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 // math before std: the math module's global fragment and the std module both
 // define MSVC's ppltasks (<future>), and with std imported first clang merges

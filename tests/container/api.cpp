@@ -3,7 +3,6 @@
 // devector, stable_vector, small/static_vector, deque, list/slist, the flat
 // associative containers, string, hub, the pmr aliases and memory resources,
 // const-reference parameters into the same container, null iterators.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.container;

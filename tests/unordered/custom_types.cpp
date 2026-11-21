@@ -4,7 +4,6 @@
 // is_avalanching, transparent user hashers for heterogeneous lookup, a user
 // allocator, and move-only / non-default-constructible mapped types; the
 // node and concurrent containers holding user types.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.unordered;

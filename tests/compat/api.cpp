@@ -3,7 +3,6 @@
 // integer_sequence, invoke and its traits, latch, mem_fn, move_only_function,
 // nontype, shared_lock, to_array, to_underlying. Cases are named
 // "doc: <page>#<section>" after the documentation section they exercise.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.compat;

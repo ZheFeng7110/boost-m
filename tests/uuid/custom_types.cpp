@@ -3,7 +3,6 @@
 // namespace UUID for the name generators, uuids as keys in user containers
 // and members of user types (with hashing), time_generator_v1 over a user
 // node id and a shared std::atomic state, and to_chars into a user buffer.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.uuid;

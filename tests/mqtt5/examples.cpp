@@ -7,7 +7,6 @@
 // differs between platforms); the programs that run until SIGINT stop as on
 // SIGINT (their signal_set is cancelled) after their first message
 // (receiver, publisher) or their fifth completion (multiflight_client). The TLS examples need OpenSSL and are excluded.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/asio/detail/config.hpp>
@@ -15,6 +14,8 @@
 #include <cassert>
 #include <boost/config.hpp>
 #include <cstdlib>
+#include <csignal>
+#include <cstdint>
 import std;
 import mcpplibs.mwrap.boost.asio;
 import mcpplibs.mwrap.boost.beast;

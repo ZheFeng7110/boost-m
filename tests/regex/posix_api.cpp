@@ -4,7 +4,6 @@
 // a consumer includes <boost/cregex.hpp> for them, as here; the functions are
 // the ones the package compiles (libs/regex/src/posix_api.cpp) and the
 // module's C++ API is imported alongside.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/cregex.hpp>
 import std;

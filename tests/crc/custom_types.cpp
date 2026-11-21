@@ -2,7 +2,6 @@
 // crc_optimal / crc_basic instantiated with parameters the library does not
 // predefine (CRC-8, CRC-32C, CRC-64/XZ from the CRC catalogue), optimal and
 // basic agreeing on them, and CRCs over user-defined record types.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.crc;

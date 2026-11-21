@@ -2,7 +2,6 @@
 // augmented_crc(), crc_basic (theoretical computer), crc_optimal (table
 // driven), the predefined samples checked against the CRC catalogue values for
 // "123456789", and the member functions of both computer templates.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.crc;

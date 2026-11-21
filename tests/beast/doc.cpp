@@ -6,7 +6,6 @@
 // lists for the chunk callbacks), the WebSocket handshake (the RFC 6455 key and
 // accept pair), the Body and BuffersGenerator concepts, and the message
 // container design. Everything runs over beast::test::stream, in memory.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.beast;

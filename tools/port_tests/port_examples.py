@@ -28,6 +28,26 @@ import common  # noqa: E402
 ROOT = common.ROOT
 INC = common.INC
 KEEP_STD = {"cassert", "cstdio", "cstdlib", "cmath", "cstdarg", "climits", "cfloat", "cstddef", "cerrno", "csignal"}
+# What a port uses from a C header that `import std` does not give: its macros
+# (SIGINT, errno, INT_MAX, FP_ZERO) and its names in the global namespace
+# (::sin, ::uint16_t). The example had them from a Boost header the port
+# removes; the header is added when no header the port keeps is it. (Until
+# 2026-11-21 doctest's implementation, compiled in each test file, supplied
+# them; the mtest doctest adapter compiles it once, outside the file.)
+C_NAMES = [
+    ("csignal", r"\bSIG(INT|TERM|HUP|QUIT|ABRT|SEGV|ILL|FPE|USR1|USR2|PIPE|CHLD|ALRM)\b|(?<![\w:.>])signal\s*\("),
+    ("cerrno", r"\berrno\b"),
+    ("climits", r"\b(U?INT|U?LONG|U?LLONG|U?SHRT|S?CHAR|UCHAR)_(MAX|MIN)\b|\bCHAR_BIT\b"),
+    ("cmath", r"\bFP_(ZERO|NAN|INFINITE|NORMAL|SUBNORMAL)\b|\bHUGE_VAL[FL]?\b|"
+              r"(?<![\w:.>])(sin|cos|tan|asin|acos|atan|atan2|sqrt|cbrt|floor|ceil|fabs|pow|exp|log|log10|fmod|round|trunc|hypot)\s*\("),
+    ("cstdint", r"(?<![\w:])u?int(8|16|32|64)_t\b"),
+]
+
+
+def c_headers_used(cases_text, kept):
+    """The `#include <h>` lines of C_NAMES the cases need and `kept` lacks."""
+    return ["#include <%s>" % h for h, pat in C_NAMES
+            if "#include <%s>" % h not in kept and re.search(pat, cases_text)]
 
 
 ORACLE_PARTS = {}
@@ -582,8 +602,9 @@ def main():
             else:
                 repl.append(k)
         kept_all = repl
-    head = args.header + """#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest/doctest.h>
+    if not (args.pure or args.std_includes):
+        kept_all += c_headers_used("\n".join(cases), kept_all)
+    head = args.header + """#include <doctest/doctest.h>
 %s
 %s%s
 // Output of the ported examples is captured here; each case compares it with

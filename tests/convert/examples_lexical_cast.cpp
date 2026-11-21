@@ -4,7 +4,6 @@
 // boost::cnv::by_default once, so the examples are grouped by the default
 // they define: examples_stream.cpp and examples_default_converter.cpp hold
 // the others. The spirit converter of getting_started is include_spirit.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.convert;

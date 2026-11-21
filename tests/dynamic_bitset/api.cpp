@@ -3,7 +3,6 @@
 // bitwise and shift operators, set algebra (subset, intersects), searches
 // (find_first/find_next), resizing, block conversion, comparison, hashing and
 // string conversion.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.dynamic_bitset;

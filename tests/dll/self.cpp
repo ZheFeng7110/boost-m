@@ -9,7 +9,6 @@
 // §4.4); the program exports its symbols (-rdynamic, tests/dll/mcpp.toml) for
 // the dynamic loader to find them.
 #define BOOST_DLL_FORCE_ALIAS_INSTANTIATION
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/config.hpp>     // BOOST_SYMBOL_VISIBLE
 #include <boost/dll/alias.hpp>  // BOOST_DLL_ALIAS

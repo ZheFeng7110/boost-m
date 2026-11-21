@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.algorithm — the sequence algorithms (cxx11/14/17,
 // searching, hex, gather, clamp, ordering, permutation) through the module.
 // Cases named "doc: <section>" carry the Examples of libs/algorithm/doc/<x>.qbk.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.algorithm;

@@ -5,7 +5,6 @@
 // allocator_access, empty_value compressing user empty types, invoke_swap
 // finding a user swap by ADL, ref/unwrap_ref, span over a user contiguous
 // container, functor<> over a user function, and demangle of user templates.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.core;

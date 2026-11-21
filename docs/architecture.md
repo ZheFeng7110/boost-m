@@ -291,7 +291,11 @@ keeps byte-identical notices.
   1.92.0 release to a case or a reason; `tools/ci/test_coverage.py check` runs
   in CI, and on the linux-gcc x86_64 legs also checks each case against the
   cases the built test programs list (doctest `--list-test-cases`, Boost.Test
-  `--list_content`). The mechanically ported files (their header says so) are generator
+  `--list_content`). The doctest programs speak the mtest test protocol through
+  the `mcpplibs.mtest.doctest` dev-dependency, which compiles doctest's
+  implementation and `main` once: a test file includes `<doctest/doctest.h>` and
+  defines no `DOCTEST_CONFIG_IMPLEMENT*`, and `mcpp test --cases` / `--case` act on
+  their cases. The mechanically ported files (their header says so) are generator
   output: `tools/port_tests/regen.py` re-creates them from the release archive
   and the oracle, after a Boost upgrade followed by `test_coverage.py scan` and
   `link`. `tests/dll/` (with plugin shared libraries) and `tests/test/utf/`

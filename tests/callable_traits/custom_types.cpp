@@ -3,7 +3,6 @@
 // (including generic and overloaded ones), user function pointers, and the
 // FAQ's point (libs/callable_traits/doc/callable_traits.qbk#faq): one trait
 // replaces the hand-written partial specializations per callable shape.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.callable_traits;

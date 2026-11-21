@@ -7,7 +7,6 @@
 // IoObjectService, a user CancellationHandler, user SyncRandomAccessRead/
 // WriteDevice types for read_at / write_at, and a user asynchronous
 // operation built with async_initiate (asynchronous_operations.qbk).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <csignal>
 import std;
@@ -161,7 +160,7 @@ TEST_CASE("a user completion token") {
     user::async_sum(t, 1, 1, user::log_token{&log});
     ctx.run();
     REQUIRE(log.size() == 1);
-    CHECK(log[0].find("[2]") != std::string::npos);
+    CHECK(log[0].contains("[2]"));
 }
 
 TEST_CASE("doc: WaitToken#WaitToken") {

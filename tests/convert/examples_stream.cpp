@@ -2,8 +2,8 @@
 // converter is boost::cnv::cstream (libs/convert/example/getting_serious.cpp,
 // stream.cpp) and the converter-agnostic algorithms.cpp, plus the design-note
 // snippets of libs/convert/doc/design_notes.qbk.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
+#include <climits>
 import std;
 import mcpplibs.mwrap.boost.convert;
 

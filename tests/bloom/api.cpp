@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.bloom — the tutorial of Boost.Bloom
 // (libs/bloom/doc/bloom/tutorial.adoc) section by section, plus the subfilter
 // family and the filter's construction/assignment/comparison members.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.bloom;

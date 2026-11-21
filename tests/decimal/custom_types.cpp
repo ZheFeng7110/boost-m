@@ -4,7 +4,6 @@
 // own rounding and streaming, decimals as keys of user containers (std::hash,
 // ordering), user conversion between the user type and strings via
 // <charconv>, and the numeric_limits a user algorithm relies on.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.decimal;

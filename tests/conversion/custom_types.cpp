@@ -2,7 +2,6 @@
 // smart pointer that opts into polymorphic_pointer_cast through ADL overloads
 // of static_pointer_cast / dynamic_pointer_cast (the documented customization
 // point), and implicit_cast through user conversion operators.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.conversion;

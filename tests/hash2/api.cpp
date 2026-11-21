@@ -3,7 +3,6 @@
 // HashAlgorithm requirements over every provided algorithm, update/result
 // semantics, compile-time hashing, and hash_append over each kind of type.
 // Described classes are mixed_describe.cpp, user types custom_types.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdint>
 import std;

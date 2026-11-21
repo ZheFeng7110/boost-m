@@ -2,7 +2,6 @@
 // points: user-chosen Block types (unsigned char, std::uint16_t, unsigned
 // long long) and a user allocator (counting allocations), plus block-range
 // round trips through a user container.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.dynamic_bitset;

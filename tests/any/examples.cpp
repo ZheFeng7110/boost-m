@@ -1,6 +1,5 @@
 // mcpplibs.mwrap.boost.any — the documentation examples of Boost.Any
 // (libs/any/doc/any.qbk, sections "Examples" and "C++20 module") as test cases.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.any;

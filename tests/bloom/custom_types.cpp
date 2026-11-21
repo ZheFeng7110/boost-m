@@ -2,7 +2,6 @@
 // struct hashed through boost::hash (hash_value found by ADL), a user hasher
 // marked as avalanching (is_avalanching, so the filter skips its own mixing),
 // a user hasher without the mark (mixed by the filter), and a user allocator.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.bloom;

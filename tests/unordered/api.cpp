@@ -4,7 +4,6 @@
 // reserve/rehash, piecewise emplacement, the concurrent containers'
 // visitation API, bulk visitation and interoperability with the
 // non-concurrent containers, and erase_if / merge / extract.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.unordered;

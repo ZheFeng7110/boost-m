@@ -3,7 +3,6 @@
 // a described struct. The BOOST_DESCRIBE_* macros come from #include (no
 // module carries them) and Boost.JSON from its module (design §4.4: the
 // includes precede the imports).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/describe.hpp>
 import std;

@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.json — libs/json/test/doc_storage_ptr.cpp, the code the
 // documentation pages include, unchanged except that its includes are imports
 // and its test macros come from doc_test_suite.hpp (doctest).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include "doc_test_suite.hpp"
 #include <cassert>

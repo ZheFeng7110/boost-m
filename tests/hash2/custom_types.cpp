@@ -4,7 +4,6 @@
 // the documented requirements and used with hash_append and the result
 // helpers, a user flavor (byte order and size_type), and a user hash adapter
 // for unordered containers (examples.adoc#use-with-unordered-containers).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdint>
 import std;

@@ -15,7 +15,6 @@
 #else
 #define EX_OUTPUT_PLATFORM 0
 #endif
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cmath>

@@ -1,7 +1,6 @@
 // mcpplibs.mwrap.boost.circular_buffer — user element types: non-trivial
 // destructors run exactly once when elements are overwritten or popped,
 // move-only elements, a user allocator, and a user aggregate with an ordering.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.circular_buffer;

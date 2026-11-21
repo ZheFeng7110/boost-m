@@ -5,7 +5,6 @@
 // spatial predicates, nearest, satisfies, negation and conjunction, breaking
 // out of a nearest iteration, query results as a range), and the reference of
 // predicates.qbk, rtree.qbk and rtree_functions.qbk.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.geometry;

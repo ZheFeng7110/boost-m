@@ -5,7 +5,6 @@
 // without a default constructor through boost::make_default; boost::cnv::apply
 // with a user converter in an algorithm; a string-to-string transforming
 // converter (other.qbk "Beyond Basic Conversions").
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.convert;

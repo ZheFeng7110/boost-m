@@ -15,7 +15,6 @@
 #else
 #define EX_OUTPUT_PLATFORM 0
 #endif
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/math/tools/config.hpp>
@@ -29,6 +28,7 @@
 #include <boost/config.hpp>
 #include <cmath>
 #include <cerrno>
+#include <csignal>
 import std;
 import mcpplibs.mwrap.boost.math;
 import mcpplibs.mwrap.boost.multiprecision;

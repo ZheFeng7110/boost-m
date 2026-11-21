@@ -3,7 +3,6 @@
 // polymorphic_pointer_downcast over raw, std and boost smart pointers, and
 // implicit_cast (constexpr, no explicit conversions), after
 // libs/conversion/test/{cast_test,polymorphic_cast_test,implicit_cast}.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.conversion;

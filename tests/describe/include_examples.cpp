@@ -9,7 +9,6 @@
 // vendored).
 // pm_to_string.cpp names its own ::detail namespace; in the port it is the
 // case namespace's detail.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/describe.hpp>

@@ -7,7 +7,6 @@
 // the temporary directory; the examples' own headers are inlined; finicky's CHECK macro is EX_CHECK here (doctest's
 // CHECK). router and file_router are beast HTTP servers (excluded in
 // coverage.toml).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <boost/assert.hpp>

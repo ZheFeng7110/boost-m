@@ -7,7 +7,6 @@
 // included before the imports (docs/usage.md, macros). doc_extended_allocators
 // needs the dlmalloc-based allocators, which the package does not build
 // (tools/gen_features.py: alloc_lib.c is a C TU): coverage.toml, gap.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

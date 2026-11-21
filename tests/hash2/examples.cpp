@@ -4,7 +4,6 @@
 // md5sum and hash2sum (command-line tools) run on two files written to the
 // temporary directory, named relative to it (the output prints them); json_value hashes a boost::json::value through the
 // json module and adds its hash_append overload to namespace boost.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

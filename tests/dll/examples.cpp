@@ -6,7 +6,6 @@
 // printed is captured and compared with what the example's documentation
 // shows. The plugin API headers (tutorial_common, tutorial8) are written out
 // here as the importer sees them: the dll module is imported, not included.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/config.hpp>  // BOOST_SYMBOL_VISIBLE
 import std;

@@ -4,7 +4,6 @@
 // alone. Interactive examples read a fixed stdin. population_bimap.cpp,
 // mi_hashed_indices.cpp and the bimap_and_boost/ examples are
 // examples_with_boost.cpp and include_with_boost.cpp.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

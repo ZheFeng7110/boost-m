@@ -43,6 +43,10 @@ of running them; doctest reads ``--list-test-cases``, Boost.Test reads
         -- --list_content -- --list-test-cases > listing.ndjson
     python3 tools/ci/test_coverage.py check --listing listing.ndjson
 
+A doctest program speaks the mtest protocol (mcpplibs.mtest.doctest): it
+reports what it lists to mcpp, whose record of it holds the cases (``listed``);
+the others print their listing (``run_output``).
+
 An entry whose test is in no listing is reported as not verified: CI lists the
 root tests on a leg without the unit-test-framework feature (with it, the
 tests/test/included programs are stubs) and tests/dll on a leg that has it.
@@ -409,6 +413,11 @@ def program_cases(output):
         heads = (l.split(": ", 1)[0] for l in lines)
         names = {h.strip()[:-1] for h in heads
                  if h.endswith("*") and h.strip() != "*"} | {"program"}
+    return with_templates(names)
+
+
+def with_templates(names):
+    """`names` and the case each template instance (`name<int>`) is of."""
     return names | {n.partition("<")[0] for n in names
                     if n.endswith(">") and n.partition("<")[0]}
 
@@ -444,6 +453,12 @@ def listing_cases(paths):
                 raise SystemExit("{}: member {!r} is not a workspace member under "
                                  "tests/".format(path, member))
             test = (dirs[member] + "/" if member else "") + record["test"]
+            if "listed" in record:
+                # A test-protocol program (doctest through mcpplibs.mtest.doctest)
+                # reports the cases it lists to mcpp, not to its output.
+                found[test] = (found.get(test) or set()) | with_templates(
+                    {case["name"] for case in record["listed"]})
+                continue
             if record["status"] not in ("pass", "run_fail"):
                 found.setdefault(test, None)
                 continue

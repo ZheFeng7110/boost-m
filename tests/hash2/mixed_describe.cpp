@@ -3,7 +3,6 @@
 // #include (no module carries them), hash_append from the hash2 module, which
 // hashes a described class member by member and base by base (design §4.4:
 // includes precede imports).
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <boost/describe/class.hpp>
 import std;

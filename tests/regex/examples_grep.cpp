@@ -3,7 +3,6 @@
 // with -n -i "class|line" and with -c -E: its output must equal what the same
 // code printed when built from upstream/boost headers alone. The file path is
 // the program's own printing of its input, so the cases print it too.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 #include <cstdio>
 #include <cassert>

@@ -2,7 +2,6 @@
 // a user-defined default converter (a cstream configured for uppercase hex).
 // default_converter_fail.cpp is a compile-failure demonstration (no default
 // converter defined) and is excluded in coverage.toml.
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 import std;
 import mcpplibs.mwrap.boost.convert;

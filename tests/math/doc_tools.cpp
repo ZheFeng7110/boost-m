@@ -3,8 +3,8 @@
 // complex-tr1.qbk, quaternions and octonions, condition numbers and norms.
 // (The C99 / TR1 pages describe extern "C" functions of the compiled
 // libboost_math_tr1, which the package does not build: coverage.toml, gap.)
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
+#include <cmath>
 import std;
 import mcpplibs.mwrap.boost.math;
 
