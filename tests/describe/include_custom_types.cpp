@@ -4,6 +4,7 @@
 // descriptors (members, bases, modifiers, static and function members,
 // overloads, nested enums). Pure include: describe has no module.
 #include <doctest/doctest.h>
+#include <ostream>
 #include <string>
 #include <string_view>
 #include <type_traits>

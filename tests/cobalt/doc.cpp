@@ -10,6 +10,7 @@
 // output goes to a string the cases compare.
 #include <doctest/doctest.h>
 #include <coroutine>
+#include <cstdio>
 #include <new>
 #include <typeinfo>
 import std;

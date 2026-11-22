@@ -41,6 +41,8 @@ C_NAMES = [
     ("cmath", r"\bFP_(ZERO|NAN|INFINITE|NORMAL|SUBNORMAL)\b|\bHUGE_VAL[FL]?\b|"
               r"(?<![\w:.>])(sin|cos|tan|asin|acos|atan|atan2|sqrt|cbrt|floor|ceil|fabs|pow|exp|log|log10|fmod|round|trunc|hypot)\s*\("),
     ("cstdint", r"(?<![\w:])u?int(8|16|32|64)_t\b"),
+    ("cstdio", r"\b(stdin|stdout|stderr|EOF)\b"),
+    ("cstdlib", r"\b(EXIT_SUCCESS|EXIT_FAILURE|RAND_MAX)\b"),
 ]
 
 

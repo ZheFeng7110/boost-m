@@ -12,6 +12,7 @@
 #include <cassert>
 #include <boost/config.hpp>
 #include <cerrno>
+#include <cstdlib>
 import std;
 import mcpplibs.mwrap.boost.json;
 import mcpplibs.mwrap.boost.container;

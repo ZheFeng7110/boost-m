@@ -70,6 +70,18 @@ Boost.Test 文件写在 `#else` 分支里。
 `<cmath>`，无害）；`regen.py` 需要发布包与 oracle 构建，本轮未重跑。手写的 3 个文件直接补
 `#include`。
 
+windows-llvm-msvc 上又多出 5 个（Linux/macOS 的标准库头文件会间接带入这些头，MSVC STL 不会）：
+
+| 缺少 | 文件 | 处理 |
+|---|---|---|
+| `EXIT_SUCCESS`、`EXIT_FAILURE` | json/examples、url/examples（math/examples_4 经 Boost 头文件侥幸得到） | `C_NAMES` 增加 `<cstdlib>`，同时增加 `<cstdio>`（`stderr` 等） |
+| `stderr` | cobalt/doc（手写） | `#include <cstdio>` |
+| `std::basic_ostream` 不完整 | describe/include_custom_types（纯文本包含，无 `import std`）：MSVC STL 下 doctest.h 只前向声明它，`CHECK(string_view == ..)` 需要完整类型 | `#include <ostream>` |
+
+另外 math/doc_numerics 的 `naive_monte_carlo`（`std::async`）在 Windows 上失败：文件先
+`import std` 再导入 math，正是 `2026-11-18-windows-msvc-module-crashes-analysis.md` §3 的
+ppltasks 静态变量合并。原先 doctest 实现的文本包含恰好避开了它；现在与 `doc_sf.cpp` 一样改为先导入 math。
+
 ## 3. GCC 16：`npos` 的强定义
 
 `asio/custom_types` 与 `geometry/api_reference` 链接时 `std::string::npos` 重复定义，另一方是

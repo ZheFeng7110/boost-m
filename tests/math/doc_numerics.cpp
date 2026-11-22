@@ -5,8 +5,13 @@
 // color maps, ...). Each case runs the documented call on a problem with a
 // known answer.
 #include <doctest/doctest.h>
-import std;
+// math before std, as in doc_sf.cpp: the math module's global fragment and the
+// std module both define MSVC's ppltasks (<future>), and with std imported
+// first clang merges _GetStaticAmbientSchedulerRef so that its call_once lambda
+// writes a second copy of the function's static: std::async (naive_monte_carlo)
+// then reads a null scheduler on windows-llvm-msvc (llvm/llvm-project#221548).
 import mcpplibs.mwrap.boost.math;
+import std;
 
 namespace bm = boost::math;
 

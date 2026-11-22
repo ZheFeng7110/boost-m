@@ -12,6 +12,7 @@
 #include <boost/assert.hpp>
 #include <cassert>
 #include <boost/config.hpp>
+#include <cstdlib>
 import std;
 import mcpplibs.mwrap.boost.url;
 import mcpplibs.mwrap.boost.json;

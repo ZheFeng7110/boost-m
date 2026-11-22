@@ -28,6 +28,7 @@
 #include <boost/config.hpp>
 #include <cerrno>
 #include <cmath>
+#include <cstdlib>
 import std;
 import mcpplibs.mwrap.boost.math;
 import mcpplibs.mwrap.boost.multiprecision;
