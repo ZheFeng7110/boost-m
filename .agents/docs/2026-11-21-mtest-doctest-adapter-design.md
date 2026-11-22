@@ -78,9 +78,19 @@ windows-llvm-msvc 上又多出 5 个（Linux/macOS 的标准库头文件会间�
 | `stderr` | cobalt/doc（手写） | `#include <cstdio>` |
 | `std::basic_ostream` 不完整 | describe/include_custom_types（纯文本包含，无 `import std`）：MSVC STL 下 doctest.h 只前向声明它，`CHECK(string_view == ..)` 需要完整类型 | `#include <ostream>` |
 
-另外 math/doc_numerics 的 `naive_monte_carlo`（`std::async`）在 Windows 上失败：文件先
-`import std` 再导入 math，正是 `2026-11-18-windows-msvc-module-crashes-analysis.md` §3 的
-ppltasks 静态变量合并。原先 doctest 实现的文本包含恰好避开了它；现在与 `doc_sf.cpp` 一样改为先导入 math。
+另外 math/doc_numerics 的 `naive_monte_carlo` 与 `wavelet_transforms`（都调用 `std::async`）在 Windows 上
+SIGSEGV。cdb 的栈与 `2026-11-18-windows-msvc-module-crashes-analysis.md` §3 相同：`task_options` 复制
+`get_ambient_scheduler()` 时读 `[0+8]`，即 ppltasks 的局部静态变量被合并成两份。原先 doctest 实现在
+导入之前文本包含了 `<mutex>`，恰好避开了它。在临时 workflow 上试验（fork 分支 `tmp/win-monte-carlo`）的结果：
+
+| 程序 | 结果 |
+|---|---|
+| 只有 `std::async` 一个用例的小 TU，加 `<mutex>`、`<future>` 或都不加，std 在前或 math 在前 | 全部通过 |
+| doc_numerics，math 在前（`doc_sf.cpp` 的做法） | SIGSEGV |
+| doc_numerics，std 在前，导入前 `#include <mutex>` | 通过 |
+| doc_numerics，std 在前，导入前 `#include <future>` | 通过 |
+
+doc_numerics 采用在导入前 `#include <future>`：TU 先读到 ppltasks 的文本定义。与改导入顺序一样，这是经验性的绕过。
 
 ## 3. GCC 16：`npos` 的强定义
 

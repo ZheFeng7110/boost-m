@@ -5,13 +5,18 @@
 // color maps, ...). Each case runs the documented call on a problem with a
 // known answer.
 #include <doctest/doctest.h>
-// math before std, as in doc_sf.cpp: the math module's global fragment and the
-// std module both define MSVC's ppltasks (<future>), and with std imported
-// first clang merges _GetStaticAmbientSchedulerRef so that its call_once lambda
-// writes a second copy of the function's static: std::async (naive_monte_carlo)
-// then reads a null scheduler on windows-llvm-msvc (llvm/llvm-project#221548).
-import mcpplibs.mwrap.boost.math;
+// <future> textually before the imports: the math module's global fragment
+// and the std module both define MSVC's ppltasks, and in this TU clang merges
+// _GetStaticAmbientSchedulerRef so that its call_once lambda writes a second
+// copy of the function's static: std::async (naive_monte_carlo,
+// daubechies_wavelet_transform) then reads a null scheduler and crashes on
+// windows-llvm-msvc (the shape of llvm/llvm-project#221548). Importing math
+// first does not help here; a textual definition read first does (doctest's
+// implementation, compiled into this TU before mcpplibs.mtest.doctest, used to
+// supply <mutex>, which hid the crash).
+#include <future>
 import std;
+import mcpplibs.mwrap.boost.math;
 
 namespace bm = boost::math;
 
