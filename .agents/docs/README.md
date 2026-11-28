@@ -27,7 +27,7 @@
 - `todos/` 放尚未完成的工作项，它们不是决定的记录。
 - 移动或改名用 `tools/doc-tools/move_record.py`，它同时改写仓库中对该文件的引用。
 
-共 28 篇记录（其中 0 篇已归档），1 项待办。
+共 29 篇记录（其中 0 篇已归档），1 项待办。
 
 ## 进行中
 
@@ -42,6 +42,10 @@
 ### docs
 
 - [设计记录的管理：只增不删、按年归档、生成的索引与 `tools/doc-tools/`](2026-11-08-design-records-management-design.md) — landed
+
+### generator
+
+- [`boost::dll::fs` 跟随 `boost::filesystem`：策略 `republish`](2026-11-28-dll-fs-republish-design.md) — landed
 
 ### tests
 
@@ -60,6 +64,7 @@
 
 ### 2026-11
 
+- [`boost::dll::fs` 跟随 `boost::filesystem`：策略 `republish`](2026-11-28-dll-fs-republish-design.md) — landed
 - [PR #5 第二轮评审的 [nit] 修复：覆盖率按测试程序列出的用例核对](2026-11-21-pr5-review-nits-design.md) — active
 - [子工程复用根工程的构建产物，mcpp 升级到 2026.11.20.1](2026-11-20-sub-project-build-reuse-design.md) — active
 - [windows-llvm-msvc 上的进程崩溃：两个 clang 模块缺陷](2026-11-18-windows-msvc-module-crashes-analysis.md) — landed

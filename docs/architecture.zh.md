@@ -147,7 +147,9 @@ clang++ -std=c++23 --target=x86_64-w64-mingw32 --sysroot=<pinned MinGW> \
   friend 形式出现的声明、显式与偏特化（经由主模板可达）、推导指引以及类成员都
   不是候选。
 - **using 注入**：赋予实体公开拼写的命名空间作用域 `using X::y;` /
-  `using namespace X;`（ADL 屏障、`detail` 再导出）。
+  `using namespace X;`（ADL 屏障、`detail` 再导出）。`using namespace` 只在 ADL
+  屏障形态下跟随（目标嵌套在指令自身的命名空间内）；指向其他库命名空间的指令，
+  由策略声明后才跟随（见下文 `republish`）。
 - **签名闭包**：候选签名中点名的实体（形参、返回值、基类、字段、typedef 目标——
   typedef 会被看穿），使 API 自身的类型随之导出。
 - **归属**：按依赖优先的顺序处理各库；第一个认领实体的库拥有它，之后的库在
@@ -167,13 +169,14 @@ clang++ -std=c++23 --target=x86_64-w64-mingw32 --sysroot=<pinned MinGW> \
 | `[[<lib>.guard]]` | 用上游头文件自身的条件包裹匹配的导出（`#if defined(_WIN32)` ...），可选 `#else` 行 |
 | `[[<lib>.drop]]` | 永不导出匹配的名字 / 命名空间 |
 | `[[<lib>.extra]]` | 原样声明（gcc `extern template` 虚表变通） |
+| `[[<lib>.republish]]` | 该命名空间中有指向另一个库命名空间的 `using namespace <target>;`：把那个库直接导出在 `<target>` 中的所有名字经由该命名空间再导出，可选 `if` 条件（`boost::dll::fs` 跟随 `boost::filesystem`） |
 | `add` | 没有收集器能到达的名字（只在函数体或 ADL 中出现的引用） |
 | `gmf`、`defines`、`facade-includes` | bundle 的 include 集合与宏；仅门面使用的 include |
 | `inline-namespaces` | 经由父命名空间导出由宏选择的 inline 命名空间 |
 | `[<lib>.deps]` | 模块边修正；手写特殊模块的边 |
 
-`generated/meta/skipped.txt` 列出每条规则守卫、丢弃或添加的名字，边界可以在一个
-文件里审阅；`generated/meta/api-surface.json` 记录生成器身份（clang 版本、目标、
+`generated/meta/skipped.txt` 列出每条规则守卫、丢弃或添加的名字，以及每个
+`extra` / `republish` 命名空间，边界可以在一个文件里审阅；`generated/meta/api-surface.json` 记录生成器身份（clang 版本、目标、
 宏定义）以及每个库的 GMF、导出数和边。因此编译器升级后的差异会显示为生成器
 变化，而不是无法解释的 API 变化。
 

@@ -167,6 +167,9 @@ libclang, no Python bindings, no LLVM release archive.
   deduction guides and class members are not candidates.
 - **Using-injections**: namespace-scope `using X::y;` / `using namespace X;`
   that give entities their public spelling (ADL barriers, `detail` re-exports).
+  A `using namespace` is followed only in the ADL-barrier shape (the target is
+  nested in the directive's own namespace); one that names another library's
+  namespace is followed when the policy declares it (`republish` below).
 - **Signature closure**: entities named by the candidates' signatures
   (parameters, results, bases, fields, typedef targets — with typedefs looked
   through), so the API's own types are exported with it.
@@ -190,13 +193,15 @@ written reason and applied by the generator, never patched into its output:
 | `[[<lib>.guard]]` | wrap the matching exports in the upstream header's own condition (`#if defined(_WIN32)` ...), optional `#else` lines |
 | `[[<lib>.drop]]` | never export the matching names / namespaces |
 | `[[<lib>.extra]]` | verbatim declarations (the gcc `extern template` vtable workarounds) |
+| `[[<lib>.republish]]` | the namespace holds `using namespace <target>;` for another library's namespace: every name that library exports directly in `<target>` is re-exported through it, optionally under `if` (`boost::dll::fs` follows `boost::filesystem`) |
 | `add` | names no collector reaches (body-only or ADL-only references) |
 | `gmf`, `defines`, `facade-includes` | the bundle's include set and macros; facade-only includes |
 | `inline-namespaces` | export a macro-selected inline namespace through its parent |
 | `[<lib>.deps]` | module edge corrections; edges of the hand-written special modules |
 
-`generated/meta/skipped.txt` lists every name a rule guards, drops or adds, so
-the boundary is reviewable in one file, and `generated/meta/api-surface.json`
+`generated/meta/skipped.txt` lists every name a rule guards, drops or adds, and
+each `extra` / `republish` namespace, so the boundary is reviewable in one file,
+and `generated/meta/api-surface.json`
 records the generator identity (clang release, target, defines) and per-library
 GMF, export count and edges. A diff after a compiler update therefore shows as a
 generator change, not as an unexplained API change.
