@@ -27,7 +27,7 @@
 - `todos/` 放尚未完成的工作项，它们不是决定的记录。
 - 移动或改名用 `tools/doc-tools/move_record.py`，它同时改写仓库中对该文件的引用。
 
-共 29 篇记录（其中 0 篇已归档），1 项待办。
+共 30 篇记录（其中 0 篇已归档），1 项待办。
 
 ## 进行中
 
@@ -45,6 +45,7 @@
 
 ### generator
 
+- [不跟随的 using 指令必须声明：策略 `skip-directive`](2026-11-28-skip-directive-design.md) — landed
 - [`boost::dll::fs` 跟随 `boost::filesystem`：策略 `republish`](2026-11-28-dll-fs-republish-design.md) — landed
 
 ### tests
@@ -64,6 +65,7 @@
 
 ### 2026-11
 
+- [不跟随的 using 指令必须声明：策略 `skip-directive`](2026-11-28-skip-directive-design.md) — landed
 - [`boost::dll::fs` 跟随 `boost::filesystem`：策略 `republish`](2026-11-28-dll-fs-republish-design.md) — landed
 - [PR #5 第二轮评审的 [nit] 修复：覆盖率按测试程序列出的用例核对](2026-11-21-pr5-review-nits-design.md) — active
 - [子工程复用根工程的构建产物，mcpp 升级到 2026.11.20.1](2026-11-20-sub-project-build-reuse-design.md) — active
