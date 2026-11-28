@@ -454,6 +454,31 @@ names = ["boost::mpl::item_by_order_impl"]
 add = ["macros"]
 
 # --------------------------------------------------------------------------
+# accumulators
+
+[[accumulators.skip-directive]]
+namespace = "boost::numeric::functional"
+reason = '''
+boost/accumulators/numeric/functional_fwd.hpp declares namespace
+boost::numeric::operators "for using directives" and pulls it into
+numeric::functional with `using namespace operators;`, so the functional
+objects find the std::vector / std::valarray / std::complex operator overloads
+unqualified. The operators' public spelling is boost::numeric::operators (a
+user writes their own `using namespace boost::numeric::operators;`); no Boost
+header, test or example names one as numeric::functional::X.
+'''
+
+[[accumulators.skip-directive]]
+namespace = "boost::accumulators::impl"
+reason = '''
+boost/accumulators/accumulators_fwd.hpp opens `namespace impl { using
+namespace numeric::operators; }` for the same reason as numeric::functional:
+the accumulator implementations apply the numeric operators unqualified.
+accumulators::impl::X is spelled upstream only for impl's own accumulator
+templates, which are exported directly; none goes through the directive.
+'''
+
+# --------------------------------------------------------------------------
 # asio
 
 [[asio.extra]]
@@ -689,6 +714,16 @@ lines = [
     "using boost::asio::this_coro::reset_cancellation_state;",
     "using boost::asio::this_coro::throw_if_cancelled;",
 ]
+
+[[cobalt.skip-directive]]
+namespace = "boost::cobalt::this_coro"
+reason = '''
+`using namespace asio::this_coro;` is a public spelling
+(cobalt::this_coro::executor). The [[cobalt.extra]] for this namespace
+re-declares the names, following the documented outline of
+boost/cobalt/this_coro.hpp; the generator does not follow the directive
+itself.
+'''
 
 [[cobalt.guard]]
 if = "defined(IPPROTO_SCTP)"
@@ -1191,6 +1226,29 @@ names = [
 ]
 
 # --------------------------------------------------------------------------
+# icl
+
+[[icl.skip-directive]]
+namespace = "boost::icl::Interval_Set"
+reason = '''
+boost/icl/detail/interval_set_algo.hpp opens `namespace Interval_Set { using
+namespace segmental; }`: the algorithm namespace behind the interval_set
+functions of boost/icl/concept/ uses icl::segmental's helpers unqualified.
+Interval_Set::X is spelled only inside icl's own headers and only for
+Interval_Set's own templates, which are exported directly; the segmental names
+keep their spelling boost::icl::segmental::X.
+'''
+
+[[icl.skip-directive]]
+namespace = "boost::icl::Interval_Map"
+reason = '''
+boost/icl/detail/interval_map_algo.hpp: the interval_map counterpart of
+Interval_Set (`namespace Interval_Map { using namespace segmental; }`), with
+the same reasoning: an implementation namespace, spelled only inside icl's
+headers and only for its own members.
+'''
+
+# --------------------------------------------------------------------------
 # interprocess
 
 [[interprocess.guard]]
@@ -1581,6 +1639,20 @@ names = [
 # --------------------------------------------------------------------------
 # multiprecision
 
+[[multiprecision.skip-directive]]
+namespace = "boost::serialization::cpp_int_detail"
+reason = '''
+boost/multiprecision/cpp_int/serialize.hpp opens `namespace cpp_int_detail {
+using namespace boost::multiprecision; using namespace
+boost::multiprecision::backends; }` so its do_serialize helpers can name
+cpp_int_backend and number unqualified. The public entry point is the
+boost::serialization::serialize overload (exported), found by
+Boost.Serialization; upstream spells cpp_int_detail::X only for the helpers
+declared there (do_serialize, is_binary_archive, exported directly). Following
+the directive would re-spell all of multiprecision under
+boost::serialization::cpp_int_detail (355 names before #1).
+'''
+
 [[multiprecision.guard]]
 if = "defined(BOOST_HAS_INT128)"
 reason = '''
@@ -1730,6 +1802,19 @@ names = [
 # --------------------------------------------------------------------------
 # numeric
 
+[[numeric.skip-directive]]
+namespace = "boost::numeric::ublas::detail"
+reason = '''
+boost/numeric/ublas/matrix.hpp and triangular.hpp open `namespace detail {
+using namespace boost::numeric::ublas; }` so the matrix_resize_preserve
+helpers can name uBLAS types unqualified. It is not a public spelling: every
+ublas::detail::X in Boost's headers, macros, tests and examples names a member
+declared in ublas::detail (tensor_expression, retrieve_extents, recursive::mtv,
+...), exported directly. Following the directive would re-spell all of
+boost::numeric::ublas under detail (356 names, reachable from 15 modules,
+before #1).
+'''
+
 [[numeric.guard]]
 if = "!defined(NDEBUG) && !defined(BOOST_UBLAS_NDEBUG)"
 reason = '''
@@ -1765,6 +1850,16 @@ names = [
 
 # --------------------------------------------------------------------------
 # poly_collection
+
+[[poly_collection.skip-directive]]
+namespace = "boost::poly_collection::common_impl"
+reason = '''
+boost/poly_collection/detail/poly_collection.hpp opens `namespace common_impl
+{ using namespace detail; }` for its own implementation. common_impl is the
+base of base_collection / function_collection / any_collection /
+variant_collection, which are exported under boost::poly_collection; upstream
+spells common_impl::X only for common_impl::poly_collection itself.
+'''
 
 [[poly_collection.guard]]
 if = "defined(__GNUC__)"
@@ -2302,6 +2397,19 @@ names = [  # any :: segment
 
 # --------------------------------------------------------------------------
 # sort
+
+[[sort.skip-directive]]
+namespace = "boost::sort::blk_detail"
+reason = '''
+boost/sort/block_indirect_sort/blk_detail/block.hpp opens `namespace
+blk_detail { using namespace boost::sort::common; }`: the implementation of
+block_indirect_sort uses the common range / stack helpers unqualified. The
+public entry point is boost::sort::block_indirect_sort; upstream spells
+blk_detail::X only for blk_detail's own templates (exported directly), and the
+common helpers keep their spelling boost::sort::common::X. Following the
+directive would re-spell boost::sort::common under blk_detail (55 names before
+#1).
+'''
 
 [sort.facade]
 omit-imports = ["range"]
