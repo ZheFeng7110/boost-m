@@ -91,6 +91,10 @@ class Policy:
                         namespace another target library owns: re-export
                         every name that library exports directly in <target>
                         through <namespace> (under `#if <if>` when given)
+    [[<lib>.skip-directive]] namespace / reason — the library's `using
+                        namespace X;` inside <namespace> is not a public
+                        spelling; every directive the generator does not
+                        follow must be declared here or as a republish
     [<lib>.deps]        add / remove / reason — module edge corrections
     [<lib>.facade]      omit-imports / reason — .deps edges src/<lib>.cppm
                         cannot `export import` (checked by check_facade)
@@ -135,6 +139,9 @@ class Policy:
 
     def republishes(self, lib):
         return list(self.lib(lib).get("republish", ()))
+
+    def skip_directives(self, lib):
+        return list(self.lib(lib).get("skip-directive", ()))
 
     def deps(self, lib):
         return self.lib(lib).get("deps", {})
@@ -708,6 +715,28 @@ def _enclosing_ns(m, d):
     return parts[::-1]
 
 
+def _directive_scope(m, d):
+    """(target, enclosing namespace) qualified names of a using-directive
+    that nominates a boost:: namespace from a named namespace, else None."""
+    ns = m.by_id.get(d.target)
+    if ns is None:
+        return None
+    tgt = m.qualified_name(ns)
+    if not tgt.startswith("boost::"):
+        return None
+    parts = _enclosing_ns(m, d)
+    if not parts:
+        return None
+    return tgt, "::".join(parts)
+
+
+def _is_adl_barrier(tgt, prefix):
+    """The one directive shape collect_injections follows: the target is
+    nested in the directive's own namespace (`namespace boost { namespace
+    range_adl_barrier {...} using namespace range_adl_barrier; }`)."""
+    return tgt.startswith(prefix + "::")
+
+
 def _using_target_name(m, d):
     """(injected qname, target qname) of a namespace-scope using-declaration
     from the name clang prints as written (`range::count`,
@@ -773,24 +802,16 @@ def collect_injections(lib, m, claimed):
                 "file": d.file, "home": lib, "kind": "USING_INJECT",
             }
         else:
-            ns = m.by_id.get(d.target)
-            if ns is None:
+            scope = _directive_scope(m, d)
+            if scope is None:
                 continue
-            tgt = m.qualified_name(ns)
-            if not tgt.startswith("boost::"):
-                continue
-            parts = _enclosing_ns(m, d)
-            if not parts:
-                continue
-            prefix = "::".join(parts)
-            if not tgt.startswith(prefix + "::"):
-                # Only the ADL-barrier shape re-publishes names: a namespace
-                # nested in the directive's own scope (`namespace boost {
-                # namespace range_adl_barrier {...} using namespace
-                # range_adl_barrier; }`). A directive that pulls a sibling
-                # detail namespace in (`using namespace detail;` inside
-                # poly_collection::common_impl) is an implementation
-                # convenience, not a public spelling.
+            tgt, prefix = scope
+            if not _is_adl_barrier(tgt, prefix):
+                # Only the ADL-barrier shape re-publishes names. Any other
+                # directive (`using namespace detail;` inside
+                # poly_collection::common_impl) is followed only through a
+                # policy `republish`; the rest must be declared as
+                # `skip-directive` (check_skipped_directives).
                 continue
             directives.append((tgt.split("::"), prefix, d.file))
     for tgt_chain, prefix, df in directives:
@@ -812,6 +833,62 @@ def collect_injections(lib, m, claimed):
                 "kind": "USING_INJECT",
             }
     return out
+
+
+def check_skipped_directives(lib, m, policy):
+    """Policy `skip-directive` entries. collect_injections follows a
+    using-directive only in the ADL-barrier shape, so a directive in any other
+    shape drops every name it makes visible (`namespace ublas { namespace
+    detail { using namespace boost::numeric::ublas; } }` spells all of uBLAS
+    as ublas::detail::X). Each such directive in the library's own headers
+    must be declared, either as a `republish` (a public spelling) or as a
+    `skip-directive` with the reason it is not one, so no spelling is lost
+    silently.
+
+    Returns (skipped entries, errors): an undeclared directive, a
+    `skip-directive` that matches none, and one that is also a `republish`
+    are errors."""
+    found = {}
+    for d in m.indexed():
+        if d.kind != "UsingDirectiveDecl" or d.parent is None \
+                or d.parent.kind != "NamespaceDecl":
+            continue
+        if home_of_file(d.file) not in (lib, "shared"):
+            continue
+        scope = _directive_scope(m, d)
+        if scope is None or _is_adl_barrier(*scope):
+            continue
+        tgt, prefix = scope
+        found.setdefault(prefix, {}).setdefault(tgt, d.file)
+    republished = {e["namespace"] for e in policy.republishes(lib)}
+    entries, errors, declared = [], [], set()
+    for entry in policy.skip_directives(lib):
+        where = entry["namespace"]
+        declared.add(where)
+        entries.append((lib, "skip-directive", where, "", entry["reason"]))
+        if where in republished:
+            errors.append("policy skip-directive {}: the namespace is also a "
+                          "republish".format(where))
+        elif where not in found:
+            errors.append(
+                "policy skip-directive {}: the library's own headers have no "
+                "using-directive there that the generator does not follow "
+                "(declare a directive in the library that owns its "
+                "header)".format(where))
+    for prefix, targets in sorted(found.items()):
+        if prefix in declared or prefix in republished:
+            continue
+        for tgt, dfile in sorted(targets.items()):
+            try:
+                dfile = Path(dfile).relative_to(bc.ROOT).as_posix()
+            except (TypeError, ValueError):
+                pass
+            errors.append(
+                "`using namespace {};` in {} ({}) is not followed: declare "
+                "[[{}.republish]] if {}::X is a public spelling, else "
+                "[[{}.skip-directive]] with the reason it is not".format(
+                    tgt, prefix, dfile, lib, prefix, lib))
+    return entries, errors
 
 
 def collect_added(lib, m, policy, claimed):
@@ -1354,7 +1431,8 @@ def write_meta(out_dir, summary, skipped):
         encoding="utf-8", newline="\n")
     lines = [
         "# Names the export policy (tools/export_policy.toml) guards, drops or",
-        "# adds verbatim. GENERATED by tools/gen_exports.py - DO NOT EDIT",
+        "# adds verbatim, and the using-directives it does not follow.",
+        "# GENERATED by tools/gen_exports.py - DO NOT EDIT",
         "# <lib> <action> <name> [if <condition>] -- <reason>",
         "",
     ]
@@ -1726,6 +1804,8 @@ def generate(args, out):
         added = collect_added(lib, m, policy, inject_view)
         rp, rp_sources, rp_entries, rp_errors = collect_republished(
             lib, m, policy, published, upstreams_of(graph, lib), inject_view)
+        sd_entries, sd_errors = check_skipped_directives(lib, m, policy)
+        rp_errors += sd_errors
         if rp_errors:
             for e in rp_errors:
                 print("error: {}: {}".format(lib, e), file=sys.stderr)
@@ -1739,7 +1819,7 @@ def generate(args, out):
             extra_deps=bc.lib_deps(lib, gfm_final) |
             {r["owner"] for r in rp.values()},
             namespaces=m.namespaces(), published=published[lib])
-        sk_entries += rp_entries
+        sk_entries += rp_entries + sd_entries
         body = {} if args.no_body_deps else \
             collect_body_edges(lib, m, records, claimed)
         if body:
