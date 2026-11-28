@@ -169,7 +169,9 @@ libclang, no Python bindings, no LLVM release archive.
   that give entities their public spelling (ADL barriers, `detail` re-exports).
   A `using namespace` is followed only in the ADL-barrier shape (the target is
   nested in the directive's own namespace); one that names another library's
-  namespace is followed when the policy declares it (`republish` below).
+  namespace is followed when the policy declares it (`republish` below). Every
+  other directive in a library's own headers must be declared `skip-directive`
+  with its reason, or generation fails, so no spelling is dropped silently.
 - **Signature closure**: entities named by the candidates' signatures
   (parameters, results, bases, fields, typedef targets — with typedefs looked
   through), so the API's own types are exported with it.
@@ -194,13 +196,14 @@ written reason and applied by the generator, never patched into its output:
 | `[[<lib>.drop]]` | never export the matching names / namespaces |
 | `[[<lib>.extra]]` | verbatim declarations (the gcc `extern template` vtable workarounds) |
 | `[[<lib>.republish]]` | the namespace holds `using namespace <target>;` for another library's namespace: every name that library exports directly in `<target>` is re-exported through it, optionally under `if` (`boost::dll::fs` follows `boost::filesystem`) |
+| `[[<lib>.skip-directive]]` | the namespace's `using namespace X;` is an implementation convenience, not a public spelling (`namespace ublas { namespace detail { using namespace boost::numeric::ublas; } }`): it is not followed, and the reason is recorded |
 | `add` | names no collector reaches (body-only or ADL-only references) |
 | `gmf`, `defines`, `facade-includes` | the bundle's include set and macros; facade-only includes |
 | `inline-namespaces` | export a macro-selected inline namespace through its parent |
 | `[<lib>.deps]` | module edge corrections; edges of the hand-written special modules |
 
 `generated/meta/skipped.txt` lists every name a rule guards, drops or adds, and
-each `extra` / `republish` namespace, so the boundary is reviewable in one file,
+each `extra` / `republish` / `skip-directive` namespace, so the boundary is reviewable in one file,
 and `generated/meta/api-surface.json`
 records the generator identity (clang release, target, defines) and per-library
 GMF, export count and edges. A diff after a compiler update therefore shows as a
