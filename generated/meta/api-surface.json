@@ -659,7 +659,7 @@
     "type_index",
     "winapi"
    ],
-   "exported": 150,
+   "exported": 288,
    "gmf": [
     "boost/dll.hpp",
     "boost/dll/import_class.hpp",

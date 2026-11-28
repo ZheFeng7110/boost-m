@@ -18,6 +18,11 @@
 #   [[<lib>.drop]]    names = [...], reason = "..."
 #   [[<lib>.extra]]   namespace = "boost", lines = [...], reason = "..."
 #                     (namespace = "" exports into the global namespace)
+#   [[<lib>.republish]] namespace = "boost::dll::fs", reason = "...",
+#                     if = "<condition>" (optional) — the namespace holds
+#                     `using namespace <target>;` for a namespace another
+#                     target library owns; every name that library exports
+#                     directly in <target> is re-exported through it
 #   [<lib>.deps]      add = [...], remove = [...], reason = "..."
 #
 # A `names` entry with `::` matches one qualified name exactly; a bare
@@ -980,16 +985,26 @@ names = [
     "boost::dll::experimental::demangle_symbol",
 ]
 
+[[dll.republish]]
+namespace = "boost::dll::fs"
+if = "!defined(BOOST_DLL_USE_STD_FS)"
+reason = '''
+boost/dll/config.hpp spells boost::dll::fs as `using namespace
+boost::filesystem;`, and an importer never sees a using-directive: the
+examples and the API (dll::fs::path, program_location's return type) name
+dll::fs::path, fs::is_regular_file, fs::recursive_directory_iterator. Every
+name the filesystem module exports directly in boost::filesystem is
+re-exported through boost::dll::fs, so the spelling follows Boost.Filesystem.
+error_code / system_error are using-declarations upstream and exported
+already.
+'''
+
 [[dll.extra]]
 namespace = "boost::dll::fs"
 reason = '''
-boost/dll/config.hpp spells boost::dll::fs as `using namespace
-boost::filesystem;` (std::filesystem with BOOST_DLL_USE_STD_FS), and an
-importer never sees a using-directive: the examples and the API (dll::fs::path,
-program_location's return type) name dll::fs::path, fs::is_regular_file,
-fs::recursive_directory_iterator. The filesystem names the documentation uses
-are re-declared here (error_code / system_error are using-declarations
-upstream and exported already).
+With BOOST_DLL_USE_STD_FS, boost/dll/config.hpp's directive names
+std::filesystem instead: a fixed standard surface, listed here in full
+(path's operators, swap and hash_value are found by ADL).
 '''
 lines = [
     "#if defined(BOOST_DLL_USE_STD_FS)",
@@ -999,67 +1014,54 @@ lines = [
     "using ::std::filesystem::directory_iterator;",
     "using ::std::filesystem::recursive_directory_iterator;",
     "using ::std::filesystem::file_status;",
+    "using ::std::filesystem::space_info;",
     "using ::std::filesystem::file_type;",
     "using ::std::filesystem::perms;",
+    "using ::std::filesystem::perm_options;",
     "using ::std::filesystem::copy_options;",
-    "using ::std::filesystem::space_info;",
+    "using ::std::filesystem::directory_options;",
+    "using ::std::filesystem::file_time_type;",
+    "using ::std::filesystem::begin;",
+    "using ::std::filesystem::end;",
     "using ::std::filesystem::absolute;",
     "using ::std::filesystem::canonical;",
     "using ::std::filesystem::copy;",
     "using ::std::filesystem::copy_file;",
+    "using ::std::filesystem::copy_symlink;",
     "using ::std::filesystem::create_directories;",
     "using ::std::filesystem::create_directory;",
+    "using ::std::filesystem::create_directory_symlink;",
+    "using ::std::filesystem::create_hard_link;",
+    "using ::std::filesystem::create_symlink;",
     "using ::std::filesystem::current_path;",
     "using ::std::filesystem::equivalent;",
     "using ::std::filesystem::exists;",
     "using ::std::filesystem::file_size;",
+    "using ::std::filesystem::hard_link_count;",
+    "using ::std::filesystem::is_block_file;",
+    "using ::std::filesystem::is_character_file;",
     "using ::std::filesystem::is_directory;",
     "using ::std::filesystem::is_empty;",
+    "using ::std::filesystem::is_fifo;",
+    "using ::std::filesystem::is_other;",
     "using ::std::filesystem::is_regular_file;",
+    "using ::std::filesystem::is_socket;",
     "using ::std::filesystem::is_symlink;",
     "using ::std::filesystem::last_write_time;",
+    "using ::std::filesystem::permissions;",
+    "using ::std::filesystem::proximate;",
     "using ::std::filesystem::read_symlink;",
     "using ::std::filesystem::relative;",
     "using ::std::filesystem::remove;",
     "using ::std::filesystem::remove_all;",
     "using ::std::filesystem::rename;",
+    "using ::std::filesystem::resize_file;",
+    "using ::std::filesystem::space;",
     "using ::std::filesystem::status;",
+    "using ::std::filesystem::status_known;",
+    "using ::std::filesystem::symlink_status;",
     "using ::std::filesystem::temp_directory_path;",
     "using ::std::filesystem::weakly_canonical;",
-    "#else",
-    "using ::boost::filesystem::path;",
-    "using ::boost::filesystem::filesystem_error;",
-    "using ::boost::filesystem::directory_entry;",
-    "using ::boost::filesystem::directory_iterator;",
-    "using ::boost::filesystem::recursive_directory_iterator;",
-    "using ::boost::filesystem::file_status;",
-    "using ::boost::filesystem::file_type;",
-    "using ::boost::filesystem::perms;",
-    "using ::boost::filesystem::copy_options;",
-    "using ::boost::filesystem::space_info;",
-    "using ::boost::filesystem::absolute;",
-    "using ::boost::filesystem::canonical;",
-    "using ::boost::filesystem::copy;",
-    "using ::boost::filesystem::copy_file;",
-    "using ::boost::filesystem::create_directories;",
-    "using ::boost::filesystem::create_directory;",
-    "using ::boost::filesystem::current_path;",
-    "using ::boost::filesystem::equivalent;",
-    "using ::boost::filesystem::exists;",
-    "using ::boost::filesystem::file_size;",
-    "using ::boost::filesystem::is_directory;",
-    "using ::boost::filesystem::is_empty;",
-    "using ::boost::filesystem::is_regular_file;",
-    "using ::boost::filesystem::is_symlink;",
-    "using ::boost::filesystem::last_write_time;",
-    "using ::boost::filesystem::read_symlink;",
-    "using ::boost::filesystem::relative;",
-    "using ::boost::filesystem::remove;",
-    "using ::boost::filesystem::remove_all;",
-    "using ::boost::filesystem::rename;",
-    "using ::boost::filesystem::status;",
-    "using ::boost::filesystem::temp_directory_path;",
-    "using ::boost::filesystem::weakly_canonical;",
     "#endif",
 ]
 

@@ -86,6 +86,11 @@ class Policy:
     [[<lib>.drop]]      reason / names / namespaces — never export the
                         matching names (or anything inside the namespaces)
     [[<lib>.extra]]     namespace / reason / lines — verbatim declarations
+    [[<lib>.republish]] namespace / reason / if — the library's `using
+                        namespace <target>;` inside <namespace> names a
+                        namespace another target library owns: re-export
+                        every name that library exports directly in <target>
+                        through <namespace> (under `#if <if>` when given)
     [<lib>.deps]        add / remove / reason — module edge corrections
     [<lib>.facade]      omit-imports / reason — .deps edges src/<lib>.cppm
                         cannot `export import` (checked by check_facade)
@@ -127,6 +132,9 @@ class Policy:
 
     def extras(self, lib):
         return list(self.lib(lib).get("extra", ()))
+
+    def republishes(self, lib):
+        return list(self.lib(lib).get("republish", ()))
 
     def deps(self, lib):
         return self.lib(lib).get("deps", {})
@@ -826,6 +834,98 @@ def collect_added(lib, m, policy, claimed):
     return out
 
 
+def upstreams_of(graph, lib):
+    """Every target library `lib`'s headers reach, transitively."""
+    seen, stack = set(), list(graph.get(lib, ()))
+    while stack:
+        u = stack.pop()
+        if u not in seen:
+            seen.add(u)
+            stack.extend(graph.get(u, ()))
+    seen.discard(lib)
+    return seen
+
+
+def republish_sources(published, target, upstreams):
+    """[[owner, qname, condition]] — the names the libraries in `upstreams`
+    export directly in namespace `target`, as their emit_inc wrote them
+    (after drops; `condition` is the guard they sit under, or "")."""
+    chain = target.split("::")
+    return sorted([owner, e["qname"], e["if"]]
+                  for owner in upstreams
+                  for e in published.get(owner, ())
+                  if e["ns"] == chain)
+
+
+def collect_republished(lib, m, policy, published, upstreams, claimed):
+    """Policy `republish` entries. `namespace boost { namespace dll { namespace
+    fs { using namespace boost::filesystem; } } }` makes dll::fs::path the
+    public spelling of filesystem's path, but an importer never sees a
+    using-directive, and the directive's target belongs to another module.
+    Every name that module exports directly in the target namespace is
+    re-exported through the directive's namespace, so the spelling follows the
+    owner's surface (its drops, guards and upstream additions) instead of a
+    hand-kept list.
+
+    Returns (records, {"<namespace>=<target>": sources}, skipped entries,
+    errors); the sources are the republish_sources() lists a cached result
+    depends on (checked by _republish_holds)."""
+    out, sources, entries, errors = {}, {}, [], []
+    directives = {}
+    for d in m.indexed():
+        if d.kind != "UsingDirectiveDecl" or d.parent is None \
+                or d.parent.kind != "NamespaceDecl":
+            continue
+        ns = m.by_id.get(d.target)
+        parts = _enclosing_ns(m, d)
+        if ns is None or not parts:
+            continue
+        tgt = m.qualified_name(ns)
+        found = directives.setdefault("::".join(parts), {})
+        found.setdefault(tgt, d.file)
+    for entry in policy.republishes(lib):
+        where = entry["namespace"]
+        cond = " ".join(entry.get("if", "").split())
+        entries.append((lib, "republish", where, cond, entry["reason"]))
+        targets = directives.get(where)
+        if not targets:
+            errors.append("policy republish {}: the TU has no using-directive "
+                          "in that namespace".format(where))
+            continue
+        guards = {}
+
+        def guard_for(src_cond):
+            parts = [c for c in (cond, src_cond) if c]
+            key = " && ".join("(" + c + ")" for c in parts) \
+                if len(parts) > 1 else "".join(parts)
+            if not key:
+                return None
+            return guards.setdefault(key, {"if": key,
+                                           "reason": entry["reason"]})
+
+        for tgt, dfile in sorted(targets.items()):
+            src = republish_sources(published, tgt, upstreams)
+            sources[where + "=" + tgt] = src
+            if not src:
+                errors.append(
+                    "policy republish {}: no upstream module of {} exports "
+                    "names directly in {}".format(where, lib, tgt))
+                continue
+            for owner, qname, src_cond in src:
+                q = where + "::" + qname.rsplit("::", 1)[-1]
+                ckey = q + "=" + qname
+                if q in claimed or ckey in claimed:
+                    continue
+                claimed[ckey] = lib
+                out[q] = {
+                    "name": qname.rsplit("::", 1)[-1], "qname": "::" + qname,
+                    "usr": "inject:" + ckey, "ns": where.split("::"),
+                    "file": dfile, "home": lib, "kind": "USING_INJECT",
+                    "guard": guard_for(src_cond), "owner": owner,
+                }
+    return out, sources, entries, errors
+
+
 # ---------------------------------------------------------------------------
 # signature closure (pass 1)
 # ---------------------------------------------------------------------------
@@ -1040,14 +1140,19 @@ def _spell(qname, ns, namespaces):
 
 
 def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
-             namespaces=frozenset()):
+             namespaces=frozenset(), published=None):
     """Write generated/exports/<lib>.inc (+ <lib>.deps).
 
     Cross-module dedup (first wins): entities claimed by an earlier module are
     left out and their homes become `.deps` edges. One using-declaration per
     qualified name (it brings every overload). Policy guards, drops, inline-
     namespace collapses and verbatim lines are applied here, and every name
-    they touch is returned for generated/meta/skipped.txt.
+    they touch is returned for generated/meta/skipped.txt. A record that
+    carries its own "guard" (a republished name) is emitted under it; its
+    policy entry is listed once, by collect_republished.
+
+    When `published` is a list, every emitted name is appended to it as
+    {"ns", "qname", "if"} (what a `republish` in a downstream library follows).
 
     Returns (exported_count, deps, skipped_entries)."""
     own = [r for r in records.values() if r["home"] == lib]
@@ -1082,10 +1187,18 @@ def emit_inc(lib, records, out_dir, claimed, policy, extra_deps=(),
         if rule is not None:
             skipped.append((lib, "drop", q, "", rule["reason"]))
             continue
-        guard = next((g for g in guards if _matches(q, g["names"])), None)
-        if guard is not None:
-            skipped.append((lib, "guard", q, guard["if"], guard["reason"]))
+        if "guard" in rec:
+            guard = rec["guard"]
+        else:
+            guard = next((g for g in guards if _matches(q, g["names"])), None)
+            if guard is not None:
+                skipped.append((lib, "guard", q, guard["if"],
+                                guard["reason"]))
         exports.append((tuple(ns), q, guard))
+        if published is not None:
+            published.append({
+                "ns": list(ns), "qname": q.lstrip(":"),
+                "if": " ".join(guard["if"].split()) if guard else ""})
 
     groups = {}
     for ns, q, guard in exports:
@@ -1388,6 +1501,19 @@ def _claims_hold(sk, claimed, claimed_inject):
     return all(claimed_inject.get(k) == o for k, o in view)
 
 
+def _republish_holds(sk, published, upstreams):
+    """A cached `republish` result still matches what the owning modules
+    export now (their output can change while this library's key holds)."""
+    rp = sk.get("republish")
+    if rp is None or "published" not in sk:
+        return False
+    for key, src in rp.items():
+        target = key.split("=", 1)[1]
+        if republish_sources(published, target, upstreams) != src:
+            return False
+    return True
+
+
 def _load_json(path):
     try:
         return json.loads(path.read_text(encoding="utf-8"))
@@ -1532,7 +1658,7 @@ def generate(args, out):
     old_libs = (old_surface or {}).get("libraries", {})
     old_skipped = _read_skipped(out / "generated" / "meta" / "skipped.txt")
 
-    claimed, claimed_inject = {}, {}
+    claimed, claimed_inject, published = {}, {}, {}
     summary, skipped, body_all, gfm_by_lib, deps_by_lib = {}, [], {}, {}, {}
     cache_payloads = {}
     for lib in order:
@@ -1543,7 +1669,8 @@ def generate(args, out):
             if use_cache and key else None
         hit = sk is not None and sk.get("key") == key \
             and _manifest_ok(sk.get("inputs")) \
-            and _claims_hold(sk, claimed, claimed_inject)
+            and _claims_hold(sk, claimed, claimed_inject) \
+            and _republish_holds(sk, published, upstreams_of(graph, lib))
         if lib not in libs:
             # Not regenerated: its committed output stays, but its claims
             # shape first-wins ownership downstream, so replay them.
@@ -1555,6 +1682,7 @@ def generate(args, out):
                     claimed.setdefault(usr, owner)
                 for q, owner in sk["inject_claims"]:
                     claimed_inject.setdefault(q, owner)
+                published[lib] = sk["published"]
             else:
                 print("warning: no current cache for {}; a --libs run "
                       "may claim differently from a full run".format(lib))
@@ -1564,6 +1692,7 @@ def generate(args, out):
                 claimed.setdefault(usr, owner)
             for q, owner in sk["inject_claims"]:
                 claimed_inject.setdefault(q, owner)
+            published[lib] = sk["published"]
             gfm_by_lib[lib] = [bc.DEPS / rel for rel in sk["gfm"]]
             summary[lib] = sk["summary"]
             deps_by_lib[lib] = sk["summary"]["deps"]
@@ -1595,13 +1724,22 @@ def generate(args, out):
         inject_view = _ClaimView(claimed_inject)
         injects = collect_injections(lib, m, inject_view)
         added = collect_added(lib, m, policy, inject_view)
-        records = closure_from(m, dict(cands, **injects, **added))
+        rp, rp_sources, rp_entries, rp_errors = collect_republished(
+            lib, m, policy, published, upstreams_of(graph, lib), inject_view)
+        if rp_errors:
+            for e in rp_errors:
+                print("error: {}: {}".format(lib, e), file=sys.stderr)
+            return 1, []
+        records = closure_from(m, dict(cands, **injects, **added, **rp))
         pre_claimed = sorted({r["usr"] for r in records.values()
                               if r["usr"] in claimed})
+        published[lib] = []
         exports, deps, sk_entries = emit_inc(
             lib, records, out, claimed, policy,
-            extra_deps=bc.lib_deps(lib, gfm_final),
-            namespaces=m.namespaces())
+            extra_deps=bc.lib_deps(lib, gfm_final) |
+            {r["owner"] for r in rp.values()},
+            namespaces=m.namespaces(), published=published[lib])
+        sk_entries += rp_entries
         body = {} if args.no_body_deps else \
             collect_body_edges(lib, m, records, claimed)
         if body:
@@ -1635,6 +1773,8 @@ def generate(args, out):
                 "claims": [[r["usr"], lib] for r in records.values()],
                 "inject_claims": [[q, o] for q, o in claimed_inject.items()
                                   if o == lib],
+                "published": published[lib],
+                "republish": rp_sources,
                 "pre_claimed": pre_claimed,
                 "inject_view": sorted([k, o] for k, o in
                                       inject_view.seen.items()),
